@@ -22,7 +22,7 @@ def run():
     
     machine.freq(240000000)
     
-    render = menus.menu("Menu/Others", [("Scorekeeper", 1), ("Resistor decoder", 2), ("IR Remote", 3), ("Close", 13)])
+    render = menus.menu("Menu/Others", [("Scorekeeper", 1), ("Resistor decoder", 2), ("Close", 13)])
     if render == 1:
         import apps.scorekeeper as a_sc
         a_sc.set_btf(button_a, button_b, button_c, tft)
@@ -34,10 +34,4 @@ def run():
         a_re.set_btf(button_a, button_b, button_c, tft)
         a_re.run()
         del a_re
-        machine.freq(80000000)
-    elif render == 3:
-        import apps.IR as a_ir
-        a_ir.set_btf(button_a, button_b, button_c, tft)
-        a_ir.run()
-        del a_ir
         machine.freq(80000000)

@@ -31,7 +31,6 @@ import esp32
 
 import modules.crash_handler as c_handler
 import modules.nvs as nvs
-import modules.sleep as m_sleep
 
 import time
 
@@ -171,36 +170,9 @@ import modules.battery_check as b_check
 # Clock
 import apps.clock as a_clock
 
-def wake_up():
-    print("Woken up from sleep")
-    menu = 0
-    a_clock.run_clock()
-    print("Sync time from external RTC")
-    dt = rtc.get_time()
-    machine.RTC().datetime(dt)
-    time_to_check = 0
-
 menu = 0
 menu_change = True
 render_battery = False
-
-def powermen():
-    powermenu = menus.menu("Power", [("Sleep", 1), ("Power off", 2), ("Reboot", 3), ("Cancel", 4)])
-    if powermenu == 1:
-        machine.freq(80000000)
-        m_sleep.sleep(tft, button_c, True)
-        wake_up()
-    elif powermenu == 2:
-        machine.freq(80000000)
-        power_hold.value(0)
-    elif powermenu == 3:
-        machine.freq(80000000)
-        tft.text(f8x8, "Reseting...", 0,0,2016)
-        machine.reset()
-    else:
-        machine.freq(80000000)
-        menu = 0
-        menu_change = True
 
 import modules.menus as menus
 menus.set_btf(button_a, button_b, button_c, tft)
@@ -223,34 +195,25 @@ while True:
     if button_a.value() == 0:
         while button_a.value() == 0:
             time.sleep(0.02)
-        # Render menu faster
-        machine.freq(240000000)
-        menu1 = menus.menu("Menu", [("Others", 11), ("Power", 12), ("Close", 13)])
-        if menu1 == 12:
-            powermen()
-        elif menu1 == 11:
-            import apps.others as a_ot
-            a_ot.set_btf(button_a, button_b, button_c, tft)
-            a_ot.run()
-            del a_ot
-        else:
-            menu = 0
-            menu_change = True
+        dt = rtc.get_time()
+        machine.RTC().datetime(dt)
+        import apps.menu as a_menu
+        a_menu.set_btf(button_a, button_b, button_c, tft)
+        a_menu.run()
+        del a_menu
         menu = 0
         menu_change = True
-        machine.freq(80000000)
-            
-                
+        
     if button_c.value() == 0:
         while button_c.value() == 0:
             time.sleep(0.02)
         if menu == 0:
-            # Render menu faster
-            machine.freq(240000000)
-            powermen()
+            import apps.powermenu as a_powermen
+            a_powermen.set_btf(button_a, button_b, button_c, tft)
+            a_powermen.run()
+            del a_powermen
             menu = 0
             menu_change = True
-            machine.freq(80000000)
             
     # Battery check
     if time_to_check == 0 and menu  == 0:
