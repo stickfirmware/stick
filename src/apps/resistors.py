@@ -19,18 +19,18 @@ def set_btf(bta, btb, btc, ttft):
     button_c = btc
     tft = ttft
     
-BLACK = 0 #1
-BROWN = 14693 #2
-RED = 63488 #3
-ORANGE = 64640 #4
-YELLOW = 63456 #5
-GREEN = 2016 #6
-BLUE = 5723 #7
-VIOLET = 37019 #8
-GRAY = 25356 #9
-WHITE = 65535 #10
-GOLD = 65184 #11
-SILVER = 48631 #12
+#BLACK = 0 #1
+#BROWN = 14693 #2
+#RED = 63488 #3
+#ORANGE = 64640 #4
+#YELLOW = 63456 #5
+#GREEN = 2016 #6
+#BLUE = 5723 #7
+#VIOLET = 37019 #8
+#GRAY = 25356 #9
+#WHITE = 65535 #10
+#GOLD = 65184 #11
+#SILVER = 48631 #12
 
 colors_f = [0, 37222, 63488, 64640, 63456, 2016, 5723, 37019, 25356, 65535]
 colors_m = [0, 37222, 63488, 64640, 63456, 2016, 5723, 37019, 65184, 48631]
@@ -74,7 +74,7 @@ def four():
     upd = True
     while work:
         if upd:
-            tft.fill_rect(0, 105, 240, 30, BLACK)
+            tft.fill_rect(0, 105, 240, 30, 0)
             if line_num == 1:
                 tft.text(f8x8, "^",66,105,2022)
             elif line_num == 2:
@@ -154,7 +154,7 @@ def five():
     upd = True
     while work:
         if upd:
-            tft.fill_rect(0, 105, 240, 30, BLACK)
+            tft.fill_rect(0, 105, 240, 30, 0)
             if line_num == 1:
                 tft.text(f8x8, "^",66,105,2022)
             elif line_num == 2:
@@ -224,15 +224,13 @@ def run():
     import fonts.def_8x8 as f8x8
     import machine
     
-    machine.freq(240000000)
+    machine.freq(80000000)
     
     if tft == None:
         print("Please call 'set_btf(bta. btb, btc, ttft)' first")
         return
     
     print("Going into main loop")
-    tft.text(f8x8, "Starting app...",0,0,2022)
-    tft.text(f8x8, "It can take a while!",0,8,2022)
     del machine
     
     render = menus.menu("Select resistor type", [("4 colors", 1), ("5 colors", 2), ("Close", 3)])

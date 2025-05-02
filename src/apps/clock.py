@@ -1,5 +1,4 @@
 import machine
-import bitmaps.menubase as b_menubase
 
 import fonts.def_8x8 as f8x8
 import fonts.def_16x32 as f16x32
@@ -17,7 +16,13 @@ def run_clock():
         print("Please call 'set_tft(tft)' first")
         return
     print("Rendering clock base")
-    tft.bitmap(b_menubase, 0,0)
+    tft.fill_rect(0, 0, 240, 3, 65535)
+    tft.fill_rect(0, 16, 240, 3, 65535)
+    tft.fill_rect(0, 132, 240, 3, 65535)
+    tft.fill_rect(0, 0, 3, 135, 65535)
+    tft.fill_rect(237, 0, 3, 135, 65535)
+    tft.fill_rect(3, 3, 234, 13, 0)
+    tft.fill_rect(3, 19, 234, 113, 0)
     tft.text(f8x8, "Clock",5,5,65535)
 
 def clock():

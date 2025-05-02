@@ -185,7 +185,6 @@ menu_change = True
 render_battery = False
 
 def powermen():
-    tft.text(f8x8, "Please wait for the render!", 0,0,2016)
     powermenu = menus.menu("Power", [("Sleep", 1), ("Power off", 2), ("Reboot", 3), ("Cancel", 4)])
     if powermenu == 1:
         machine.freq(80000000)
@@ -213,7 +212,6 @@ while True:
     elif menu == 0 and menu_change == True:
         # Render base faster
         machine.freq(240000000)
-        tft.text(f8x8, "Please wait for the render!", 0,0,2016)
         render_battery = True
         a_clock.set_tft(tft)
         a_clock.run_clock()
@@ -227,7 +225,6 @@ while True:
             time.sleep(0.02)
         # Render menu faster
         machine.freq(240000000)
-        tft.text(f8x8, "Please wait for the render!", 0,0,2016)
         menu1 = menus.menu("Menu", [("Others", 11), ("Power", 12), ("Close", 13)])
         if menu1 == 12:
             powermen()
@@ -250,7 +247,6 @@ while True:
         if menu == 0:
             # Render menu faster
             machine.freq(240000000)
-            tft.text(f8x8, "Please wait for the render!", 0,0,2016)
             powermen()
             menu = 0
             menu_change = True

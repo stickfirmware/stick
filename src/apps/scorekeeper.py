@@ -21,7 +21,6 @@ def run():
     import modules.menus as menus
     import modules.nvs as nvs
     import esp32
-    import fonts.def_8x8 as f8x8
     import machine
     
     machine.freq(240000000)
@@ -33,8 +32,6 @@ def run():
         return
     
     print("Going into main loop")
-    tft.text(f8x8, "Starting app...",0,0,2022)
-    del f8x8
     
     team1 = 0
     team2 = 0

@@ -1,0 +1,81 @@
+# Database of nec IR codes
+
+# If you would like to help, please make a PR with new IR codes!
+# Or you can just test the codes, open issue to help!
+# I plan to compress this list so it doesnt take much space
+
+# Format:
+# (address, code) # Device name
+
+# Source:
+# https://gitlab.com/-/snippets/1690600
+# https://tasmota.github.io/docs/Codes-for-IR-Remotes/
+# https://gist.github.com/DDRBoxman/c68b68e41a47338496ba8cbd1bb5d20e
+
+# Supported devices:
+# TVs:
+# LG TV (Tested)
+# Samsung TV (Untested)
+# Generic TV (Untested)
+# TLC TV Nec version (Untested, Partial support)
+# Projectors:
+# Acer Projector (Untested)
+# Sanyo Projector (Untested)
+
+# Address List:
+a_LGTV = 0x20DF
+a_SAMSUNGTV = 0xE0E0
+a_GENERICTV = 0x00FE
+a_ACERKPROJ = 0x10C8
+a_SANYOPROJ = 0xCC00
+a_TLCNECTV = 0x57E3
+
+power = [
+    (a_LGTV, 0x10EF), # LG TV
+    (a_GENERICTV, 0xA857), # Generic TV
+    (a_SAMSUNGTV, 0x40BF), # Samsung TV
+    (a_TLCNECTV, 0xE817), # TLC TV
+    (a_ACERKPROJ, 0xE11E), # Acer K132 Projector
+    (a_SANYOPROJ, 0x00FF) # Sanyo Projector
+]
+
+vol_up = [
+    (a_LGTV, 0x40BF), # LG TV
+    (a_GENERICTV, 0xD827), # Generic TV
+    (a_SAMSUNGTV, 0xE01F), # Samsung TV
+    (a_TLCNECTV, 0xF00F), # TLC TV
+    (a_ACERKPROJ, 0xC639) # Acer K132 Projector
+]
+
+vol_down = [
+    (a_LGTV, 0xC03F), # LG TV
+    (a_GENERICTV, 0x58A7), # Generic TV
+    (a_SAMSUNGTV, 0xD02F), # Samsung TV
+    (a_TLCNECTV, 0x04FB), # TLC TV
+    (a_ACERKPROJ, 0x26D9) # Acer K132 Projector
+]
+
+mute = [
+    (a_LGTV, 0x906F), # LG TV
+    (a_GENERICTV, 0x6897), # Generic TV
+    (a_SAMSUNGTV, 0xF00F), # Samsung TV
+    (a_TLCNECTV, 0x08F7), # TLC TV
+    (a_ACERKPROJ, 0x8679) # Acer K132 Projector
+]
+
+prog_up = [
+    (a_LGTV, 0x00FF), # LG TV
+    (a_GENERICTV, 0x9867), # Generic TV
+    (a_SAMSUNGTV, 0x48B7) # Samsung TV
+]
+
+prog_down = [
+    (a_LGTV, 0x807F), # LG TV
+    (a_GENERICTV, 0x18E7), # Generic TV
+    (a_SAMSUNGTV, 0x08F7) # Samsung TV
+]
+
+# Only for projectors
+freeze = [
+    (a_ACERKPROJ, 0x718E) # Acer K132 Projector
+]
