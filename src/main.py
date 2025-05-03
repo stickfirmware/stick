@@ -45,8 +45,8 @@ power_hold = Pin(4, Pin.OUT)
 power_hold.value(1)
 
 # Set frequencies
-print("Setting 80mhz freq")
-machine.freq(80000000)
+print("Setting 240mhz freq")
+machine.freq(240000000)
   
 # Import fonts
 print("Load fonts")
@@ -109,7 +109,6 @@ if nvs.get_int(n_boot, "fastBoot") == 0:
     del b_nyan
 else:
     print("Fast boot enabled, setting MCU clocks to 240MHz")
-    machine.freq(240000000)
     del b_nyan
 gc.collect()
 
@@ -209,7 +208,7 @@ while True:
             time.sleep(0.02)
         if menu == 0:
             import apps.powermenu as a_powermen
-            a_powermen.set_btf(button_a, button_b, button_c, tft)
+            a_powermen.set_btf(button_a, button_b, button_c, power_hold, tft)
             a_powermen.run()
             del a_powermen
             menu = 0

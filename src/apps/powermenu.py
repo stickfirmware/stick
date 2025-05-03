@@ -2,13 +2,16 @@ button_a = None
 button_b = None
 button_c = None
 tft = None
+power_hold = None
 
-def set_btf(bta, btb, btc, ttft):
+def set_btf(bta, btb, btc, power_h, ttft):
     global button_a
     global button_b
     global button_c
     global tft
+    global power_hold
     
+    power_hold = power_h
     button_a = bta
     button_b = btb
     button_c = btc

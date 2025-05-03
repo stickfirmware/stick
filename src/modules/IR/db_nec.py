@@ -21,6 +21,9 @@
 # Projectors:
 # Acer Projector (Untested)
 # Sanyo Projector (Untested)
+# Soundbars / Amplifiers & Receivers:
+# Soundcore Soundbar (Untested)
+# JBL On Air 2.4G Control (Untested)
 
 # Address List:
 a_LGTV = 0x20DF
@@ -29,6 +32,8 @@ a_GENERICTV = 0x00FE
 a_ACERKPROJ = 0x10C8
 a_SANYOPROJ = 0xCC00
 a_TLCNECTV = 0x57E3
+a_SOUNDCORE = 0xFD25
+a_JBLONAIR = 0x5385
 
 power = [
     (a_LGTV, 0x10EF), # LG TV
@@ -36,7 +41,8 @@ power = [
     (a_SAMSUNGTV, 0x40BF), # Samsung TV
     (a_TLCNECTV, 0xE817), # TLC TV
     (a_ACERKPROJ, 0xE11E), # Acer K132 Projector
-    (a_SANYOPROJ, 0x00FF) # Sanyo Projector
+    (a_SANYOPROJ, 0x00FF), # Sanyo Projector
+    (a_SOUNDCORE, 0x02FD) # Soundcore Soundbar
 ]
 
 vol_up = [
@@ -44,7 +50,9 @@ vol_up = [
     (a_GENERICTV, 0xD827), # Generic TV
     (a_SAMSUNGTV, 0xE01F), # Samsung TV
     (a_TLCNECTV, 0xF00F), # TLC TV
-    (a_ACERKPROJ, 0xC639) # Acer K132 Projector
+    (a_ACERKPROJ, 0xC639), # Acer K132 Projector
+    (a_SOUNDCORE, 0x6897), # Soundcore Soundbar
+    (a_JBLONAIR, 0x21DE) # JBL On Air Soundbar
 ]
 
 vol_down = [
@@ -52,7 +60,9 @@ vol_down = [
     (a_GENERICTV, 0x58A7), # Generic TV
     (a_SAMSUNGTV, 0xD02F), # Samsung TV
     (a_TLCNECTV, 0x04FB), # TLC TV
-    (a_ACERKPROJ, 0x26D9) # Acer K132 Projector
+    (a_ACERKPROJ, 0x26D9), # Acer K132 Projector
+    (a_SOUNDCORE, 0x58A7), # Soundcore Soundbar
+    (a_JBLONAIR, 0x20DF) # JBL On Air Soundbar
 ]
 
 mute = [
@@ -60,19 +70,23 @@ mute = [
     (a_GENERICTV, 0x6897), # Generic TV
     (a_SAMSUNGTV, 0xF00F), # Samsung TV
     (a_TLCNECTV, 0x08F7), # TLC TV
-    (a_ACERKPROJ, 0x8679) # Acer K132 Projector
+    (a_ACERKPROJ, 0x8679), # Acer K132 Projector
+    (a_SOUNDCORE, 0x18E7), # Soundcore Soundbar
+    (a_JBLONAIR, 0x23DC) # JBL On Air Soundbar
 ]
 
 prog_up = [
     (a_LGTV, 0x00FF), # LG TV
     (a_GENERICTV, 0x9867), # Generic TV
-    (a_SAMSUNGTV, 0x48B7) # Samsung TV
+    (a_SAMSUNGTV, 0x48B7), # Samsung TV
+    (a_SOUNDCORE, 0x0AF5) # Soundcore Soundbar
 ]
 
 prog_down = [
     (a_LGTV, 0x807F), # LG TV
     (a_GENERICTV, 0x18E7), # Generic TV
-    (a_SAMSUNGTV, 0x08F7) # Samsung TV
+    (a_SAMSUNGTV, 0x08F7), # Samsung TV
+    (a_SOUNDCORE, 0x8A75) # Soundcore Soundbar
 ]
 
 # Only for projectors

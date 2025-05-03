@@ -20,13 +20,8 @@ def run():
     import esp32
     import machine
     
-    menu1 = menus.menu("Menu", [("IR Remote", 10), ("Others", 11), ("Power", 12), ("Close", 13)])
-    if menu1 == 12:
-        import apps.powermenu as a_powermen
-        a_powermen.set_btf(button_a, button_b, button_c, tft)
-        a_powermen.run()
-        del a_powermen
-    elif menu1 == 11:
+    menu1 = menus.menu("Menu", [("IR Remote", 10), ("Others", 11), ("Close", 13)])
+    if menu1 == 11:
         import apps.others as a_ot
         a_ot.set_btf(button_a, button_b, button_c, tft)
         a_ot.run()
