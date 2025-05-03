@@ -11,7 +11,7 @@ def set_btf(bta, btb, btc, power_h, ttft):
     global tft
     global power_hold
     
-    power_hold = power_h
+    power_hold = Pin(4, Pin.OUT)
     button_a = bta
     button_b = btb
     button_c = btc
@@ -27,10 +27,16 @@ def run():
         m_sleep.sleep(tft, button_c, True)
     elif powermenu == 2:
         machine.freq(80000000)
+        tft.fill(703)
+        tft.text(f8x8, "Powering off...",0,0,65535,703)
+        tft.text(f8x8, "Please wait!",0,8,65535,703)
         power_hold.value(0)
     elif powermenu == 3:
         machine.freq(80000000)
-        tft.text(f8x8, "Reseting...", 0,0,2016)
+        import fonts.def_8x8 as f8x8
+        tft.fill(703)
+        tft.text(f8x8, "Rebooting...",0,0,65535,703)
+        tft.text(f8x8, "Please wait!",0,8,65535,703)
         machine.reset()
     else:
         machine.freq(80000000)

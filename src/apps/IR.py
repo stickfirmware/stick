@@ -38,7 +38,7 @@ def send(necc, sonyc, panac):
     tft.text(f8x8, "Sending sony...",0,8,65535)
     sony.send_array(sonyc)
     tft.text(f8x8, "Sending panasonic...",0,16,65535)
-    sony.send_array(panac)
+    pana.send_array(panac)
     work = True
     while work == True:
         render = menus.menu("Repeat?", [("Yes", 1), ("No", 2)])
@@ -48,7 +48,7 @@ def send(necc, sonyc, panac):
             tft.text(f8x8, "Sending sony...",0,8,65535)
             sony.send_array(sonyc)
             tft.text(f8x8, "Sending panasonic...",0,16,65535)
-            sony.send_array(panac)
+            pana.send_array(panac)
         else:
             work = False
 
@@ -57,6 +57,7 @@ def run():
     work = True
     nec.set_ir(ir_pin)
     sony.set_ir(ir_pin)
+    pana.set_ir(ir_pin)
     machine.freq(240000000)
     while work == True:
         render = menus.menu("IR Remote", [("ON/OFF", 1), ("VOL+", 2), ("VOL-", 3), ("Mute", 4), ("CHANNEL+ / NEXT", 5), ("CHANNEL- / PREV", 6), ("FREEZE", 7), ("Change IR pin", 8), ("Close", 9)])

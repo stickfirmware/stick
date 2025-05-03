@@ -22,15 +22,9 @@ def run():
     
     machine.freq(240000000)
     
-    render = menus.menu("Menu/Others", [("Scorekeeper", 1), ("Resistor decoder", 2), ("Close", 13)])
+    render = menus.menu("Menu/Unit modules", [("Heart", 1), ("Close", 13)])
     if render == 1:
-        import apps.scorekeeper as a_sc
-        a_sc.set_btf(button_a, button_b, button_c, tft)
-        a_sc.run()
-        del a_sc
-    elif render == 2:
-        import apps.resistors as a_re
-        a_re.set_btf(button_a, button_b, button_c, tft)
-        a_re.run()
-        del a_re
-    machine.freq(80000000)
+        import apps.heart as a_hr
+        a_hr.set_btf(button_a, button_b, button_c, tft)
+        a_hr.run()
+        del a_hr

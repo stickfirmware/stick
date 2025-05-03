@@ -2,6 +2,7 @@ import machine
 
 import fonts.def_8x8 as f8x8
 import fonts.def_16x32 as f16x32
+import network
 
 allow_draw_battery = True
 
@@ -31,6 +32,12 @@ def clock():
         return
     rtc = machine.RTC()
     time_tuple = rtc.datetime()
+    
+    nic = network.WLAN(network.STA_IF)
+    if nic.isconnected() == True:
+        tft.text(f8x8, "Wi-Fi",50,5,703)
+    else:
+        tft.text(f8x8, "     ",50,5,703)
     
     # Time
     hh = time_tuple[4]

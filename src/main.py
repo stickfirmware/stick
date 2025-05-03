@@ -10,15 +10,7 @@ power_hold.value(1)
 print("Buzz tone")
 import modules.buzzer as buzz
 buzzer = PWM(Pin(2), duty_u16=0, freq=500)
-
-buzzer.duty(512)
-buzz.play_sound(buzzer, 440, 0.1)
-buzz.play_sound(buzzer, 494, 0.1)
-buzz.play_sound(buzzer, 523, 0.1)
-buzz.play_sound(buzzer, 494, 0.1)
-buzz.play_sound(buzzer, 523, 0.1)
-buzz.play_sound(buzzer, 587, 0.1)
-buzz.play_sound(buzzer, 659, 0.1)
+buzz.startup_sound(buzzer)
 
 # Allocate emergency buffer
 import micropython
@@ -31,6 +23,8 @@ import esp32
 
 import modules.crash_handler as c_handler
 import modules.nvs as nvs
+
+import network
 
 import time
 
@@ -69,13 +63,10 @@ try:
             dc=Pin(14, Pin.OUT),
             backlight=PWM(Pin(27), freq=1000),
             rotation=3)
+    
     tft.fill(0)
 except Exception as e:
     c_handler.crash_screen(tft, 1002, str(e), True, False, 1)
-
-# Import nyan
-print("Import nyan")
-import bitmaps.nyan as b_nyan
 
 # Load NVS
 print("Load NVS")
@@ -102,14 +93,6 @@ del f_b_check
 # Clear tft
 tft.fill(0)
 
-# Show nyan
-if nvs.get_int(n_boot, "fastBoot") == 0:
-    print("Fast boot disaled, showing nyan")
-    tft.bitmap(b_nyan, 90,38)
-    del b_nyan
-else:
-    print("Fast boot enabled, setting MCU clocks to 240MHz")
-    del b_nyan
 gc.collect()
 
 # Welcome screen
@@ -126,7 +109,7 @@ try:
     i2c = machine.I2C(0, scl=machine.Pin(22), sda=machine.Pin(21))
     rtc = rtc_bm8536.BM8563(i2c)
 except Exception as e:
-    c_handler.crash_screen(tft, 1001, str(e), True, True, 1)
+    c_handler.crash_screen(tft, 1001, str(e), True, True, 2)
 
 # rtc.set_time((2025, 4, 29, 1, 13, 37, 0, 0))
 dt = rtc.get_time()
@@ -162,6 +145,21 @@ gc.collect()
 print("After: " + str(gc.mem_free() / 1024 / 1024) + "MB")
 tft.text(f8x8, "DONE!",180,40,2016)
 
+tft.text(f8x8, "Connect to Wi-Fi",0,48,65535)
+network.hostname("Kitki30Stick")
+if int(nvs.get_float(n_wifi, "conf")) == 1:
+    if nvs.get_int(n_wifi, "autoConnect") == 1:
+        try:
+            nic = network.WLAN(network.STA_IF)
+            nic.active(False)
+            time.sleep(0.2)
+            nic.active(True)
+            print("Wifi connecting")
+            nic.connect(nvs.get_string(n_wifi, "ssid"), nvs.get_string(n_wifi, "passwd"))
+        except Exception as e:
+            c_handler.crash_screen(tft, 3001, str(e), True, True, 2)
+        
+
 # Battery check
 time_to_check=0
 import modules.battery_check as b_check
@@ -172,6 +170,8 @@ import apps.clock as a_clock
 menu = 0
 menu_change = True
 render_battery = False
+
+ntp_sync = 1200
 
 import modules.menus as menus
 menus.set_btf(button_a, button_b, button_c, tft)
@@ -197,7 +197,7 @@ while True:
         dt = rtc.get_time()
         machine.RTC().datetime(dt)
         import apps.menu as a_menu
-        a_menu.set_btf(button_a, button_b, button_c, tft)
+        a_menu.set_btf(button_a, button_b, button_c, tft, rtc)
         a_menu.run()
         del a_menu
         menu = 0
@@ -220,8 +220,18 @@ while True:
         print("Checking battery")
         print("Voltage: " + str(b_check.voltage()) + "V")
         if menu == 0:
+            tft.fill_rect(4, 124, 60, 8, 0)
             tft.text(f8x8, "Battery: " + str(b_check.voltage()) + "V",4,124,2016)
         b_check.run(tft)
         time_to_check = 120
+    if ntp_sync == 0:
+        ntp_sync = 24000
+        if nic.isconnected() == True:
+            import modules.ntp as ntp
+            ntp.sync(rtc)
+            del ntp
+            tft.fill_rect(4, 124, 60, 8, 0)
+            tft.text(f8x8, "NTP",4,124,703)
     time_to_check-=1
+    ntp_sync-=1
     time.sleep(0.025)
