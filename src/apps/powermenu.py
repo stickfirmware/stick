@@ -4,6 +4,8 @@ button_c = None
 tft = None
 power_hold = None
 
+from machine import Pin
+
 def set_btf(bta, btb, btc, power_h, ttft):
     global button_a
     global button_b
@@ -21,6 +23,7 @@ def run():
     import modules.menus as menus
     import machine
     import modules.sleep as m_sleep
+    import fonts.def_8x8 as f8x8
     powermenu = menus.menu("Power", [("Sleep", 1), ("Power off", 2), ("Reboot", 3), ("Cancel", 4)])
     if powermenu == 1:
         machine.freq(80000000)

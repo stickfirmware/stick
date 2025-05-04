@@ -46,7 +46,7 @@ def run():
     n_wifi = esp32.NVS("wifi")
     n_boot = esp32.NVS("boot")
     n_crash = esp32.NVS("crash")
-     
+    
     work = True
     while work == True:
         menu1 = menus.menu("Settings", [("LCD / st7789", 1), ("Buzzer", 2), ("Wi-Fi Setup Mode", 3), ("Wi-Fi Connection", 4), ("NTP sync", 5), ("NTP Timezone", 6), ("Close", 13)])
@@ -127,7 +127,7 @@ def run():
             
                 print('Listening on: 192.168.4.1')
 
-            while server == True and button_a.value() == 1:
+            while server == True:
                 conn, addr = s.accept()
                 print('Connected with: ', addr)
                 request = conn.recv(1024).decode('utf-8')
@@ -209,6 +209,8 @@ def run():
                     ])
                     if timezone == 12:
                         menu = 2
+                    elif timezone == None:
+                        tim = False
                     else:
                         nvs.set_int(n_settings, "timezoneIndex", timezone)
                         tim = False
@@ -223,6 +225,8 @@ def run():
                         menu = 1
                     elif timezone == 12:
                         menu = 3
+                    elif timezone == None:
+                        tim = False
                     else:
                         nvs.set_int(n_settings, "timezoneIndex", timezone + 13) 
                         tim = False
@@ -237,6 +241,8 @@ def run():
                         menu = 2
                     elif timezone == 12:
                         menu = 4
+                    elif timezone == None:
+                        tim = False
                     else:
                         nvs.set_int(n_settings, "timezoneIndex", timezone + 25)
                         tim = False
@@ -246,6 +252,8 @@ def run():
                     ])
                     if timezone == 0:
                         menu = 3
+                    elif timezone == None:
+                        tim = False
                     else:
                         nvs.set_int(n_settings, "timezoneIndex", timezone + 37)
                         tim = False
