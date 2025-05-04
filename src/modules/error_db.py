@@ -11,5 +11,8 @@ def check_code(code):
     # NVS init error
     elif code == 2001:
         return "NVS_INIT_ERROR"
+    # Wi-Fi error
+    elif code == 3001:
+        return "WIFI_CONNECT_ERROR"
     else:
         return "UNKNOWN"

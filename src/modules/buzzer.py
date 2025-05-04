@@ -12,3 +12,12 @@ def play_sound(buzzer, freq, duration):
     buzzer.freq(freq)
     time.sleep(duration)
     buzzer.duty_u16(int(65536*0))
+    
+def startup_sound(buzzer):
+    play_sound(buzzer, 440, 0.1)
+    play_sound(buzzer, 494, 0.1)
+    play_sound(buzzer, 523, 0.1)
+    play_sound(buzzer, 494, 0.1)
+    play_sound(buzzer, 523, 0.1)
+    play_sound(buzzer, 587, 0.1)
+    play_sound(buzzer, 659, 0.1)

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Wi-Fi Configuration</title>
+</head>
+
+<body>
+    <h1>Kitki30 Stick config</h1>
+    <h2>Wi-Fi Configuration</h2>
+    <form action="/config" method="get">
+        <label for="ssid">SSID:</label><br>
+        <input type="text" id="ssid" name="ssid"><br><br>
+
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password"><br><br>
+
+        <label for="auto_connect">
+            <input type="checkbox" id="auto_connect" name="auto_connect" value="1">
+            Auto connect
+        </label><br><br>
+
+        <input type="submit" value="Save">
+    </form>
+</body>
+
+</html>

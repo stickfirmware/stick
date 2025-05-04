@@ -2,19 +2,19 @@ import modules.nvs as nvs
 import modules.error_db as error_db
 import fonts.def_16x32 as f16x32
 import fonts.def_8x8 as f8x8
+import time
 
 def run_check(tft, n_crash):
     if nvs.get_int(n_crash, "latest") != 0:
         print("It looks like device has crashed recently, showing prompt!")
         code = nvs.get_int(n_crash, "latest")
         tft.fill(7003)
-        tft.bitmap(b_nyan, 180,75)
         tft.text(f16x32, "Info",0,0,65535,7003)
         tft.text(f8x8, "It seems like your device has",0,32,65535,7003)
         tft.text(f8x8, "crashed recently!",0,40,65535,7003)
-        tft.text(f8x8, "If problem happens again,",0,50,65535,7003)
-        tft.text(f8x8, "please check the error code",0,58,65535,7003)
-        tft.text(f8x8, "shown here in ERRORS.MD file.",0,66,65535,7003)
+        #tft.text(f8x8, "If problem happens again,",0,50,65535,7003)
+        #tft.text(f8x8, "please check the error code",0,58,65535,7003)
+        #tft.text(f8x8, "shown here in ERRORS.MD file.",0,66,65535,7003)
         tft.text(f8x8, "Log path:",0,84,7971,7003)
         tft.text(f8x8, nvs.get_string(n_crash, "latestPath"),0,92,65535,7003)
         tft.text(f8x8, "Error code: " + str(code),0,100,7971,7003)

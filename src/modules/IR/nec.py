@@ -53,4 +53,3 @@ def send_array(codes):
     for address, command in codes:
         send_nec(address, command)
         time.sleep(0.09)
-        print("Sent")

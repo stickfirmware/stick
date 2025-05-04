@@ -5,7 +5,6 @@ import os
 import modules.nvs as nvs
 import fonts.def_8x8 as f8x8
 import modules.text_utils as t_utils
-import bitmaps.sad as b_sad
 import modules.error_db as error_db
 import gc
 
@@ -29,6 +28,7 @@ def crash_screen(tft, error_code, log_message, log_error, enable_tft, reboot_met
         print("Clear display")
         tft.fill(7003)
         print("Show bitmap: sad")
+        import bitmaps.sad as b_sad
         tft.bitmap(b_sad, 10,10)
         del b_sad
         gc.collect()
