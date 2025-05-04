@@ -28,7 +28,7 @@ def set_btf(bta, btb, btc, ttft):
     tft = ttft
 
 n_settings = esp32.NVS("settings")
-if nvs.get_int(n_settings, "irPin") == None:
+if nvs.get_int(n_settings, "irPin") == None or nvs.get_int(n_settings, "irPin") == 36:
     nvs.set_int(n_settings, "irPin", 19)
 ir_pin = machine.PWM(machine.Pin(nvs.get_int(n_settings, "irPin"), machine.Pin.OUT), duty = 0)
 
@@ -76,10 +76,15 @@ def run():
         elif render == 7:
             send(db_nec.freeze, db_sony.freeze, db_pana.freeze)
         elif render == 8:
-            render = menus.menu("Change IR pin", [("GPIO19 (Default)", 19), ("GPIO26", 26), ("GPIO25/36", 36), ("GPIO0", 0), ("GPIO32", 32), ("GPIO33", 33), ("Cancel", 99)])
+            render = menus.menu("Change IR pin", [("GPIO19 (Default)", 19), ("GPIO26", 26), ("GPIO0", 0), ("GPIO32", 32), ("GPIO33", 33), ("Cancel", 99)])
             if render != 99:
                 nvs.set_int(n_settings, "irPin", render)
+            ir_pin.deinit()
             ir_pin = machine.PWM(machine.Pin(nvs.get_int(n_settings, "irPin"), machine.Pin.OUT), duty = 0)
+            nec.set_ir(ir_pin)
+            sony.set_ir(ir_pin)
+            pana.set_ir(ir_pin)
+            menus.menu("Please restart your device!", [("OK", 1)])
         else:
             work = False
     machine.freq(80000000)

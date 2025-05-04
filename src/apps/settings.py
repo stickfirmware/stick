@@ -185,14 +185,18 @@ def run():
         elif menu1 == 5:
             nic = network.WLAN(network.STA_IF)
             if nic.isconnected() == True:
-                import modules.ntp as ntp
-                syn = ntp.sync(rtc)
-                del ntp
-                tft.fill_rect(4, 124, 60, 8, 0)
-                if syn == True:
-                    menus.menu("NTP Sync successfull!", [("OK",  1)])
-                elif syn == False:
-                    menus.menu("NTP Sync failed :(", [("OK",  1)])
+                syncing = True
+                while syncing == True:
+                    import modules.ntp as ntp
+                    syn = ntp.sync(rtc)
+                    del ntp
+                    if syn == True:
+                        menus.menu("NTP Sync successfull!", [("OK",  1)])
+                        syncing = False
+                    elif syn == False:
+                        rend = menus.menu("NTP Sync failed :(", [("Retry?",  1), ("OK",  2)])
+                        if rend == 2:
+                            syncing = False
             else:
                 menus.menu("No Wi-Fi connection!", [("OK",  1)])
             time.sleep(1)
