@@ -8,7 +8,7 @@ def set_ir(pin):
     ir_pin = pin
 
 def mark(duration):
-    ir_pin.freq(38000)
+    ir_pin.freq(37900)
     ir_pin.duty(512)
     time.sleep_us(duration)
 
@@ -33,3 +33,4 @@ def send_panasonic(data, bits=48):
 def send_array(codes):
     for data in codes:
         send_panasonic(data, 48)
+        time.sleep(0.1)

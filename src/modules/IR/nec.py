@@ -52,4 +52,4 @@ def send_nec(address, command):
 def send_array(codes):
     for address, command in codes:
         send_nec(address, command)
-        time.sleep(0.09)
+        time.sleep(0.12)
