@@ -49,7 +49,7 @@ def run():
     
     work = True
     while work == True:
-        menu1 = menus.menu("Settings", [("LCD / st7789", 1), ("Buzzer", 2), ("Wi-Fi Setup Mode", 3), ("Wi-Fi Connection", 4), ("NTP sync", 5), ("NTP Timezone", 6), ("Close", 13)])
+        menu1 = menus.menu("Settings", [("LCD / st7789", 1), ("Buzzer", 2), ("Wi-Fi Setup Mode", 3), ("Wi-Fi Connection", 4), ("NTP sync", 5), ("NTP Timezone", 6), ("About", 7), ("Close", 13)])
         if menu1 == 1:
             menu2 = menus.menu("Settings/st7789", [("Backlight", 1), ("Close", 13)])
             if menu2 == 1:
@@ -262,7 +262,24 @@ def run():
                         nvs.set_int(n_settings, "timezoneIndex", timezone + 37)
                         tim = False
             timezone = menus.menu("Please sync NTP to apply!", [("OK", 1)])
-
+        elif menu1 == 7:
+            import version as v
+            tft.fill(0)
+            if v.is_beta == True:
+                ver_color = 65088
+            else:
+                ver_color = 65535
+            tft.text(f8x8, "Kitki30 Stick version " + v.MAJOR + "." + v.MINOR + "." + v.PATCH,0,0,ver_color)
+            tft.text(f8x8, "by @Kitki30",0,8,ver_color)
+            tft.text(f8x8, "MIT License",0,20,65535)
+            tft.text(f8x8, "Used libraries:",0,26,65535)
+            tft.text(f8x8, "st7789py_mpy - MIT License",0,32,65535)
+            tft.text(f8x8, "MAX30100 - MIT License",0,40,65535)
+            tft.text(f8x8, "For more details see",0,48,65535)
+            tft.text(f8x8, "CREDITS file on GitHub!",0,56,65535)
+            tft.text(f8x8, "Press any button to exit!",0,127,65535)
+            while button_a.value() == 0 and button_b.value() == 0 and button_c.value() == 0:
+                time.sleep(0.02)
         else:
             work = False
             
