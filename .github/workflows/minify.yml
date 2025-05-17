@@ -4,6 +4,9 @@ on:
     branches:
       - release
 
+permissions:
+  contents: read
+
 jobs:
   minify:
     runs-on: ubuntu-latest
