@@ -16,8 +16,7 @@ jobs:
         uses: actions/setup-python@v5.6.0
         with:
           python-version: '3.x'
-          cache: 'pip'
-
+          
       - name: Install python-minifier
         run: pip install python-minifier
 
