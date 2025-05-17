@@ -32,5 +32,6 @@ def send_panasonic(data, bits=48):
 
 def send_array(codes):
     for data in codes:
+        print("Sending Panasonic (Code: " + str(data) + ")")
         send_panasonic(data, 48)
         time.sleep(0.1)

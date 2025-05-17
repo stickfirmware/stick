@@ -31,5 +31,6 @@ def send_sony(data, bits=12):
     
 def send_array(codes):
     for data, bits in codes:
+        print("Sending Sony (Code: " + str(data) + " Bits: " + str(bits) +")")
         send_sony(data, bits)
         time.sleep(0.05)

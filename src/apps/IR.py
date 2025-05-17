@@ -1,5 +1,6 @@
 from machine import Pin
 import machine
+import time
 import modules.IR.db_nec as db_nec
 import modules.IR.db_sony as db_sony
 import modules.IR.db_panasonic as db_pana
@@ -37,13 +38,13 @@ ir_pin = machine.PWM(machine.Pin(nvs.get_int(n_settings, "irPin"), machine.Pin.O
 def send(necc, sonyc, panac, samsac):
     tft.text(f8x8, "Sending nec...",0,0,65535)
     nec.send_array(necc)
-    time.sleep(0.3)
+    time.sleep(0.1)
     tft.text(f8x8, "Sending sony...",0,8,65535)
     sony.send_array(sonyc)
-    time.sleep(0.3)
+    time.sleep(0.1)
     tft.text(f8x8, "Sending samsung...",0,16,65535)
     samsa.send_array(samsac)
-    time.sleep(0.3)
+    time.sleep(0.1)
     tft.text(f8x8, "Sending panasonic...",0,24,65535)
     pana.send_array(panac)
     work = True

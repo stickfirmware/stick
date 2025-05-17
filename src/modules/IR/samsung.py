@@ -35,5 +35,6 @@ def send_samsung(data):
 
 def send_array(codes):
     for data in codes:
+        print("Sending Samsung (Code: " + str(data) + ")")
         send_samsung(data)
         time.sleep(0.11)

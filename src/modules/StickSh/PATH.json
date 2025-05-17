@@ -1,0 +1,16 @@
+{
+        "date": "/modules/StickSh/default/date.py",
+        "esp32": "/modules/StickSh/default/esp32_cmd.py",
+        "network": "/modules/StickSh/default/network_cmd.py",
+        "uname": "/modules/StickSh/default/uname.py",
+        "shutdown": "/modules/StickSh/default/shutdown.py",
+        "reboot": "/modules/StickSh/default/reboot.py",
+        "cat": "/modules/StickSh/default/cat.py",
+        "ls": "/modules/StickSh/default/ls.py",
+        "mkdir": "/modules/StickSh/default/mkdir.py",
+        "rm": "/modules/StickSh/default/rm.py",
+        "rmdir": "/modules/StickSh/default/rmdir.py",
+        "pwd": "/modules/StickSh/default/pwd.py",
+        "cd": "/modules/StickSh/default/cd.py",
+        "gc": "/modules/StickSh/default/gc_cmd.py"
+}

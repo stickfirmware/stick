@@ -51,5 +51,6 @@ def send_nec(address, command):
 
 def send_array(codes):
     for address, command in codes:
+        print("Sending NEC (Addr: "+ str(address) + " Cmd: " + str(command) + ")")
         send_nec(address, command)
         time.sleep(0.12)

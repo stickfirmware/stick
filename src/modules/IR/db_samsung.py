@@ -13,7 +13,7 @@
 
 # Supported devices:
 # TVs:
-# Samsung TV
+# Samsung TV (Tested, works on older TVs)
 
 
 power = [

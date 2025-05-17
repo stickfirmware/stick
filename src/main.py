@@ -64,9 +64,11 @@ try:
 except Exception as e:
     c_handler.crash_screen(tft, 1002, str(e), True, False, 1)
 
+# Welcome screen
+tft.fill(32799)
+
 # Load NVS
 print("Load NVS")
-tft.text(f8x8, "Init NVS...",0,0,65535)
 n_settings = esp32.NVS("settings")
 n_wifi = esp32.NVS("wifi")
 n_boot = esp32.NVS("boot")
@@ -86,21 +88,11 @@ import modules.first_boot_check as f_b_check
 f_b_check.check(tft)
 del f_b_check
     
-# Clear tft
-tft.fill(0)
-
 gc.collect()
-
-# Welcome screen
-print("Show welcome screen")
-tft.text(f16x16, "Kitki30 Stick",0,0,65535)
-tft.text(f8x8, "Loading...",0,127,65535)
 
 # Import RTC
 print("Sync time from external RTC")
 import modules.rtc as rtc_bm8536
-tft.text(f8x8, "Getting RTC time...",0,16,65535)
-
 try:
     i2c = machine.I2C(0, scl=machine.Pin(22), sda=machine.Pin(21))
     rtc = rtc_bm8536.BM8563(i2c)
@@ -109,40 +101,35 @@ except Exception as e:
 
 # rtc.set_time((2025, 4, 29, 1, 13, 37, 0, 0))
 dt = rtc.get_time()
-tft.text(f8x8, "DONE!",180,16,2016)
 machine.RTC().datetime(dt)
 print(dt)
 
 # Init buttons
 print("Init buttons")
-tft.text(f8x8, "Init buttons...",0,24,65535)
 button_a = Pin(37, Pin.IN, Pin.PULL_UP)
 button_b = Pin(39, Pin.IN, Pin.PULL_UP)
 button_c = Pin(35, Pin.IN, Pin.PULL_UP)
-tft.text(f8x8, "DONE!",180,24,2016)
 
 # Load settings
 print("Loading settings from NVS")
-tft.text(f8x8, "Load setting...",0,32,65535)
 s_bl = nvs.get_float(n_settings, "backlight")
 print("Backlight: " + str(s_bl))
 tft.set_backlight(s_bl)
 s_vl = nvs.get_float(n_settings, "volume")
 print("Buzzer volume: " + str(s_vl))
 buzz.set_volume(s_vl)
-tft.text(f8x8, "DONE!",180,32,2016)
 
 # Clean up
 print("Cleaning up")
-tft.text(f8x8, "Cleaning up...",0,40,65535)
 print("Before: " + str(gc.mem_free() / 1024 / 1024) + "MB")
 del n_boot
 gc.collect()
 print("After: " + str(gc.mem_free() / 1024 / 1024) + "MB")
-tft.text(f8x8, "DONE!",180,40,2016)
 
-tft.text(f8x8, "Connect to Wi-Fi",0,48,65535)
-network.hostname("Kitki30Stick")
+if nvs.get_string(n_wifi, "hostname") == None:
+    network.hostname("Stick")
+else:
+    network.hostname(nvs.get_string(n_wifi, "hostname"))
 if int(nvs.get_float(n_wifi, "conf")) == 1:
     if nvs.get_int(n_wifi, "autoConnect") == 1:
         try:

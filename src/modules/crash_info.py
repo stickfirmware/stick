@@ -24,5 +24,3 @@ def run_check(tft, n_crash):
         tft.text(f8x8, str(nvs.get_int(n_crash, "crashCount")),0,116,65535,7003)
         time.sleep(8)
         nvs.set_int(n_crash, "latest", 0)
-    else:
-        tft.text(f8x8, "DONE!",180,0,2016)

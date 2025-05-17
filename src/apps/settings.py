@@ -269,16 +269,18 @@ def run():
                 ver_color = 65088
             else:
                 ver_color = 65535
-            tft.text(f8x8, "Kitki30 Stick version " + v.MAJOR + "." + v.MINOR + "." + v.PATCH,0,0,ver_color)
+            tft.text(f8x8, "Kitki30 Stick version " + str(v.MAJOR) + "." + str(v.MINOR) + "." + str(v.PATCH),0,0,ver_color)
             tft.text(f8x8, "by @Kitki30",0,8,ver_color)
             tft.text(f8x8, "MIT License",0,20,65535)
-            tft.text(f8x8, "Used libraries:",0,26,65535)
-            tft.text(f8x8, "st7789py_mpy - MIT License",0,32,65535)
-            tft.text(f8x8, "MAX30100 - MIT License",0,40,65535)
-            tft.text(f8x8, "For more details see",0,48,65535)
-            tft.text(f8x8, "CREDITS file on GitHub!",0,56,65535)
+            tft.text(f8x8, "Used libraries:",0,28,65535)
+            tft.text(f8x8, "st7789py_mpy - MIT License",0,36,65535)
+            tft.text(f8x8, "MAX30100 - MIT License",0,44,65535)
+            tft.text(f8x8, "uiflow-micropython - MIT", 0,52,65535)
+            tft.text(f8x8, "For more details see",0,60,65535)
+            tft.text(f8x8, "CREDITS file on GitHub!",0,68,65535)
             tft.text(f8x8, "Press any button to exit!",0,127,65535)
-            while button_a.value() == 0 and button_b.value() == 0 and button_c.value() == 0:
+            time.sleep(1)
+            while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
                 time.sleep(0.02)
         else:
             work = False

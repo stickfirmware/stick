@@ -25,8 +25,8 @@ def run():
     import gc
     
     machine.freq(240000000)
-    menu1 = menus.menu("Menu", [("IR Remote", 1), ("Settings", 3), ("Others", 4), ("Close", 13)]) # , ("Unit modules", 2)
-    if menu1 == 2:
+    menu1 = menus.menu("Menu", [("IR Remote", 1), ("Terminal (Needs CardKB)", 2), ("Settings", 3), ("Others", 4), ("Close", 13)]) # , ("Unit modules", 5)
+    if menu1 == 5:
         import apps.unit as a_un
         a_un.set_btf(button_a, button_b, button_c, tft)
         a_un.run()
@@ -46,5 +46,10 @@ def run():
         a_ir.set_btf(button_a, button_b, button_c, tft)
         a_ir.run()
         del a_ir
+    elif menu1 == 2:
+        import apps.terminal as a_tm
+        a_tm.set_tft(tft)
+        a_tm.run()
+        del a_tm
     gc.collect()
     machine.freq(80000000)

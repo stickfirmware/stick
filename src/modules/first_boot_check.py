@@ -4,7 +4,6 @@ import modules.nvs as nvs
 
 def check(tft):
     import fonts.def_8x8 as f8x8
-    tft.text(f8x8, "Checking if its first boot...",0,127,65535)
     n_boot = esp32.NVS("boot")
     if nvs.get_int(n_boot, "firstBoot") == None:
         n_settings = esp32.NVS("settings")
