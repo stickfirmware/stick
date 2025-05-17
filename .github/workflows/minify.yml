@@ -25,7 +25,7 @@ jobs:
         run: python tools/minify.py
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: release-minified
           path: out/
