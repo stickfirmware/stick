@@ -22,7 +22,5 @@ def execute(args):
             return os.uname().version
         elif args[1] == "-m":
             return os.uname().machine
-        elif args[1] == "-o":
-            
         else:
             return "Usage: uname (args)\nUsage almost like on linux!"
