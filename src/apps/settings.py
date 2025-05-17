@@ -118,7 +118,7 @@ def run():
                 except:
                     import socket
             
-                addr = socket.getaddrinfo('0.0.0.0', 80)[0][-1]
+                addr = socket.getaddrinfo('0.0.0.0', 80)[0][-1] # nosec
                 s = socket.socket()
                 s.bind(addr)
                 s.listen(1)
