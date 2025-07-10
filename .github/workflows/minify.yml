@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - release
+      - master
 
 permissions:
   contents: read
