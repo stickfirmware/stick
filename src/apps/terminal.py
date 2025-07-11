@@ -41,7 +41,7 @@ def run():
     
     # Setup term executor
     term_exec.set_tft(tft)
-    term_exec.execute('reload')
+    term_exec.executep('reload')
     
     # Test CardKB
     failed = False
@@ -92,7 +92,7 @@ def run():
                 term_ok = False
             # Enter
             elif KB_Data == b'\r':
-                term_exec.execute(input_text)
+                term_exec.executep(input_text)
                 input_text = ""
             # Up
             elif KB_Data == b'\xb5':
@@ -101,6 +101,14 @@ def run():
             # Down
             elif KB_Data == b'\xb6':
                 term_exec.term_down()
+                term_exec.term_render(term_exec.display)
+            # FN + Up
+            elif KB_Data == b'\x99':
+                term_exec.term_pup()
+                term_exec.term_render(term_exec.display)          
+            # FN + Down
+            elif KB_Data == b'\xa4':
+                term_exec.term_pdown()
                 term_exec.term_render(term_exec.display)
             # FN + C
             elif KB_Data == b'\xa8':

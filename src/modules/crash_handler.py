@@ -11,10 +11,12 @@ import gc
 n_crash = esp32.NVS("crash")
 
 def log_to_file(data):
-    if "logs" not in os.listdir():
-        os.mkdir("logs")
+    if "temp" not in os.listdir():
+        os.mkdir("temp")
+    if "logs" not in os.listdir("/temp/"):
+        os.mkdir("/temp/logs")
 
-    filename = "logs/crash_{}.log".format(time.ticks_ms())
+    filename = "temp/logs/crash_{}.log".format(time.ticks_ms())
 
     with open(filename, "w") as f:
         f.write(data)

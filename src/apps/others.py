@@ -18,19 +18,43 @@ def run():
     import modules.menus as menus
     import modules.nvs as nvs
     import esp32
+    import sys
     import machine
+    import gc
     
-    machine.freq(240000000)
+    def dechache(name):
+        sys.modules.pop(name, None)
     
-    render = menus.menu("Menu/Others", [("Scorekeeper", 1), ("Resistor decoder", 2), ("Close", 13)])
+    render = menus.menu("Menu/Others", [("PiMarkX", 5), ("Scorekeeper", 1), ("Resistor decoder", 2), ("Metronome", 3), ("TicTacToe", 4), ("Close", 13)])
     if render == 1:
         import apps.scorekeeper as a_sc
         a_sc.set_btf(button_a, button_b, button_c, tft)
         a_sc.run()
         del a_sc
+        dechache('apps.scorekeeper')
     elif render == 2:
         import apps.resistors as a_re
         a_re.set_btf(button_a, button_b, button_c, tft)
         a_re.run()
         del a_re
+        dechache('apps.resistors')
+    elif render == 3:
+        import apps.metronome as a_me
+        a_me.set_btf(button_a, button_b, button_c, tft)
+        a_me.run()
+        del a_me
+        dechache('apps.metronome')
+    elif render == 4:
+        import apps.tictactoe as a_tt
+        a_tt.set_btf(button_a, button_b, button_c, tft)
+        a_tt.run()
+        del a_tt
+        dechache('apps.tictactoe')
+    elif render == 5:
+        import apps.pimarkx as a_pimark
+        a_pimark.set_btf(button_a, button_b, button_c, tft)
+        a_pimark.run()
+        del a_pimark
+        dechache('apps.pimarkx')
+    gc.collect()
     machine.freq(80000000)

@@ -10,7 +10,7 @@ def read(filename):
 
 def write(filename, data):
     try:
-        with open(filename, 'wb') as file:
+        with open(filename, 'w') as file:
             json.dump(data, file)
         return True
     except:

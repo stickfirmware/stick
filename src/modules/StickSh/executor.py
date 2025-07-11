@@ -7,6 +7,15 @@ import sys
 PATH = None
 tft = None
 
+variables = {}
+
+import re
+
+def replace_vars(text, varias):
+    def repl(match):
+        var_name = match.group(1)
+        return str(varias.get(var_name, f"*{var_name}*"))
+    return re.sub(r'\*([a-zA-Z_][a-zA-Z0-9_]*)\*', repl, text)
 
 
 def set_tft(tft_o):
@@ -29,6 +38,22 @@ def term_down():
     global current_in_minus
     if current_in_minus > 0:
         current_in_minus -= 1
+
+def term_pup():
+    global current_in_minus
+    max_scroll = max(0, len(display) - 12)
+    if current_in_minus + 12 <= max_scroll:
+        current_in_minus += 12
+    else:
+        current_in_minus = max_scroll
+
+def term_pdown():
+    global current_in_minus
+    if current_in_minus - 12 >= 0:
+        current_in_minus -= 12
+    else:
+        current_in_minus = 0
+
 
 def term_render(arr):
     # 12 lines
@@ -57,9 +82,10 @@ def term_render(arr):
     
 def term_conv(text):
     # Convert text to lines and chunks so it can fit on display
+    txt = str(text)
     
     # Split text to lines
-    lines = text.split('\n')
+    lines = txt.split('\n')
     
     # Split all lines to 30 letter chunks (lines so it doesnt go out of the display)
     ready_text = []
@@ -92,40 +118,73 @@ def reload_path():
     return "PATH reloaded"
 
 def execute(args):
-    argsSplit = args.split()
+    argss = replace_vars(args, variables)
+    argsSplit = argss.split()
+    if len(args) == 0:
+        return ""
     cmd = argsSplit[0]
     if not argsSplit:
         return
     try:
         cmdPath = ""
         if PATH:
-            cmdPath = PATH[cmd]
-        if cmd == "reload":
-            term_print("> reload")
-            term_print(reload_path())
-        elif cmd == "which":
-            term_print("> which")
-            if len(argsSplit) == 2:
-                term_print(PATH[argsSplit[1]])
-            else:
-                term_print("Please provide command!")
-        elif cmdPath.endswith(".py"):
-            term_print("> " + cmd)
+            cmdPath = PATH[cmd]       
+        if cmdPath.endswith(".py"):
             parent = cmdPath.rsplit("/", 1)[0] if "/" in cmdPath else ""
             if parent and parent not in sys.path:
                 sys.path.append(parent)
             name = cmdPath.rsplit("/", 1)[-1].rsplit(".", 1)[0]
-            
             comd = __import__(name)
-            term_print(comd.execute(argsSplit))
             if name in sys.modules:
                 del sys.modules[name]
-            gc.collect()
+            return comd.execute(argsSplit)
         else:
-            term_print("> " + cmd)
-            term_print("Unknown command")
+            if cmd == "reload":
+                return reload_path()
+            elif cmd == "which":
+                if len(argsSplit) == 2:
+                    
+                    return PATH[argsSplit[1]]
+                else:
+                    return "Please provide command!"
+            elif cmd == "clear-cache":
+                for name in cache:
+                    if name in sys.modules:
+                        del sys.modules[name]
+                cache.clear()
+                gc.collect()
+            return "Unknown command / Error"
     except KeyError as e:
-        term_print("> " + cmd)
-        term_print("Unknown command")
+        
+        try:
+            if cmd == "reload":
+                return reload_path()
+            elif cmd == "which":
+                if len(argsSplit) == 2:
+                    return PATH[argsSplit[1]]
+                else:
+                    return "Please provide command!"
+            elif cmd == "cls" or cmd == "clear":
+                term_clear()
+                return None
+            elif cmd == "clear-cache":
+                for name in cache:
+                    if name in sys.modules:
+                        del sys.modules[name]
+                cache.clear()
+                gc.collect()
+            else:
+                return "Unknown command / Error"
+        except:
+               return "Couldn't execute command!\n" + str(e) 
+            
+        return "Unknown command / Error"
     except Exception as e:
-        term_print("Couldn't execute command!\n" + str(e))
+        return "Couldn't execute command!\n" + str(e)
+    
+def executep(args):
+    execut = execute(args)
+    if execut == None:
+        print("There was nothing to print")
+    else:
+        term_print(execut)

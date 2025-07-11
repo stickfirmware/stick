@@ -223,6 +223,20 @@ def color565(red, green=0, blue=0):
         red, green, blue = red[:3]
     return (red & 0xF8) << 8 | (green & 0xFC) << 3 | blue >> 3
 
+def color888(color=0):
+    r = ((color >> 11) & 0x1F) << 3
+    g = ((color >> 5) & 0x3F) << 2
+    b = (color & 0x1F) << 3
+    return r, g, b
+
+def luminance(r, g, b):
+    return 0.299 * r + 0.587 * g + 0.114 * b
+
+def color_reverse(bg_color):
+    r, g, b = color888(bg_color)
+    l = luminance(r, g, b)
+    return 0x0000 if l > 128 else 0xFFFF
+
 
 class ST7789:
     """
@@ -318,8 +332,12 @@ class ST7789:
         return None
     
     def set_backlight(self, level):
+        self._backlight_level = level
         duty = int(level * 1023)
         self.backlight.duty(duty)
+
+    def get_backlight(self):
+        return self._backlight_level
 
     def init(self, commands):
         """

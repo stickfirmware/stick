@@ -27,8 +27,8 @@ class BM8563:
             self.dec2bcd(seconds),
             self.dec2bcd(minutes),
             self.dec2bcd(hours),
-            self.dec2bcd(day),        # ← dzień miesiąca
-            self.dec2bcd(weekday),    # ← dzień tygodnia
+            self.dec2bcd(day),
+            self.dec2bcd(weekday),
             self.dec2bcd(month),
             self.dec2bcd(year)
         ])

@@ -70,10 +70,11 @@ def execute(args):
 
                     if len(args) < 4:
                         return (
-                            "Usage: network station connect {SSID} (PASSWD*) (Args)\nArguments:\n"
+                            "Usage: network station connect (SSID) (PASSWD*) (Args)\nArguments:\n"
                             "-s - Save configuration to NVS**\n"
                             "*Password only if network is secured!\n"
-                            "**Not available for open networks!"
+                            "**Not available for open networks!\n"
+                            "***Without args connects to saved network"
                         )
 
                     ssid = args[3]
