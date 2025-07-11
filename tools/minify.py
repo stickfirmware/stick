@@ -2,6 +2,7 @@ import os
 import tempfile
 from python_minifier import minify, RemoveAnnotationsOptions
 import mpy_cross
+import subprocess
 
 SRC_DIR = "src"
 OUT_DIR = "out"
@@ -31,23 +32,22 @@ options = dict(
     constant_folding=True,
 )
 
+import subprocess
+
 def comp_file(src_path, out_path):
     with open(src_path, "r", encoding="utf-8") as f:
         source = f.read()
 
     minified = minify(source, filename=src_path, **options)
-    
+
+    import tempfile
     with tempfile.NamedTemporaryFile("w", suffix=".py", delete=False, encoding="utf-8") as tmp:
         tmp.write(minified)
         tmp_path = tmp.name
 
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
 
-    mpy_cross.run(tmp_path)
-
-    mpy_file = tmp_path[:-3] + ".mpy"
-
-    os.rename(mpy_file, out_path)
+    subprocess.run(["mpy-cross", tmp_path, "-o", out_path], check=True)
 
     os.remove(tmp_path)
 
