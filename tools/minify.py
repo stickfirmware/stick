@@ -2,6 +2,7 @@ import os
 import tempfile
 import subprocess
 from python_minifier import minify, RemoveAnnotationsOptions
+import shutil
 
 SRC_DIR = "src"
 OUT_DIR = "out"
@@ -40,43 +41,48 @@ size_output = 0
 def comp_file(src_path, out_path):
     global compiled_files, not_compiled_files, size_original, size_output
 
-    with open(src_path, "r", encoding="utf-8") as f:
-        source = f.read()
-    size_original += len(source.encode("utf-8"))
-
-    minified = minify(source, filename=src_path, **options)
-
-    with tempfile.NamedTemporaryFile("w", suffix=".py", delete=False, encoding="utf-8") as tmp:
-        tmp.write(minified)
-        tmp_path = tmp.name
-
+    ext = os.path.splitext(src_path)[1].lower()
+    size_original += os.path.getsize(src_path)
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
 
-    try:
-        subprocess.run(["mpy-cross", tmp_path, "-o", out_path], check=True)
-        compiled_files += 1
-        size_output += os.path.getsize(out_path)
-        print(f"Compiled and minified {src_path} -> {out_path}")
-    except subprocess.CalledProcessError:
-        out_py = os.path.splitext(out_path)[0] + ".py"
-        with open(out_py, "w", encoding="utf-8") as f:
-            f.write(minified)
-        not_compiled_files += 1
-        size_output += os.path.getsize(out_py)
-        print(f"mpy-cross failed, saved minified source as {out_py}")
+    if ext == ".py":
+        with open(src_path, "r", encoding="utf-8") as f:
+            source = f.read()
 
-    os.remove(tmp_path)
+        minified = minify(source, filename=src_path, **options)
+
+        with tempfile.NamedTemporaryFile("w", suffix=".py", delete=False, encoding="utf-8") as tmp:
+            tmp.write(minified)
+            tmp_path = tmp.name
+
+        try:
+            subprocess.run(["mpy-cross", tmp_path, "-o", out_path], check=True)
+            compiled_files += 1
+            size_output += os.path.getsize(out_path)
+            print(f"Compiled and minified {src_path} -> {out_path}")
+        except subprocess.CalledProcessError:
+            out_py = os.path.splitext(out_path)[0] + ".py"
+            with open(out_py, "w", encoding="utf-8") as f:
+                f.write(minified)
+            not_compiled_files += 1
+            size_output += os.path.getsize(out_py)
+            print(f"mpy-cross failed, saved minified source as {out_py}")
+        finally:
+            os.remove(tmp_path)
+    else:
+        shutil.copy2(src_path, out_path)
+        size_output += os.path.getsize(out_path)
+        print(f"Copied {src_path} -> {out_path}")
 
 def comp_folder(src_folder, out_folder):
     global total_files
     for root, dirs, files in os.walk(src_folder):
         for file in files:
-            if file.endswith(".py"):
-                total_files += 1
-                rel_path = os.path.relpath(os.path.join(root, file), src_folder).replace("\\", "/")
-                src_path = os.path.join(root, file)
-                out_path = os.path.join(out_folder, os.path.splitext(rel_path)[0] + ".mpy")
-                comp_file(src_path, out_path)
+            total_files += 1
+            src_path = os.path.join(root, file)
+            rel_path = os.path.relpath(src_path, src_folder).replace("\\", "/")
+            out_path = os.path.join(out_folder, rel_path)
+            comp_file(src_path, out_path)
 
 if __name__ == "__main__":
     comp_folder(SRC_DIR, OUT_DIR)
