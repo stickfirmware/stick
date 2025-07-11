@@ -1,0 +1,186 @@
+import fonts.def_8x8 as f8x8
+import fonts.def_16x32 as f16x32
+import modules.menus as menus
+import modules.nvs as nvs
+import modules.json as json
+import sys
+import time
+import esp32
+import os
+import gc
+import modules.openFile as openfile
+
+n_settings = esp32.NVS("settings")
+    
+button_a = None
+button_b = None
+button_c = None
+tft = None
+
+def set_btf(bta, btb, btc, ttft):
+    global button_a
+    global button_b
+    global button_c
+    global tft
+    
+    button_a = bta
+    button_b = btb
+    button_c = btc
+    tft = ttft
+    
+clipboard = ""
+        
+sd_present = False
+
+freespace_flash = 0
+freespace_sd = 0
+
+def is_file(path):
+    if os.stat(path)[0] & 0x4000:
+        return False
+    else:
+        return True
+
+def path_join(*args):
+    parts = [s.strip("/") for s in args if s != "/"]
+    return "/" + "/".join(parts) if parts else "/"
+
+
+def parent_path(path):
+    if path == "/" or path == "":
+        return "/"
+    if path.endswith("/") and path != "/":
+        path = path[:-1]
+    last_slash = path.rfind("/")
+    if last_slash == 0:
+        return "/"
+    elif last_slash > 0:
+        return path[:last_slash]
+    else:
+        return "/"
+
+def browser(path):
+    try:
+        files = os.listdir(path)
+    except OSError:
+        return
+    
+    files_menu = []
+    index = 1
+    files_menu.append(("../", 0))
+    for i in files:
+        if is_file(path_join(path, i)) == True:
+            files_menu.append(("      " + str(i), index))
+        else:
+            files_menu.append(("<DIR> " + str(i), index))
+        index += 1
+    chunks = [path[i:i+28] for i in range(0, len(path), 28)]
+    last_chunk = chunks[-1] if chunks else ""
+    render = menus.menu(last_chunk, files_menu)
+    
+    if render == None:
+        return
+    elif render == 0:
+        return
+    else:
+        return path_join(path, files[render - 1])
+    
+def fileMenu(file):
+    global clipboard
+    render = menus.menu(str(file), [("Open in...", 4), ("Properties", 1), ("Exit", 13)])
+    if render == 4:
+        openfile.openMenu(file)
+    elif render == 1:
+        if "temp" not in os.listdir("/"):
+            os.mkdir("/temp")
+        stat = os.stat(file)
+        tm = time.localtime(stat[8])
+        with open("/temp/fileprop.txt", "w") as f:
+            f.write(str(file) + "\n")
+            f.write("File size: {} B\n".format(stat[6]))
+            f.write("Last modified: {} {}, {} at {:02}:{:02}:{:02}\n".format(
+                ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][tm[1]-1],
+                tm[2], tm[0], tm[3], tm[4], tm[5]
+            ))
+
+        comd = __import__("helpers.runinreader")
+        parts = "helpers.runinreader".split(".")
+        for part in parts[1:]:
+            comd = getattr(comd, part)
+        comd.set_btf(button_a, button_b, button_c, tft)
+        comd.openFile("/temp/fileprop.txt")
+        if "helpers/runinreader" in sys.modules:
+            del sys.modules["helpers/runinreader"]
+    elif render == 2:
+        clipboard = file
+        return
+        
+def detect():
+    global sd_present
+    global freespace_flash
+    global freespace_sd
+    os.sync()
+    os.chdir("/")
+    
+    # Check for SD Card
+    listdir = os.listdir()
+    if "sd" in listdir:
+        sd_present = True
+        stat = os.statvfs("/sd")
+        freespace_sd = stat[0] * stat[3]
+    
+    # Check free space on flash
+    stat = os.statvfs("/")
+    freespace_flash = stat[0] * stat[3]
+    
+def explorerLoop(startingpath, disablemenu = False):
+    currpath = startingpath
+    work = True
+    while work == True:
+        browse = browser(currpath)
+        if browse == None:
+            if currpath == "/":
+                work = False
+            else:
+                currpath = parent_path(currpath)
+        else:
+            if is_file(browse):
+                if disablemenu == False:
+                    fileMenu(browse)
+                else:
+                    return browse
+            else:
+                currpath = browse
+    
+def run(fileselectmode=False, startingselectpath="/"):
+    tft.fill(0)
+    tft.text(f16x32, "File Explorer",0,0,1984)
+    tft.text(f8x8, "Loading...",0,32,65535)
+    work = True
+    
+    if fileselectmode == True:
+        work = False
+        return explorerLoop(startingselectpath, True)
+    while work == True:
+        if sd_present == True:
+            render = menus.menu("File explorer", [("Built-in Flash (/)", 1), ("SD Card (/sd)", 2), ("Exit", 13)])
+        else:
+            render = menus.menu("File explorer", [("Built-in Flash (/)", 1), ("Exit", 13)])
+        try:
+            if render == 13:
+                work = False
+            elif render == 2:
+                explorerLoop("/sd")
+            elif render == 1:
+                explorerLoop("/")
+            else:
+                work = False
+        except Exception as e:
+            print("Oops!\nSomething wrong has happened in File Explorer\nLogs:\n"+str(e))
+            tft.fill(0)
+            gc.collect()
+            tft.text(f16x32, "Oops!",0,0,2015)
+            tft.text(f8x8, "Something wrong has happened!",0,32,65535)
+            tft.text(f8x8, "Please try again!",0,40,65535)
+            time.sleep(3)
+            work = False

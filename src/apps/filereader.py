@@ -1,0 +1,153 @@
+import fonts.def_8x8 as f8x8
+import fonts.def_16x32 as f16x32
+import modules.menus as menus
+import modules.nvs as nvs
+import esp32
+import os
+import gc
+import time
+
+button_a = None
+button_b = None
+button_c = None
+tft = None
+
+def set_btf(bta, btb, btc, ttft):
+    global button_a
+    global button_b
+    global button_c
+    global tft
+    
+    button_a = bta
+    button_b = btb
+    button_c = btc
+    tft = ttft
+
+
+def splittext(text):
+    CHARLIMIT = 27
+    LINELIMIT = 16
+
+    pages = []
+    page = []
+    
+    raw_lines = text.split('\n')
+    
+    for raw in raw_lines:
+        if raw.strip() == "":
+            page.append([""])
+            if len(page) >= LINELIMIT:
+                pages.append(page)
+                page = []
+            continue
+        
+        start = 0
+        while start < len(raw):
+            chunk = raw[start:start+CHARLIMIT]
+            page.append([chunk])
+            start += CHARLIMIT
+            
+            if len(page) >= LINELIMIT:
+                pages.append(page)
+                page = []
+    
+    if page:
+        pages.append(page)
+
+    return pages
+
+def read(filename):
+
+    import re
+    total_bytes = 0
+    lines = []
+    max_bytes=500*1024
+    
+    try:
+        with open(filename, "rb") as f:
+            data = f.read(max_bytes)
+        text = data.decode("utf-8")
+        text = text.replace('\t', '    ')
+    except Exception as e:
+        return f"Error: {str(e)}"
+    
+    return splittext(text)
+
+def showfile(file):
+    tft.fill(0)
+    tft.text(f8x8, "Loading file preview...",0,8,65535)
+    tft.text(f8x8, "Kitki30 Stick File Reader",0,0,65535)
+    split = read(file)
+    if not split or len(split) == 0:
+        split = [[["No content to display"]]]
+    currpage = 0
+    tft.fill(0)
+    tft.fill_rect(220, 0, 20, 135, 65535)
+    update = True
+    work = True
+    while work == True:
+        if update:
+            index = 0
+            tft.fill_rect(0, 0, 220, 135, 0)
+            tft.fill_rect(223, 3, 14, 129, 0)
+            scrollbar_height = 129
+            pages_count = len(split)
+            thumb_height = max(10, scrollbar_height // pages_count)
+            if pages_count > 1:
+                pos = 3 + (currpage * (scrollbar_height - thumb_height)) // (pages_count - 1)
+            else:
+                pos = 0
+            tft.fill_rect(223, pos, 14, thumb_height, 50776)
+            for i in split[currpage]:
+                tft.text(f8x8, i[0],3,3 + (index * 8),65535)
+                index += 1
+            update = False
+        if button_c.value() == 0:
+            while button_c.value() == 0:
+                time.sleep(0.02)
+            if currpage == 0:
+                work = False
+            else:
+                currpage -= 1
+                update = True
+        if button_b.value() == 0:
+            while button_b.value() == 0:
+                time.sleep(0.02)
+            if currpage == len(split) - 1:
+                currpage = 0
+                update = True
+            else:
+                currpage += 1
+                update = True
+        if button_a.value() == 0:
+            while button_a.value() == 0:
+                time.sleep(0.02)
+            work = False
+        time.sleep(0.02)
+    
+def run():
+    import sys
+    work = True
+    while work == True:
+        render = menus.menu("File reader", [("Browse files", 1), ("Exit", 3)])
+        try:
+            if render == 3:
+                work = False
+            elif render == 1:
+                import modules.fileexplorer as a_fe
+                a_fe.set_btf(button_a, button_b, button_c, tft)
+                browser = a_fe.run(True)
+                if browser != None:
+                    showfile(browser)
+                del a_fe
+                sys.modules.pop('modules.fileexplorer', None)
+            else:
+                work = False
+        except Exception as e:
+            print("Oops!\nSomething wrong has happened in File reader\nLogs:\n"+str(e))
+            tft.fill(0)
+            gc.collect()
+            tft.text(f16x32, "Oops!",0,0,31)
+            tft.text(f8x8, "Something wrong has happened!",0,32,65535)
+            tft.text(f8x8, "Please try again!",0,40,65535)
+            sleep(3)

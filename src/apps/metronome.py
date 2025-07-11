@@ -1,0 +1,79 @@
+# Metronome app
+# App ID: 1003
+
+import fonts.def_8x8 as f8x8
+import fonts.def_16x32 as f16x32
+
+from machine import Pin, PWM
+
+button_a = None
+button_b = None
+button_c = None
+tft = None
+
+def set_btf(bta, btb, btc, ttft):
+    global button_a
+    global button_b
+    global button_c
+    global tft
+    
+    button_a = bta
+    button_b = btb
+    button_c = btc
+    tft = ttft
+
+def play(bpm):
+    import time
+    print("Buzz tone")
+    import modules.buzzer as buzz
+    buzzer = PWM(Pin(2), duty_u16=0, freq=500)
+    delay = ((60 / bpm) * 1000)
+    tft.fill(0)
+    tft.text(f16x32, "BPM: " + str(bpm),0,0,24552)
+    tft.text(f8x8, "Press button A to exit!",0,127,65535)
+    while button_a.value() == 1:
+        time.sleep_ms(int(delay))
+        buzz.play_sound_ms(buzzer, 400, 50)
+        
+    
+def run():
+    import modules.menus as menus
+    import machine
+    
+    machine.freq(240000000)
+    
+    bpm_max = 250
+    bpm_min = 30
+    bpm = 120
+    
+    if tft == None:
+        print("Please call 'set_btf(bta. btb, btc, ttft)' first")
+        return
+    
+    print("Going into main loop")
+    
+    work = True
+    while work == True:
+        render = menus.menu("Metronome", [("BPM: "+ str(bpm), 0), ("+", 1), ("-", 2), ("+10", 3), ("-10", 4), ("Play", 5), ("Reset", 6), ("Close", 7)])
+        if render == 1:
+            bp_temp = bpm + 1
+            if bp_temp <= bpm_max:
+                bpm += 1
+        elif render == 2:
+            bp_temp = bpm - 1
+            if bp_temp >= bpm_min:
+                bpm -= 1
+        elif render == 3:
+            bp_temp = bpm + 10
+            if bp_temp <= bpm_max:
+                bpm += 10
+        elif render == 4:
+            bp_temp = bpm - 10
+            if bp_temp >= bpm_min:
+                bpm -= 10
+        elif render == 5:
+            play(bpm)
+        elif render == 6:
+            bpm = 120
+        elif render == None or render == 7:
+            work = False
