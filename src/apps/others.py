@@ -18,6 +18,7 @@ def run():
     import modules.menus as menus
     import modules.nvs as nvs
     import esp32
+    import sys
     import machine
     import gc
     

@@ -29,14 +29,8 @@ def run():
         sys.modules.pop(name, None)
     
     machine.freq(240000000)
-    menu1 = menus.menu("Menu", [("IR Remote", 1), ("Terminal (Needs CardKB)", 2), ("Music Player", 6), ("File explorer", 7), ("File reader", 8), ("Others", 4), ("Settings", 3), ("Close", 13)]) # , ("Unit modules", 5)
-    if menu1 == 5:
-        import apps.unit as a_un
-        a_un.set_btf(button_a, button_b, button_c, tft)
-        a_un.run()
-        del a_un
-        dechache('apps.unit')
-    elif menu1 == 3:
+    menu1 = menus.menu("Menu", [("IR Remote", 1), ("Terminal (Needs CardKB)", 2), ("Music Player", 6), ("File explorer", 7), ("Others", 4), ("Settings", 3), ("Close", 13)])
+    if menu1 == 3:
         import apps.settings as a_se
         a_se.set_btf(button_a, button_b, button_c, tft, rtc)
         a_se.run()
@@ -72,11 +66,5 @@ def run():
         a_fe.run()
         del a_fe
         dechache('modules.fileexplorer')
-    elif menu1 == 8:
-        import apps.filereader as a_fr
-        a_fr.set_btf(button_a, button_b, button_c, tft)
-        a_fr.run()
-        del a_fr
-        dechache('apps.filereader')
     gc.collect()
     machine.freq(80000000)
