@@ -1,5 +1,5 @@
 import esp32
-import machine
+import machine, sys
 import modules.nvs as nvs
 import time
 

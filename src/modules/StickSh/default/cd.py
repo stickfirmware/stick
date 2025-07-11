@@ -1,7 +1,7 @@
 import os
 
 def execute(args):
-    if len(args) != 1:
+    if len(args) >= 2:
         try:
             os.chdir(args[1])
             return os.getcwd()

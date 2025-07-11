@@ -83,5 +83,6 @@ prog_down = [
 
 # Only for projectors
 freeze = [
+    (0x00000080 , 0x00000040),
     (a_ACERKPROJ, 0x718E) # Acer K132 Projector
 ]

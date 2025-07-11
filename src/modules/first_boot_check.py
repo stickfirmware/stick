@@ -19,9 +19,6 @@ def check(tft):
         nvs.set_int(n_boot, "firstBoot", 1)
         print("boot:firstBoot:1")
         tft.text(f8x8, "boot:firstBoot:1",0,34,65535,7003)
-        nvs.set_int(n_boot, "fastBoot", 0)
-        print("boot:fastBoot:0")
-        tft.text(f8x8, "boot:fastBoot:0",0,42,65535,7003)
     
         # Settings config
         print("Configuring 'settings' NVS")

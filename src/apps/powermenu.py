@@ -3,21 +3,25 @@ button_b = None
 button_c = None
 tft = None
 power_hold = None
+mpu = None
 
 from machine import Pin
+import os, sys
 
-def set_btf(bta, btb, btc, power_h, ttft):
+def set_btf(bta, btb, btc, power_h, ttft, mmpu):
     global button_a
     global button_b
     global button_c
     global tft
     global power_hold
+    global mpu
     
     power_hold = Pin(4, Pin.OUT)
     button_a = bta
     button_b = btb
     button_c = btc
     tft = ttft
+    mpu = mmpu
 
 def run():
     import esp32
@@ -37,7 +41,10 @@ def run():
             nic.disconnect()
             wasConnected = True
         nic.active(False)
+        os.sync()
+        mpu.sleep_on()
         m_sleep.sleep(tft, button_c, True)
+        mpu.sleep_off()
         if wasConnected == True:
             nic.active(True)
             nic.connect(nvs.get_string(n_wifi, "ssid"), nvs.get_string(n_wifi, "passwd"))
@@ -47,6 +54,7 @@ def run():
         tft.fill(703)
         tft.text(f8x8, "Powering off...",0,0,65535,703)
         tft.text(f8x8, "Please wait!",0,8,65535,703)
+        os.sync()
         power_hold.value(0)
     elif powermenu == 3:
         machine.freq(80000000)
@@ -55,6 +63,7 @@ def run():
         tft.fill(703)
         tft.text(f8x8, "Rebooting...",0,0,65535,703)
         tft.text(f8x8, "Please wait!",0,8,65535,703)
+        os.sync()
         machine.reset()
     else:
         machine.freq(80000000)

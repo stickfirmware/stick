@@ -38,8 +38,8 @@ def sync(rtc):
     utc_timestamp = time.mktime(current_time)
     local_timestamp = utc_timestamp + offset_sec
     local_time = time.localtime(local_timestamp)
-
-    rtc.set_time((local_time[0], local_time[1], local_time[2], local_time[6], local_time[3], local_time[4], local_time[5], 0))
+    ms = time.ticks_ms() % 1000
+    rtc.set_time((local_time[0], local_time[1], local_time[2], local_time[6], local_time[3], local_time[4], local_time[5], ms))
     dt = rtc.get_time()
     machine.RTC().datetime(dt)
     return True

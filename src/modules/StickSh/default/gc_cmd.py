@@ -1,7 +1,7 @@
 import gc
 
 def execute(args):
-    if len(args) != 1:
+    if len(args) >= 2:
         if args[1] == "collect":
             gc.collect()
             return "Garbage collector collected!"
