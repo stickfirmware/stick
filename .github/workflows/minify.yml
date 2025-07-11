@@ -24,6 +24,9 @@ jobs:
       - name: Install python-minifier
         run: pip install python-minifier
 
+      - name: Install mpy-cross
+        run: pip install mpy-cross
+
       - name: Minify
         run: python tools/minify.py
 
