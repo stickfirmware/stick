@@ -2,7 +2,11 @@ name: Minify & Release
 on:
   push:
     branches:
-      - release
+      - dev
+      - master
+
+permissions:
+  contents: read
 
 jobs:
   minify:
