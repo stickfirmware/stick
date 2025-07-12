@@ -1,5 +1,6 @@
 import os
 import tempfile
+# nosec: B404
 import subprocess
 from python_minifier import minify, RemoveAnnotationsOptions
 import shutil
@@ -56,10 +57,12 @@ def comp_file(src_path, out_path):
             tmp_path = tmp.name
 
         try:
+            # nosec: B607 B603
             subprocess.run(["mpy-cross", tmp_path, "-o", out_path], check=True)
             compiled_files += 1
             size_output += os.path.getsize(out_path)
             print(f"Compiled and minified {src_path} -> {out_path}")
+        # nosec: B110
         except subprocess.CalledProcessError:
             out_py = os.path.splitext(out_path)[0] + ".py"
             with open(out_py, "w", encoding="utf-8") as f:
