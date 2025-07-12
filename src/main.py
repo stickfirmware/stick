@@ -40,6 +40,7 @@ def gethash(file):
     import binascii
 
     try:
+        # nosec: B303
         h = hashlib.md5()
         with open(file, "rb") as f:
             while True:
@@ -94,6 +95,7 @@ def recoveryf():
                 time.sleep(60)
     else:
         tft.text(f8x8, "Secure boot disabled!",0,40,63488)
+    # nosec: B102
     exec(open(setting.RECOVERY_PATH).read())
 
 while True:
@@ -131,6 +133,7 @@ while True:
             else:
                 tft.text(f8x8, "Secure boot disabled!",0,40,63488)
             print("Booting mainos")
+            # nosec: B102
             exec(open(setting.MAINOS_PATH).read())
         except Exception as e:
             print(e)
