@@ -2,7 +2,7 @@
 
 MAJOR = 1
 MINOR = 3
-PATCH = 0
+PATCH = 1
 
 is_beta = True
 
