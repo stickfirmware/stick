@@ -66,12 +66,10 @@ def comp_file(src_path, out_folder):
         out_py_path = os.path.join(out_folder, rel_path)  # oryginalna nazwa z .py
 
         try:
-            # nosec: B607 B603
-            subprocess.run(["mpy-cross", tmp_path, "-o", out_path], check=True)
+            subprocess.run(["mpy-cross", tmp_path, "-o", out_mpy_path], check=True)
             compiled_files += 1
-            size_output += os.path.getsize(out_path)
-            print(f"Compiled and minified {src_path} -> {out_path}")
-        # nosec: B110
+            size_output += os.path.getsize(out_mpy_path)
+            print(f"Compiled and minified {src_path} -> {out_mpy_path}")
         except subprocess.CalledProcessError:
             with open(out_py_path, "w", encoding="utf-8") as f:
                 f.write(minified)
