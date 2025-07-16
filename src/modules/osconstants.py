@@ -48,6 +48,18 @@ POWER_SAVE_TIMEOUT = 15 * 1000 # Time to enter power saving after no activity
 IMU_CHECK_TIME = 200 # IMU update time, in ms
 IMU_STAY_TIME = 1000 # IMU stay time, in ms, device needs to be in same rotatation for X ms to accept rotation as stable
 NTP_SYNC_TIME = 600000 # NTP automatic sync time in ms
+LOOP_WAIT_TIME = 0.025 # Time loops wait until starting again in seconds (Start, wait time, start)
+
+# Boot settings
+BOOT_ENABLE_RECOVERY = True
+BOOT_RECOVERY_PATH = "/recovery/recovery.py"
+BOOT_RECOVERY_PIN = 39
+BOOT_MAINOS_PATH = "/mainos.py"
+BOOT_STARTING_SCRIPTS = [
+    '/scripts/checkbattery.py'
+    ]
+BOOT_ENABLE_UPDATES = False
+BOOT_UPDATE_PATH = "/update.py"
 
 # Others
 EMERG_BUFF_SIZE = 1000 # Emergency buffer allocation size in bytes

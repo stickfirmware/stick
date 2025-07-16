@@ -1,4 +1,4 @@
-print("Kitki30 Boot")
+print("Stick Boot")
 
 class FakeST:
     def text(self, *k):
@@ -10,8 +10,7 @@ import machine, time
 import os
 machine.freq(240000000)
 
-import boot_settings as setting
-secureboot = setting.SECURE_BOOT
+import modules.osconstants as osc
 
 # Hold power
 print("\nEnable hold pin")
@@ -24,33 +23,16 @@ buzz.set_volume(0.1)
 buzz.play_sound(buzzer, 2000, 0.0125)
 
 print("Running starting scripts")
-for i in setting.STARTING_SCRIPTS:
+for i in osc.BOOT_STARTING_SCRIPTS:
     exec(open(i).read())
 
 print("Checking boot options...")
 
 # Recovery button
-RECOVERY_BTN_PIN = setting.RECOVERY_PIN
+RECOVERY_BTN_PIN = osc.BOOT_RECOVERY_PIN
 
 rbtn = machine.Pin(RECOVERY_BTN_PIN, machine.Pin.IN, machine.Pin.PULL_UP)
 recovery = rbtn.value() == 0
-
-def gethash(file):
-    import hashlib
-    import binascii
-
-    try:
-        h = hashlib.md5()
-        with open(file, "rb") as f:
-            while True:
-                chunk = f.read(512)
-                if not chunk:
-                    break
-                h.update(chunk)
-        digest = h.digest()
-        return binascii.hexlify(digest).decode('utf-8')
-    except Exception as e:
-        return "Execution error:\n" + str(e)
 
 try:
     print("Load fonts")
@@ -60,53 +42,49 @@ try:
     print("Init tft")
     import modules.st7789 as st7789
     tft = st7789.ST7789(
-            machine.SPI(1, baudrate=31250000, sck=machine.Pin(13), mosi=machine.Pin(15), miso=None),
-            135,
-            240,
-            reset=machine.Pin(12, machine.Pin.OUT),
-            cs=machine.Pin(5, machine.Pin.OUT),
-            dc=machine.Pin(14, machine.Pin.OUT),
-            backlight=machine.PWM(machine.Pin(27), freq=1000),
-            rotation=3)
+            machine.SPI(osc.LCD_SPI_SLOT, baudrate=osc.LCD_SPI_BAUD, sck=machine.Pin(osc.LCD_SPI_SCK), mosi=machine.Pin(osc.LCD_SPI_MOSI), miso=osc.LCD_SPI_MISO),
+            osc.LCD_HEIGHT,
+            osc.LCD_WIDTH,
+            reset=machine.Pin(osc.LCD_RESET, Pin.OUT),
+            cs=machine.Pin(osc.LCD_SPI_CS, Pin.OUT),
+            dc=machine.Pin(osc.LCD_DC, Pin.OUT),
+            backlight=machine.PWM(Pin(osc.LCD_BL), freq=osc.LCD_BL_FREQ),
+            rotation=osc.LCD_ROTATIONS["BUTTON_LEFT"])
     tft.fill(0)
     # 65535
-    tft.text(f8x8, "Kitki30 Boot",0,0,2016)
+    tft.text(f8x8, "Stick firmware",0,0,2016)
+    tft.text(f8x8, "The firmware is booting...",0,0,2016)
 except Exception as e:
-    tft = FakeST()
+    tft = None
     print(str(e))
-
-tft.text(f8x8, "Checking boot options...",0,16,65535)
+    
+def set_f_boot(var):
+    try:
+        import modules.fastboot_vars as fvars
+        fvars.TFT = var
+    except:
+        print("Failed to set fastboot vars")
+    
+if tft == None:
+    tft = FakeST()
+    set_f_boot(None)
+else:
+    set_f_boot(tft)
 
 def recoveryf():
-    tft.text(f8x8, "Secure boot = " + str(secureboot),0,32,65535)
-    if secureboot == True:
-        md5sum = gethash(setting.RECOVERY_PATH)
-        tft.text(f8x8, "Veryfing file...",0,40,65535)
-        if md5sum in setting.ALLOW_LIST:
-            tft.text(f8x8, md5sum,0,40,2016)
-            tft.text(f8x8, "Hash ok! Booting",0,48,2016)
-        else:
-            tft.text(f8x8, md5sum,0,40,63488)
-            tft.text(f8x8, "Cannot verify the file!",0,48,63488)
-            tft.text(f8x8, "Your device will not boot!",0,56,63488)
-            time.sleep(1)
-            while True:
-                time.sleep(60)
-    else:
-        tft.text(f8x8, "Secure boot disabled!",0,40,63488)
-    exec(open(setting.RECOVERY_PATH).read())
+    exec(open(osc.BOOT_RECOVERY_PATH).read())
 
 while True:
-    if recovery and setting.ENABLE_RECOVERY == True:
+    if recovery and osc.BOOT_ENABLE_RECOVERY == True:
         tft.text(f8x8, "Recovery",180,127,2016)
         print("Booting recovery")
         recovery = False
         recoveryf()
-    elif setting.UPDATE_PATH in os.listdir("/") and setting.ENABLE_UPDATES:
+    elif osc.BOOT_UPDATE_PATH in os.listdir("/") and osc.BOOT_ENABLE_UPDATES:
         tft.text(f8x8, "Update script found! Booting..",0,24,65535)
         try:
             print("Update script found! Booting!")
-            exec(open(setting.UPDATE_PATH).read())
+            exec(open(osc.BOOT_UPDATE_PATH).read())
             machine.soft_reset()
         except Exception as e:
             tft.text(f8x8, "Update failed! Rebooting..",0,32,65535)
@@ -114,26 +92,9 @@ while True:
             machine.soft_reset()
     else:
         try:
-            tft.text(f8x8, "Booting MainOS, please wait!",0,24,65535)
-            tft.text(f8x8, "Secure boot = " + str(secureboot),0,32,65535)
-            if secureboot == True:
-                md5sum = gethash(setting.MAINOS_PATH)
-                tft.text(f8x8, "Veryfing file...",0,40,65535)
-                if md5sum in setting.ALLOW_LIST:
-                    tft.text(f8x8, md5sum,0,40,2016)
-                    tft.text(f8x8, "Hash ok! Booting",0,48,2016)
-                else:
-                    tft.text(f8x8, md5sum,0,40,63488)
-                    tft.text(f8x8, "Cannot verify the file!",0,48,63488)
-                    tft.text(f8x8, "Your device will not boot!",0,56,63488)
-                    time.sleep(1)
-                    break
-            else:
-                tft.text(f8x8, "Secure boot disabled!",0,40,63488)
             print("Booting mainos")
-            exec(open(setting.MAINOS_PATH).read())
+            exec(open(osc.BOOT_MAINOS_PATH).read())
         except Exception as e:
             print(e)
-            tft.text(f8x8, "Booting failed!",0,80,63488)
             print("Booting mainos failed, booting recovery!")
             recoveryf()

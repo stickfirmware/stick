@@ -5,7 +5,8 @@ import fonts.def_8x8 as f8x8
 import time
 
 def run_check(tft, n_crash):
-    if nvs.get_int(n_crash, "latest") != 0:
+    latest = nvs.get_int(n_crash, "latest")
+    if latest != 0 and latest != None:
         print("It looks like device has crashed recently, showing prompt!")
         code = nvs.get_int(n_crash, "latest")
         tft.fill(7003)

@@ -1,5 +1,4 @@
 {
-        "dpt": "/modules/StickSh/default/dpt.py",
         "var": "/modules/StickSh/default/var_cmd.py",
         "if": "/modules/StickSh/default/if_cmd.py",
         "time": "/modules/StickSh/default/time_cmd.py",

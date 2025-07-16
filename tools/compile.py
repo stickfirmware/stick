@@ -1,5 +1,6 @@
 import os
 import tempfile
+# nosec: B404
 import subprocess
 from python_minifier import minify, RemoveAnnotationsOptions
 import shutil
