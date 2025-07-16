@@ -14,5 +14,8 @@ def check_code(code):
     # Wi-Fi error
     elif code == 3001:
         return "WIFI_CONNECT_ERROR"
+    # Supervisor timeout
+    elif code == 4001:
+        return "SUPERVISOR_TIMEOUT"
     else:
         return "UNKNOWN"

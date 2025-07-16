@@ -28,17 +28,12 @@ menus.set_btf(button_a, button_b, button_c, tft)
 
 def reset_nvs():
     import esp32
-    import modules.nvs as nvs
-    n_settings = esp32.NVS("settings")
-    n_wifi = esp32.NVS("wifi")
-    n_boot = esp32.NVS("boot")
-    n_crash = esp32.NVS("crash")
-    nvs.set_float(n_settings, "volume", 0.5)
-    nvs.set_float(n_settings, "backlight", 0.5)
-    nvs.set_float(n_wifi, "conf", 0)
-    nvs.set_int(n_wifi, "autoConnect", 0)
-    nvs.set_string(n_wifi, "ssid", "")
-    nvs.set_string(n_wifi, "passwd", "")
+    p = esp32.Partition.find(esp32.Partition.TYPE_DATA, label='nvs')[0]
+
+    for x in range(int(p.info()[3] / 4096)):
+        p.writeblocks(x, bytearray(4096))
+
+    machine.reset()
 
 def remove_upd():
     try:
@@ -57,7 +52,9 @@ import time
 while True:
     render = menus.menu("Recovery menu", [("Reset NVS configuration", 1), ("Delete update.py", 2), ("Clear /temp/", 3), ("Terminal (Requires CardKB)", 4), ("Reboot", 13)])
     if render == 1:
-        reset_nvs()
+        render1 = menus.menu("Destroy nvs?", [("No", 1), ("Yes", 2)])
+        if render1 == 2:
+            reset_nvs()
     elif render == 2:
         remove_upd()
     elif render == 3:
