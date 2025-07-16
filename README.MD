@@ -1,18 +1,26 @@
 # Kitki30 Stick
-Micropython based OS looking thing for your M5StickC Plus2
-
+Makes your stick a usefull EDC device
 ## Features
-- IR Remote (NEC, PANASONIC, SONY and other protocols)
-- Clock (Using built in I2C external RTC)
-- Terminal (Requires CardKB)
-- CardKB Support
-- Other apps you may need (Resistor color decoder, scorekeeper)
+- Clock with i2c RTC sync
+- Screen auto-rotate by IMU
+- Custom and built in apps
+
+> [!NOTE]
+> Don't be scared if there was no commit for a whole month, i work in the backgroud and don't feel like commiting broken features. You can contact me on telegram (@Kitki300) if you want latest off github copy.
 
 ## Supported devices
-**M5StickC Plus2** is the only device supported, there are no plans to support any other device.
+**M5StickC Plus2** is the only device supported, if M5Stack will release a new stick, i will probably try to port this firmware to it.
+
+## Milestones
+- [X] IMU Support
+- [ ] Refactor code (In progress)
+- [ ] Better power saving (In progress)
+- [ ] Bluethooth support
+- [ ] Autoupdate
+- [ ] Better SD card support
 
 ## Supported UNIT modules
-- CardKB
+- CardKB for terminal
 
 ## Instalation
 We need to add an installer later

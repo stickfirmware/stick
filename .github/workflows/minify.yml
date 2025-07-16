@@ -1,4 +1,4 @@
-name: Minify & Release
+name: Compile
 on:
   push:
     branches:
@@ -28,7 +28,7 @@ jobs:
         run: pip install mpy-cross
 
       - name: Minify
-        run: python tools/minify.py
+        run: python tools/compile.py
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4.6.2
