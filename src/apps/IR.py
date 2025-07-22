@@ -1,6 +1,7 @@
 from machine import Pin
 import machine
 import time
+import modules.osconstants as osc
 import modules.IR.db_nec as db_nec
 import modules.IR.db_sony as db_sony
 import modules.IR.db_panasonic as db_pana
@@ -37,7 +38,7 @@ def set_btf(bta, btb, btc, ttft):
 
 n_settings = esp32.NVS("settings")
 if nvs.get_int(n_settings, "irPin") == None:
-    nvs.set_int(n_settings, "irPin", 19)
+    nvs.set_int(n_settings, "irPin", osc.IR_PIN)
 ir_pin = machine.PWM(machine.Pin(nvs.get_int(n_settings, "irPin"), machine.Pin.OUT), duty = 0)
 
 def send(necc, sonyc, panac, samsac, gcc):
@@ -84,7 +85,7 @@ def run():
     pana.set_ir(ir_pin)
     samsa.set_ir(ir_pin)
     gc_send.set_ir(ir_pin)
-    machine.freq(240000000)
+    machine.freq(osc.ULTRA_FREQ)
     while work == True:
         render = menus.menu("IR Remote", [("Devices menu", 0), ("ON/OFF", 1), ("VOL+", 2), ("VOL-", 3), ("Mute", 4), ("CHANNEL+ / NEXT", 5), ("CHANNEL- / PREV", 6), ("FREEZE", 7), ("Change IR pin", 8), ("Receive", 9), ("Close", 10)])
         if render == 1:
@@ -149,4 +150,4 @@ def run():
             
         else:
             work = False
-    machine.freq(80000000)
+    machine.freq(osc.BASE_FREQ)

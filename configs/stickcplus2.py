@@ -3,7 +3,7 @@ DEVICE_NAME = "M5StickC Plus 2" # Device name
 RELEASE_NAME = "stickcplus2" # Name in builder
 
 # Debug
-ENABLE_DEBUG_PRINTS = True
+ENABLE_DEBUG_PRINTS = False
 
 # Power managament
 HAS_HOLD_PIN = True # Do we need to put power hold pin HIGH? (Like on M5StickC Plus 2)

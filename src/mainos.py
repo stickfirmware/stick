@@ -1,18 +1,17 @@
 print("Kitki30 Stick")
 
 import modules.osconstants as osc
-import scripts.checkbattery as btshutdown
+import scripts.checkbattery as battery_shutdown
 from machine import Pin, PWM, SPI
-import random
+import modules.uptime as uptime
+import modules.printer as debug
 
 # Buzzer
-print("Buzz tone")
+debug.log("Buzz tone")
 import modules.buzzer as buzz
-buzzer = PWM(Pin(osc.BUZZER_PIN), duty_u16=0, freq=500)
-buzz.startup_sound(buzzer)
-
-# Uptime
-import modules.uptime as uptime
+if osc.HAS_BUZZER:
+    buzzer = PWM(Pin(osc.BUZZER_PIN), duty_u16=0, freq=500)
+    buzz.startup_sound(buzzer)
 
 import machine
 import esp32
@@ -34,28 +33,29 @@ if "temp" not in os.listdir():
         os.mkdir("temp")
 
 # Garbage colector
-print("Enabling garbage collector")
+debug.log("Enabling garbage collector")
 import gc
 gc.enable()
 
 # Hold power
-print("Enable hold pin")
-power_hold = Pin(osc.HOLD_PIN, Pin.OUT)
-power_hold.value(1)
+if osc.HAS_HOLD_PIN:
+    debug.log("Enable hold pin")
+    power_hold = Pin(osc.HOLD_PIN, Pin.OUT)
+    power_hold.value(1)
 
 # Set frequencies
-print("Setting Ultra freq")
+debug.log("Setting Ultra freq")
 machine.freq(osc.ULTRA_FREQ)
   
 # Import fonts
-print("Load fonts")
+debug.log("Load fonts")
 import fonts.def_8x8 as f8x8
 import fonts.def_8x16 as f8x16
 import fonts.def_16x16 as f16x16
 import fonts.def_16x32 as f16x32
 
 # Init tft
-print("Init tft")
+debug.log("Init tft")
 import modules.st7789 as st7789
 
 try:
@@ -71,20 +71,13 @@ try:
             dc=Pin(osc.LCD_DC, Pin.OUT),
             backlight=PWM(Pin(osc.LCD_BL), freq=osc.LCD_BL_FREQ),
             rotation=osc.LCD_ROTATIONS["BUTTON_LEFT"])
-    load_bg = 0 # Loading screen backgroung
-    text_color = 65535 # Loading screen text color
-    tft.fill(load_bg)
-    tft.text(f16x32, "Stick firmware",0,0,text_color, load_bg)
-    tft.fill_rect(0, 132, 240, 3, text_color)
-    tft.fill_rect(0, 112, 240, 3, text_color)
-    tft.fill_rect(0, 112, 3, 23, text_color)
-    tft.fill_rect(237, 112, 3, 23, text_color)
-    tft.text(f8x8, "Developed by Kitki30",0,32,text_color, load_bg)
+    load_bg = osc.LCD_LOAD_BG
+    text_color = osc.LCD_LOAD_TEXT
 except Exception as e:
     c_handler.crash_screen(None, 1002, str(e), True, False, 1)
 
 loading_count = 0 # Increased with every task
-loading_max = 10 # Max loading_count will reach
+loading_max = 8 # Max loading_count will reach
 bar_color = 2016 # Color of progress bar
 
 def render_bar(text, increase_count=False):
@@ -98,7 +91,7 @@ def render_bar(text, increase_count=False):
 render_bar("Preparing NVS...")
 
 # Load NVS
-print("Load NVS")
+debug.log("Load NVS")
 n_settings = esp32.NVS("settings")
 n_wifi = esp32.NVS("wifi")
 n_boot = esp32.NVS("boot")
@@ -113,13 +106,13 @@ if nvs.get_int(n_locks, "dummy") == None:
 s_bl = nvs.get_float(n_settings, "backlight")
 if s_bl is None:
     s_bl = 0.5
-print("Backlight: " + str(s_bl))
+debug.log("Backlight: " + str(s_bl))
 tft.set_backlight(s_bl)
 
 s_vl = nvs.get_float(n_settings, "volume")
 if s_vl is None:
     s_vl = 0.5
-print("Buzzer volume: " + str(s_vl))
+debug.log("Buzzer volume: " + str(s_vl))
 buzz.set_volume(s_vl)
 
 auto_rotate = nvs.get_int(n_settings, "autorotate")
@@ -129,7 +122,7 @@ if auto_rotate == None:
     auto_rotate = 1
 if allow_saving == None:
     nvs.set_int(n_settings, "allowsaving", 1)
-    auto_rotate = 1
+    allow_saving = 1
 
 render_bar("Checking crash info...", True)
     
@@ -144,38 +137,43 @@ del n_crash
 render_bar("Checking first boot...", True)
 
 # Check first boot
-print("Check for first boot")
-import modules.first_boot_check as f_b_check
-f_b_check.check(tft)
-del f_b_check
+debug.log("Check for first boot")
+import modules.first_boot_check as first_boot_check
+first_boot_check.check(tft)
+del first_boot_check
     
 gc.collect()
 
-render_bar("Sync RTC...", True)
+render_bar("Init shared I2C", True)
 
 # Import RTC
-print("Sync time from external RTC")
-import modules.rtc as rtc_bm8536
-try:
-    i2c = machine.I2C(osc.I2C_SLOT, scl=machine.Pin(osc.I2C_SCL), sda=machine.Pin(osc.I2C_SDA))
-    rtc = rtc_bm8536.BM8563(i2c)
-except Exception as e:
-    c_handler.crash_screen(tft, 1001, str(e), True, True, 2)
+debug.log("Sync time from external RTC")
+rtc = None
+i2c = None
+mpu = None
+if osc.HAS_SHARED_I2C == True:
+    try:
+        i2c = machine.I2C(osc.I2C_SLOT, scl=machine.Pin(osc.I2C_SCL), sda=machine.Pin(osc.I2C_SDA))
+    except Exception as e:
+        c_handler.crash_screen(tft, 1001, str(e), True, True, 2)
+    if osc.HAS_RTC == True:
+        import modules.rtc as rtc_bm8536  
+        rtc = rtc_bm8536.BM8563(i2c)
+        # rtc.set_time((2025, 4, 29, 1, 13, 37, 0, 0))
+        dt = rtc.get_time()
+        machine.RTC().datetime(dt)
+        debug.log(dt)
     
-# rtc.set_time((2025, 4, 29, 1, 13, 37, 0, 0))
-dt = rtc.get_time()
-machine.RTC().datetime(dt)
-print(dt)
+    if osc.HAS_IMU == True: 
+        from modules.mpu6886 import MPU6886
 
-render_bar("Init IMU...", True)
-    
-from modules.mpu6886 import MPU6886
+        mpu = MPU6886(i2c)
 
-print("Init IMU")
-mpu = MPU6886(i2c)
-
-if auto_rotate == 0:
-    mpu.sleep_on()
+        if auto_rotate == 0:
+            mpu.sleep_on()
+else:
+    osc.HAS_IMU = False
+    osc.HAS_RTC = False
 
 def get_orientation(ax, ay, az, threshold=osc.IMU_ROTATE_THRESHOLD):
     if ay < -threshold:
@@ -192,7 +190,7 @@ def get_orientation(ax, ay, az, threshold=osc.IMU_ROTATE_THRESHOLD):
 render_bar("Init buttons...", True)
 
 # Init buttons
-print("Init buttons")
+debug.log("Init buttons")
 button_a = Pin(osc.BUTTON_A_PIN, Pin.IN, Pin.PULL_UP)
 button_b = Pin(osc.BUTTON_B_PIN, Pin.IN, Pin.PULL_UP)
 button_c = Pin(osc.BUTTON_C_PIN, Pin.IN, Pin.PULL_UP)
@@ -229,7 +227,7 @@ if int(nvs.get_float(n_wifi, "conf")) == 1:
             nic.active(False)
             time.sleep(0.2)
             nic.active(True)
-            print("Wifi connecting")
+            debug.log("Wifi connecting")
             conn_time = time.ticks_ms()
             nic.connect(nvs.get_string(n_wifi, "ssid"), nvs.get_string(n_wifi, "passwd"))
         except Exception as e:
@@ -238,14 +236,11 @@ if int(nvs.get_float(n_wifi, "conf")) == 1:
 render_bar("Loading other libraries...", True)
 
 # Battery check
-time_to_check=0
 import modules.battery_check as b_check
 
 menu = 0
 menu_change = True
 render_battery = False
-
-ntp_sync = 1200
 
 import modules.menus as menus
 menus.set_btf(button_a, button_b, button_c, tft)
@@ -256,11 +251,12 @@ openfile.set_btf(button_a, button_b, button_c, tft)
 
 machine.freq(osc.BASE_FREQ)
 
-ntpfirst = False
-ntpTime = time.ticks_ms()
-sleepTime = time.ticks_ms()
-prevBl = tft.get_backlight()
-isInSaving = False
+ntp_first = False
+ntp_time = time.ticks_ms()
+sleep_time = time.ticks_ms()
+diagnostic_time = time.ticks_ms()
+prev_bl = tft.get_backlight()
+is_in_saving = False
 
 # IMU Rotations cheat sheet
 # 0 - button side down
@@ -268,14 +264,14 @@ isInSaving = False
 # 2 - button side up
 # 3 - button side left
 
-mpuDelay = time.ticks_ms()
+imu_delay = time.ticks_ms()
 last_orientation = None
 orientation_start_time = 0
 stable_orientation = 3
 
-currentrotation = 3
+current_rotation = 3
 
-def allowonlylandscape():
+def allow_only_landscape():
     if stable_orientation == osc.LCD_ROTATIONS["BUTTON_UPPER"] or stable_orientation == osc.LCD_ROTATIONS["BUTTON_BOTTOM"]:
         tft.rotation(3)
     else:
@@ -283,85 +279,75 @@ def allowonlylandscape():
         
 # Clean up
 render_bar("Cleaning up...")
-print("Cleaning up")
-print("Before: " + str(gc.mem_free() / 1024 / 1024) + "MB")
+debug.log("Cleaning up")
+debug.log("Before: " + str(gc.mem_free() / 1024 / 1024) + "MB")
 del n_boot
 gc.collect()
-print("After: " + str(gc.mem_free() / 1024 / 1024) + "MB")
+debug.log("After: " + str(gc.mem_free() / 1024 / 1024) + "MB")
 
-print("Loading count: " + str(loading_count))
+debug.log("Loading count: " + str(loading_count))
 
 render_bar("Loading clock...", True)
-import apps.clock as a_clock
-a_clock.set_tft(tft)
+import apps.clock as app_clock
+app_clock.set_tft(tft)
 
-def wakeUp():
-    global isInSaving, sleepTime, prevBl
-    if isInSaving == True:
-        isInSaving = False
-        sleepTime = time.ticks_ms()
-        tft.set_backlight(prevBl)
+def wake_up():
+    global is_in_saving, sleep_time, prev_bl
+    if is_in_saving == True:
+        is_in_saving = False
+        auto_rotate = nvs.get_int(n_settings, "autorotate")
+        if auto_rotate == 0:
+            stable_orientation = 3
+            if osc.HAS_IMU == True: 
+                mpu.sleep_on()
+        else:
+            if osc.HAS_IMU == True: 
+                mpu.sleep_off()
+            else:
+                auto_rotate = 0
+        sleep_time = time.ticks_ms()
+        tft.set_backlight(prev_bl)
         machine.freq(osc.BASE_FREQ)
 
+uptime.uptime_loaded = time.ticks_ms()
+
 while True:
-    machine.freq(osc.BASE_FREQ)
-    if conn_time is not None:
-        if time.ticks_diff(time.ticks_ms(), conn_time) >= osc.WIFI_DISABLE_TIMEOUT:
-            nic = network.WLAN(network.STA_IF)
-            if nic.isconnected() == False:
-                nic.active(False)
-    if not isInSaving and time.ticks_diff(time.ticks_ms(), sleepTime) >= osc.POWER_SAVE_TIMEOUT and allow_saving == 1:
-        prevBl = tft.get_backlight()
-        isInSaving = True
-        tft.set_backlight(osc.LCD_POWER_SAVE_BL)
+    if is_in_saving == False:
+        machine.freq(osc.BASE_FREQ)
+    else:
         machine.freq(osc.SLOW_FREQ)
-    if auto_rotate == 1 and time.ticks_diff(time.ticks_ms(), mpuDelay) >= osc.IMU_CHECK_TIME:
-        prevBl = nvs.get_float(n_settings, "backlight")
-        if not isInSaving:
-            tft.set_backlight(prevBl)
-        ax, ay, az = mpu.acceleration
-        orientation = get_orientation(ax, ay, az)
-        mpuDelay = time.ticks_ms()
-        currentrotation = orientation
-        if currentrotation == last_orientation:
-            if orientation_start_time == 0:
-                orientation_start_time = time.ticks_ms()
-            elif time.ticks_diff(time.ticks_ms(), orientation_start_time) >= osc.IMU_STAY_TIME:
-                if stable_orientation != currentrotation:
-                    stable_orientation = currentrotation
-                    print("Orientation changed to:", stable_orientation)
-                    menu_change = True
-        else:
-            last_orientation = currentrotation
-            orientation_start_time = time.ticks_ms()
     if menu == 0 and menu_change == False:
-        a_clock.clock()
+        app_clock.clock()
     elif menu == 1 and menu_change == False:
-        a_clock.clock_vert()
+        app_clock.clock_vert()
     elif menu_change == True:
         
         # Render base faster
         machine.freq(osc.ULTRA_FREQ)
         render_battery = True
         
-        isInSaving = False
-        sleepTime = time.ticks_ms()
-        a_clock.set_tft(tft)
+        is_in_saving = False
+        sleep_time = time.ticks_ms()
+        app_clock.set_tft(tft)
         auto_rotate = nvs.get_int(n_settings, "autorotate")
         allow_saving = nvs.get_int(n_settings, "allowsaving")
         if auto_rotate == 0:
             stable_orientation = 3
-            mpu.sleep_on()
+            if osc.HAS_IMU == True: 
+                mpu.sleep_on()
         else:
-            mpu.sleep_off()
+            if osc.HAS_IMU == True: 
+                mpu.sleep_off()
+            else:
+                auto_rotate = 0
         if stable_orientation == osc.LCD_ROTATIONS["BUTTON_UPPER"] or stable_orientation == osc.LCD_ROTATIONS["BUTTON_BOTTOM"]:
             tft.rotation(int(stable_orientation))
-            a_clock.run_clock_vert()
+            app_clock.run_clock_vert()
             menu = 1
             set_buttons()
         else:
             tft.rotation(int(stable_orientation))
-            a_clock.run_clock()
+            app_clock.run_clock()
             if stable_orientation == 3:
                 set_buttons()
             else:
@@ -372,27 +358,59 @@ while True:
         npad.set_btf(button_a, button_b, button_c, tft)
         
         menu_change = False
-        # Back to power saving
-        machine.freq(osc.BASE_FREQ)
+    if conn_time is not None:
+        if time.ticks_diff(time.ticks_ms(), conn_time) >= osc.WIFI_DISABLE_TIMEOUT:
+            nic = network.WLAN(network.STA_IF)
+            if nic.isconnected() == False:
+                nic.active(False)
+    if not is_in_saving and time.ticks_diff(time.ticks_ms(), sleep_time) >= osc.POWER_SAVE_TIMEOUT and allow_saving == 1:
+        prev_bl = tft.get_backlight()
+        is_in_saving = True
+        tft.set_backlight(osc.LCD_POWER_SAVE_BL)
+        auto_rotate = 0
+        stable_orientation = 3
+        if osc.HAS_IMU == True: 
+            mpu.sleep_on()
+        menu_change = True
+        machine.freq(osc.SLOW_FREQ)
+    if auto_rotate == 1 and time.ticks_diff(time.ticks_ms(), imu_delay) >= osc.IMU_CHECK_TIME:
+        prev_bl = nvs.get_float(n_settings, "backlight")
+        if not is_in_saving:
+            tft.set_backlight(prev_bl)
+        ax, ay, az = mpu.acceleration
+        orientation = get_orientation(ax, ay, az)
+        imu_delay = time.ticks_ms()
+        current_rotation = orientation
+        if current_rotation == last_orientation:
+            if orientation_start_time == 0:
+                orientation_start_time = time.ticks_ms()
+            elif time.ticks_diff(time.ticks_ms(), orientation_start_time) >= osc.IMU_STAY_TIME:
+                if stable_orientation != current_rotation:
+                    stable_orientation = current_rotation
+                    debug.log("Orientation changed to:" + str(stable_orientation))
+                    menu_change = True
+        else:
+            last_orientation = current_rotation
+            orientation_start_time = time.ticks_ms()
     if button_a.value() == 0 and button_b.value() == 0:
-        holdTime = 0.00
-        wakeUp()
+        hold_time = 0.00
+        wake_up()
         while button_b.value() == 0:
             time.sleep(osc.LOOP_WAIT_TIME)
-            holdTime += osc.LOOP_WAIT_TIME
-        print(str(holdTime) + "  " + str(nvs.get_int(n_locks, "dummy")))
-        if holdTime >= 1 and nvs.get_int(n_locks, "dummy") != 0:
+            hold_time += osc.LOOP_WAIT_TIME
+        debug.log(str(hold_time) + "  " + str(nvs.get_int(n_locks, "dummy")))
+        if hold_time >= 1 and nvs.get_int(n_locks, "dummy") != 0:
             if menu == 0:
-                allowonlylandscape()
-                import apps.lockmen as a_lockmen
-                a_lockmen.set_btf(button_a, button_b, button_c, tft)
-                a_lockmen.run()
-                del a_lockmen
+                allow_only_landscape()
+                import apps.lockmen as app_lockmen
+                app_lockmen.set_btf(button_a, button_b, button_c, tft)
+                app_lockmen.run()
+                del app_lockmen
                 menu = 0
                 menu_change = True
-        sleepTime = time.ticks_ms()
+        sleep_time = time.ticks_ms()
     if button_a.value() == 0:
-        wakeUp()
+        wake_up()
         machine.freq(osc.BASE_FREQ)
         while button_a.value() == 0 and button_c.value() == 1 and button_b.value() == 1:
             time.sleep(osc.LOOP_WAIT_TIME)
@@ -400,14 +418,15 @@ while True:
             continue
         
         if nvs.get_int(n_locks, "dummy") == 0:
-            allowonlylandscape()
-            dt = rtc.get_time()
-            machine.RTC().datetime(dt)
+            allow_only_landscape()
+            if rtc is not None:
+                dt = rtc.get_time()
+                machine.RTC().datetime(dt)
             try:
-                import apps.menu as a_menu
-                a_menu.set_btf(button_a, button_b, button_c, tft, rtc)
-                a_menu.run()
-                del a_menu
+                import apps.menu as app_menu
+                app_menu.set_btf(button_a, button_b, button_c, tft, rtc)
+                app_menu.run()
+                del app_menu
             except Exception as e:
                 tft.fill(0)
                 gc.collect()
@@ -418,68 +437,63 @@ while True:
                 time.sleep(3)
             menu = 0
             menu_change = True
-        sleepTime = time.ticks_ms()
+        sleep_time = time.ticks_ms()
     if button_c.value() == 0:
-        wakeUp()
+        wake_up()
         while button_c.value() == 0 and button_a.value() == 1 and button_b.value() == 1:
             time.sleep(osc.LOOP_WAIT_TIME)
         if button_a.value() == 0 or button_b.value() == 0:
             continue
         if menu == 0:
-            import apps.powermenu as a_powermen
-            allowonlylandscape()
-            a_powermen.set_btf(button_a, button_b, button_c, power_hold, tft, mpu)
-            a_powermen.run()
-            del a_powermen
+            import apps.powermenu as app_powermen
+            allow_only_landscape()
+            app_powermen.set_btf(button_a, button_b, button_c, power_hold, tft, mpu)
+            app_powermen.run()
+            del app_powermen
             menu = 0
             menu_change = True
-        sleepTime = time.ticks_ms()
+        sleep_time = time.ticks_ms()
     if button_b.value() == 0:
-        holdTime = 0.00
-        wakeUp()
+        hold_time = 0.00
+        wake_up()
         while button_b.value() == 0 and button_c.value() == 1 and button_a.value() == 1:
             time.sleep(osc.LOOP_WAIT_TIME)
-            holdTime += osc.LOOP_WAIT_TIME
+            hold_time += osc.LOOP_WAIT_TIME
         if button_c.value() == 0 or button_a.value() == 0:
             continue
-        if holdTime >= 1 and nvs.get_int(n_locks, "dummy") == 0:
+        if hold_time >= 1 and nvs.get_int(n_locks, "dummy") == 0:
             if menu == 0:
-                allowonlylandscape()
-                import apps.lockmen as a_lockmen
-                a_lockmen.set_btf(button_a, button_b, button_c, tft)
-                a_lockmen.run()
-                del a_lockmen
+                allow_only_landscape()
+                import apps.lockmen as app_lockmen
+                app_lockmen.set_btf(button_a, button_b, button_c, tft)
+                app_lockmen.run()
+                del app_lockmen
                 menu = 0
                 menu_change = True
-        sleepTime = time.ticks_ms()
+        sleep_time = time.ticks_ms()
             
     # Battery check
-    if time_to_check == 0 and menu  == 0:
-        btshutdown.run()
+    if time.ticks_diff(time.ticks_ms(), diagnostic_time) >= osc.DIAGNOSTIC_REFRESH_TIME and menu  == 0:
+        diagnostic_time = time.ticks_ms()
+        battery_shutdown.run()
         locks = nvs.get_int(n_locks, "dummy")
         gc.collect()
-        print("Checking battery")
+        debug.log("Checking battery")
         volts = b_check.voltage()
-        print("Voltage: " + str(volts) + "V")
+        debug.log("Voltage: " + str(volts) + "V")
         if menu == 0:
             tft.fill_rect(4, 116, 190, 8, 0)
             if locks == 0:
                 tft.text(f8x8, "CPU: " + str(machine.freq() / 1000000) + "MHz",4,116,703)
-            pr = (volts - 3.00) / 1.20 * 100
-            print(pr)
-            if pr <= 0.00:
-                pr = 0.00
-            elif pr >= 100.00:
-                pr = 100.00
+            pr = b_check.percentage(volts)
             if locks == 0:
                 tft.text(f8x8, "Battery: " + str(volts) + "V / " + str(int(pr)) + "%",4,124,2016)
             else:
                 tft.text(f8x8, "Battery: " + str(int(pr)) + "%",4,124,2016)
         b_check.run(tft)
-        time_to_check = 120
-    if time.ticks_diff(time.ticks_ms(), ntpTime) >= osc.NTP_SYNC_TIME or ntpfirst == False:
-        ntpfirst = True
-        ntpTime = time.ticks_ms()
+    if time.ticks_diff(time.ticks_ms(), ntp_time) >= osc.NTP_SYNC_TIME or ntp_first == False:
+        ntp_first = True
+        ntp_time = time.ticks_ms()
         nic = network.WLAN(network.STA_IF)
         if nic.isconnected() == True:
             import modules.ntp as ntp
@@ -489,5 +503,4 @@ while True:
                 tft.fill_rect(4, 124, 60, 8, 0)
                 if menu == 0:
                     tft.text(f8x8, "NTP",4,124,703)
-    time_to_check-=1
     time.sleep(osc.LOOP_WAIT_TIME)

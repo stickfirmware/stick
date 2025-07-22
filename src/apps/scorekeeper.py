@@ -22,8 +22,9 @@ def run():
     import modules.nvs as nvs
     import esp32
     import machine
+    import modules.osconstants as osc
     
-    machine.freq(240000000)
+    machine.freq(osc.ULTRA_FREQ)
     
     app_storage = esp32.NVS("apps_1001")
     

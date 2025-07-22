@@ -1,34 +1,34 @@
 # Config info
-DEVICE_NAME = "M5StickC Plus 2" # Device name
-RELEASE_NAME = "stickcplus2" # Name in builder
+DEVICE_NAME = "M5Stack Cardputer v1.1" # Device name
+RELEASE_NAME = "cardputerv1_1" # Name in builder
 
 # Debug
-ENABLE_DEBUG_PRINTS = True
+ENABLE_DEBUG_PRINTS = False
 
 # Power managament
-HAS_HOLD_PIN = True # Do we need to put power hold pin HIGH? (Like on M5StickC Plus 2)
+HAS_HOLD_PIN = False # Do we need to put power hold pin HIGH? (Like on M5StickC Plus 2)
 HOLD_PIN = 4
-BATTERY_ADC = 38 # Battery ADC pin (Often called Battery Detect by M5Stack), used to get battery voltage, needs voltage divider.
+BATTERY_ADC = 10 # Battery ADC pin (Often called Battery Detect by M5Stack), used to get battery voltage, needs voltage divider.
 
 # Sound
-HAS_BUZZER = True # Has buzzer?
+HAS_BUZZER = False # Has buzzer?
 BUZZER_PIN = 2
 HAS_MIC = True # Has mic?
-MIC_DATA = 34 # Microphone DATA Pin
-MIC_CLK = 0 # Mic Clock Pin
+MIC_DATA = 46 # Microphone DATA Pin
+MIC_CLK = 43 # Mic Clock Pin
 
 # SD Card
-HAS_SD_SLOT = False # Has built-in sd card slot?
+HAS_SD_SLOT = True # Has built-in sd card slot?
 SD_CS = 12
 SD_MOSI = 14
 SD_MISO = 39
 SD_CLK = 40
 
 # IR
-IR_PIN = 19
+IR_PIN = 44
 
 # Input methods
-INPUT_METHOD = 1 # 1 - Standard (3 Buttons, Exit, Cycle, Select, used in sticks), 2 - Cardputer (Input over cardputer keyboard)
+INPUT_METHOD = 2 # 1 - Standard (3 Buttons, Exit, Cycle, Select, used in sticks), 2 - Cardputer (Input over cardputer keyboard)
 
 # Standard input method settings
 BUTTON_A_PIN = 37
@@ -38,11 +38,11 @@ BUTTON_C_PIN = 35
 # GROVE Port
 HAS_GROVE = True
 GROVE_SLOT = 1
-GROVE_SDA = 32
-GROVE_SCL = 33
+GROVE_YELLOW = 2
+GROVE_WHITE = 1
 
 # Shared I2C (RTC + IMU)
-HAS_SHARED_I2C = True # True if has RTC + IMU shared i2c
+HAS_SHARED_I2C = False # True if has RTC + IMU shared i2c
 HAS_RTC = True # True if has RTC, overwritten by HAS_SHARED_I2C if it's False
 HAS_IMU = True # True if has IMU
 I2C_SLOT = 0 # I2C Slot???, can be 0 or 1 depending on the pins
@@ -54,13 +54,13 @@ LCD_LOAD_BG = 0 # Loading screen background color
 LCD_LOAD_TEXT = 65535 # Loading screen text color
 LCD_SPI_SLOT = 1 # Something like with I2C, 0 or 1
 LCD_SPI_BAUD = 26_000_000 # SPI Baud in Hz
-LCD_SPI_SCK=13 # LCD SCK Pin
-LCD_SPI_MOSI=15 # LCD MOSI Pin
+LCD_SPI_SCK= 36 # LCD SCK Pin
+LCD_SPI_MOSI= 35 # LCD MOSI Pin
 LCD_SPI_MISO = None # Leave it None, does nothing
-LCD_SPI_CS = 5 # LCD Chip select pin
-LCD_DC = 14 # LCD Data/Command pin
-LCD_RESET = 12 # LCD Reset pin
-LCD_BL = 27 # Backlight pin
+LCD_SPI_CS = 37 # LCD Chip select pin
+LCD_DC = 34 # LCD Data/Command pin
+LCD_RESET = 33 # LCD Reset pin
+LCD_BL = 38 # Backlight pin
 LCD_BL_FREQ = 1000 # Backlight frequency, higher values may not work
 LCD_HEIGHT = 135 # LCD Height in pixels
 LCD_WIDTH = 240 # LCD Width in pixels
@@ -81,7 +81,7 @@ SLOW_FREQ = 40 * 1000000 # Slow, used in power saving, clock can be 1 second lat
 ULTRA_SLOW_FREQ = 20 * 1000000
 
 # Networking
-WIFI_DEF_HOST = "Stick" # Default WLAN hostname
+WIFI_DEF_HOST = "Cardputer" # Default WLAN hostname
 
 # Loop timings
 WIFI_DISABLE_TIMEOUT = 15 * 1000 # Timeout for disabling wifi if not connected

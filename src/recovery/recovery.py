@@ -1,16 +1,18 @@
+import modules.osconstants as osc
+
 def init_tft():
     import modules.st7789 as st7789
     from machine import PWM, Pin, SPI
     try:
         tft = st7789.ST7789(
-            SPI(1, baudrate=31250000, sck=Pin(13), mosi=Pin(15), miso=None),
-            135,
-            240,
-            reset=Pin(12, Pin.OUT),
-            cs=Pin(5, Pin.OUT),
-            dc=Pin(14, Pin.OUT),
-            backlight=PWM(Pin(27), freq=1000),
-            rotation=3) 
+            machine.SPI(osc.LCD_SPI_SLOT, baudrate=osc.LCD_SPI_BAUD, sck=machine.Pin(osc.LCD_SPI_SCK), mosi=machine.Pin(osc.LCD_SPI_MOSI), miso=osc.LCD_SPI_MISO),
+            osc.LCD_HEIGHT,
+            osc.LCD_WIDTH,
+            reset=machine.Pin(osc.LCD_RESET, Pin.OUT),
+            cs=machine.Pin(osc.LCD_SPI_CS, Pin.OUT),
+            dc=machine.Pin(osc.LCD_DC, Pin.OUT),
+            backlight=machine.PWM(Pin(osc.LCD_BL), freq=osc.LCD_BL_FREQ),
+            rotation=osc.LCD_ROTATIONS["BUTTON_LEFT"])
         tft.fill(0)
         return tft
     except Exception as e:
@@ -27,13 +29,7 @@ import modules.menus as menus
 menus.set_btf(button_a, button_b, button_c, tft)
 
 def reset_nvs():
-    import esp32
-    p = esp32.Partition.find(esp32.Partition.TYPE_DATA, label='nvs')[0]
-
-    for x in range(int(p.info()[3] / 4096)):
-        p.writeblocks(x, bytearray(4096))
-
-    machine.reset()
+    exec(open("/scripts/reset_nvs.py").read())
 
 def remove_upd():
     try:
