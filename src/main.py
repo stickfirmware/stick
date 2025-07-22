@@ -1,5 +1,8 @@
 print("Stick Boot")
 
+# Uptime
+import modules.uptime as uptime
+
 class FakeST:
     def text(self, *k):
         return None
@@ -8,19 +11,20 @@ class FakeST:
 
 import machine, time
 import os
-machine.freq(240000000)
-
 import modules.osconstants as osc
+machine.freq(osc.ULTRA_FREQ)
 
 # Hold power
-print("\nEnable hold pin")
-power_hold = machine.Pin(4, machine.Pin.OUT)
-power_hold.value(1)
+if osc.HAS_HOLD_PIN:
+    print("\nEnable hold pin")
+    power_hold = machine.Pin(osc.HOLD_PIN, machine.Pin.OUT)
+    power_hold.value(1)
 
 import modules.buzzer as buzz
-buzzer = machine.PWM(machine.Pin(2), duty_u16=0, freq=500)
-buzz.set_volume(0.1)
-buzz.play_sound(buzzer, 2000, 0.0125)
+if osc.HAS_BUZZER:
+    buzzer = machine.PWM(machine.Pin(osc.BUZZER_PIN), duty_u16=0, freq=500)
+    buzz.set_volume(0.1)
+    buzz.play_sound(buzzer, 2000, 0.0125)
 
 print("Running starting scripts")
 for i in osc.BOOT_STARTING_SCRIPTS:
@@ -37,6 +41,7 @@ recovery = rbtn.value() == 0
 try:
     print("Load fonts")
     import fonts.def_8x8 as f8x8
+    import fonts.def_16x32 as f16x32
 
     # Init tft
     print("Init tft")
@@ -50,10 +55,16 @@ try:
             dc=machine.Pin(osc.LCD_DC, Pin.OUT),
             backlight=machine.PWM(Pin(osc.LCD_BL), freq=osc.LCD_BL_FREQ),
             rotation=osc.LCD_ROTATIONS["BUTTON_LEFT"])
-    tft.fill(0)
-    # 65535
-    tft.text(f8x8, "Stick firmware",0,0,2016)
-    tft.text(f8x8, "The firmware is booting...",0,0,2016)
+    load_bg = osc.LCD_LOAD_BG
+    text_color = osc.LCD_LOAD_TEXT
+    tft.fill(load_bg)
+    tft.text(f16x32, "Stick firmware",0,0,text_color, load_bg)
+    tft.text(f8x8, "Booting...",0,106,text_color, load_bg)
+    tft.fill_rect(0, 132, 240, 3, text_color)
+    tft.fill_rect(0, 112, 240, 3, text_color)
+    tft.fill_rect(0, 112, 3, 23, text_color)
+    tft.fill_rect(237, 112, 3, 23, text_color)
+    tft.text(f8x8, "Developed by Kitki30",0,32,text_color, load_bg)
 except Exception as e:
     tft = None
     print(str(e))
@@ -68,8 +79,9 @@ def set_f_boot(var):
 if tft == None:
     tft = FakeST()
     set_f_boot(None)
-else:
+else: 
     set_f_boot(tft)
+
 
 def recoveryf():
     exec(open(osc.BOOT_RECOVERY_PATH).read())
@@ -92,6 +104,7 @@ while True:
             machine.soft_reset()
     else:
         try:
+            uptime.uptime_bootloader = time.ticks_ms()
             print("Booting mainos")
             exec(open(osc.BOOT_MAINOS_PATH).read())
         except Exception as e:

@@ -3,6 +3,7 @@ import machine
 import time
 import esp32
 import modules.nvs as nvs
+import modules.osconstants as osc
 
 timezone_map = {
     0: (0, 0), 1: (1, 0), 2: (2, 0), 3: (3, 0),
@@ -17,6 +18,12 @@ timezone_map = {
     37: (-10, 0), 38: (-11, 0), 39: (-12, 0)
 }
 
+def wait_for_new_second():
+    now = time.localtime()
+    current_sec = now[5]
+    while time.localtime()[5] == current_sec:
+        time.sleep(0.01)
+
 def sync(rtc):
     n_settings = esp32.NVS("settings")
     timezoneIndex = nvs.get_int(n_settings, "timezoneIndex")
@@ -29,6 +36,8 @@ def sync(rtc):
         print(str(e))
         return False
 
+    wait_for_new_second()
+
     current_time = time.localtime()
     
     offset = timezone_map.get(timezoneIndex, (0,0))
@@ -38,8 +47,8 @@ def sync(rtc):
     utc_timestamp = time.mktime(current_time)
     local_timestamp = utc_timestamp + offset_sec
     local_time = time.localtime(local_timestamp)
-    ms = time.ticks_ms() % 1000
-    rtc.set_time((local_time[0], local_time[1], local_time[2], local_time[6], local_time[3], local_time[4], local_time[5], ms))
-    dt = rtc.get_time()
-    machine.RTC().datetime(dt)
+    
+    if osc.HAS_RTC == True:
+        rtc.set_time((local_time[0], local_time[1], local_time[2], local_time[6], local_time[3], local_time[4], local_time[5], 0))
+        dt = rtc.get_time()
     return True

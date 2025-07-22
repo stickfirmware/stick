@@ -3,13 +3,13 @@ BATTERY_MID = 3.65
 BATTERY_LOW = 3.25
 
 from machine import ADC, Pin
-
+import modules.osconstants as osc
 import bitmaps.battery as b_battery
 import bitmaps.battery_1 as b_battery_1
 import bitmaps.battery_2 as b_battery_2
 import bitmaps.battery_3 as b_battery_3
 
-adc = ADC(Pin(38))
+adc = ADC(Pin(osc.BATTERY_ADC))
 adc.atten(ADC.ATTN_11DB)
 
 def voltage(samplecount=10):
@@ -23,6 +23,14 @@ def voltage(samplecount=10):
     avg = samplecalc / len(samples)
     volt = avg / 4095 * 3.6 * 2
     return round(volt, 2)
+
+def percentage(voltage):
+    pr = (voltage - 3.00) / 1.20 * 100
+    if pr <= 0.00:
+        pr = 0.00
+    elif pr >= 100.00:
+        pr = 100.00
+    return pr
 
 def bitmap():
     v = voltage()

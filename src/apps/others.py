@@ -15,6 +15,7 @@ def set_btf(bta, btb, btc, ttft):
     tft = ttft
 
 def run():
+    import modules.osconstants as osc
     import modules.menus as menus
     import modules.nvs as nvs
     import esp32
@@ -57,4 +58,4 @@ def run():
         del a_pimark
         dechache('apps.pimarkx')
     gc.collect()
-    machine.freq(80000000)
+    machine.freq(osc.BASE_FREQ)

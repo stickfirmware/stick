@@ -1,5 +1,6 @@
 import modules.menus as menus
 import modules.nvs as nvs
+import modules.osconstants as osc
 import modules.openFile as openfile
 import modules.uptime as uptime
 import fonts.def_8x8 as f8x8
@@ -8,6 +9,7 @@ import esp32
 import machine
 import network
 import time
+import modules.qrcodes as qr
 import gc
 
 button_a = None
@@ -73,6 +75,9 @@ def run():
                     tft.set_backlight(nvs.get_float(n_settings, "backlight"))
             elif menu2 == 2:
                 work1 = True
+                if osc.HAS_IMU == False:
+                    work1 = False
+                    menus.menu("No IMU in your device :(", [("OK", 13)])
                 while work1 == True:
                     menu3 = menus.menu("Settings/st7789/Autorotate", [("Current: " + str(nvs.get_int(n_settings, "autorotate")), 1), ("Enable", 2), ("Disable", 3), ("Close", 13)])
                     if menu3 == 1:
@@ -150,10 +155,12 @@ def run():
                     addr = socket.getaddrinfo('0.0.0.0', 80)[0][-1] # nosec
                     s = socket.socket()
                     s.bind(addr)
+                    ip = str(ap.ifconfig()[0])
                     s.listen(1)
-                    tft.text(f8x8, "IP: 192.168.4.1",0,24,0,703)
-                    tft.text(f8x8, "Enter it in browser!",0,32,0,703)
-                
+                    tft.text(f8x8, "IP: " + ip,0,24,0,703)
+                    tft.text(f8x8, "Enter it in browser.",0,32,0,703)
+                    #tft.text(f8x8, "or scan the qr",0,40,0,703)
+                    #qr.make_qr(tft, "http://" + ip, 0, 48, size=3)
                     print('Listening on: 192.168.4.1')
 
                 while server == True:
@@ -294,19 +301,22 @@ def run():
             tft.text(f8x8, "Kitki30 Stick version " + str(v.MAJOR) + "." + str(v.MINOR) + "." + str(v.PATCH),0,0,ver_color)
             tft.text(f8x8, "by @Kitki30",0,8,ver_color)
             tft.text(f8x8, "MIT License",0,16,65535)
-            tft.text(f8x8, "Free RAM: " + str(round(memfree, 2)) + "MB",0,30,2016)
-            tft.text(f8x8, "Used RAM: " + str(round(used, 2)) + "MB",0,38,2016)
-            tft.text(f8x8, "Uptime: " + uptime.get_formated(),0,46,2016)
-            tft.text(f8x8, "Press button A to exit,",0,119,65535)
-            tft.text(f8x8, "button B for credits.",0,127,65535)
+            tft.text(f8x8, "For more details, scan the QR",0,30,2016)
+            qr.make_qr(tft, "https://github.com/stickfirmware/stick", 0, 38, size=2)
+            tft.text(f8x8, "Press button A to exit,",0,111,65535)
+            tft.text(f8x8, "button B for credits",0,119,65535)
+            tft.text(f8x8, "and button C for license.",0,127,65535)
             while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
                 time.sleep(0.02)
             if button_b.value() == 0:
                 openfile.set_btf(button_a, button_b, button_c, tft)
                 openfile.openMenu("/CREDITS")
+            if button_c.value() == 0:
+                openfile.set_btf(button_a, button_b, button_c, tft)
+                openfile.openMenu("/LICENSE")
         else:
             work = False
             
         
     gc.collect()
-    machine.freq(80000000)
+    machine.freq(osc.BASE_FREQ)

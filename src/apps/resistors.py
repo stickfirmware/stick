@@ -2,6 +2,7 @@
 # App ID: 1002
 
 import time
+import modules.osconstants as osc
 
 button_a = None
 button_b = None
@@ -59,9 +60,8 @@ def four():
     tft.text(f8x8, "Press button C to exit",0,8,2022)
     tft.text(f8x8, "A to change colors",0,16,2022)
     tft.text(f8x8, "B to change line",0,24,2022)
-    import bitmaps.resistor as b_res
-    tft.bitmap(b_res, 30, 30)
-    del b_res
+    tft.fill_rect(0, 65, 240, 20, 54938)
+    tft.fill_rect(25, 35, 190, 80, 5119)
     
     line_num = 1
     
@@ -138,9 +138,8 @@ def five():
     tft.text(f8x8, "Press button C to exit",0,8,2022)
     tft.text(f8x8, "A to change colors",0,16,2022)
     tft.text(f8x8, "B to change line",0,24,2022)
-    import bitmaps.resistor as b_res
-    tft.bitmap(b_res, 30, 30)
-    del b_res
+    tft.fill_rect(0, 65, 240, 20, 54938)
+    tft.fill_rect(25, 35, 190, 80, 5119)
     
     line_num = 1
     
@@ -224,7 +223,7 @@ def run():
     import fonts.def_8x8 as f8x8
     import machine
     
-    machine.freq(80000000)
+    machine.freq(osc.BASE_FREQ)
     
     if tft == None:
         print("Please call 'set_btf(bta. btb, btc, ttft)' first")

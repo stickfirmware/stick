@@ -19,6 +19,7 @@ def set_btf(bta, btb, btc, ttft, rtcc):
 
 def run():
     import modules.menus as menus
+    import modules.osconstants as osc
     import modules.nvs as nvs
     import esp32
     import machine
@@ -28,7 +29,7 @@ def run():
     def dechache(name):
         sys.modules.pop(name, None)
     
-    machine.freq(240000000)
+    machine.freq(osc.ULTRA_FREQ)
     menu1 = menus.menu("Menu", [("IR Remote", 1), ("Terminal (Needs CardKB)", 2), ("Music Player", 6), ("File explorer", 7), ("Others", 4), ("Settings", 3), ("Close", 13)])
     if menu1 == 3:
         import apps.settings as a_se
@@ -55,11 +56,14 @@ def run():
         del a_tm
         dechache('apps.terminal')
     elif menu1 == 6:
-        import apps.player as a_pl
-        a_pl.set_btf(button_a, button_b, button_c, tft)
-        a_pl.run()
-        del a_pl
-        dechache('apps.player')
+        if osc.HAS_BUZZER:
+            import apps.player as a_pl
+            a_pl.set_btf(button_a, button_b, button_c, tft)
+            a_pl.run()
+            del a_pl
+            dechache('apps.player')
+        else:
+            menus.menu("You don't have buzzer!", [("OK", 1)])
     elif menu1 == 7:
         import modules.fileexplorer as a_fe
         a_fe.set_btf(button_a, button_b, button_c, tft)
@@ -67,4 +71,4 @@ def run():
         del a_fe
         dechache('modules.fileexplorer')
     gc.collect()
-    machine.freq(80000000)
+    machine.freq(osc.BASE_FREQ)

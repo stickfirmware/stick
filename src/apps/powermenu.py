@@ -5,6 +5,7 @@ tft = None
 power_hold = None
 mpu = None
 
+import modules.osconstants as osc
 from machine import Pin
 import os, sys
 
@@ -35,7 +36,7 @@ def run():
     powermenu = menus.menu("Power", [("Sleep", 1), ("Power off", 2), ("Reboot", 3), ("Cancel", 4)])
     n_wifi = esp32.NVS("wifi")
     if powermenu == 1:
-        machine.freq(80000000)
+        machine.freq(osc.BASE_FREQ)
         wasConnected = False
         if nic.isconnected() == True:
             nic.disconnect()
@@ -49,7 +50,7 @@ def run():
             nic.active(True)
             nic.connect(nvs.get_string(n_wifi, "ssid"), nvs.get_string(n_wifi, "passwd"))
     elif powermenu == 2:
-        machine.freq(80000000)
+        machine.freq(osc.BASE_FREQ)
         nic.active(False)
         tft.fill(703)
         tft.text(f8x8, "Powering off...",0,0,65535,703)
@@ -57,7 +58,7 @@ def run():
         os.sync()
         power_hold.value(0)
     elif powermenu == 3:
-        machine.freq(80000000)
+        machine.freq(osc.BASE_FREQ)
         import fonts.def_8x8 as f8x8
         nic.active(False)
         tft.fill(703)
@@ -66,4 +67,4 @@ def run():
         os.sync()
         machine.reset()
     else:
-        machine.freq(80000000)
+        machine.freq(osc.BASE_FREQ)

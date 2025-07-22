@@ -33,6 +33,7 @@ options = dict(
     constant_folding=True,
 )
 
+compilations = 0
 total_files = 0
 compiled_files = 0
 not_compiled_files = 0
@@ -95,16 +96,38 @@ def comp_folder(src_folder, out_folder):
             comp_file(src_path, out_folder)
 
 if __name__ == "__main__":
-    comp_folder(SRC_DIR, OUT_DIR)
+    print("Stick firmware compile script")
+    l_dir = os.listdir("./configs")
+    for file in l_dir:
+        if file.endswith(".py"):
+            total_files = 0
+            compiled_files = 0
+            not_compiled_files = 0
+            size_original = 0
+            size_minified = 0
+            size_output = 0
+            print("Compilation started for: " + str(file))
+            if "osconstants.py" in os.listdir("./src/modules"):
+                try:
+                    os.remove("./src/modules/osconstants.py")
+                except FileNotFoundError:
+                    pass
+            try:
+                os.rename(os.path.join("./configs", file), "./src/modules/osconstants.py")
+            except Exception as e:
+                continue
+            compilations += 1
+            comp_folder(SRC_DIR, os.path.join(OUT_DIR, file.replace(".py","")))
+            print("\nBuild summary:")
+            print(f"Total files processed: {total_files}")
+            print(f"Compiled to .mpy: {compiled_files}")
+            print(f"Not compiled, saved as .py: {not_compiled_files}")
+            print(f"Original total size (all files): {size_original / 1024:.2f} KB")
+            print(f"Minified .py total size: {size_minified / 1024:.2f} KB")
+            print(f"Output total size (.mpy + copied files): {size_output / 1024:.2f} KB")
 
-    print("\nSummary:")
-    print(f"Total files processed: {total_files}")
-    print(f"Compiled to .mpy: {compiled_files}")
-    print(f"Not compiled, saved as .py: {not_compiled_files}")
-    print(f"Original total size (all files): {size_original / 1024:.2f} KB")
-    print(f"Minified .py total size: {size_minified / 1024:.2f} KB")
-    print(f"Output total size (.mpy + copied files): {size_output / 1024:.2f} KB")
-
-    if size_original > 0:
-        saved = 100 * (size_original - size_minified) / size_original
-        print(f"Space saved by minification (only .py files): {saved:.2f}%")
+            if size_original > 0:
+                saved = 100 * (size_original - size_minified) / size_original
+                print(f"Space saved by minification (only .py files): {saved:.2f}%")
+    print("\nScript summary:")
+    print("Builds: " + str(compilations))

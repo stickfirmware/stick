@@ -3,10 +3,13 @@ import machine
 import os
 import modules.menus as menus
 import fonts.def_8x8 as f8x8
+import modules.osconstants as osc
 
-frequencies = [20000000, 40000000, 80000000, 160000000, 240000000]
+frequencies = [osc.ULTRA_SLOW_FREQ, osc.SLOW_FREQ, osc.BASE_FREQ, osc.FAST_FREQ, osc.ULTRA_FREQ]
 testingTime = 15
 resultpath = "/temp/benchmark_results.txt"
+
+result = ""
 
 button_a = None
 button_b = None
@@ -42,41 +45,42 @@ def pi_benchmark(duration_ms=15000):
 
     return i, 4 * pi
 
-def save_result(freq, count, pi):
-    try:
-        with open(resultpath, "a") as f:
-            f.write("Frequency: {} MHz\n".format(freq // 1000000))
-            f.write("Iterations: {}\n".format(count))
-            f.write("it per MHz: {:.2f}\n".format(count / (freq / 1_000_000)))
-            f.write("Pi ~= {}\n".format(pi))
-            f.write("-" * 20 + "\n")
-    except Exception as e:
-        print("Saving error:", e)
+def res_add(freq, count, pi):
+    global result
+    result += "Frequency: {} MHz\n".format(freq // 1000000)
+    result += "Iterations: {}\n".format(count)
+    result += "it per MHz: {:.2f}\n".format(count / (freq / 1_000_000))
+    result += "Pi ~= {}\n".format(pi)
+    result += "-" * 20 + "\n"
 
-def presave():
-    try:
-        listd = os.listdir("/")
-        if "temp" not in listd:
-            os.mkdir("/temp")
-        with open(resultpath, "w") as f:
-            f.write("-" * 20 + "\n")
-            f.write("PiMarkX\n")
-            f.write("A part of Kitki30 Stick Software\n")
-            f.write("-" * 20 + "\n")
-            f.write("Settings:\n")
-            f.write("Testing time (Per freq): {}s\n".format(testingTime))
-            f.write("Frequencies: {}\n".format(frequencies))
-            f.write("-" * 20 + "\n")
-    except Exception as e:
-        print("Saving error:", e)
+def pre_res():
+    global result
+    listd = os.listdir("/")
+    if "temp" not in listd:
+        os.mkdir("/temp")
+    result += "-" * 20 + "\n"
+    result += "PiMarkX\n"
+    result += "A part of Stick firmware\n"
+    result += "-" * 20 + "\n"
+    result += "Settings:\n"
+    result += "Testing time (Per freq): {}s\n".format(testingTime)
+    result += "Frequencies: {}\n".format(frequencies)
+    result += "-" * 20 + "\n"
+    result += "Tip:\n"
+    result += "Results may be different when running in Stick firmware or standalone, when comparing platforms it is recomended to run PiMarkX in the same way or it can be inaccurate.\n"
+    result += "-" * 20 + "\n"
+    
+def saveResult():
+    with open(resultpath, "w") as f:
+        f.write(result)
+        f.close()
 
 def run():
-    print("\nPiMarkX")
     
-    presave()
     render = menus.menu("Do you want to run it?", [("Yes", 1), ("No", None)])
     if render == None:
         return
+    pre_res()
     tft.fill(0)
     tft.text(f8x8, "PiMarkX",0,0,2016)
     tft.text(f8x8, "Prepairing...",0,8,65535)
@@ -88,7 +92,25 @@ def run():
         machine.freq(freq)
         time.sleep(1)
         count, pi = pi_benchmark(testingTime * 1000)
-        save_result(freq, count, pi)
+        res_add(freq, count, pi)
         textpos += 8
+    tft.fill(0)
+    tft.text(f8x8, "Benchmark finished", 0, 0, 65535)
+    time.sleep(1)
+    saveResult()
     import modules.openFile as openfile
     openfile.openMenu(resultpath)
+    
+def run_no_gui():
+    print("\nPiMarkX")
+    pre_res()
+    for freq in frequencies:
+        tft.text(f8x8, "Testing on " + str(freq // 1000000) + " MHz",0,textpos,65535)
+        machine.freq(freq)
+        time.sleep(1)
+        count, pi = pi_benchmark(testingTime * 1000)
+        res_add(freq, count, pi)
+    saveResult()
+
+    print("Result saved to: " + resultpath)
+    
