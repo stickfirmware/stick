@@ -26,7 +26,7 @@ def run():
     def dechache(name):
         sys.modules.pop(name, None)
     
-    render = menus.menu("Menu/Others", [("PiMarkX", 5), ("Scorekeeper", 1), ("Resistor decoder", 2), ("Metronome", 3), ("TicTacToe", 4), ("Close", 13)])
+    render = menus.menu("Menu/Others", [("PiMarkX", 5), ("Scorekeeper", 1), ("Resistor decoder", 2), ("Metronome", 3), ("Close", 13)])
     if render == 1:
         import apps.scorekeeper as a_sc
         a_sc.set_btf(button_a, button_b, button_c, tft)
@@ -45,12 +45,6 @@ def run():
         a_me.run()
         del a_me
         dechache('apps.metronome')
-    elif render == 4:
-        import apps.tictactoe as a_tt
-        a_tt.set_btf(button_a, button_b, button_c, tft)
-        a_tt.run()
-        del a_tt
-        dechache('apps.tictactoe')
     elif render == 5:
         import apps.pimarkx as a_pimark
         a_pimark.set_btf(button_a, button_b, button_c, tft)

@@ -2,6 +2,7 @@ import fonts.def_8x8 as f8x8
 import time
 import machine
 import modules.osconstants as osc
+import gc
 
 button_a = None
 button_b = None
@@ -101,7 +102,7 @@ def menu(name, choices):
             bt2_d = 1
         
         time.sleep(0.02)
-        
+    gc.collect()
     machine.freq(curr_freq)
     if didnt_choose == True:
         return None

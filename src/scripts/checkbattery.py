@@ -1,9 +1,10 @@
 DISCHARGE_VOLTAGE = 3.00
 
+import modules.osconstants as osc
 from machine import ADC, Pin
 
 def run():
-    adc = ADC(Pin(38))
+    adc = ADC(Pin(osc.BATTERY_ADC))
     adc.atten(ADC.ATTN_11DB)
 
     def voltage(samplecount=100):

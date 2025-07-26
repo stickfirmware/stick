@@ -1,13 +1,15 @@
 import os
+import gc
 import machine
 import time
 
 sd = None
 mntpoint = "/sd"
 
-def init(slot=2, sck=26, cs=None, miso=36, mosi=0, freq=10000000):
+def init(slot=2, sck=40, cs=12, miso=39, mosi=14, freq=10_000_000):
     global sd
     try:
+        gc.collect()
         sd = machine.SDCard(slot=slot, sck=sck, cs=cs, miso=miso, mosi=mosi, freq=freq)
         return True
     except Exception as e:
@@ -18,6 +20,7 @@ def init(slot=2, sck=26, cs=None, miso=36, mosi=0, freq=10000000):
 def mount(mountpoint=mntpoint):
     try:
         os.sync()
+        gc.collect()
         vfs=os.VfsFat(sd)
         os.mount(vfs, mountpoint)
         return True

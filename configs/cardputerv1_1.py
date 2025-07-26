@@ -13,9 +13,15 @@ BATTERY_ADC = 10 # Battery ADC pin (Often called Battery Detect by M5Stack), use
 # Sound
 HAS_BUZZER = False # Has buzzer?
 BUZZER_PIN = 2
+
 HAS_MIC = True # Has mic?
 MIC_DATA = 46 # Microphone DATA Pin
 MIC_CLK = 43 # Mic Clock Pin
+
+HAS_SPEAKER = True # Has speaker?
+SPEAKER_BCLK  = 41  # Bit Clock (I2S BCLK)
+SPEAKER_SDATA = 42  # Serial Data (I2S DATA)
+SPEAKER_LRCLK = 43  # Left/Right Clock (I2S WS/LRCLK)
 
 # SD Card
 HAS_SD_SLOT = True # Has built-in sd card slot?
@@ -53,7 +59,7 @@ I2C_SCL = 22
 LCD_LOAD_BG = 0 # Loading screen background color
 LCD_LOAD_TEXT = 65535 # Loading screen text color
 LCD_SPI_SLOT = 1 # Something like with I2C, 0 or 1
-LCD_SPI_BAUD = 26_000_000 # SPI Baud in Hz
+LCD_SPI_BAUD = 10_000_000 # SPI Baud in Hz
 LCD_SPI_SCK= 36 # LCD SCK Pin
 LCD_SPI_MOSI= 35 # LCD MOSI Pin
 LCD_SPI_MISO = None # Leave it None, does nothing
@@ -65,10 +71,10 @@ LCD_BL_FREQ = 1000 # Backlight frequency, higher values may not work
 LCD_HEIGHT = 135 # LCD Height in pixels
 LCD_WIDTH = 240 # LCD Width in pixels
 LCD_ROTATIONS = {
-    "BUTTON_LEFT": 3, # M5Stick button on the left, Cardputer keyboard on bottom
-    "BUTTON_RIGHT": 1, # Stick button right, Cardputer kb top
-    "BUTTON_UPPER": 2, # Stick button up, cardputer kb left
-    "BUTTON_BOTTOM": 0 # Stick button down, cardputer kb right
+    "BUTTON_LEFT": 1, # M5Stick button on the left, Cardputer keyboard on bottom
+    "BUTTON_RIGHT": 3, # Stick button right, Cardputer kb top
+    "BUTTON_UPPER": 0, # Stick button up, cardputer kb left
+    "BUTTON_BOTTOM": 2 # Stick button down, cardputer kb right
     }
 IMU_ROTATE_THRESHOLD = 0.9 # IMU Sensitivity
 LCD_POWER_SAVE_BL = 0.3 # Backlight brightness on power saving
@@ -105,3 +111,5 @@ BOOT_UPDATE_PATH = "/update.py"
 
 # Others
 EMERG_BUFF_SIZE = 1000 # Emergency buffer allocation size in bytes
+
+

@@ -1,6 +1,7 @@
 # Buzzer script
 
 import time
+import modules.osconstants as osc
 
 duty = 0.5
 
@@ -9,10 +10,11 @@ def set_volume(volume):
     duty = volume
 
 def play_sound(buzzer, freq, duration):
-    buzzer.duty_u16(int(65536*duty))
-    buzzer.freq(freq)
-    time.sleep(duration)
-    buzzer.duty_u16(int(65536*0))
+    if osc.HAS_BUZZER:
+        buzzer.duty_u16(int(65536*duty))
+        buzzer.freq(freq)
+        time.sleep(duration)
+        buzzer.duty_u16(int(65536*0))
     
 def play_sound_ms(buzzer, freq, duration):
     play_sound(buzzer, freq, (duration / 1000))

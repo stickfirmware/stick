@@ -13,9 +13,15 @@ BATTERY_ADC = 38 # Battery ADC pin (Often called Battery Detect by M5Stack), use
 # Sound
 HAS_BUZZER = True # Has buzzer?
 BUZZER_PIN = 2
+
 HAS_MIC = True # Has mic?
 MIC_DATA = 34 # Microphone DATA Pin
 MIC_CLK = 0 # Mic Clock Pin
+
+HAS_SPEAKER = False # Has speaker?
+SPEAKER_BCLK  = 41  # Bit Clock (I2S BCLK)
+SPEAKER_SDATA = 42  # Serial Data (I2S DATA)
+SPEAKER_LRCLK = 43  # Left/Right Clock (I2S WS/LRCLK)
 
 # SD Card
 HAS_SD_SLOT = False # Has built-in sd card slot?
