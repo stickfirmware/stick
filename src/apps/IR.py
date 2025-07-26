@@ -37,9 +37,12 @@ def set_btf(bta, btb, btc, ttft):
     tft = ttft
 
 n_settings = esp32.NVS("settings")
-if nvs.get_int(n_settings, "irPin") == None:
+pin_nvs = nvs.get_int(n_settings, "irPin")
+if pin_nvs is None or pin_nvs not in osc.IR_ALLOWED_PINS:
     nvs.set_int(n_settings, "irPin", osc.IR_PIN)
-ir_pin = machine.PWM(machine.Pin(nvs.get_int(n_settings, "irPin"), machine.Pin.OUT), duty = 0)
+    pin_nvs = osc.IR_PIN
+print("IR pin from NVS:", repr(pin_nvs))
+ir_pin = machine.PWM(machine.Pin(pin_nvs, machine.Pin.OUT), duty=0)
 
 def send(necc, sonyc, panac, samsac, gcc):
     tft.text(f8x8, "Sending nec...",0,0,65535)
@@ -103,7 +106,10 @@ def run():
         elif render == 7:
             send(db_nec.freeze, db_sony.freeze, db_pana.freeze, db_samsa.freeze, db_gc.freeze)
         elif render == 8:
-            render = menus.menu("Change IR pin", [("GPIO19 (Default)", 19), ("GPIO26", 26), ("GPIO0", 0), ("GPIO32", 32), ("GPIO33", 33), ("Cancel", 99)])
+            render_pins = []
+            for pin in osc.IR_ALLOWED_PINS:
+                render_pins.append(("GPIO"+str(pin), pin))
+            render = menus.menu("Change IR pin", render_pins)
             if render != 99 and render != None:
                 nvs.set_int(n_settings, "irPin", render)
             ir_pin = machine.PWM(machine.Pin(nvs.get_int(n_settings, "irPin"), machine.Pin.OUT), duty = 0)

@@ -10,6 +10,7 @@ import machine
 import network
 import time
 import modules.qrcodes as qr
+import modules.numpad as keypad
 import gc
 
 button_a = None
@@ -47,7 +48,6 @@ def url_decode(s):
 
 
 def run():
-    import bitmaps.floppy as b_floppy
     n_settings = esp32.NVS("settings")
     n_wifi = esp32.NVS("wifi")
     n_boot = esp32.NVS("boot")
@@ -55,7 +55,7 @@ def run():
     
     work = True
     while work == True:
-        menu1 = menus.menu("Settings", [("LCD / st7789", 1), ("Buzzer", 2), ("Wi-Fi", 3), ("SD Card", 7), ("About", 8), ("Close", 13)])
+        menu1 = menus.menu("Settings", [("LCD / st7789", 1), ("Sound", 2), ("Wi-Fi", 3), ("SD Card", 7), ("About", 8), ("Close", 13)])
         if menu1 == 1:
             menu2 = menus.menu("Settings/st7789", [("Backlight", 1), ("Autorotate", 2), ("Power saving", 3), ("Close", 13)])
             if menu2 == 1:
@@ -117,86 +117,19 @@ def run():
                     else:
                         work1 = False
         elif menu1 == 3:
-            rendr =  menus.menu("Settings/Wi-Fi", [("Setup Mode", 1), ("Connection", 2), ("NTP Sync", 3), ("NTP Timezone", 4), ("Close", 13)])
+            rendr =  menus.menu("Settings/Wi-Fi", [("Setup AP", 1), ("Connection", 2), ("NTP Sync", 3), ("NTP Timezone", 4), ("Close", 13)])
             if rendr == 1:
-                server = True
-                tft.fill(0)
-                tft.text(f8x8, "Do you really want",0,0,65535)
-                tft.text(f8x8, "to enter Wi-Fi setup?",0,8,65535)
-                tft.text(f8x8, "You can exit only with",0,20,65535)
-                tft.text(f8x8, "reboot or connecting",0,28,65535)
-                tft.text(f8x8, "with Access Point of",0,36,65535)
-                tft.text(f8x8, "your M5StickC Plus2!",0,44,65535)
-                time.sleep(6)
-                men = menus.menu("Enter setup mode?", [("Yes",  1), ("No", 2)])
-                if men != 1:
-                    server = False
-                if server == True:
-                    tft.fill(703)
-                    tft.text(f8x8, "Wi-Fi setup mode!",0,0,0,703)
-                    nic = network.WLAN(network.STA_IF)
-                    ap = network.WLAN(network.AP_IF)
-                    ap.active(False)
-                    nic.disconnect()
-                    nic.active(False)
-                    time.sleep(0.2)
-                    time.sleep(0.3)
-                    ap = network.WLAN(network.WLAN.IF_AP)
-                    ap.active(True)
-                    ap.config(ssid='M5Stick-Config')
-                    ap.config(max_clients=1)
-                    tft.text(f8x8, "Connect to AP: ",0,8,0,703)
-                    tft.text(f8x8, "SSID: M5Stick-Config",0,16,0,703)
-                    try:
-                        import usocket as socket
-                    except:
-                        import socket
-                
-                    addr = socket.getaddrinfo('0.0.0.0', 80)[0][-1] # nosec
-                    s = socket.socket()
-                    s.bind(addr)
-                    ip = str(ap.ifconfig()[0])
-                    s.listen(1)
-                    tft.text(f8x8, "IP: " + ip,0,24,0,703)
-                    tft.text(f8x8, "Enter it in browser.",0,32,0,703)
-                    #tft.text(f8x8, "or scan the qr",0,40,0,703)
-                    #qr.make_qr(tft, "http://" + ip, 0, 48, size=3)
-                    print('Listening on: 192.168.4.1')
-
-                while server == True:
-                    conn, addr = s.accept()
-                    print('Connected with: ', addr)
-                    request = conn.recv(1024).decode('utf-8')
-                    request_line = request.split('\n')[0]
-                    path = request_line.split(' ')[1]
-
-                    if path.startswith('/config'):
-                        if '?' in path:
-                            query = path.split('?', 1)[1]
-                            params = {}
-                            for kv in query.split('&'):
-                                k, v = kv.split('=')
-                                params[k] = v
-
-                            if 'ssid' in params:
-                                nvs.set_float(n_wifi, "conf", 1)
-                                nvs.set_int(n_wifi, "autoConnect", params['auto_connect'])
-                                nvs.set_string(n_wifi, "ssid", url_decode(params['ssid']))
-                                nvs.set_string(n_wifi, "passwd", url_decode(params['password']))
-                                ap.active(False)
-                                server = False
-
-                        response = 'HTTP/1.1 200 OK\nContent-Type: text/plain\n\nConfig updated!'
-        
-                    elif path == '/':
-                        with open('/html/config.html', 'r') as f:
-                            response = 'HTTP/1.1 200 OK\nContent-Type: text/html\n\n' + f.read()
-
-                    else:
-                        response = 'HTTP/1.1 404 Not Found\nContent-Type: text/plain\n\nNot found'
-
-                    conn.sendall(response.encode('utf-8'))
-                    conn.close()
+                ssid = keypad.keyboard("Enter SSID", maxlen=32, hideInput=False)
+                if ssid == None:
+                    continue
+                password = keypad.keyboard("Enter password", maxlen=63, hideInput=False)
+                if password == None:
+                    continue
+                nvs.set_float(n_wifi, "conf", 1)
+                nvs.set_int(n_wifi, "autoConnect", 1)
+                nvs.set_string(n_wifi, "ssid", ssid)
+                nvs.set_string(n_wifi, "passwd", password)
+                menus.menu("Now you can connect!", [("OK",  1)])
             elif rendr == 2:
                 if int(nvs.get_float(n_wifi, "conf")) == 1:
                     try:
@@ -263,7 +196,6 @@ def run():
                 sd_menu = menus.menu("Settings/SD Card", [("Init", 1), ("Close", 13)])
                 if sd_menu == 1:
                     tft.fill(0)
-                    tft.bitmap(b_floppy, 5,5)
                     tft.text(f8x8, "Init SD...",135,30, 65535)
                     sdin = sd.init()
                     time.sleep(2)
@@ -279,7 +211,6 @@ def run():
                 sd_menu = menus.menu("Settings/SD Card", [("Unmount", 1), ("Close", 13)])
                 if sd_menu == 1:
                     tft.fill(0)
-                    tft.bitmap(b_floppy, 5,5)
                     tft.text(f8x8, "Unmount SD...",135,30, 65535)
                     sdin = sd.umount()
                     if sdin == True:

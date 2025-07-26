@@ -439,7 +439,6 @@ class ST7789:
             madctl |= _ST7789_MADCTL_BGR
         else:
             madctl &= ~_ST7789_MADCTL_BGR
-
         self._write(_ST7789_MADCTL, bytes([madctl]))
 
     def _set_window(self, x0, y0, x1, y1):

@@ -1,36 +1,26 @@
 import fonts.def_8x8 as f8x8
+import modules.osconstants as osc
 import fonts.def_16x32 as f16x32
 import modules.menus as menus
-import modules.nvs as nvs
-import esp32
-import os
+import uos
 import gc
+import array
 
-from modules.buzzer_music import music
-from time import sleep
+from time import sleep, ticks_ms, ticks_diff
+from machine import Pin, I2S
 
-from machine import Pin
-import modules.json as json
-
-n_settings = esp32.NVS("settings")
-    
 button_a = None
 button_b = None
 button_c = None
 tft = None
 
 def set_btf(bta, btb, btc, ttft):
-    global button_a
-    global button_b
-    global button_c
-    global tft
-    
+    global button_a, button_b, button_c, tft
     button_a = bta
     button_b = btb
     button_c = btc
     tft = ttft
 
-    
 def skeleton(text="Music Player"):
     tft.fill_rect(0, 0, 240, 3, 65535)
     tft.fill_rect(0, 16, 240, 3, 65535)
@@ -39,101 +29,177 @@ def skeleton(text="Music Player"):
     tft.fill_rect(237, 0, 3, 135, 65535)
     tft.fill_rect(3, 3, 234, 13, 0)
     tft.fill_rect(3, 19, 234, 113, 0)
-    tft.text(f8x8, text,5,5,65535)
-    
-def about():
-    skeleton("About")
-    tft.text(f16x32, "Music Player",5,20,1984)
-    tft.text(f8x8, "MIT License",5,52,65535)
-    tft.text(f8x8, "Used libraries:",5,62,65535)
-    tft.text(f8x8, "buzzer_music - MIT License",5,70,65535)
-    tft.text(f8x8, "For more see CREDITS file",5,78,65535)
-    tft.text(f8x8, "Press button A to exit!",5,124,65535)
-    while button_a.value() == 1:
-        sleep(0.02)
-    while button_a.value() == 0:
-        sleep(0.02)
-        
+    tft.text(f8x8, text, 5, 5, 65535)
+
+def volume_to_shift(volume):
+    if volume <= 0:
+        return -8
+    elif volume < 0.8:
+        return int((volume / 0.8) * 8 - 8)
+    else:
+        return int((volume - 0.8) / 0.2 * 2)
+
 def play(path):
     tft.fill(0)
-    tft.text(f8x8, "Loading...",0,0,65535)
-    vol = nvs.get_float(n_settings, "volume")
-    song = json.read(path)
+    tft.text(f8x8, "Loading...", 0, 0, 65535)
+
+    try:
+        uos.stat(path)
+    except OSError:
+        tft.fill(0)
+        tft.text(f8x8, "Error: File not found.", 0, 0, 65535)
+        sleep(2)
+        return
+
     tft.fill(0)
     skeleton()
-    tft.text(f8x8, song["name"],5,20,65535)
-    tft.text(f8x8, "Looping?: " + str(song["looping"]),5,28,65535)
-    tft.text(f8x8, "Volume: " + str(vol),5,36,65535)
-    tft.text(f8x8, "Press button A to exit!",5,124,65535)
-    
-    playSong = music(song["song"], pins=[Pin(2)], looping=song["looping"], duty=int(65536*vol))
-    
-    playing = True
-    while playing == True and button_a.value() == 1:
-        playing = playSong.tick()
-        sleep(0.04)
-    playSong.stop()
-    del playSong
-    del song
-    gc.collect()
+    tft.text(f8x8, path.split("/")[-1], 5, 25, 65535)
+
+    audio_out = I2S(
+        0,
+        sck=Pin(osc.SPEAKER_BCLK),
+        ws=Pin(osc.SPEAKER_LRCLK),
+        sd=Pin(osc.SPEAKER_SDATA),
+        mode=I2S.TX,
+        bits=16,
+        format=I2S.MONO,
+        rate=16000,
+        ibuf=4096
+    )
+
+    try:
+        with open(path, "rb") as f:
+            header = f.read(44)
+            file_size = uos.stat(path)[6]
+            data_length = file_size - 44
+            total_seconds = data_length // 32000
+            total_minutes = total_seconds // 60
+            total_seconds_remain = total_seconds % 60
+
+            current_pos = 0
+            last_displayed_time = -1
+            MAX_VOLUME = 0.9
+            volume = 0.7
+            paused = False
+            exit_timer_start = None
+
+            DEBOUNCE_MS = 200
+            last_a_press = 0
+            last_b_press = 0
+            last_c_press = 0
+
+            last_volume_display = None
+
+            while True:
+                now = ticks_ms()
+
+                if button_a.value() == 0:
+                    if exit_timer_start is None:
+                        exit_timer_start = now
+                    elif ticks_diff(now, exit_timer_start) > 1000:
+                        break
+                else:
+                    exit_timer_start = None
+
+                if button_a.value() == 0 and ticks_diff(now, last_a_press) > DEBOUNCE_MS:
+                    paused = not paused
+                    last_a_press = now
+                    sleep(0.05)
+
+                if button_b.value() == 0:
+                    new_vol = max(0.0, volume - 0.1)
+                    if new_vol != volume:
+                        volume = new_vol
+                    sleep(0.05)
+
+                if button_c.value() == 0:
+                    new_vol = min(MAX_VOLUME, volume + 0.1)
+                    if new_vol != volume:
+                        volume = new_vol
+                    sleep(0.05)
+
+                if paused:
+                    tft.fill_rect(5, 60, 200, 10, 0)
+                    tft.text(f8x8, "[PAUSED]", 5, 60, 65535)
+                    sleep(0.1)
+                    continue
+
+                data = f.read(1024)
+                if not data:
+                    break
+
+                samples = bytearray(data)
+                shift = volume_to_shift(volume)
+                I2S.shift(buf=samples, bits=16, shift=shift)
+                audio_out.write(samples)
+                
+                # Display time
+                current_pos += len(data)
         
-def listMusic():
-    music = os.listdir("/usr/music")
-    music_menu = []
-    index = 0
-    for i in music:
-        if i.endswith(".json"):
-            music_menu.append((str(i), index))
-        index += 1
-    if len(music_menu) == 0:
-        tft.fill(0)
-        tft.text(f8x8, "No music found!",0,0,65535)
-        sleep(1)
-        return
-    render = menus.menu("Music list", music_menu)
-    if render == None:
-        return
-    else:
-        if os.stat("/usr/music/"+music[render])[6] <= gc.mem_free() // 2:
-            play("/usr/music/" + music[render])
-        else:
-            tft.fill(0)
-            gc.collect()
-            tft.text(f8x8, "The file size is too high!",0,0,65535)
-            tft.text(f8x8, "Try emptying the RAM or trim",0,8,65535)
-            tft.text(f8x8, "the file in 'song' line.",0,8,65535)
-            sleep(1)
-            return
-            
-    
+                elapsed_sec = current_pos // 32000
+                if elapsed_sec != last_displayed_time:
+                    last_displayed_time = elapsed_sec
+                    elapsed_min = elapsed_sec // 60
+                    elapsed_remain = elapsed_sec % 60
+
+                    timestamp = "{:02}:{:02}/{:02}:{:02}".format(
+                        elapsed_min, elapsed_remain,
+                        total_minutes, total_seconds_remain
+                    )
+                    tft.fill_rect(5, 45, 230, 10, 0)
+                    tft.text(f8x8, timestamp, 5, 45, 65535)
+                
+                # Display volume
+                if last_volume_display != volume:
+                    tft.fill_rect(5, 60, 100, 8, 0)
+                    fill_width = int(100 * (volume / MAX_VOLUME))
+                    if fill_width > 0:
+                        tft.fill_rect(5, 60, fill_width, 8, 65535)
+                    tft.rect(5, 60, 100, 8, 65535)
+
+                    vol_percent = int((volume / MAX_VOLUME) * 100)
+                    if vol_percent > 100:
+                        vol_percent = 100
+
+                    vol_text = f"Vol: {vol_percent}%"
+                    tft.fill_rect(5 + 100 + 5, 60, 50, 8, 0)
+                    tft.text(f8x8, vol_text, 5 + 100 + 5, 60, 65535)
+
+                    last_volume_display = volume
+
+    except Exception as e:
+        print(f"Error during playback: {e}")
+        tft.text(f8x8, "Playback Error!", 5, 45, 65535)
+    finally:
+        audio_out.deinit()
+        gc.collect()
+
 def run():
     import sys
+    if not osc.HAS_SPEAKER:
+        menus.menu("You don't have a speaker!", [("OK", 1)])
+        return
+
     work = True
-    while work == True:
-        render = menus.menu("Music Player", [("List songs", 1), ("Browse music in explorer", 4), ("About", 2), ("Exit", 3)])
+    while work:
+        render = menus.menu("Music Player", [("Browse music in explorer", 4), ("Exit", 3)])
         try:
-            if render == 3:
-                work = False
-            elif render == 2:
-                about()
-            elif render == 1:
-                listMusic()
-            elif render == 4:
+            if render == 4:
                 import modules.fileexplorer as a_fe
                 a_fe.set_btf(button_a, button_b, button_c, tft)
-                browser = a_fe.run(True)
-                if browser != None:
-                    play(browser)
+                browser_path = a_fe.run(True)
+                if browser_path is not None:
+                    play(browser_path)
                 del a_fe
                 sys.modules.pop('modules.fileexplorer', None)
             else:
                 work = False
         except Exception as e:
-            print("Oops!\nSomething wrong has happened in Music Player\nLogs:\n"+str(e))
+            print(f"Oops!\nSomething wrong has happened in Music Player\nLogs:\n{e}")
             tft.fill(0)
             gc.collect()
-            tft.text(f16x32, "Oops!",0,0,1984)
-            tft.text(f8x8, "Something wrong has happened!",0,32,65535)
-            tft.text(f8x8, "Please try again!",0,40,65535)
+            tft.text(f16x32, "Oops!", 0, 0, 1984)
+            tft.text(f8x8, "Something wrong has happened!", 0, 32, 65535)
+            tft.text(f8x8, "Please try again!", 0, 40, 65535)
             sleep(3)
             work = False

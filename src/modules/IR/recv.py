@@ -1,6 +1,6 @@
 import machine, time
 
-ir_pin = machine.Pin(26, machine.Pin.IN, machine.Pin.PULL_UP)
+#ir_pin = machine.Pin(26, machine.Pin.IN, machine.Pin.PULL_UP)
 
 def set_ir(ir):
     global pwm

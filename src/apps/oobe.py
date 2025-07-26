@@ -34,7 +34,7 @@ def createConfig():
                     "id": "com.kitki30.musicplayer",
                     "file": "helpers.playmusic",
                     "hidden": True,
-                    "handleExtensions": ["*.json", "*.music"]
+                    "handleExtensions": ["*.json", "*.wav"]
                     },
                 {
                     "name": "Run in Python executor",

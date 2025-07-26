@@ -45,7 +45,6 @@ def bitmap():
     
 def run(tft):
     bitm = bitmap()
-    print("Rendering battery bitmap")
     if bitm == 3:
         tft.bitmap(b_battery_3, 210,3)
     elif bitm == 2:

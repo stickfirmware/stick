@@ -2,6 +2,7 @@ import esp32
 import machine, sys
 import modules.nvs as nvs
 import time
+import modules.osconstants as osc
 
 def sleep(tft, button_c, verbose=False):
     def log(msg):
@@ -10,7 +11,10 @@ def sleep(tft, button_c, verbose=False):
     n_settings = esp32.NVS("settings")
     log("Sleeping")
     log("Set wake on ext0")
-    esp32.wake_on_ext0(pin = button_c, level = esp32.WAKEUP_ALL_LOW)
+    if osc.INPUT_METHOD == 1:
+        esp32.wake_on_ext0(pin = button_c, level = esp32.WAKEUP_ALL_LOW)
+    elif osc.INPUT_METHOD == 2:
+        esp32.wake_on_ext0(pin = machine.Pin(0,machine.Pin.IN, machine.Pin.PULL_UP), level = esp32.WAKEUP_ALL_LOW)
     log("Turn off backlight")
     tft.set_backlight(0)
     log("Clear display")
