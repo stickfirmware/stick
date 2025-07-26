@@ -9,7 +9,8 @@ Makes your stick a usefull EDC device
 > Don't be scared if there was no commit for a whole month, i work in the backgroud and don't feel like commiting broken features. You can contact me on telegram (@Kitki300) if you want latest off github copy.
 
 ## Supported devices
-**M5StickC Plus2** is the only device supported, if M5Stack will release a new stick, i will probably try to port this firmware to it.
+- M5StickC Plus 2 (Button A - Confirm, B - Cycle, C - Cancel/Exit)
+- Cardputer (Enter - Confirm, Tab - Cycle, ESC - Cancel/Exit
 
 ## Milestones
 - [X] IMU Support
@@ -17,14 +18,14 @@ Makes your stick a usefull EDC device
 - [ ] Better power saving (In progress)
 - [ ] Bluethooth support
 - [ ] Autoupdate
-- [ ] Better SD card support
+- [X] Better SD card support
 
 ## Supported UNIT modules
-- CardKB for terminal
+- CardKB
 
 ## Instalation
 We need to add an installer later
 
-1. Install micropython with esp_tool, thonny or M5Burner (v1.23.0 is the only tested version, make sure it has SPIRAM support)
+1. Install micropython with esp_tool, thonny or M5Burner (Make sure to download correct version!)
 2. Copy the files from **src** directory, using thonny (with files view) or something else
 3. Done!
