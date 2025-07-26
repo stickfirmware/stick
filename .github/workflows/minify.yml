@@ -2,8 +2,7 @@ name: Compile
 on:
   push:
     branches:
-      - dev
-      - master
+      - "**"
 
 permissions:
   contents: read
@@ -27,7 +26,7 @@ jobs:
       - name: Install mpy-cross
         run: pip install mpy-cross
 
-      - name: Minify
+      - name: Compile
         run: python tools/compile.py
 
       - name: Upload artifact
