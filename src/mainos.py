@@ -337,68 +337,77 @@ def wake_up():
     machine.freq(osc.BASE_FREQ)
 
 uptime.uptime_loaded = time.ticks_ms()
-
+was_sleep_triggered = False 
 while True:
     if is_in_saving == False:
         machine.freq(osc.BASE_FREQ)
     else:
         machine.freq(osc.SLOW_FREQ)
+
     if menu == 0 and menu_change == False:
         app_clock.clock()
     elif menu == 1 and menu_change == False:
         app_clock.clock_vert()
     elif menu_change == True:
-        
-        # Render base faster
+        if was_sleep_triggered:
+            tft.set_backlight(prev_bl)
+            was_sleep_triggered = False
+
         machine.freq(osc.ULTRA_FREQ)
         render_battery = True
-        
         is_in_saving = False
         sleep_time = time.ticks_ms()
         app_clock.set_tft(tft)
         auto_rotate = nvs.get_int(n_settings, "autorotate")
         allow_saving = nvs.get_int(n_settings, "allowsaving")
+
         if auto_rotate == 0:
             stable_orientation = osc.LCD_ROTATIONS["BUTTON_LEFT"]
-            if osc.HAS_IMU == True: 
+            if osc.HAS_IMU:
                 mpu.sleep_on()
         else:
-            if osc.HAS_IMU == True: 
+            if osc.HAS_IMU:
                 mpu.sleep_off()
             else:
                 auto_rotate = 0
-        if stable_orientation == osc.LCD_ROTATIONS["BUTTON_UPPER"] or stable_orientation == osc.LCD_ROTATIONS["BUTTON_BOTTOM"]:
-            tft.rotation(int(stable_orientation))
+
+        tft.rotation(int(stable_orientation))
+        if stable_orientation in [osc.LCD_ROTATIONS["BUTTON_UPPER"], osc.LCD_ROTATIONS["BUTTON_BOTTOM"]]:
             app_clock.run_clock_vert()
             menu = 1
             set_buttons()
         else:
-            tft.rotation(int(stable_orientation))
             app_clock.run_clock()
             if stable_orientation == osc.LCD_ROTATIONS["BUTTON_LEFT"]:
                 set_buttons()
             else:
                 set_buttons(True)
-            
             menu = 0
+
         menus.set_btf(button_a, button_b, button_c, tft)
         npad.set_btf(button_a, button_b, button_c, tft)
-        
         menu_change = False
+
     if conn_time is not None:
         if time.ticks_diff(time.ticks_ms(), conn_time) >= osc.WIFI_DISABLE_TIMEOUT:
             nic = network.WLAN(network.STA_IF)
-            if nic.isconnected() == False:
+            if not nic.isconnected():
                 nic.active(False)
+    
+    # Power saving
     if not is_in_saving and time.ticks_diff(time.ticks_ms(), sleep_time) >= osc.POWER_SAVE_TIMEOUT and allow_saving == 1:
+        # Disable debug/battery info for less lag
+        tft.fill_rect(4, 116, 190, 16, 0)
+        
         is_in_saving = True
         tft.set_backlight(osc.LCD_POWER_SAVE_BL)
         auto_rotate = 0
         stable_orientation = osc.LCD_ROTATIONS["BUTTON_LEFT"]
-        if osc.HAS_IMU == True: 
+        if osc.HAS_IMU:
             mpu.sleep_on()
-        menu_change = True
+        was_sleep_triggered = True
         machine.freq(osc.SLOW_FREQ)
+
     if auto_rotate == 1 and time.ticks_diff(time.ticks_ms(), imu_delay) >= osc.IMU_CHECK_TIME and osc.HAS_IMU:
         prev_bl = nvs.get_float(n_settings, "backlight")
         if not is_in_saving:
@@ -499,14 +508,14 @@ while True:
         sleep_time = time.ticks_ms()
             
     # Battery check
-    if time.ticks_diff(time.ticks_ms(), diagnostic_time) >= osc.DIAGNOSTIC_REFRESH_TIME and menu  == 0:
+    if not is_in_saving and time.ticks_diff(time.ticks_ms(), diagnostic_time) >= osc.DIAGNOSTIC_REFRESH_TIME and menu == 0:
         diagnostic_time = time.ticks_ms()
         battery_shutdown.run()
         locks = nvs.get_int(n_locks, "dummy")
         gc.collect()
         volts = b_check.voltage()
         if menu == 0:
-            tft.fill_rect(4, 116, 190, 8, 0)
+            tft.fill_rect(4, 116, 190, 16, 0)
             if locks == 0:
                 tft.text(f8x8, "CPU: " + str(machine.freq() / 1000000) + "MHz",4,116,703)
             pr = b_check.percentage(volts)
