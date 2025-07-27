@@ -171,6 +171,8 @@ if osc.HAS_SHARED_I2C == True:
         dt = rtc.get_time()
         machine.RTC().datetime(dt)
         debug.log(dt)
+    else:
+        rtc = None
     
     # Init IMU/MPU
     if osc.HAS_IMU == True: 
@@ -182,9 +184,12 @@ if osc.HAS_SHARED_I2C == True:
         if auto_rotate == 0:
             mpu.sleep_on()
     else:
+        mpu = None
         nvs.set_int(n_settings, "autorotate", 0)
         auto_rotate = 0
 else:
+    mpu = None
+    rtc = None
     nvs.set_int(n_settings, "autorotate", 0)
     auto_rotate = 0
     osc.HAS_IMU = False
@@ -221,6 +226,17 @@ elif osc.INPUT_METHOD == 2:
     button_b = ckb.buttonemu('tab')
     button_c = ckb.buttonemu('`')
 
+# Init IO manager
+debug.log("Init IO manager", True)
+import modules.io_manager as io_man
+io_man.set_btn_a(button_a)
+io_man.set_btn_b(button_b)
+io_man.set_btn_c(button_c)
+io_man.set_tft(tft)
+io_man.set_rtc(rtc)
+io_man.set_imu(mpu)
+io_man.set_power_hold(power_hold)
+
 # Invert buttons
 def set_buttons(inverted=False):
     global button_b
@@ -232,10 +248,8 @@ def set_buttons(inverted=False):
         else:
             button_b = Pin(osc.BUTTON_B_PIN, Pin.IN, Pin.PULL_UP)
             button_c = Pin(osc.BUTTON_C_PIN, Pin.IN, Pin.PULL_UP)
-
-render_bar("Check OOBE...", True)
-#import apps.oobe as oobe
-#decache("apps.oobe")
+        io_man.set_btn_b(button_b)
+        io_man.set_btn_c(button_c)
 
 render_bar("Wi-Fi init...", True)
 
@@ -270,14 +284,6 @@ import modules.battery_check as b_check
 menu = 0
 menu_change = True
 render_battery = False
-
-# Set buttons for modules
-import modules.menus as menus
-menus.set_btf(button_a, button_b, button_c, tft)
-import modules.numpad as npad
-npad.set_btf(button_a, button_b, button_c, tft)
-import modules.openFile as openfile
-openfile.set_btf(button_a, button_b, button_c, tft)
 
 # Loop timings
 ntp_first = True
@@ -408,8 +414,6 @@ while True:
                 set_buttons(True)
             menu = 0
 
-        menus.set_btf(button_a, button_b, button_c, tft)
-        npad.set_btf(button_a, button_b, button_c, tft)
         menu_change = False
     
     # Disable wi-fi if not connected
@@ -466,7 +470,6 @@ while True:
             if menu == 0:
                 allow_only_landscape()
                 import apps.lockmen as app_lockmen
-                app_lockmen.set_btf(button_a, button_b, button_c, tft)
                 app_lockmen.run()
                 del app_lockmen
                 menu = 0
@@ -489,7 +492,6 @@ while True:
                 machine.RTC().datetime(dt)
             try:
                 import apps.menu as app_menu
-                app_menu.set_btf(button_a, button_b, button_c, tft, rtc)
                 app_menu.run()
                 del app_menu
             except Exception as e:
@@ -514,7 +516,6 @@ while True:
         if menu == 0:
             import apps.powermenu as app_powermen
             allow_only_landscape()
-            app_powermen.set_btf(button_a, button_b, button_c, power_hold, tft, mpu)
             app_powermen.run()
             del app_powermen
             menu = 0
@@ -534,7 +535,6 @@ while True:
             if menu == 0:
                 allow_only_landscape()
                 import apps.lockmen as app_lockmen
-                app_lockmen.set_btf(button_a, button_b, button_c, tft)
                 app_lockmen.run()
                 del app_lockmen
                 menu = 0

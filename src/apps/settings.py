@@ -12,25 +12,20 @@ import time
 import modules.qrcodes as qr
 import modules.numpad as keypad
 import gc
+import modules.io_manager as io_man
 
-button_a = None
-button_b = None
-button_c = None
-tft = None
-rtc = None
+button_a = io_man.get_btn_a()
+button_b = io_man.get_btn_b()
+button_c = io_man.get_btn_c()
+tft = io_man.get_tft()
 
-def set_btf(bta, btb, btc, ttft, rtcc):
-    global button_a
-    global button_b
-    global button_c
-    global tft
-    global rtc
-    
-    button_a = bta
-    button_b = btb
-    button_c = btc
-    tft = ttft
-    rtc = rtcc
+# Refresh io
+def load_io():
+    global button_c, button_a, button_b, tft
+    button_a = io_man.get_btn_a()
+    button_b = io_man.get_btn_b()
+    button_c = io_man.get_btn_c()
+    tft = io_man.get_tft()
     
 def url_decode(s):
     res = ''
@@ -48,10 +43,9 @@ def url_decode(s):
 
 
 def run():
+    load_io()
     n_settings = esp32.NVS("settings")
     n_wifi = esp32.NVS("wifi")
-    n_boot = esp32.NVS("boot")
-    n_crash = esp32.NVS("crash")
     
     work = True
     while work == True:
@@ -240,10 +234,8 @@ def run():
             while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
                 time.sleep(0.02)
             if button_b.value() == 0:
-                openfile.set_btf(button_a, button_b, button_c, tft)
                 openfile.openMenu("/CREDITS")
             if button_c.value() == 0:
-                openfile.set_btf(button_a, button_b, button_c, tft)
                 openfile.openMenu("/LICENSE")
         else:
             work = False

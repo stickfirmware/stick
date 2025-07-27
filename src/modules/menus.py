@@ -3,27 +3,26 @@ import time
 import machine
 import modules.osconstants as osc
 import gc
+import modules.io_manager as io_man
 
-button_a = None
-button_b = None
-button_c = None
-tft = None
-
-def set_btf(bta, btb, btc, ttft):
-    global button_a
-    global button_b
-    global button_c
-    global tft
+button_a = io_man.get_btn_a()
+button_b = io_man.get_btn_b()
+button_c = io_man.get_btn_c()
+tft = io_man.get_tft()
     
-    button_a = bta
-    button_b = btb
-    button_c = btc
-    tft = ttft
+# Refresh io
+def load_io():
+    global button_c, button_a, button_b, tft
+    button_a = io_man.get_btn_a()
+    button_b = io_man.get_btn_b()
+    button_c = io_man.get_btn_c()
+    tft = io_man.get_tft()
     
 def elems_split(arr, chunk_size=13):
     return [arr[i:i+chunk_size] for i in range(0, len(arr), chunk_size)]
 
 def menu(name, choices):
+    load_io()
     curr_freq = machine.freq()
     machine.freq(osc.ULTRA_FREQ)
     tft.fill_rect(0, 0, 240, 3, 65535)
@@ -47,15 +46,24 @@ def menu(name, choices):
     update = True
     page_upd = True
     chosen = False
+    
+    # Debounce
     bt1_d = button_a.value()
     bt2_d = button_b.value()
     bt3_d = button_c.value()
+    
+    # Return to base freq after render
     machine.freq(osc.BASE_FREQ)
+    
+    # Main menu loop
     while chosen == False:
+        # Update marker
         if update:
             tft.fill_rect(15, 19, 8, 104, 0)
             tft.text(f8x8, ">", 15, (17 + ((choice) * 8)), 20365)
             update = False
+            
+        # Update page
         if page_upd == True:
             lcd_space = 13
             lcd_curr = 25
@@ -102,8 +110,11 @@ def menu(name, choices):
             bt2_d = 1
         
         time.sleep(0.02)
+        
     gc.collect()
+    # Return to starting frequency
     machine.freq(curr_freq)
+    
     if didnt_choose == True:
         return None
     else:

@@ -3,8 +3,11 @@ import machine, sys
 import modules.nvs as nvs
 import time
 import modules.osconstants as osc
+import modules.io_manager as io_man
 
-def sleep(tft, button_c, verbose=False):
+def sleep(verbose=False):
+    button_c = io_man.get_btn_c()
+    tft = io_man.get_tft()
     def log(msg):
         if verbose == True:
             print("[SLEEP]" + msg)

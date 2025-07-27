@@ -2,26 +2,14 @@ import fonts.def_8x8 as f8x8
 import fonts.def_16x32 as f16x32
 import modules.menus as menus
 import modules.nvs as nvs
-import esp32
-import os
 import gc
 import time
+import modules.io_manager as io_man
 
-button_a = None
-button_b = None
-button_c = None
-tft = None
-
-def set_btf(bta, btb, btc, ttft):
-    global button_a
-    global button_b
-    global button_c
-    global tft
-    
-    button_a = bta
-    button_b = btb
-    button_c = btc
-    tft = ttft
+button_a = io_man.get_btn_a()
+button_b = io_man.get_btn_b()
+button_c = io_man.get_btn_c()
+tft = io_man.get_tft()
 
 
 def splittext(text):
@@ -126,6 +114,12 @@ def showfile(file):
         time.sleep(0.02)
     
 def run():
+    global button_c, button_a, button_b, tft
+    button_a = io_man.get_btn_a()
+    button_b = io_man.get_btn_b()
+    button_c = io_man.get_btn_c()
+    tft = io_man.get_tft()
+    
     import sys
     work = True
     while work == True:
@@ -135,7 +129,6 @@ def run():
                 work = False
             elif render == 1:
                 import modules.fileexplorer as a_fe
-                a_fe.set_btf(button_a, button_b, button_c, tft)
                 browser = a_fe.run(True)
                 if browser != None:
                     showfile(browser)

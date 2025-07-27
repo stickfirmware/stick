@@ -1,7 +1,7 @@
 import time
-import machine
+import modules.io_manager as io_man
 
-ir_pin = None
+ir_pin = io_man.get_IR()
 
 def set_ir(pin):
     global ir_pin
@@ -31,6 +31,8 @@ def send_panasonic(data, bits=48):
     ir_pin.duty(0)
 
 def send_array(codes):
+    global ir_pin
+    ir_pin = io_man.get_IR()
     for data in codes:
         print("Sending Panasonic (Code: " + str(data) + ")")
         send_panasonic(data, 48)

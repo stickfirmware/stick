@@ -1,9 +1,8 @@
-tft = None
 import fonts.def_8x8 as f8x8
 
-def set_btf(bta, btb, btc, ttft):
-    global tft
-    tft = ttft
+import modules.io_manager as io_man
+
+tft = io_man.get_tft()
     
 def openFile(path):
     print("IN")

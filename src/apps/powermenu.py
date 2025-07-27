@@ -1,37 +1,28 @@
-button_a = None
-button_b = None
-button_c = None
-tft = None
-power_hold = None
-mpu = None
-
 import modules.osconstants as osc
-from machine import Pin
-import os, sys
+import os
+import modules.io_manager as io_man
+import esp32
+import modules.nvs as nvs
+import modules.menus as menus
+import machine
+import modules.sleep as m_sleep
+import fonts.def_8x8 as f8x8
+import network
 
-def set_btf(bta, btb, btc, power_h, ttft, mmpu):
-    global button_a
-    global button_b
-    global button_c
-    global tft
-    global power_hold
-    global mpu
-    
-    power_hold = power_h
-    button_a = bta
-    button_b = btb
-    button_c = btc
-    tft = ttft
-    mpu = mmpu
+button_a = io_man.get_btn_a()
+button_b = io_man.get_btn_b()
+button_c = io_man.get_btn_c()
+tft = io_man.get_tft()
+power_hold = io_man.get_power_hold()
+mpu = io_man.get_imu()
 
 def run():
-    import esp32
-    import modules.nvs as nvs
-    import modules.menus as menus
-    import machine
-    import modules.sleep as m_sleep
-    import fonts.def_8x8 as f8x8
-    import network
+    global button_c, button_a, button_b, tft
+    button_a = io_man.get_btn_a()
+    button_b = io_man.get_btn_b()
+    button_c = io_man.get_btn_c()
+    tft = io_man.get_tft()
+    
     nic = network.WLAN(network.STA_IF)
     powermenu = menus.menu("Power", [("Sleep", 1), ("Power off", 2), ("Reboot", 3), ("Cancel", 4)])
     n_wifi = esp32.NVS("wifi")
@@ -45,7 +36,7 @@ def run():
         os.sync()
         if mpu != None:
             mpu.sleep_on()
-        m_sleep.sleep(tft, button_c, True)
+        m_sleep.sleep(True)
         if mpu != None:
             mpu.sleep_off()
         if wasConnected == True:
@@ -60,7 +51,7 @@ def run():
         os.sync()
         if osc.HAS_HOLD_PIN:
             power_hold.value(0)
-        m_sleep.sleep(tft, button_c, True)
+        m_sleep.sleep(True)
     elif powermenu == 3:
         machine.freq(osc.BASE_FREQ)
         import fonts.def_8x8 as f8x8

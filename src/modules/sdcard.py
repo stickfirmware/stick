@@ -1,7 +1,6 @@
 import os
 import gc
 import machine
-import time
 
 sd = None
 mntpoint = "/sd"

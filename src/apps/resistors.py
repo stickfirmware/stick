@@ -4,21 +4,12 @@
 import time
 import modules.osconstants as osc
 
-button_a = None
-button_b = None
-button_c = None
-tft = None
+import modules.io_manager as io_man
 
-def set_btf(bta, btb, btc, ttft):
-    global button_a
-    global button_b
-    global button_c
-    global tft
-    
-    button_a = bta
-    button_b = btb
-    button_c = btc
-    tft = ttft
+button_a = io_man.get_btn_a()
+button_b = io_man.get_btn_b()
+button_c = io_man.get_btn_c()
+tft = io_man.get_tft()
     
 #BLACK = 0 #1
 #BROWN = 14693 #2
@@ -219,16 +210,17 @@ def five():
             work = False
 
 def run():
+    global button_c, button_a, button_b, tft
+    button_a = io_man.get_btn_a()
+    button_b = io_man.get_btn_b()
+    button_c = io_man.get_btn_c()
+    tft = io_man.get_tft()
     import modules.menus as menus
     import fonts.def_8x8 as f8x8
     import machine
     
     machine.freq(osc.BASE_FREQ)
-    
-    if tft == None:
-        print("Please call 'set_btf(bta. btb, btc, ttft)' first")
-        return
-    
+
     print("Going into main loop")
     del machine
     

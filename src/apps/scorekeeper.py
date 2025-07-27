@@ -1,23 +1,19 @@
 # Score keeper app
 # App ID: 1001
 
-button_a = None
-button_b = None
-button_c = None
-tft = None
+import modules.io_manager as io_man
 
-def set_btf(bta, btb, btc, ttft):
-    global button_a
-    global button_b
-    global button_c
-    global tft
-    
-    button_a = bta
-    button_b = btb
-    button_c = btc
-    tft = ttft
+button_a = io_man.get_btn_a()
+button_b = io_man.get_btn_b()
+button_c = io_man.get_btn_c()
+tft = io_man.get_tft()
 
 def run():
+    global button_c, button_a, button_b, tft
+    button_a = io_man.get_btn_a()
+    button_b = io_man.get_btn_b()
+    button_c = io_man.get_btn_c()
+    tft = io_man.get_tft()
     import modules.menus as menus
     import modules.nvs as nvs
     import esp32
@@ -27,10 +23,6 @@ def run():
     machine.freq(osc.ULTRA_FREQ)
     
     app_storage = esp32.NVS("apps_1001")
-    
-    if tft == None:
-        print("Please call 'set_btf(bta. btb, btc, ttft)' first")
-        return
     
     print("Going into main loop")
     

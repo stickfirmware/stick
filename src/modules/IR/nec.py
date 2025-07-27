@@ -1,12 +1,7 @@
-import machine
 import time
+import modules.io_manager as io_man
 
-pwm = None
-
-def set_ir(ir):
-    global pwm
-    pwm = ir
-    
+pwm = io_man.get_IR()
 
 def ir_on():
     pwm.freq(38000)
@@ -50,6 +45,8 @@ def send_nec(address, command):
     ir_off()
 
 def send_array(codes):
+    global pwm
+    pwm = io_man.get_IR()
     for address, command in codes:
         print("Sending NEC (Addr: "+ str(address) + " Cmd: " + str(command) + ")")
         send_nec(address, command)
