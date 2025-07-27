@@ -89,6 +89,7 @@ def play(path):
             last_c_press = 0
 
             last_volume_display = None
+            was_paused = False
 
             while True:
                 now = ticks_ms()
@@ -103,6 +104,8 @@ def play(path):
 
                 if button_a.value() == 0 and ticks_diff(now, last_a_press) > DEBOUNCE_MS:
                     paused = not paused
+                    if paused:
+                        was_paused = True
                     last_a_press = now
                     sleep(0.05)
 
@@ -150,7 +153,7 @@ def play(path):
                     tft.text(f8x8, timestamp, 5, 45, 65535)
                 
                 # Display volume
-                if last_volume_display != volume:
+                if last_volume_display != volume or was_paused:
                     tft.fill_rect(5, 60, 100, 8, 0)
                     fill_width = int(100 * (volume / MAX_VOLUME))
                     if fill_width > 0:
@@ -166,6 +169,7 @@ def play(path):
                     tft.text(f8x8, vol_text, 5 + 100 + 5, 60, 65535)
 
                     last_volume_display = volume
+                was_paused = False
 
     except Exception as e:
         print(f"Error during playback: {e}")
