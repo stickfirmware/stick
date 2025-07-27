@@ -212,19 +212,11 @@ render_bar("Init buttons...", True)
 
 # Init buttons
 debug.log("Init buttons")
-if osc.INPUT_METHOD == 1:
-    debug.log("Input method 1 - 3 Buttons")
-    # Normal inputs, over gpio pins
-    button_a = Pin(osc.BUTTON_A_PIN, Pin.IN, Pin.PULL_UP)
-    button_b = Pin(osc.BUTTON_B_PIN, Pin.IN, Pin.PULL_UP)
-    button_c = Pin(osc.BUTTON_C_PIN, Pin.IN, Pin.PULL_UP)
-elif osc.INPUT_METHOD == 2:
-    debug.log("Input method 2 - Cardputer")
-    # Cardputer inputs, fake machine.Pin using keyboard keys
-    import modules.cardputer_kb as ckb
-    button_a = ckb.buttonemu('enter')
-    button_b = ckb.buttonemu('tab')
-    button_c = ckb.buttonemu('`')
+import modules.button_init as btn_init
+buttons = btn_init.init_buttons()
+button_a = buttons[0]
+button_b = buttons[1]
+button_c = buttons[2]
 
 # Init IO manager
 render_bar("Init IO manager", True)
