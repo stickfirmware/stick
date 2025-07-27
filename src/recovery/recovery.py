@@ -16,17 +16,29 @@ def init_tft():
         tft.fill(0)
         return tft
     except Exception as e:
+        print(e)
         return None
     
-tft = init_tft()
+import modules.fastboot_vars as fvars
+if fvars.TFT != None:
+    tft = fvars.TFT
+else:
+    tft = init_tft()
 from machine import Pin
-button_a = Pin(37, Pin.IN, Pin.PULL_UP)
-button_b = Pin(39, Pin.IN, Pin.PULL_UP)
-button_c = Pin(35, Pin.IN, Pin.PULL_UP)
+import modules.button_init as btn_init
+buttons = btn_init.init_buttons()
+button_a = buttons[0]
+button_b = buttons[1]
+button_c = buttons[2]
+print("Init IO manager")
+import modules.io_manager as io_man
+io_man.set_btn_a(button_a)
+io_man.set_btn_b(button_b)
+io_man.set_btn_c(button_c)
+io_man.set_tft(tft)
 
 import machine
 import modules.menus as menus
-menus.set_btf(button_a, button_b, button_c, tft)
 
 def reset_nvs():
     exec(open("/scripts/reset_nvs.py").read())
