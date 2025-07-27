@@ -68,7 +68,7 @@ def showfile(file):
     split = read(file)
     if not split or len(split) == 0:
         split = [[["No content to display"]]]
-    currpage = 0
+    current_page = 0
     tft.fill(0)
     tft.fill_rect(220, 0, 20, 135, 65535)
     update = True
@@ -82,30 +82,30 @@ def showfile(file):
             pages_count = len(split)
             thumb_height = max(10, scrollbar_height // pages_count)
             if pages_count > 1:
-                pos = 3 + (currpage * (scrollbar_height - thumb_height)) // (pages_count - 1)
+                pos = 3 + (current_page * (scrollbar_height - thumb_height)) // (pages_count - 1)
             else:
                 pos = 0
             tft.fill_rect(223, pos, 14, thumb_height, 50776)
-            for i in split[currpage]:
+            for i in split[current_page]:
                 tft.text(f8x8, i[0],3,3 + (index * 8),65535)
                 index += 1
             update = False
         if button_c.value() == 0:
             while button_c.value() == 0:
                 time.sleep(0.02)
-            if currpage == 0:
+            if current_page == 0:
                 work = False
             else:
-                currpage -= 1
+                current_page -= 1
                 update = True
         if button_b.value() == 0:
             while button_b.value() == 0:
                 time.sleep(0.02)
-            if currpage == len(split) - 1:
-                currpage = 0
+            if current_page == len(split) - 1:
+                current_page = 0
                 update = True
             else:
-                currpage += 1
+                current_page += 1
                 update = True
         if button_a.value() == 0:
             while button_a.value() == 0:
@@ -143,4 +143,4 @@ def run():
             tft.text(f16x32, "Oops!",0,0,31)
             tft.text(f8x8, "Something wrong has happened!",0,32,65535)
             tft.text(f8x8, "Please try again!",0,40,65535)
-            sleep(3)
+            time.sleep(3)
