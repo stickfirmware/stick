@@ -1,11 +1,7 @@
-import machine, time
+import time
+import modules.io_manager as io_man
 
-pwm = None
-
-def set_ir(ir):
-    global pwm
-    pwm = ir
-    pwm.freq(38000)
+pwm = io_man.get_IR()
 
 def ir_on(): pwm.duty_u16(32768)
 def ir_off(): pwm.duty_u16(0)

@@ -19,22 +19,12 @@ import modules.nvs as nvs
 import esp32
 import os
 import json
+import modules.io_manager as io_man
 
-button_a = None
-button_b = None
-button_c = None
-tft = None
-
-def set_btf(bta, btb, btc, ttft):
-    global button_a
-    global button_b
-    global button_c
-    global tft
-    
-    button_a = bta
-    button_b = btb
-    button_c = btc
-    tft = ttft
+button_a = io_man.get_btn_a()
+button_b = io_man.get_btn_b()
+button_c = io_man.get_btn_c()
+tft = io_man.get_tft()
 
 n_settings = esp32.NVS("settings")
 pin_nvs = nvs.get_int(n_settings, "irPin")
@@ -43,6 +33,7 @@ if pin_nvs is None or pin_nvs not in osc.IR_ALLOWED_PINS:
     pin_nvs = osc.IR_PIN
 print("IR pin from NVS:", repr(pin_nvs))
 ir_pin = machine.PWM(machine.Pin(pin_nvs, machine.Pin.OUT), duty=0)
+io_man.set_IR(ir_pin)
 
 def send(necc, sonyc, panac, samsac, gcc):
     tft.text(f8x8, "Sending nec...",0,0,65535)
@@ -81,13 +72,14 @@ def send(necc, sonyc, panac, samsac, gcc):
             work = False
 
 def run():
+    global button_c, button_a, button_b, tft
+    button_a = io_man.get_btn_a()
+    button_b = io_man.get_btn_b()
+    button_c = io_man.get_btn_c()
+    tft = io_man.get_tft()
+    
     global ir_pin
     work = True
-    nec.set_ir(ir_pin)
-    sony.set_ir(ir_pin)
-    pana.set_ir(ir_pin)
-    samsa.set_ir(ir_pin)
-    gc_send.set_ir(ir_pin)
     machine.freq(osc.ULTRA_FREQ)
     while work == True:
         render = menus.menu("IR Remote", [("Devices menu", 0), ("ON/OFF", 1), ("VOL+", 2), ("VOL-", 3), ("Mute", 4), ("CHANNEL+ / NEXT", 5), ("CHANNEL- / PREV", 6), ("FREEZE", 7), ("Change IR pin", 8), ("Receive", 9), ("Close", 10)])
@@ -113,6 +105,7 @@ def run():
             if render != 99 and render != None:
                 nvs.set_int(n_settings, "irPin", render)
             ir_pin = machine.PWM(machine.Pin(nvs.get_int(n_settings, "irPin"), machine.Pin.OUT), duty = 0)
+            io_man.set_IR(ir_pin)
         elif render == 9:
             works = True
             updat = True

@@ -1,32 +1,18 @@
 import fonts.def_8x8 as f8x8
 import fonts.def_16x32 as f16x32
 import modules.menus as menus
-import modules.nvs as nvs
-import modules.json as json
 import sys
 import time
-import esp32
 import os
 import gc
 import modules.openFile as openfile
-
-n_settings = esp32.NVS("settings")
     
-button_a = None
-button_b = None
-button_c = None
-tft = None
+import modules.io_manager as io_man
 
-def set_btf(bta, btb, btc, ttft):
-    global button_a
-    global button_b
-    global button_c
-    global tft
-    
-    button_a = bta
-    button_b = btb
-    button_c = btc
-    tft = ttft
+button_a = io_man.get_btn_a()
+button_b = io_man.get_btn_b()
+button_c = io_man.get_btn_c()
+tft = io_man.get_tft()
     
 clipboard = ""
         
@@ -34,6 +20,14 @@ sd_present = False
 
 freespace_flash = 0
 freespace_sd = 0
+
+# Refresh io
+def load_io():
+    global button_c, button_a, button_b, tft
+    button_a = io_man.get_btn_a()
+    button_b = io_man.get_btn_b()
+    button_c = io_man.get_btn_c()
+    tft = io_man.get_tft()
 
 def is_file(path):
     if os.stat(path)[0] & 0x4000:
@@ -60,6 +54,7 @@ def parent_path(path):
         return "/"
 
 def browser(path):
+    load_io()
     try:
         files = os.listdir(path)
     except OSError:
@@ -107,7 +102,6 @@ def fileMenu(file):
         parts = "helpers.runinreader".split(".")
         for part in parts[1:]:
             comd = getattr(comd, part)
-        comd.set_btf(button_a, button_b, button_c, tft)
         comd.openFile("/temp/fileprop.txt")
         if "helpers/runinreader" in sys.modules:
             del sys.modules["helpers/runinreader"]
@@ -153,6 +147,7 @@ def explorerLoop(startingpath, disablemenu = False):
                 currpath = browse
     
 def run(fileselectmode=False, startingselectpath="/"):
+    load_io()
     tft.fill(0)
     tft.text(f16x32, "File Explorer",0,0,1984)
     tft.text(f8x8, "Loading...",0,32,65535)

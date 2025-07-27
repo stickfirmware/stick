@@ -5,22 +5,13 @@ import fonts.def_8x8 as f8x8
 import fonts.def_16x32 as f16x32
 
 from machine import Pin, PWM
+import modules.io_manager as io_man
+import modules.osconstants as osc
 
-button_a = None
-button_b = None
-button_c = None
-tft = None
-
-def set_btf(bta, btb, btc, ttft):
-    global button_a
-    global button_b
-    global button_c
-    global tft
-    
-    button_a = bta
-    button_b = btb
-    button_c = btc
-    tft = ttft
+button_a = io_man.get_btn_a()
+button_b = io_man.get_btn_b()
+button_c = io_man.get_btn_c()
+tft = io_man.get_tft()
 
 def play(bpm):
     import time
@@ -37,7 +28,16 @@ def play(bpm):
         
     
 def run():
+    global button_c, button_a, button_b, tft
+    button_a = io_man.get_btn_a()
+    button_b = io_man.get_btn_b()
+    button_c = io_man.get_btn_c()
+    tft = io_man.get_tft()
+    
     import modules.menus as menus
+    if osc.HAS_BUZZER == False:
+        menus.menu("You don't have buzzer!", [("OK", None)])
+        return
     import machine
     
     machine.freq(240000000)
@@ -45,10 +45,6 @@ def run():
     bpm_max = 250
     bpm_min = 30
     bpm = 120
-    
-    if tft == None:
-        print("Please call 'set_btf(bta. btb, btc, ttft)' first")
-        return
     
     print("Going into main loop")
     

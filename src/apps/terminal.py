@@ -5,8 +5,16 @@ import machine
 import modules.numpad as npad
 import time
 import fonts.def_8x8 as f8x8
+import modules.io_manager as io_man
 
-tft = None
+button_c = io_man.get_btn_c()
+tft = io_man.get_tft()
+
+# Refresh io
+def load_io():
+    global button_c, tft
+    button_c = io_man.get_btn_c()
+    tft = io_man.get_tft()
 
 # Banned bytes
 banned_bytes = [ 
@@ -46,6 +54,7 @@ def update_top(text):
     tft.text(f8x8, text,5,5,65535)
     
 def run():
+    load_io()
     # Render terminal
     update_screen("", True)
     tft.text(f8x8, "Terminal | Loading",5,5,65535)
@@ -73,6 +82,9 @@ def run():
     
     update_top("Terminal")
     while term_ok == True:
+        if button_c.value() == 0:
+            return
+        
         if term_upd == True:
             # Update input
             update_screen(input_text, on_screen_keyboard)
@@ -88,6 +100,7 @@ def run():
                 else:
                     update_screen(input_text, True)
                     term_exec.executep(input_on_screen)
+                    time.sleep(2)
                     continue
         except:
             on_screen_keyboard = True

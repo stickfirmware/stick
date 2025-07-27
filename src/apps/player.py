@@ -9,17 +9,12 @@ import array
 from time import sleep, ticks_ms, ticks_diff
 from machine import Pin, I2S
 
-button_a = None
-button_b = None
-button_c = None
-tft = None
+import modules.io_manager as io_man
 
-def set_btf(bta, btb, btc, ttft):
-    global button_a, button_b, button_c, tft
-    button_a = bta
-    button_b = btb
-    button_c = btc
-    tft = ttft
+button_a = io_man.get_btn_a()
+button_b = io_man.get_btn_b()
+button_c = io_man.get_btn_c()
+tft = io_man.get_tft()
 
 def skeleton(text="Music Player"):
     tft.fill_rect(0, 0, 240, 3, 65535)
@@ -179,6 +174,12 @@ def play(path):
         gc.collect()
 
 def run():
+    global button_c, button_a, button_b, tft
+    button_a = io_man.get_btn_a()
+    button_b = io_man.get_btn_b()
+    button_c = io_man.get_btn_c()
+    tft = io_man.get_tft()
+    
     import sys
     if not osc.HAS_SPEAKER:
         menus.menu("You don't have a speaker!", [("OK", 1)])
@@ -190,7 +191,6 @@ def run():
         try:
             if render == 4:
                 import modules.fileexplorer as a_fe
-                a_fe.set_btf(button_a, button_b, button_c, tft)
                 browser_path = a_fe.run(True)
                 if browser_path is not None:
                     play(browser_path)

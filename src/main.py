@@ -26,10 +26,6 @@ if osc.HAS_BUZZER:
     buzz.set_volume(0.1)
     buzz.play_sound(buzzer, 2000, 0.0125)
 
-print("Running starting scripts")
-for i in osc.BOOT_STARTING_SCRIPTS:
-    exec(open(i).read())
-
 print("Checking boot options...")
 
 # Recovery button

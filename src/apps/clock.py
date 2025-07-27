@@ -3,14 +3,11 @@ import machine
 import fonts.def_8x8 as f8x8
 import fonts.def_16x32 as f16x32
 import network
+import modules.io_manager as io_man
+
+tft = io_man.get_tft()
 
 allow_draw_battery = True
-
-tft = None
-
-def set_tft(tft_n):
-    global tft
-    tft = tft_n
 
 def run_clock():
     if tft == None:

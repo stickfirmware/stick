@@ -1,25 +1,15 @@
-button_a = None
-button_b = None
-button_c = None
-tft = None
-
 import fonts.def_8x8 as f8x8
 import fonts.def_8x16 as f8x16
 import fonts.def_16x16 as f16x16
 import modules.cardputer_kb as ckb
 import modules.osconstants as osc
 import modules.menus as menus
+import modules.io_manager as io_man
 
-def set_btf(bta, btb, btc, ttft):
-    global button_a
-    global button_b
-    global button_c
-    global tft
-    
-    button_a = bta
-    button_b = btb
-    button_c = btc
-    tft = ttft
+button_a = io_man.get_btn_a()
+button_b = io_man.get_btn_b()
+button_c = io_man.get_btn_c()
+tft = io_man.get_tft()
 
 def writeNums(is_keyboard, number=99):
     n = [65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535]
@@ -100,8 +90,16 @@ def writeNums(is_keyboard, number=99):
         tft.text(f8x8, "Symbol", 131, 91, n[11])
         tft.text(f8x8, "|", 183, 91, 65535)
 
+# Refresh io
+def load_io():
+    global button_c, button_a, button_b, tft
+    button_a = io_man.get_btn_a()
+    button_b = io_man.get_btn_b()
+    button_c = io_man.get_btn_c()
+    tft = io_man.get_tft()
 
 def numpad(title, maxlen=0, hideInput=False):
+    load_io()
     import time
     tft.fill(0)
     tft.fill_rect(0, 0, 240, 3, 65535)
@@ -254,6 +252,7 @@ def _KEYBOARD_CARDKB(title, maxlen=0, hideInput=False):
                     upd = True
             
 def keyboard(title, maxlen=0, hideInput=False):
+    load_io()
     import time
     
     if osc.INPUT_METHOD == 2:

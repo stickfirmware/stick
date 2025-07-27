@@ -3,22 +3,6 @@ import fonts.def_8x8 as f8x8
 import modules.json as jso
 import time
 
-button_a = None
-button_b = None
-button_c = None
-tft = None
-
-def set_btf(bta, btb, btc, ttft):
-    global button_a
-    global button_b
-    global button_c
-    global tft
-    
-    button_a = bta
-    button_b = btb
-    button_c = btc
-    tft = ttft
-
 def createConfig():
     appsConfig = {
             "apps": [
@@ -34,14 +18,14 @@ def createConfig():
                     "id": "com.kitki30.musicplayer",
                     "file": "helpers.playmusic",
                     "hidden": True,
-                    "handleExtensions": ["*.json", "*.wav"]
+                    "handleExtensions": ["*.wav"]
                     },
                 {
                     "name": "Run in Python executor",
                     "id": "com.kitki30.pythonexec",
                     "file": "helpers.pythonexec",
                     "hidden": True,
-                    "handleExtensions": ["*.py", "*.pyw"]
+                    "handleExtensions": ["*.py"]
                     }
                 ]
         }

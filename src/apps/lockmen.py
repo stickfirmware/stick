@@ -1,22 +1,14 @@
-button_a = None
-button_b = None
-button_c = None
-tft = None
-
 import time
 import fonts.def_8x8 as f8x8
 from machine import Pin
 import os
 
-def set_btf(bta, btb, btc, ttft):
-    global button_a
-    global button_b
-    global button_c
-    global tft
-    button_a = bta
-    button_b = btb
-    button_c = btc
-    tft = ttft
+import modules.io_manager as io_man
+
+button_a = io_man.get_btn_a()
+button_b = io_man.get_btn_b()
+button_c = io_man.get_btn_c()
+tft = io_man.get_tft()
 
 def dummyMsg():
     tft.fill(0)
@@ -30,6 +22,12 @@ def dummyMsg():
     time.sleep(5)
 
 def run():
+    global button_c, button_a, button_b, tft
+    button_a = io_man.get_btn_a()
+    button_b = io_man.get_btn_b()
+    button_c = io_man.get_btn_c()
+    tft = io_man.get_tft()
+    
     import esp32
     import modules.nvs as nvs
     import modules.menus as menus

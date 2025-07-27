@@ -1,5 +1,4 @@
 import ntptime
-import machine
 import time
 import esp32
 import modules.nvs as nvs
