@@ -227,7 +227,8 @@ elif osc.INPUT_METHOD == 2:
     button_c = ckb.buttonemu('`')
 
 # Init IO manager
-debug.log("Init IO manager", True)
+render_bar("Init IO manager", True)
+debug.log("Init IO manager")
 import modules.io_manager as io_man
 io_man.set_btn_a(button_a)
 io_man.set_btn_b(button_b)
@@ -335,7 +336,6 @@ if osc.HAS_SD_SLOT:
 # Load clock
 render_bar("Loading clock...", True)
 import apps.clock as app_clock
-app_clock.set_tft(tft)
 
 # Wake up function
 def wake_up():
@@ -387,7 +387,6 @@ while True:
         render_battery = True
         is_in_saving = False
         sleep_time = time.ticks_ms()
-        app_clock.set_tft(tft)
         auto_rotate = nvs.get_int(n_settings, "autorotate")
         allow_saving = nvs.get_int(n_settings, "allowsaving")
 
