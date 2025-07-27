@@ -7,7 +7,7 @@ import modules.io_manager as io_man
 
 tft = io_man.get_tft()
 
-allow_draw_battery = True
+allow_drawing_battery = True
 
 def run_clock():
     if tft == None:
