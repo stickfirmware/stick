@@ -46,10 +46,10 @@ try:
             machine.SPI(osc.LCD_SPI_SLOT, baudrate=osc.LCD_SPI_BAUD, sck=machine.Pin(osc.LCD_SPI_SCK), mosi=machine.Pin(osc.LCD_SPI_MOSI), miso=osc.LCD_SPI_MISO),
             osc.LCD_HEIGHT,
             osc.LCD_WIDTH,
-            reset=machine.Pin(osc.LCD_RESET, Pin.OUT),
-            cs=machine.Pin(osc.LCD_SPI_CS, Pin.OUT),
-            dc=machine.Pin(osc.LCD_DC, Pin.OUT),
-            backlight=machine.PWM(Pin(osc.LCD_BL), freq=osc.LCD_BL_FREQ),
+            reset=machine.Pin(osc.LCD_RESET, machine.Pin.OUT),
+            cs=machine.Pin(osc.LCD_SPI_CS, machine.Pin.OUT),
+            dc=machine.Pin(osc.LCD_DC, machine.Pin.OUT),
+            backlight=machine.PWM(machine.Pin(osc.LCD_BL), freq=osc.LCD_BL_FREQ),
             rotation=osc.LCD_ROTATIONS["BUTTON_LEFT"])
     load_bg = osc.LCD_LOAD_BG
     text_color = osc.LCD_LOAD_TEXT
