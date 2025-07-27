@@ -1,5 +1,5 @@
 # Kitki30 Stick
-Makes your stick a usefull EDC device
+Makes your stick a useful EDC device
 ## Features
 - Clock with i2c RTC sync
 - Screen auto-rotate by IMU
@@ -14,8 +14,8 @@ Makes your stick a usefull EDC device
 
 ## Milestones
 - [X] IMU Support
-- [ ] Refactor code (In progress)
-- [ ] Better power saving (In progress)
+- [X] Refactor code
+- [X] Better power saving
 - [ ] Bluethooth support
 - [ ] Autoupdate
 - [X] Better SD card support
