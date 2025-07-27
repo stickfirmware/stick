@@ -10,9 +10,6 @@ tft = io_man.get_tft()
 allow_drawing_battery = True
 
 def run_clock():
-    if tft == None:
-        print("Please call 'set_tft(tft)' first")
-        return
     print("Rendering clock base")
     tft.fill_rect(0, 0, 240, 3, 65535)
     tft.fill_rect(0, 16, 240, 3, 65535)
@@ -24,9 +21,6 @@ def run_clock():
     tft.text(f8x8, "Clock",5,5,65535)
     
 def run_clock_vert():
-    if tft == None:
-        print("Please call 'set_tft(tft)' first")
-        return
     print("Rendering clock base")
     tft.fill_rect(0, 0, 3, 240, 65535)
     tft.fill_rect(132, 0, 3, 240, 65535)
@@ -38,9 +32,6 @@ def run_clock_vert():
     tft.text(f8x8, "Clock",5,5,65535)
     
 def clock_vert():
-    if tft == None:
-        print("Please call 'set_tft(tft)' first")
-        return
     rtc = machine.RTC()
     time_tuple = rtc.datetime()
     
@@ -61,9 +52,6 @@ def clock_vert():
 
 
 def clock():
-    if tft == None:
-        print("Please call 'set_tft(tft)' first")
-        return
     rtc = machine.RTC()
     time_tuple = rtc.datetime()
     
