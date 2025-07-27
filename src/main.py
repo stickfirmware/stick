@@ -84,7 +84,7 @@ else:
 
 
 def recoveryf():
-    exec(open(osc.BOOT_RECOVERY_PATH).read())
+    import recovery.recovery
 
 while True:
     if recovery and osc.BOOT_ENABLE_RECOVERY == True:
@@ -106,7 +106,7 @@ while True:
         try:
             uptime.uptime_bootloader = time.ticks_ms()
             print("Booting mainos")
-            exec(open(osc.BOOT_MAINOS_PATH).read())
+            import mainos
         except Exception as e:
             print(e)
             print("Booting mainos failed, booting recovery!")
