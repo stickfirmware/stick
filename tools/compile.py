@@ -64,10 +64,10 @@ def comp_file(src_path, out_folder):
             tmp_path = tmp.name
 
         out_mpy_path = os.path.join(out_folder, base_name + ".mpy")
-        out_py_path = os.path.join(out_folder, rel_path)  # oryginalna nazwa z .py
+        out_py_path = os.path.join(out_folder, rel_path)
 
         try:
-            subprocess.run(["mpy-cross", tmp_path, "-o", out_mpy_path], check=True)
+            subprocess.run(["mpy-cross", tmp_path, "-o", out_mpy_path, "-march=xtensawin"], check=True)
             compiled_files += 1
             size_output += os.path.getsize(out_mpy_path)
             print(f"Compiled and minified {src_path} -> {out_mpy_path}")
