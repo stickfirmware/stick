@@ -1,7 +1,7 @@
 import fonts.def_8x8 as f8x8
 import time
 import machine
-import modules.osconstants as osc
+import modules.os_constants as osc
 import gc
 import modules.io_manager as io_man
 

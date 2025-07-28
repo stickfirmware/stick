@@ -1,6 +1,6 @@
 print("Kitki30 Stick")
 
-import modules.osconstants as osc
+import modules.os_constants as osc
 import scripts.checkbattery as battery_shutdown
 from machine import Pin, PWM, SPI
 import modules.uptime as uptime

@@ -18,7 +18,7 @@ def run():
     import modules.nvs as nvs
     import esp32
     import machine
-    import modules.osconstants as osc
+    import modules.os_constants as osc
     
     machine.freq(osc.ULTRA_FREQ)
     

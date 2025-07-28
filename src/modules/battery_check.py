@@ -3,7 +3,7 @@ BATTERY_MID = 3.65
 BATTERY_LOW = 3.25
 
 from machine import ADC, Pin
-import modules.osconstants as osc
+import modules.os_constants as osc
 import bitmaps.battery as b_battery
 import bitmaps.battery_1 as b_battery_1
 import bitmaps.battery_2 as b_battery_2

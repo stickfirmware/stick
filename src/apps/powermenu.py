@@ -1,4 +1,4 @@
-import modules.osconstants as osc
+import modules.os_constants as osc
 import os
 import machine
 import modules.io_manager as io_man

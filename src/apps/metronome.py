@@ -6,7 +6,7 @@ import fonts.def_16x32 as f16x32
 
 from machine import Pin, PWM
 import modules.io_manager as io_man
-import modules.osconstants as osc
+import modules.os_constants as osc
 
 button_a = io_man.get_btn_a()
 button_b = io_man.get_btn_b()

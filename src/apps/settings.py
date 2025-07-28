@@ -1,6 +1,6 @@
 import modules.menus as menus
 import modules.nvs as nvs
-import modules.osconstants as osc
+import modules.os_constants as osc
 import modules.openFile as openfile
 import fonts.def_8x8 as f8x8
 import modules.sdcard as sd
@@ -9,7 +9,7 @@ import esp32
 import machine
 import network
 import time
-import modules.qrcodes as qr
+import modules.qr_codes as qr
 import modules.numpad as keypad
 import gc
 import modules.io_manager as io_man

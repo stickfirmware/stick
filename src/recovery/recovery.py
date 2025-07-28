@@ -1,4 +1,4 @@
-import modules.osconstants as osc
+import modules.os_constants as osc
 
 def init_tft():
     import modules.st7789 as st7789

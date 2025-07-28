@@ -9,21 +9,21 @@ def createConfig():
                 {
                     "name": "Run in file reader",
                     "id": "com.kitki30.filereader",
-                    "file": "helpers.runinreader",
+                    "file": "helpers.run_in_reader",
                     "hidden": True,
                     "handleExtensions": ["*"]
                     },
                 {
                     "name": "Play music",
                     "id": "com.kitki30.musicplayer",
-                    "file": "helpers.playmusic",
+                    "file": "helpers.play_music",
                     "hidden": True,
                     "handleExtensions": ["*.wav"]
                     },
                 {
                     "name": "Run in Python executor",
                     "id": "com.kitki30.pythonexec",
-                    "file": "helpers.pythonexec",
+                    "file": "helpers.python_exec",
                     "hidden": True,
                     "handleExtensions": ["*.py"]
                     }

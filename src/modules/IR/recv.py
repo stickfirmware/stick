@@ -1,5 +1,5 @@
 import machine, time
-import modules.osconstants as osc
+import modules.os_constants as osc
 import modules.io_manager as io_man
 
 if osc.ALLOW_IR_RECORD:
