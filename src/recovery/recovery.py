@@ -1,4 +1,5 @@
 import modules.os_constants as osc
+from modules.decache import decache
 
 def init_tft():
     import modules.st7789 as st7789
@@ -53,11 +54,9 @@ def clear_temp():
         os.rmdir("/temp")
     except:
         print("/temp deletion error")
-
-import time
-
+        
 while True:
-    render = menus.menu("Recovery menu", [("Reset NVS configuration", 1), ("Delete update.py", 2), ("Clear /temp/", 3), ("Terminal", 4), ("Reboot", 13)])
+    render = menus.menu("Recovery menu", [("Reset NVS configuration", 1), ("Delete update.py", 2), ("Clear /temp/", 3), ("Terminal", 4), ("File explorer", 5), ("Reboot", 13)])
     if render == 1:
         render1 = menus.menu("Destroy nvs?", [("No", 1), ("Yes", 2)])
         if render1 == 2:
@@ -69,6 +68,12 @@ while True:
     elif render == 4:
         import apps.terminal as a_tm
         a_tm.run()
+        decache('apps.terminal')
         del a_tm
+    elif render == 5:
+        import modules.file_explorer as a_fe
+        a_fe.run()
+        decache('modules.file_explorer')
+        del a_fe
     elif render == 13:
         machine.reset()
