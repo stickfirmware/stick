@@ -96,7 +96,7 @@ def run():
     work = True
     machine.freq(osc.ULTRA_FREQ)
     while work == True:
-        render = menus.menu("IR Remote", [("Devices menu", 0), ("ON/OFF", 1), ("VOL+", 2), ("VOL-", 3), ("Mute", 4), ("CHANNEL+ / NEXT", 5), ("CHANNEL- / PREV", 6), ("FREEZE", 7), ("Change IR pin", 8), ("Receive", 9), ("Close", 10)])
+        render = menus.menu("IR Remote", [("ON/OFF", 1), ("VOL+", 2), ("VOL-", 3), ("Mute", 4), ("CHANNEL+ / NEXT", 5), ("CHANNEL- / PREV", 6), ("FREEZE", 7), ("Change IR pin", 8), ("Receive", 9), ("Close", 10)])
         if render == 1:
             send(db_nec.power, db_sony.power, db_pana.power, db_samsa.power, db_gc.power)
         elif render == 2:
