@@ -82,7 +82,7 @@ def browser(path):
     
 def fileMenu(file):
     global clipboard
-    render = menus.menu(str(file), [("Open in...", 4), ("Properties", 1), ("Exit", 13)])
+    render = menus.menu(str(file), [("Open in...", 4), ("Delete", 2), ("Properties", 1), ("Exit", 13)])
     if render == 4:
         openfile.openMenu(file)
     elif render == 1:
@@ -106,7 +106,11 @@ def fileMenu(file):
         if "helpers/runinreader" in sys.modules:
             del sys.modules["helpers/runinreader"]
     elif render == 2:
-        clipboard = file
+        try:
+            os.remove(file)
+        except Exception as e:
+            print(e)
+            menus.menu("Error deleting file!", [("Close", 1)])
         return
         
 def detect():
