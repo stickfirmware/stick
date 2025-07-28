@@ -1,0 +1,20 @@
+import modules.io_manager as io_man
+import modules.os_constants as osc
+import time
+import esp32
+import modules.nvs as nvs
+
+n_settings = esp32.NVS("settings")
+
+def run():
+    button_a = io_man.get_btn_a()
+    button_b = io_man.get_btn_b()
+    button_c = io_man.get_btn_c()
+    tft = io_man.get_tft()
+    
+    tft.backlight(1.0)
+    tft.fill(65535)
+    tft.backlight(nvs.get_float(n_settings, "backlight"))
+    
+    while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
+        time.sleep(osc.DEBOUNCE_TIME)
