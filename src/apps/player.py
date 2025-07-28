@@ -1,5 +1,5 @@
 import fonts.def_8x8 as f8x8
-import modules.osconstants as osc
+import modules.os_constants as osc
 import fonts.def_16x32 as f16x32
 import modules.menus as menus
 import uos
@@ -194,7 +194,7 @@ def run():
         render = menus.menu("Music Player", [("Browse music in explorer", 4), ("Exit", 3)])
         try:
             if render == 4:
-                import modules.fileexplorer as a_fe
+                import modules.file_explorer as a_fe
                 browser_path = a_fe.run(True)
                 if browser_path is not None:
                     play(browser_path)

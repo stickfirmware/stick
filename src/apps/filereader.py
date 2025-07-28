@@ -3,7 +3,7 @@ import fonts.def_16x32 as f16x32
 import modules.menus as menus
 import gc
 import time
-import modules.osconstants as osc
+import modules.os_constants as osc
 import modules.io_manager as io_man
 
 button_a = io_man.get_btn_a()
@@ -124,7 +124,7 @@ def run():
             if render == 3:
                 work = False
             elif render == 1:
-                import modules.fileexplorer as a_fe
+                import modules.file_explorer as a_fe
                 browser = a_fe.run(True)
                 if browser != None:
                     showfile(browser)

@@ -1,7 +1,7 @@
 import modules.io_manager as io_man
 from modules.decache import decache
 import modules.menus as menus
-import modules.osconstants as osc
+import modules.os_constants as osc
 import machine
 import gc
 
@@ -47,7 +47,7 @@ def run():
         del a_pl
         decache('apps.player')
     elif menu1 == 7:
-        import modules.fileexplorer as a_fe
+        import modules.file_explorer as a_fe
         a_fe.run()
         del a_fe
         decache('modules.fileexplorer')

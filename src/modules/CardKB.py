@@ -1,6 +1,6 @@
 from machine import I2C, Pin
 import time
-import modules.osconstants as osc
+import modules.os_constants as osc
 
 i2c = None
 did_init = False

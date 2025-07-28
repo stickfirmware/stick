@@ -11,7 +11,7 @@ class FakeST:
 
 import machine, time
 import os
-import modules.osconstants as osc
+import modules.os_constants as osc
 machine.freq(osc.ULTRA_FREQ)
 
 # Hold power

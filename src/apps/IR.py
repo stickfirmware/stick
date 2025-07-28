@@ -1,7 +1,7 @@
 from machine import Pin
 import machine
 import time
-import modules.osconstants as osc
+import modules.os_constants as osc
 import modules.IR.db_nec as db_nec
 import modules.IR.db_sony as db_sony
 import modules.IR.db_panasonic as db_pana

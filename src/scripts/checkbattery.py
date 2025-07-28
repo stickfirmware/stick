@@ -1,6 +1,6 @@
 DISCHARGE_VOLTAGE = 3.00
 
-import modules.osconstants as osc
+import modules.os_constants as osc
 from machine import ADC, Pin
 
 def run():

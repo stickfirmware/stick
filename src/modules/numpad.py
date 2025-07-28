@@ -2,7 +2,7 @@ import fonts.def_8x8 as f8x8
 import fonts.def_8x16 as f8x16
 import fonts.def_16x16 as f16x16
 import modules.cardputer_kb as ckb
-import modules.osconstants as osc
+import modules.os_constants as osc
 import modules.menus as menus
 import modules.io_manager as io_man
 

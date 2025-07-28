@@ -1,6 +1,6 @@
 import modules.printer as debug
 from machine import Pin
-import modules.osconstants as osc
+import modules.os_constants as osc
 
 def init_buttons():
     if osc.INPUT_METHOD == 1:

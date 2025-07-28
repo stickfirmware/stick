@@ -3,7 +3,7 @@ import machine
 import os
 import modules.menus as menus
 import fonts.def_8x8 as f8x8
-import modules.osconstants as osc
+import modules.os_constants as osc
 
 frequencies = [osc.ULTRA_SLOW_FREQ, osc.SLOW_FREQ, osc.BASE_FREQ, osc.FAST_FREQ, osc.ULTRA_FREQ]
 testingTime = 15
