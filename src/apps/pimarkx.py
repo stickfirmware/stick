@@ -94,8 +94,8 @@ def run():
     tft.text(f8x8, "Benchmark finished", 0, 0, 65535)
     time.sleep(1)
     saveResult()
-    import modules.openFile as openfile
-    openfile.openMenu(resultpath)
+    import modules.open_file as open_file
+    open_file.openMenu(resultpath)
     
 def run_no_gui():
     print("\nPiMarkX")
