@@ -250,13 +250,13 @@ else:
     network.hostname(nvs.get_string(n_wifi, "hostname"))
     
 # Connect to Wi-Fi if its setup
+nic = network.WLAN(network.STA_IF)
 conn_time = None
 if nvs.get_float(n_wifi, "conf") == None:
     nvs.set_float(n_wifi, "conf", 0)
 if int(nvs.get_float(n_wifi, "conf")) == 1:
     if nvs.get_int(n_wifi, "autoConnect") == 1:
         try:
-            nic = network.WLAN(network.STA_IF)
             nic.active(False)
             time.sleep(0.2)
             nic.active(True)
