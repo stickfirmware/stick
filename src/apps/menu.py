@@ -50,6 +50,6 @@ def run():
         import modules.file_explorer as a_fe
         a_fe.run()
         del a_fe
-        decache('modules.fileexplorer')
+        decache('modules.file_explorer')
     gc.collect()
     machine.freq(osc.BASE_FREQ)
