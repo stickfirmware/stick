@@ -1,3 +1,3 @@
 def openFile(path):
-    import apps.filereader as reader
+    import apps.file_reader as reader
     reader.showfile(path)

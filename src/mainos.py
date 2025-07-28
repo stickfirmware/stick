@@ -477,10 +477,10 @@ while True:
                 allow_only_landscape()
                 
                 # Init lock menu
-                import apps.lockmen as app_lockmen
+                import apps.lock_menu as app_lockmen
                 app_lockmen.run()
                 # De-cache lock menu (to free up RAM)
-                decache("apps.lockmen")
+                decache("apps.lock_menu")
                 del app_lockmen
                 menu = 0
                 menu_change = True
@@ -543,11 +543,11 @@ while True:
             continue
     
         # Open power menu
-        import apps.powermenu as app_powermen
+        import apps.power_menu as app_powermen
         allow_only_landscape()
         app_powermen.run()
         # De-cache
-        decache("apps.powermen")
+        decache("apps.power_menu")
         del app_powermen
         menu = 0
         menu_change = True
@@ -573,7 +573,7 @@ while True:
         if hold_time >= 1 and nvs.get_int(n_locks, "dummy") == 0:
             allow_only_landscape()
             # Open lock menu
-            import apps.lockmen as app_lockmen
+            import apps.lock_menu as app_lockmen
             app_lockmen.run()
             # De-cache lock menu
             decache("apps.lockmen")
