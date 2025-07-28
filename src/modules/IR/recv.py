@@ -1,11 +1,11 @@
 import machine, time
+import modules.osconstants as osc
+import modules.io_manager as io_man
 
-#ir_pin = machine.Pin(26, machine.Pin.IN, machine.Pin.PULL_UP)
+if osc.ALLOW_IR_RECORD:
+    ir_pin = machine.Pin(osc.IR_RECORD_PIN, machine.Pin.IN, machine.Pin.PULL_UP)
 
-def set_ir(ir):
-    global pwm
-    pwm = ir
-    pwm.freq(38000)
+pwm = None
 
 def record_ir(wait_timeout_ms=15000, silence_timeout_ms=3000):
     data = []
@@ -39,6 +39,8 @@ def record_ir(wait_timeout_ms=15000, silence_timeout_ms=3000):
 
 
 def send_ir(pulses):
+    global pwm
+    pwm = io_man.get_IR()
     for i, dur in enumerate(pulses):
         if i % 2 == 0:
             pwm.duty_u16(32768)

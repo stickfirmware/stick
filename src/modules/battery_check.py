@@ -12,6 +12,9 @@ import bitmaps.battery_3 as b_battery_3
 adc = ADC(Pin(osc.BATTERY_ADC))
 adc.atten(ADC.ATTN_11DB)
 
+# Bitmap anti-rerender
+last_bitmap = None
+
 def voltage(samplecount=10):
     samples = []
     samplecalc = 0
@@ -45,6 +48,10 @@ def bitmap():
     
 def run(tft):
     bitm = bitmap()
+    global last_bitmap
+    if last_bitmap == bitm:
+        return
+    last_bitmap = bitm
     if bitm == 3:
         tft.bitmap(b_battery_3, 210,3)
     elif bitm == 2:

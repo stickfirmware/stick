@@ -120,7 +120,7 @@ def numpad(title, maxlen=0, hideInput=False):
     upd = True
     work = True
     while work == True:
-        time.sleep(0.02)
+        time.sleep(osc.LOOP_WAIT_TIME)
         if upd == True:
             writeNums(False, selection)
             tft.fill_rect(3, 19, 234, 20, 0)
@@ -133,7 +133,7 @@ def numpad(title, maxlen=0, hideInput=False):
             upd = False
         if button_b.value() == 0:
             while button_b.value() == 0:
-                time.sleep(0.02)
+                time.sleep(osc.DEBOUNCE_TIME)
             if selection == 11:
                 selection = 0
             else:
@@ -141,7 +141,7 @@ def numpad(title, maxlen=0, hideInput=False):
             upd = True
         elif button_a.value() == 0:
             while button_a.value() == 0:
-                time.sleep(0.02)
+                time.sleep(osc.DEBOUNCE_TIME)
             if selection == 11:
                 selection = 0
                 inp = None
@@ -167,7 +167,7 @@ def numpad(title, maxlen=0, hideInput=False):
                         inp += str(selection + 1)
         elif button_c.value() == 0:
             while button_c.value() == 0:
-                time.sleep(0.02)
+                time.sleep(osc.DEBOUNCE_TIME)
             if len(inp) == 0:
                 selection = 0
                 inp = None
@@ -184,7 +184,7 @@ def _KEYBOARD_CARDKB(title, maxlen=0, hideInput=False):
     inp = ""
     prev_letter = None
     last_press_time = 0
-    debounce_delay = 0.15  # sekundy
+    debounce_delay = osc.DEBOUNCE_TIME
 
     upd = True
     big_update = True
@@ -193,7 +193,7 @@ def _KEYBOARD_CARDKB(title, maxlen=0, hideInput=False):
     ignored_keys = {"ctrl", "fn", "alt", "tab", "opt", "Aa"}
 
     while work:
-        time.sleep(0.02)
+        time.sleep(osc.LOOP_WAIT_TIME)
         curr_letter = ckb.scan_and_map()
 
         now = time.ticks_ms()
@@ -286,7 +286,7 @@ def keyboard(title, maxlen=0, hideInput=False):
     selection = 0
 
     while work:
-        time.sleep(0.02)
+        time.sleep(osc.LOOP_WAIT_TIME)
         now = time.ticks_ms()
 
         if big_update:
@@ -333,9 +333,9 @@ def keyboard(title, maxlen=0, hideInput=False):
             upd = True
 
         elif button_a.value() == 0:
-            while button_a.value() == 0: time.sleep(0.02)
+            while button_a.value() == 0: time.sleep(osc.DEBOUNCE_TIME)
 
-            if selection == 9:  # menu
+            if selection == 9:
                 menu = menus.menu("Menu", [("Confirm", 1), ("Exit", 2), ("Back", 3)])
                 if menu == 1:
                     if tmp_letter:
@@ -363,7 +363,7 @@ def keyboard(title, maxlen=0, hideInput=False):
                 upd = True
                 big_update = True
 
-            elif selection == 10:  # 0 / space
+            elif selection == 10:
                 if selection == last_selection:
                     cycle_index = (cycle_index + 1) % len(keys[10])
                 else:
@@ -372,7 +372,7 @@ def keyboard(title, maxlen=0, hideInput=False):
                     cycle_index = 0
                     last_selection = selection
 
-                tmp_letter = keys[10][cycle_index]  # "0" lub " "
+                tmp_letter = keys[10][cycle_index]
                 last_press_time = now
                 upd = True
 
@@ -390,7 +390,7 @@ def keyboard(title, maxlen=0, hideInput=False):
                 upd = True
 
         elif button_c.value() == 0:
-            while button_c.value() == 0: time.sleep(0.02)
+            while button_c.value() == 0: time.sleep(osc.DEBOUNCE_TIME)
             if tmp_letter:
                 tmp_letter = ""
                 last_selection = -1

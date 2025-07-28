@@ -79,7 +79,7 @@ def menu(name, choices):
             
         if button_c.value() == 0 and bt3_d == 1:
             while button_c.value() == 0:
-                time.sleep(0.02)
+                time.sleep(osc.DEBOUNCE_TIME)
             didnt_choose = True
             chosen = True
         elif button_c.value() == 1 and bt3_d == 0:
@@ -87,14 +87,14 @@ def menu(name, choices):
             
         if button_a.value() == 0 and bt1_d == 1:
             while button_a.value() == 0:
-                time.sleep(0.02)
+                time.sleep(osc.DEBOUNCE_TIME)
             chosen = True
         elif button_a.value() == 1 and bt1_d == 0:
             bt1_d = 1
             
         if button_b.value() == 0 and bt2_d == 1:
             while button_b.value() == 0:
-                time.sleep(0.02)
+                time.sleep(osc.DEBOUNCE_TIME)
             if choice == len(pages[curr_page]):
                 choice = 1
                 if (curr_page + 1) == page_count:
@@ -109,7 +109,7 @@ def menu(name, choices):
         elif button_b.value() == 1 and bt2_d == 0:
             bt2_d = 1
         
-        time.sleep(0.02)
+        time.sleep(osc.LOOP_WAIT_TIME)
         
     gc.collect()
     # Return to starting frequency

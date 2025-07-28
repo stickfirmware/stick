@@ -1,9 +1,9 @@
 import fonts.def_8x8 as f8x8
 import fonts.def_16x32 as f16x32
 import modules.menus as menus
-import modules.nvs as nvs
 import gc
 import time
+import modules.osconstants as osc
 import modules.io_manager as io_man
 
 button_a = io_man.get_btn_a()
@@ -45,10 +45,6 @@ def splittext(text):
     return pages
 
 def read(filename):
-
-    import re
-    total_bytes = 0
-    lines = []
     max_bytes=500*1024
     
     try:
@@ -57,7 +53,7 @@ def read(filename):
         text = data.decode("utf-8")
         text = text.replace('\t', '    ')
     except Exception as e:
-        return f"Error: {str(e)}"
+        return splittext("Error: {str(e)}")
     
     return splittext(text)
 
@@ -92,7 +88,7 @@ def showfile(file):
             update = False
         if button_c.value() == 0:
             while button_c.value() == 0:
-                time.sleep(0.02)
+                time.sleep(osc.DEBOUNCE_TIME)
             if current_page == 0:
                 work = False
             else:
@@ -100,7 +96,7 @@ def showfile(file):
                 update = True
         if button_b.value() == 0:
             while button_b.value() == 0:
-                time.sleep(0.02)
+                time.sleep(osc.DEBOUNCE_TIME)
             if current_page == len(split) - 1:
                 current_page = 0
                 update = True
@@ -109,9 +105,9 @@ def showfile(file):
                 update = True
         if button_a.value() == 0:
             while button_a.value() == 0:
-                time.sleep(0.02)
+                time.sleep(osc.DEBOUNCE_TIME)
             work = False
-        time.sleep(0.02)
+        time.sleep(osc.LOOP_DELAY)
     
 def run():
     global button_c, button_a, button_b, tft
