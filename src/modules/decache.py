@@ -1,6 +1,6 @@
 import sys
 import gc
 
-def dechache(name):
+def decache(name):
         sys.modules.pop(name, None)
         gc.collect()

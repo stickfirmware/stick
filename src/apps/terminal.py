@@ -6,7 +6,7 @@ import modules.numpad as npad
 import time
 import fonts.def_8x8 as f8x8
 import modules.io_manager as io_man
-from modules.decache import dechache
+from modules.decache import decache
 
 button_c = io_man.get_btn_c()
 tft = io_man.get_tft()
@@ -31,8 +31,8 @@ banned_bytes = [
 # b'\x08' - FN + C
 
 def exit():
-    dechache('modules.CardKB')
-    dechache('modules.StickSh.executor')    
+    decache('modules.CardKB')
+    decache('modules.StickSh.executor')    
 
 def update_screen(input_text, hard_update):
     if hard_update == True:
