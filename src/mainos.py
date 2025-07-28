@@ -529,11 +529,16 @@ while True:
             menu_change = True
             
         # Debounce (For some apps, to not enter power menu or apps menu accidentally)
-        while button_a.value() == 0 and button_b.value() == 0 and button_c.value() == 0:
+        while button_a.value() == 0 or button_b.value() == 0 or button_c.value() == 0:
             time.sleep(osc.DEBOUNCE_TIME)
+            
+        # Additional delay to prevent accidental double click
+        time.sleep(0.1)
             
         # Reset power saving
         pwr_save_time = time.ticks_ms()
+        
+        continue
         
     # Power menu
     if button_c.value() == 0:
