@@ -18,7 +18,7 @@ def run():
     tft = io_man.get_tft()
     
     machine.freq(osc.ULTRA_FREQ)
-    menu1 = menus.menu("Menu", [("IR Remote", 1), ("Terminal", 2), ("Music Player", 6), ("File explorer", 7), ("Others", 4), ("Settings", 3), ("Close", 13)])
+    menu1 = menus.menu("Menu", [("IR Remote", 1), ("Terminal", 2), ("Music Player", 6), ("File explorer", 7), ("Flashlight", 8), ("Others", 4), ("Settings", 3), ("Close", 13)])
     if menu1 == 3:
         import apps.settings as a_se
         a_se.run()
@@ -51,5 +51,10 @@ def run():
         a_fe.run()
         del a_fe
         decache('modules.file_explorer')
+    elif menu1 == 8:
+        import apps.flashlight as a_fl
+        a_fl.run()
+        del a_fl
+        decache('apps.flashlight')
     gc.collect()
     machine.freq(osc.BASE_FREQ)
