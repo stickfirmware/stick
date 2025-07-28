@@ -24,7 +24,6 @@ if fvars.TFT != None:
     tft = fvars.TFT
 else:
     tft = init_tft()
-from machine import Pin
 import modules.button_init as btn_init
 buttons = btn_init.init_buttons()
 button_a = buttons[0]
@@ -68,10 +67,7 @@ while True:
     elif render == 3:
         clear_temp()
     elif render == 4:
-        import modules.numpad as npad
-        npad.set_btf(button_a, button_b, button_c, tft)
         import apps.terminal as a_tm
-        a_tm.set_tft(tft)
         a_tm.run()
         del a_tm
     elif render == 13:
