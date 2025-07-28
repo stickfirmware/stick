@@ -1,5 +1,5 @@
 import modules.io_manager as io_man
-from modules.decache import dechache
+from modules.decache import decache
 import modules.menus as menus
 import modules.osconstants as osc
 import machine
@@ -23,33 +23,33 @@ def run():
         import apps.settings as a_se
         a_se.run()
         del a_se
-        dechache('apps.settings')
+        decache('apps.settings')
     elif menu1 == 4:
         import apps.others as a_ot
         a_ot.run()
         del a_ot
-        dechache('apps.others')
+        decache('apps.others')
     elif menu1 == 1:
         import apps.IR as a_ir
         a_ir.run()
         a_ir.exit()
         del a_ir
-        dechache('apps.IR')
+        decache('apps.IR')
     elif menu1 == 2:
         import apps.terminal as a_tm
         a_tm.run()
         a_tm.exit()
         del a_tm
-        dechache('apps.terminal')
+        decache('apps.terminal')
     elif menu1 == 6:
         import apps.player as a_pl
         a_pl.run()
         del a_pl
-        dechache('apps.player')
+        decache('apps.player')
     elif menu1 == 7:
         import modules.fileexplorer as a_fe
         a_fe.run()
         del a_fe
-        dechache('modules.fileexplorer')
+        decache('modules.fileexplorer')
     gc.collect()
     machine.freq(osc.BASE_FREQ)

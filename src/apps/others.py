@@ -1,5 +1,5 @@
 import modules.io_manager as io_man
-from modules.decache import dechache
+from modules.decache import decache
 import modules.osconstants as osc
 import modules.menus as menus
 import machine
@@ -22,21 +22,21 @@ def run():
         import apps.scorekeeper as a_sc
         a_sc.run()
         del a_sc
-        dechache('apps.scorekeeper')
+        decache('apps.scorekeeper')
     elif render == 2:
         import apps.resistors as a_re
         a_re.run()
         del a_re
-        dechache('apps.resistors')
+        decache('apps.resistors')
     elif render == 3:
         import apps.metronome as a_me
         a_me.run()
         del a_me
-        dechache('apps.metronome')
+        decache('apps.metronome')
     elif render == 5:
         import apps.pimarkx as a_pimark
         a_pimark.run()
         del a_pimark
-        dechache('apps.pimarkx')
+        decache('apps.pimarkx')
     gc.collect()
     machine.freq(osc.BASE_FREQ)

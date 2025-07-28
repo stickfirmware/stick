@@ -20,7 +20,7 @@ import esp32
 import os
 import json
 import modules.io_manager as io_man
-from modules.decache import dechache
+from modules.decache import decache
 
 button_a = io_man.get_btn_a()
 button_b = io_man.get_btn_b()
@@ -37,17 +37,17 @@ ir_pin = machine.PWM(machine.Pin(pin_nvs, machine.Pin.OUT), duty=0)
 io_man.set_IR(ir_pin)
 
 def exit():
-    dechache('modules.IR.db_nec')
-    dechache('modules.IR.db_sony')
-    dechache('modules.IR.db_panasonic')
-    dechache('modules.IR.db_samsung')
-    dechache('modules.IR.db_gc')
-    dechache('modules.IR.nec')
-    dechache('modules.IR.sony')
-    dechache('modules.IR.panasonic')
-    dechache('modules.IR.samsung')
-    dechache('modules.IR.gc_send')
-    dechache('modules.IR.recv')
+    decache('modules.IR.db_nec')
+    decache('modules.IR.db_sony')
+    decache('modules.IR.db_panasonic')
+    decache('modules.IR.db_samsung')
+    decache('modules.IR.db_gc')
+    decache('modules.IR.nec')
+    decache('modules.IR.sony')
+    decache('modules.IR.panasonic')
+    decache('modules.IR.samsung')
+    decache('modules.IR.gc_send')
+    decache('modules.IR.recv')
 
 def send(necc, sonyc, panac, samsac, gcc):
     tft.text(f8x8, "Sending nec...",0,0,65535)
