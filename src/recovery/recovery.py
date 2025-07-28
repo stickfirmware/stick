@@ -41,7 +41,7 @@ import machine
 import modules.menus as menus
 
 def reset_nvs():
-    exec(open("/scripts/reset_nvs.py").read())
+    import scripts.reset_nvs
 
 def remove_upd():
     try:
