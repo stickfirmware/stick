@@ -6,6 +6,7 @@ import modules.numpad as npad
 import time
 import fonts.def_8x8 as f8x8
 import modules.io_manager as io_man
+from modules.decache import dechache
 
 button_c = io_man.get_btn_c()
 tft = io_man.get_tft()
@@ -29,6 +30,10 @@ banned_bytes = [
 
 # b'\x08' - FN + C
 
+def exit():
+    dechache('modules.CardKB')
+    dechache('modules.StickSh.executor')    
+
 def update_screen(input_text, hard_update):
     if hard_update == True:
         tft.fill_rect(0, 0, 240, 3, 65535)
@@ -44,10 +49,6 @@ def update_screen(input_text, hard_update):
     chunks = term_exec.to_chunks(input_text)
     last_chunk = chunks[-1] if chunks else ""
     tft.text(f8x8, last_chunk,14,123,65535)
-
-def set_tft(tft_n):
-    global tft
-    tft = tft_n
     
 def update_top(text):
     tft.fill_rect(3, 3, 234, 13, 0)
@@ -95,7 +96,7 @@ def run():
                 KB_Data = CardKB.read()
             else:
                 input_on_screen = npad.keyboard("Enter command")
-                if input_on_screen == None:
+                if input_on_screen == None or input_on_screen == "exit":
                     term_ok = False
                 else:
                     update_screen(input_text, True)
@@ -117,6 +118,9 @@ def run():
                     term_ok = False
                 # Enter
                 elif KB_Data == b'\r':
+                    if input_text == "exit":
+                        term_ok = False
+                        break
                     term_exec.executep(input_text)
                     input_text = ""
                 # Up

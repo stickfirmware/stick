@@ -6,7 +6,7 @@ DEVICE_NAME = const("M5Stack Cardputer v1.1") # Device name
 RELEASE_NAME = const("cardputerv1_1") # Name in builder
 
 # Debug
-ENABLE_DEBUG_PRINTS = const(True)
+ENABLE_DEBUG_PRINTS = const(False)
 
 # Power managament
 HAS_HOLD_PIN = const(False) # Do we need to put power hold pin HIGH? (Like on M5StickC Plus 2)
@@ -32,10 +32,15 @@ SD_CS = const(12)
 SD_MOSI = const(14)
 SD_MISO = const(39)
 SD_CLK = const(40)
+SD_FREQ = const(10_000_000) # SD Card frequency in Hz, it can not work past 10 MHz
 
 # IR
-IR_PIN = const(44)
+IR_PIN = const(44) # Built-in IR pin
 IR_ALLOWED_PINS = [1,2,44] 
+IR_SENDING_WAIT_TIME = const(0.3)
+
+ALLOW_IR_RECORD = const(False) # Allow IR recording?
+IR_RECORD_PIN = const(26)
 
 # Input methods
 INPUT_METHOD = const(2) # 1 - Standard (3 Buttons, Exit, Cycle, Select, used in sticks), 2 - Cardputer (Input over cardputer keyboard)
@@ -80,7 +85,7 @@ LCD_ROTATIONS = {
     "BUTTON_UPPER": 0, # Stick button up, cardputer kb left
     "BUTTON_BOTTOM": 2 # Stick button down, cardputer kb right
     }
-IMU_ROTATE_THRESHOLD = None # IMU Sensitivity
+IMU_ROTATE_THRESHOLD = const(0.9) # IMU Sensitivity
 LCD_POWER_SAVE_BL = const(0.3) # Backlight brightness on power saving
 
 # MCU Frequencies
@@ -100,6 +105,7 @@ IMU_CHECK_TIME = const(200) # IMU update time, in ms
 IMU_STAY_TIME = const(1000) # IMU stay time, in ms, device needs to be in same rotatation for X ms to accept rotation as stable
 NTP_SYNC_TIME = const(600000) # NTP automatic sync time in ms
 LOOP_WAIT_TIME = const(0.025) # Time loops wait until starting again in seconds (Start, wait time, start)
+DEBOUNCE_TIME = const(0.02) # Button check debounce time in seconds
 DIAGNOSTIC_REFRESH_TIME = const(2000) # On-screen diagnostics (Voltage + CPU speed in menu)
 
 # Boot settings
@@ -110,3 +116,4 @@ BOOT_UPDATE_PATH = const("/update.py")
 
 # Others
 EMERG_BUFF_SIZE = const(1000) # Emergency buffer allocation size in bytes
+

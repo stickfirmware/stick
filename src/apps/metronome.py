@@ -40,8 +40,6 @@ def run():
         return
     import machine
     
-    machine.freq(240000000)
-    
     bpm_max = 250
     bpm_min = 30
     bpm = 120

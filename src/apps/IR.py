@@ -20,6 +20,7 @@ import esp32
 import os
 import json
 import modules.io_manager as io_man
+from modules.decache import dechache
 
 button_a = io_man.get_btn_a()
 button_b = io_man.get_btn_b()
@@ -35,19 +36,32 @@ print("IR pin from NVS:", repr(pin_nvs))
 ir_pin = machine.PWM(machine.Pin(pin_nvs, machine.Pin.OUT), duty=0)
 io_man.set_IR(ir_pin)
 
+def exit():
+    dechache('modules.IR.db_nec')
+    dechache('modules.IR.db_sony')
+    dechache('modules.IR.db_panasonic')
+    dechache('modules.IR.db_samsung')
+    dechache('modules.IR.db_gc')
+    dechache('modules.IR.nec')
+    dechache('modules.IR.sony')
+    dechache('modules.IR.panasonic')
+    dechache('modules.IR.samsung')
+    dechache('modules.IR.gc_send')
+    dechache('modules.IR.recv')
+
 def send(necc, sonyc, panac, samsac, gcc):
     tft.text(f8x8, "Sending nec...",0,0,65535)
     nec.send_array(necc)
-    time.sleep(0.1)
+    time.sleep(osc.IR_SENDING_WAIT_TIME)
     tft.text(f8x8, "Sending sony...",0,8,65535)
     sony.send_array(sonyc)
-    time.sleep(0.1)
+    time.sleep(osc.IR_SENDING_WAIT_TIME)
     tft.text(f8x8, "Sending samsung...",0,16,65535)
     samsa.send_array(samsac)
-    time.sleep(0.1)
+    time.sleep(osc.IR_SENDING_WAIT_TIME)
     tft.text(f8x8, "Sending panasonic...",0,24,65535)
     pana.send_array(panac)
-    time.sleep(0.1)
+    time.sleep(osc.IR_SENDING_WAIT_TIME)
     tft.text(f8x8, "Sending GC...",0,32,65535)
     gc_send.send_array(gcc)
     work = True
@@ -56,16 +70,16 @@ def send(necc, sonyc, panac, samsac, gcc):
         if render == 1:
             tft.text(f8x8, "Sending nec...",0,0,65535)
             nec.send_array(necc)
-            time.sleep(0.3)
+            time.sleep(osc.IR_SENDING_WAIT_TIME)
             tft.text(f8x8, "Sending sony...",0,8,65535)
             sony.send_array(sonyc)
-            time.sleep(0.3)
+            time.sleep(osc.IR_SENDING_WAIT_TIME)
             tft.text(f8x8, "Sending samsung...",0,16,65535)
             samsa.send_array(samsac)
-            time.sleep(0.3)
+            time.sleep(osc.IR_SENDING_WAIT_TIME)
             tft.text(f8x8, "Sending panasonic...",0,24,65535)
             pana.send_array(panac)
-            time.sleep(0.1)
+            time.sleep(osc.IR_SENDING_WAIT_TIME)
             tft.text(f8x8, "Sending GC...",0,32,65535)
             gc_send.send_array(gcc)
         else:
@@ -107,6 +121,9 @@ def run():
             ir_pin = machine.PWM(machine.Pin(nvs.get_int(n_settings, "irPin"), machine.Pin.OUT), duty = 0)
             io_man.set_IR(ir_pin)
         elif render == 9:
+            if osc.ALLOW_IR_RECORD == False:
+                menus.menu("IR recording is not allowed!", [("Close", 1)])
+                continue
             works = True
             updat = True
             if "usr" not in os.listdir("/"):
@@ -114,7 +131,7 @@ def run():
             if "ir" not in os.listdir("/usr/"):
                 os.mkdir("/usr/ir")
             while works == True:
-                time.sleep(0.02)
+                time.sleep(osc.LOOP_WAIT_TIME)
                 if updat == True:
                     tft.fill(0)
                     tft.text(f8x8, "Receiver mode!",0,0,65535)

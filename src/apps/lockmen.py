@@ -1,7 +1,5 @@
 import time
 import fonts.def_8x8 as f8x8
-from machine import Pin
-import os
 
 import modules.io_manager as io_man
 

@@ -1,5 +1,5 @@
 import esp32
-import machine, sys
+import machine
 import modules.nvs as nvs
 import time
 import modules.osconstants as osc

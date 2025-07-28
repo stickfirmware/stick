@@ -152,7 +152,7 @@ def run(fileselectmode=False, startingselectpath="/"):
     tft.text(f16x32, "File Explorer",0,0,1984)
     tft.text(f8x8, "Loading...",0,32,65535)
     work = True
-    
+    detect()
     if fileselectmode == True:
         work = False
         return explorerLoop(startingselectpath, True)

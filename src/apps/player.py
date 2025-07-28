@@ -16,6 +16,13 @@ button_b = io_man.get_btn_b()
 button_c = io_man.get_btn_c()
 tft = io_man.get_tft()
 
+def io_refresh():
+    global button_c, button_a, button_b, tft
+    button_a = io_man.get_btn_a()
+    button_b = io_man.get_btn_b()
+    button_c = io_man.get_btn_c()
+    tft = io_man.get_tft()
+
 def skeleton(text="Music Player"):
     tft.fill_rect(0, 0, 240, 3, 65535)
     tft.fill_rect(0, 16, 240, 3, 65535)
@@ -35,6 +42,7 @@ def volume_to_shift(volume):
         return int((volume - 0.8) / 0.2 * 2)
 
 def play(path):
+    io_refresh()
     tft.fill(0)
     tft.text(f8x8, "Loading...", 0, 0, 65535)
 
@@ -174,11 +182,7 @@ def play(path):
         gc.collect()
 
 def run():
-    global button_c, button_a, button_b, tft
-    button_a = io_man.get_btn_a()
-    button_b = io_man.get_btn_b()
-    button_c = io_man.get_btn_c()
-    tft = io_man.get_tft()
+    io_refresh()
     
     import sys
     if not osc.HAS_SPEAKER:

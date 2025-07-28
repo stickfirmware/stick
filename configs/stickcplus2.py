@@ -32,10 +32,15 @@ SD_CS = None
 SD_MOSI = None
 SD_MISO = None
 SD_CLK = None
+SD_FREQ = None # SD Card frequency in Hz, it can not work past 10 MHz
 
 # IR
 IR_PIN = const(19)
 IR_ALLOWED_PINS = [26,0,32,33,19] 
+IR_SENDING_WAIT_TIME = const(0.3)
+
+ALLOW_IR_RECORD = const(True) # Allow IR recording?
+IR_RECORD_PIN = const(26)
 
 # Input methods
 INPUT_METHOD = const(1) # 1 - Standard (3 Buttons, Exit, Cycle, Select, used in sticks), 2 - Cardputer (Input over cardputer keyboard)
@@ -100,6 +105,7 @@ IMU_CHECK_TIME = const(200) # IMU update time, in ms
 IMU_STAY_TIME = const(1000) # IMU stay time, in ms, device needs to be in same rotatation for X ms to accept rotation as stable
 NTP_SYNC_TIME = const(600000) # NTP automatic sync time in ms
 LOOP_WAIT_TIME = const(0.025) # Time loops wait until starting again in seconds (Start, wait time, start)
+DEBOUNCE_TIME = const(0.02) # Button check debounce time in seconds
 DIAGNOSTIC_REFRESH_TIME = const(2000) # On-screen diagnostics (Voltage + CPU speed in menu)
 
 # Boot settings

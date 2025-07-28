@@ -2,9 +2,9 @@ import modules.menus as menus
 import modules.nvs as nvs
 import modules.osconstants as osc
 import modules.openFile as openfile
-import modules.uptime as uptime
 import fonts.def_8x8 as f8x8
 import modules.sdcard as sd
+import modules.crash_handler as c_handler
 import esp32
 import machine
 import network
@@ -49,9 +49,15 @@ def run():
     
     work = True
     while work == True:
+        
+        # Main menu
         menu1 = menus.menu("Settings", [("LCD / st7789", 1), ("Sound", 2), ("Wi-Fi", 3), ("SD Card", 7), ("About", 8), ("Close", 13)])
+        
+        # LCD / st7789 settings
         if menu1 == 1:
             menu2 = menus.menu("Settings/st7789", [("Backlight", 1), ("Autorotate", 2), ("Power saving", 3), ("Close", 13)])
+            
+            # Backlight settings
             if menu2 == 1:
                 work1 = True
                 while work1 == True:
@@ -67,6 +73,8 @@ def run():
                     else:
                         work1 = False
                     tft.set_backlight(nvs.get_float(n_settings, "backlight"))
+             
+            # Autorotate settings       
             elif menu2 == 2:
                 work1 = True
                 if osc.HAS_IMU == False:
@@ -82,6 +90,8 @@ def run():
                         nvs.set_int(n_settings, "autorotate", 0)
                     else:
                         work1 = False
+                        
+            # Power saving settings
             elif menu2 == 3:
                 work1 = True
                 while work1 == True:
@@ -94,8 +104,12 @@ def run():
                         nvs.set_int(n_settings, "allowsaving", 0)
                     else:
                         work1 = False  
+                        
+        # Sound settings
         elif menu1 == 2:
             menu2 = menus.menu("Settings/Buzzer", [("Volume", 1), ("Close", 13)])
+            
+            # Volume settings
             if menu2 == 1:
                 work1 = True
                 while work1 == True:
@@ -110,8 +124,12 @@ def run():
                             nvs.set_float(n_settings, "volume", (nvs.get_float(n_settings, "volume") - 0.1))
                     else:
                         work1 = False
+                        
+        # Wi-Fi settings
         elif menu1 == 3:
             rendr =  menus.menu("Settings/Wi-Fi", [("Setup AP", 1), ("Connection", 2), ("NTP Sync", 3), ("NTP Timezone", 4), ("Close", 13)])
+            
+            # Wi-Fi AP setup
             if rendr == 1:
                 ssid = keypad.keyboard("Enter SSID", maxlen=32, hideInput=False)
                 if ssid == None:
@@ -124,6 +142,8 @@ def run():
                 nvs.set_string(n_wifi, "ssid", ssid)
                 nvs.set_string(n_wifi, "passwd", password)
                 menus.menu("Now you can connect!", [("OK",  1)])
+                
+            # Wi-Fi connection
             elif rendr == 2:
                 if int(nvs.get_float(n_wifi, "conf")) == 1:
                     try:
@@ -145,13 +165,15 @@ def run():
                         c_handler.crash_screen(tft, 3001, str(e), True, True, 2)
                 else:
                     menus.menu("Wi-Fi not set-up yet!", [("OK",  1)])
+                    
+            # NTP Sync
             elif rendr == 3:
                 nic = network.WLAN(network.STA_IF)
                 if nic.isconnected() == True:
                     syncing = True
                     while syncing == True:
                         import modules.ntp as ntp
-                        syn = ntp.sync(rtc)
+                        syn = ntp.sync()
                         del ntp
                         if syn == True:
                             menus.menu("NTP Sync successfull!", [("OK",  1)])
@@ -162,6 +184,8 @@ def run():
                                 syncing = False
                 else:
                     menus.menu("No Wi-Fi connection!", [("OK",  1)])
+                    
+            # NTP Timezone
             elif rendr == 4:
                 tim = True
                 menu = 1
@@ -185,7 +209,11 @@ def run():
                             nvs.set_int(n_settings, "timezoneIndex", timezone)
                             tim = False
                 timezone = menus.menu("Please sync NTP to apply!", [("OK", 1)])
+                
+        # SD Card settings
         elif menu1 == 7:
+            
+            # SD Card menu if SD is not mounted
             if sd.sd is None:
                 sd_menu = menus.menu("Settings/SD Card", [("Init", 1), ("Close", 13)])
                 if sd_menu == 1:
@@ -201,6 +229,8 @@ def run():
                     else:
                         tft.text(f8x8, "Failed!",135,38, 65535)
                     time.sleep(2)
+                    
+            # Menu if SD is mounted
             else:
                 sd_menu = menus.menu("Settings/SD Card", [("Unmount", 1), ("Close", 13)])
                 if sd_menu == 1:
@@ -213,12 +243,12 @@ def run():
                     else:
                         tft.text(f8x8, "Failed!",135,38, 65535)
                     time.sleep(2)
+        
+        # About screen
         elif menu1 == 8:
             import version as v
             tft.fill(0)
             gc.collect()
-            memfree = gc.mem_free() / 1024 / 1024
-            used = gc.mem_alloc() / 1024 / 1024
             if v.is_beta == True:
                 ver_color = 65088
             else:
@@ -232,7 +262,7 @@ def run():
             tft.text(f8x8, "button B for credits",0,119,65535)
             tft.text(f8x8, "and button C for license.",0,127,65535)
             while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
-                time.sleep(0.02)
+                time.sleep(osc.DEBOUNCE_TIME)
             if button_b.value() == 0:
                 openfile.openMenu("/CREDITS")
             if button_c.value() == 0:

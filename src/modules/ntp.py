@@ -3,6 +3,7 @@ import time
 import esp32
 import modules.nvs as nvs
 import modules.osconstants as osc
+import modules.io_manager as io_man
 
 timezone_map = {
     0: (0, 0), 1: (1, 0), 2: (2, 0), 3: (3, 0),
@@ -23,7 +24,8 @@ def wait_for_new_second():
     while time.localtime()[5] == current_sec:
         time.sleep(0.01)
 
-def sync(rtc):
+def sync():
+    rtc = io_man.get_rtc()
     n_settings = esp32.NVS("settings")
     timezoneIndex = nvs.get_int(n_settings, "timezoneIndex")
     if timezoneIndex is None:

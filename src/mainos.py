@@ -12,7 +12,7 @@ import modules.nvs as nvs
 import network
 import os
 import time
-import sys
+from modules.decache import decache
 
 # Buzzer
 debug.log("Buzz tone")
@@ -20,9 +20,6 @@ import modules.buzzer as buzz
 if osc.HAS_BUZZER:
     buzzer = PWM(Pin(osc.BUZZER_PIN), duty_u16=0, freq=500)
     buzz.startup_sound(buzzer)
-
-def decache(name):
-    sys.modules.pop(name, None)
 
 try:
     os.rmdir("/temp")
@@ -140,7 +137,7 @@ del n_crash
 
 render_bar("Checking first boot...", True)
 
-# Check first boot
+# Check if its first boot
 debug.log("Check for first boot")
 import modules.first_boot_check as first_boot_check
 first_boot_check.check(tft)
@@ -281,7 +278,7 @@ render_battery = False
 # Loop timings
 ntp_first = True
 ntp_time = time.ticks_ms()
-sleep_time = time.ticks_ms()
+pwr_save_time = time.ticks_ms()
 diagnostic_time = time.ticks_ms()
 prev_bl = tft.get_backlight()
 is_in_saving = False
@@ -331,7 +328,7 @@ import apps.clock as app_clock
 
 # Wake up function
 def wake_up():
-    global is_in_saving, sleep_time, prev_bl
+    global is_in_saving, pwr_save_time, prev_bl
     is_in_saving = False
     auto_rotate = nvs.get_int(n_settings, "autorotate")
     if auto_rotate == 0:
@@ -343,7 +340,7 @@ def wake_up():
             mpu.sleep_off()
         else:
             auto_rotate = 0
-    sleep_time = time.ticks_ms()
+    pwr_save_time = time.ticks_ms()
     tft.set_backlight(nvs.get_float(n_settings, "backlight"))
     machine.freq(osc.BASE_FREQ)
 
@@ -375,13 +372,17 @@ while True:
             tft.set_backlight(prev_bl)
             was_sleep_triggered = False
 
+        # Set faster CPU freq for faster rendering
         machine.freq(osc.ULTRA_FREQ)
         render_battery = True
         is_in_saving = False
-        sleep_time = time.ticks_ms()
+        pwr_save_time = time.ticks_ms()
+        
+        # Get values from NVS (To ensure that they are up to date)
         auto_rotate = nvs.get_int(n_settings, "autorotate")
         allow_saving = nvs.get_int(n_settings, "allowsaving")
 
+        # Sleep IMU if not used for power saving
         if auto_rotate == 0:
             stable_orientation = osc.LCD_ROTATIONS["BUTTON_LEFT"]
             if osc.HAS_IMU:
@@ -392,6 +393,7 @@ while True:
             else:
                 auto_rotate = 0
 
+        # Rotate screen to stable orientation
         tft.rotation(int(stable_orientation))
         if stable_orientation in [osc.LCD_ROTATIONS["BUTTON_UPPER"], osc.LCD_ROTATIONS["BUTTON_BOTTOM"]]:
             app_clock.run_clock_vert()
@@ -414,8 +416,12 @@ while True:
             if not nic.isconnected():
                 nic.active(False)
     
+    # Check if Wi-Fi is connected, if not, set connection time     
+    if nic.active() and nic.isconnected() == False:
+        conn_time = time.ticks_ms()
+    
     # Power saving
-    if not is_in_saving and time.ticks_diff(time.ticks_ms(), sleep_time) >= osc.POWER_SAVE_TIMEOUT and allow_saving == 1:
+    if not is_in_saving and time.ticks_diff(time.ticks_ms(), pwr_save_time) >= osc.POWER_SAVE_TIMEOUT and allow_saving == 1:
         # Disable debug/battery info for less lag
         tft.fill_rect(4, 116, 190, 16, 0)
         
@@ -452,35 +458,61 @@ while True:
     # Dummy mode unlocking
     if button_a.value() == 0 and button_b.value() == 0:
         hold_time = 0.00
+        
+        # Wake up (If in power saving)
         wake_up()
+        
+        # Check how much time button c is held down
         while button_b.value() == 0:
             time.sleep(osc.LOOP_WAIT_TIME)
             hold_time += osc.LOOP_WAIT_TIME
+        
+        # Log hold time
         debug.log(str(hold_time) + "  " + str(nvs.get_int(n_locks, "dummy")))
+        
+        # Let user through if hold time is more than 1s
         if hold_time >= 1 and nvs.get_int(n_locks, "dummy") != 0:
             if menu == 0:
+                # Allow only landscape mode
                 allow_only_landscape()
+                
+                # Init lock menu
                 import apps.lockmen as app_lockmen
                 app_lockmen.run()
+                # De-cache lock menu (to free up RAM)
+                decache("apps.lockmen")
                 del app_lockmen
                 menu = 0
                 menu_change = True
-        sleep_time = time.ticks_ms()
+                
+        # Reset power saving time
+        pwr_save_time = time.ticks_ms()
         
     # Menu
     if button_a.value() == 0:
+        # Wake up (If in power saving)
         wake_up()
+        
+        # Set basic frequency
         machine.freq(osc.BASE_FREQ)
+        
+        # Button debounce (Reset loop if holding more than button a, for dummy unlock)
         while button_a.value() == 0 and button_c.value() == 1 and button_b.value() == 1:
             time.sleep(osc.LOOP_WAIT_TIME)
         if button_c.value() == 0 or button_b.value() == 0:
             continue
         
+        # Don't allow to pass if in dummy mode
         if nvs.get_int(n_locks, "dummy") == 0:
+            # Allow only landscape mode
             allow_only_landscape()
+            
+            # Sync with rtc (if device has one)
             if rtc is not None:
                 dt = rtc.get_time()
                 machine.RTC().datetime(dt)
+                
+            # Open menu
             try:
                 import apps.menu as app_menu
                 app_menu.run()
@@ -495,59 +527,99 @@ while True:
                 time.sleep(3)
             menu = 0
             menu_change = True
-        sleep_time = time.ticks_ms()
+            
+        # Reset power saving
+        pwr_save_time = time.ticks_ms()
         
     # Power menu
     if button_c.value() == 0:
+        # Wake up
         wake_up()
+        
+        # Check buttons
         while button_c.value() == 0 and button_a.value() == 1 and button_b.value() == 1:
             time.sleep(osc.LOOP_WAIT_TIME)
         if button_a.value() == 0 or button_b.value() == 0:
             continue
-        if menu == 0:
-            import apps.powermenu as app_powermen
-            allow_only_landscape()
-            app_powermen.run()
-            del app_powermen
-            menu = 0
-            menu_change = True
-        sleep_time = time.ticks_ms()
+    
+        # Open power menu
+        import apps.powermenu as app_powermen
+        allow_only_landscape()
+        app_powermen.run()
+        # De-cache
+        decache("apps.powermen")
+        del app_powermen
+        menu = 0
+        menu_change = True
+        
+        # Reset power saving time
+        pwr_save_time = time.ticks_ms()
         
     # Locking menu
     if button_b.value() == 0:
         hold_time = 0.00
+        
+        # Wake up
         wake_up()
+        
+        # Check hold time
         while button_b.value() == 0 and button_c.value() == 1 and button_a.value() == 1:
             time.sleep(osc.LOOP_WAIT_TIME)
             hold_time += osc.LOOP_WAIT_TIME
         if button_c.value() == 0 or button_a.value() == 0:
             continue
+        
+        # Allow if hold more than 1s
         if hold_time >= 1 and nvs.get_int(n_locks, "dummy") == 0:
-            if menu == 0:
-                allow_only_landscape()
-                import apps.lockmen as app_lockmen
-                app_lockmen.run()
-                del app_lockmen
-                menu = 0
-                menu_change = True
-        sleep_time = time.ticks_ms()
+            allow_only_landscape()
+            # Open lock menu
+            import apps.lockmen as app_lockmen
+            app_lockmen.run()
+            # De-cache lock menu
+            decache("apps.lockmen")
+            del app_lockmen
+            menu = 0
+            menu_change = True
             
-    # Battery check
+        # Reset pwr save
+        pwr_save_time = time.ticks_ms()
+            
+    # Battery check (Diagnostics)
     if not is_in_saving and time.ticks_diff(time.ticks_ms(), diagnostic_time) >= osc.DIAGNOSTIC_REFRESH_TIME and menu == 0:
+        # Reset diagnostic refresh time
         diagnostic_time = time.ticks_ms()
+        
+        # Check battery for low voltage
         battery_shutdown.run()
+        
+        # Check dummy mode
         locks = nvs.get_int(n_locks, "dummy")
+        
+        # Collect garbage
         gc.collect()
+        
+        # Check battery voltage
         volts = b_check.voltage()
+        
+        # Render only in landscape
         if menu == 0:
+            # Clear old info
             tft.fill_rect(4, 116, 190, 16, 0)
+            
+            # Render CPU info if not in dummy
             if locks == 0:
                 tft.text(f8x8, "CPU: " + str(machine.freq() / 1000000) + "MHz",4,116,703)
+                
+            # Check percentage
             pr = b_check.percentage(volts)
+            
+            # Show either battery percentage or voltage based on dummy mode
             if locks == 0:
                 tft.text(f8x8, "Battery: " + str(volts) + "V / " + str(int(pr)) + "%",4,124,2016)
             else:
                 tft.text(f8x8, "Battery: " + str(int(pr)) + "%",4,124,2016)
+                
+        # Battery bitmap render
         b_check.run(tft)
         
     # NTP sync

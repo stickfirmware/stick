@@ -1,5 +1,6 @@
 import modules.osconstants as osc
 import os
+import machine
 import modules.io_manager as io_man
 import esp32
 import modules.nvs as nvs
