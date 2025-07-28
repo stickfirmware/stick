@@ -5,7 +5,7 @@ import sys
 import time
 import os
 import gc
-import modules.openFile as openfile
+import modules.open_file as open_file
     
 import modules.io_manager as io_man
 
@@ -84,7 +84,7 @@ def fileMenu(file):
     global clipboard
     render = menus.menu(str(file), [("Open in...", 4), ("Delete", 2), ("Properties", 1), ("Exit", 13)])
     if render == 4:
-        openfile.openMenu(file)
+        open_file.openMenu(file)
     elif render == 1:
         if "temp" not in os.listdir("/"):
             os.mkdir("/temp")
@@ -102,7 +102,7 @@ def fileMenu(file):
         parts = "helpers.runinreader".split(".")
         for part in parts[1:]:
             comd = getattr(comd, part)
-        comd.openFile("/temp/fileprop.txt")
+        comd.open_file("/temp/fileprop.txt")
         if "helpers/runinreader" in sys.modules:
             del sys.modules["helpers/runinreader"]
     elif render == 2:

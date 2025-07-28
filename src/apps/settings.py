@@ -1,7 +1,7 @@
 import modules.menus as menus
 import modules.nvs as nvs
 import modules.os_constants as osc
-import modules.openFile as openfile
+import modules.open_file as open_file
 import fonts.def_8x8 as f8x8
 import modules.sdcard as sd
 import modules.crash_handler as c_handler
@@ -264,9 +264,9 @@ def run():
             while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
                 time.sleep(osc.DEBOUNCE_TIME)
             if button_b.value() == 0:
-                openfile.openMenu("/CREDITS")
+                open_file.openMenu("/CREDITS")
             if button_c.value() == 0:
-                openfile.openMenu("/LICENSE")
+                open_file.openMenu("/LICENSE")
         else:
             work = False
             

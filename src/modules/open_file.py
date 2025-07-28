@@ -48,8 +48,8 @@ def openMenu(file):
             comd = getattr(comd, part)
         if hasattr(comd, "set_btf"):
             comd.set_btf(button_a, button_b, button_c, tft)
-        if hasattr(comd, "openFile"):
-            comd.openFile(file)
+        if hasattr(comd, "open_file"):
+            comd.open_file(file)
 
         if modpath in nisysa.modules:
             del nisysa.modules[modpath]
