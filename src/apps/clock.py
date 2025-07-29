@@ -4,13 +4,14 @@ import fonts.def_8x8 as f8x8
 import fonts.def_16x32 as f16x32
 import network
 import modules.io_manager as io_man
+import modules.printer as printer
 
 tft = io_man.get_tft()
 
 allow_drawing_battery = True
 
 def run_clock():
-    print("Rendering clock base")
+    printer.log("Rendering clock base")
     tft.fill_rect(0, 0, 240, 3, 65535)
     tft.fill_rect(0, 16, 240, 3, 65535)
     tft.fill_rect(0, 132, 240, 3, 65535)
@@ -21,7 +22,7 @@ def run_clock():
     tft.text(f8x8, "Clock",5,5,65535)
     
 def run_clock_vert():
-    print("Rendering clock base")
+    printer.log("Rendering clock base")
     tft.fill_rect(0, 0, 3, 240, 65535)
     tft.fill_rect(132, 0, 3, 240, 65535)
     tft.fill_rect(0, 0, 135, 3, 65535)

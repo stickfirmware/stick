@@ -108,8 +108,6 @@ def run():
         if on_screen_keyboard == False:
             KB_Text = CardKB.decode(KB_Data)
             if KB_Data != b'\x00':
-                print(str(KB_Data))
-                print(str(KB_Text))
                 # Backspace
                 if KB_Data == b'\x08':
                     input_text = input_text[:-1]

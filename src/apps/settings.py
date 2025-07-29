@@ -13,6 +13,7 @@ import modules.qr_codes as qr
 import modules.numpad as keypad
 import gc
 import modules.io_manager as io_man
+import modules.printer as printer
 
 button_a = io_man.get_btn_a()
 button_b = io_man.get_btn_b()
@@ -154,7 +155,7 @@ def run():
                                 nic.active(False)
                                 time.sleep(0.2)
                                 nic.active(True)
-                                print("Wifi connecting")
+                                printer.log("Wifi connecting")
                                 nic.connect(nvs.get_string(n_wifi, "ssid"), nvs.get_string(n_wifi, "passwd"))
                                 menus.menu("Please wait for connection!", [("OK",  1)])
                         else:

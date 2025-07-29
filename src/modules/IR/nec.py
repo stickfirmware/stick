@@ -1,5 +1,6 @@
 import time
 import modules.io_manager as io_man
+import modules.printer as printer
 
 pwm = io_man.get_IR()
 
@@ -48,6 +49,6 @@ def send_array(codes):
     global pwm
     pwm = io_man.get_IR()
     for address, command in codes:
-        print("Sending NEC (Addr: "+ str(address) + " Cmd: " + str(command) + ")")
+        printer.log("Sending NEC (Addr: "+ str(address) + " Cmd: " + str(command) + ")")
         send_nec(address, command)
         time.sleep(0.12)

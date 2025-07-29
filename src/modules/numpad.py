@@ -159,7 +159,6 @@ def numpad(title, maxlen=0, hideInput=False):
                         inp += str(0)
             else:
                 upd = True
-                print(selection)
                 if maxlen == 0:
                     inp += str(selection + 1)
                 else:

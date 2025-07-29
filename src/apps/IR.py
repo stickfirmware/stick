@@ -20,6 +20,7 @@ import esp32
 import os
 import json
 import modules.io_manager as io_man
+import modules.printer as printer
 from modules.decache import decache
 
 button_a = io_man.get_btn_a()
@@ -32,7 +33,7 @@ pin_nvs = nvs.get_int(n_settings, "irPin")
 if pin_nvs is None or pin_nvs not in osc.IR_ALLOWED_PINS:
     nvs.set_int(n_settings, "irPin", osc.IR_PIN)
     pin_nvs = osc.IR_PIN
-print("IR pin from NVS:", repr(pin_nvs))
+printer.log("IR pin from NVS:", repr(pin_nvs))
 ir_pin = machine.PWM(machine.Pin(pin_nvs, machine.Pin.OUT), duty=0)
 io_man.set_IR(ir_pin)
 

@@ -1,5 +1,6 @@
 import time
 import modules.io_manager as io_man
+import modules.printer as printer
 
 ir_pin = io_man.get_IR()
 
@@ -37,6 +38,6 @@ def send_array(codes):
     global ir_pin
     ir_pin = io_man.get_IR()
     for data in codes:
-        print("Sending Samsung (Code: " + str(data) + ")")
+        printer.log("Sending Samsung (Code: " + str(data) + ")")
         send_samsung(data)
         time.sleep(0.11)

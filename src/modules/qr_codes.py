@@ -3,7 +3,6 @@ import framebuf
 
 def make_qr(tft, data, xd, yd, size=1):
     qr = uQR.make(data=data)
-    print(qr)
     render_qr(tft, qr, xd, yd, size)
     
 def render_qr(tft, qr, xd, yd, size=1):
