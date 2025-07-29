@@ -55,7 +55,6 @@ def run():
         m_sleep.sleep(True)
     elif powermenu == 3:
         machine.freq(osc.BASE_FREQ)
-        import fonts.def_8x8 as f8x8
         nic.active(False)
         tft.fill(703)
         tft.text(f8x8, "Rebooting...",0,0,65535,703)
