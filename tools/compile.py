@@ -1,37 +1,9 @@
 import os
-import tempfile
-# nosec: B404
 import subprocess
-from python_minifier import minify, RemoveAnnotationsOptions
 import shutil
 
 SRC_DIR = "src"
 OUT_DIR = "out"
-
-options = dict(
-    remove_annotations=RemoveAnnotationsOptions(
-        remove_variable_annotations=True,
-        remove_return_annotations=True,
-        remove_argument_annotations=True,
-        remove_class_attribute_annotations=False,
-    ),
-    remove_pass=True,
-    remove_literal_statements=True,
-    combine_imports=True,
-    hoist_literals=True,
-    rename_locals=True,
-    preserve_locals=None,
-    rename_globals=False,
-    preserve_globals=None,
-    remove_object_base=True,
-    convert_posargs_to_args=True,
-    preserve_shebang=True,
-    remove_asserts=True,
-    remove_debug=True,
-    remove_explicit_return_none=False,
-    remove_builtin_exception_brackets=True,
-    constant_folding=True,
-)
 
 compilations = 0
 total_files = 0
@@ -50,34 +22,21 @@ def comp_file(src_path, out_folder):
     base_name = os.path.splitext(rel_path)[0]
 
     if ext == ".py" and not rel_path.endswith("main.py"):
-        with open(src_path, "r", encoding="utf-8") as f:
-            source = f.read()
-
-        minified = minify(source, filename=src_path, **options)
-
-        os.makedirs(os.path.join(out_folder, os.path.dirname(rel_path)), exist_ok=True)
-
-        with tempfile.NamedTemporaryFile("w", suffix=".py", delete=False, encoding="utf-8") as tmp:
-            tmp.write(minified)
-            tmp_path = tmp.name
-
         out_mpy_path = os.path.join(out_folder, base_name + ".mpy")
-        out_py_path = os.path.join(out_folder, rel_path)
+        os.makedirs(os.path.dirname(out_mpy_path), exist_ok=True)
 
         try:
-            subprocess.run(["mpy-cross", tmp_path, "-o", out_mpy_path, "-march=xtensawin"], check=True)
+            subprocess.run(["mpy-cross", src_path, "-o", out_mpy_path, "-march=xtensawin"], check=True)
             compiled_files += 1
             size_output += os.path.getsize(out_mpy_path)
-            print(f"Compiled and minified {src_path} -> {out_mpy_path}")
+            print(f"Compiled {src_path} -> {out_mpy_path}")
         except subprocess.CalledProcessError:
-            with open(out_py_path, "w", encoding="utf-8") as f:
-                f.write(minified)
+            out_py_path = os.path.join(out_folder, rel_path)
+            os.makedirs(os.path.dirname(out_py_path), exist_ok=True)
+            shutil.copy2(src_path, out_py_path)
             not_compiled_files += 1
             size_output += os.path.getsize(out_py_path)
-            print(f"mpy-cross failed, saved minified source as {out_py_path}")
-        finally:
-            os.remove(tmp_path)
-
+            print(f"mpy-cross failed, copied as .py: {src_path} -> {out_py_path}")
     else:
         out_other_path = os.path.join(out_folder, rel_path)
         os.makedirs(os.path.dirname(out_other_path), exist_ok=True)
