@@ -7,6 +7,7 @@ import fonts.def_16x32 as f16x32
 from machine import Pin, PWM
 import modules.io_manager as io_man
 import modules.os_constants as osc
+import modules.printer as printer
 
 button_a = io_man.get_btn_a()
 button_b = io_man.get_btn_b()
@@ -15,7 +16,6 @@ tft = io_man.get_tft()
 
 def play(bpm):
     import time
-    print("Buzz tone")
     import modules.buzzer as buzz
     buzzer = PWM(Pin(2), duty_u16=0, freq=500)
     delay = ((60 / bpm) * 1000)
@@ -44,7 +44,7 @@ def run():
     bpm_min = 30
     bpm = 120
     
-    print("Going into main loop")
+    printer.log("Going into main loop")
     
     work = True
     while work == True:

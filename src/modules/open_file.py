@@ -37,10 +37,8 @@ def openMenu(file):
     supportedAppsMenu = getSupportedApps(appsConfig, file)
     selected_index = menus.menu("Open in", supportedAppsMenu)
     if selected_index is not None:
-        print(supportedAppsMenu)
         app_index = selected_index
         app = appsConfig["apps"][app_index]
-        print(app)
         modpath = app["file"]
         parts = modpath.split(".")
         comd = __import__(modpath)

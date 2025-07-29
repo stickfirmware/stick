@@ -12,11 +12,12 @@ class FakeST:
 import machine, time
 import os
 import modules.os_constants as osc
+import modules.printer as printer
 machine.freq(osc.ULTRA_FREQ)
 
 # Hold power
 if osc.HAS_HOLD_PIN:
-    print("\nEnable hold pin")
+    printer.log("\nEnable hold pin")
     power_hold = machine.Pin(osc.HOLD_PIN, machine.Pin.OUT)
     power_hold.value(1)
 
@@ -26,7 +27,7 @@ if osc.HAS_BUZZER:
     buzz.set_volume(0.1)
     buzz.play_sound(buzzer, 2000, 0.0125)
 
-print("Checking boot options...")
+printer.log("Checking boot options...")
 
 # Recovery button
 RECOVERY_BTN_PIN = osc.BOOT_RECOVERY_PIN
@@ -35,12 +36,12 @@ rbtn = machine.Pin(RECOVERY_BTN_PIN, machine.Pin.IN, machine.Pin.PULL_UP)
 recovery = rbtn.value() == 0
 
 try:
-    print("Load fonts")
+    printer.log("Load fonts")
     import fonts.def_8x8 as f8x8
     import fonts.def_16x32 as f16x32
 
     # Init tft
-    print("Init tft")
+    printer.log("Init tft")
     import modules.st7789 as st7789
     tft = st7789.ST7789(
             machine.SPI(osc.LCD_SPI_SLOT, baudrate=osc.LCD_SPI_BAUD, sck=machine.Pin(osc.LCD_SPI_SCK), mosi=machine.Pin(osc.LCD_SPI_MOSI), miso=osc.LCD_SPI_MISO),
@@ -85,13 +86,13 @@ def recoveryf():
 while True:
     if recovery and osc.BOOT_ENABLE_RECOVERY == True:
         tft.text(f8x8, "Recovery",180,127,2016)
-        print("Booting recovery")
+        printer.log("Booting recovery")
         recovery = False
         recoveryf()
     elif osc.BOOT_UPDATE_PATH in os.listdir("/") and osc.BOOT_ENABLE_UPDATES:
         tft.text(f8x8, "Update script found! Booting..",0,24,65535)
         try:
-            print("Update script found! Booting!")
+            printer.log("Update script found! Booting!")
             exec(open(osc.BOOT_UPDATE_PATH).read())
             machine.soft_reset()
         except Exception as e:
@@ -101,7 +102,7 @@ while True:
     else:
         try:
             uptime.uptime_bootloader = time.ticks_ms()
-            print("Booting mainos")
+            printer.log("Booting mainos")
             import mainos
         except Exception as e:
             print(e)

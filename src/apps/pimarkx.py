@@ -4,6 +4,7 @@ import os
 import modules.menus as menus
 import fonts.def_8x8 as f8x8
 import modules.os_constants as osc
+import modules.printer as printer
 
 frequencies = [osc.ULTRA_SLOW_FREQ, osc.SLOW_FREQ, osc.BASE_FREQ, osc.FAST_FREQ, osc.ULTRA_FREQ]
 testingTime = 15
@@ -98,7 +99,7 @@ def run():
     open_file.openMenu(resultpath)
     
 def run_no_gui():
-    print("\nPiMarkX")
+    printer.log("\nPiMarkX")
     pre_res()
     for freq in frequencies:
         tft.text(f8x8, "Testing on " + str(freq // 1000000) + " MHz",0,textpos,65535)
@@ -108,5 +109,5 @@ def run_no_gui():
         res_add(freq, count, pi)
     saveResult()
 
-    print("Result saved to: " + resultpath)
+    printer.log("Result saved to: " + resultpath)
     
