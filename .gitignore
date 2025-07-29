@@ -3,3 +3,4 @@ usr
 temp
 build_vars.py
 ble_secrets.json
+settings.json
