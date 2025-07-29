@@ -1,4 +1,6 @@
 import modules.os_constants as osc
+import esp32
+import modules.nvs as nvs
 from modules.decache import decache
 
 def init_tft():
@@ -39,6 +41,7 @@ io_man.set_tft(tft)
 
 import machine
 import modules.menus as menus
+import os
 
 def reset_nvs():
     import scripts.reset_nvs
@@ -48,7 +51,6 @@ def remove_upd():
         os.remove("/update.py")
     except:
         print("Update.py deletion error")
-        
 def clear_temp():
     try:
         os.rmdir("/temp")
@@ -56,7 +58,7 @@ def clear_temp():
         print("/temp deletion error")
         
 while True:
-    render = menus.menu("Recovery menu", [("Reset NVS configuration", 1), ("Delete update.py", 2), ("Clear /temp/", 3), ("Terminal", 4), ("File explorer", 5), ("Reboot", 13)])
+    render = menus.menu("Recovery menu", [("Reset NVS configuration", 1), ("Delete update.py", 2), ("Clear /temp/", 3), ("Terminal", 4), ("File explorer", 5), ("Toggle dev apps", 6), ("Reboot", 13)])
     if render == 1:
         render1 = menus.menu("Destroy nvs?", [("No", 1), ("Yes", 2)])
         if render1 == 2:
@@ -75,5 +77,12 @@ while True:
         a_fe.run()
         decache('modules.file_explorer')
         del a_fe
+    elif render == 6:
+        n_settings = esp32.NVS("settings")
+        dev_settings = nvs.get_int(n_settings, "dev_apps")
+        if dev_settings == 1:
+            nvs.set_int(n_settings, "dev_apps", 0)
+        else:
+            nvs.set_int(n_settings, "dev_apps", 1)
     elif render == 13:
         machine.reset()

@@ -2,8 +2,16 @@ import modules.io_manager as io_man
 from modules.decache import decache
 import modules.menus as menus
 import modules.os_constants as osc
+import esp32
+import modules.nvs as nvs
 import machine
 import gc
+
+n_settings = esp32.NVS("settings")
+
+dev_settings = nvs.get_int(n_settings, "dev_apps")
+if dev_settings == None:
+    dev_settings = 0
 
 button_a = None
 button_b = None
@@ -18,7 +26,12 @@ def run():
     tft = io_man.get_tft()
     
     machine.freq(osc.ULTRA_FREQ)
-    menu1 = menus.menu("Menu", [("IR Remote", 1), ("Terminal", 2), ("Music Player", 6), ("File explorer", 7), ("Flashlight", 8), ("Others", 4), ("Settings", 3), ("Close", 13)])
+    menu_apps = [("IR Remote", 1), ("Terminal", 2), ("Music Player", 6), ("File explorer", 7), ("Flashlight", 8), ("Others", 4), ("Settings", 3)]
+    if dev_settings == 1:
+        menu_apps.append(("Developer apps", 99))
+    menu_apps.append(("Close", 13))
+
+    menu1 = menus.menu("Menu", menu_apps)
     if menu1 == 3:
         import apps.settings as a_se
         a_se.run()
@@ -48,7 +61,7 @@ def run():
         decache('apps.player')
     elif menu1 == 7:
         import modules.file_explorer as a_fe
-        a_fe.run()
+        a_fe.raun()
         del a_fe
         decache('modules.file_explorer')
     elif menu1 == 8:
@@ -56,5 +69,10 @@ def run():
         a_fl.run()
         del a_fl
         decache('apps.flashlight')
+    elif menu1 == 99:
+        import apps.dev_apps.dev_menu as d_dev
+        d_dev.run()
+        del d_dev
+        decache('apps.dev_apps.dev_menu')
     gc.collect()
     machine.freq(osc.BASE_FREQ)
