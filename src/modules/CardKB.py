@@ -10,7 +10,7 @@ CARDKB_ADDR = 0x5F
 def init():
     global i2c
     try:
-        i2c = I2C(osc.GROVE_SLOT, scl=Pin(osc.GROVE_SCL), sda=Pin(osc.GROVE_SDA), freq=100000)
+        i2c = I2C(osc.GROVE_SLOT, scl=Pin(osc.GROVE_WHITE), sda=Pin(osc.GROVE_YELLOW), freq=100000)
         did_init = True
         return did_init
     except:
