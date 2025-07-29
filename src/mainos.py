@@ -227,20 +227,6 @@ io_man.set_rtc(rtc)
 io_man.set_imu(mpu)
 io_man.set_power_hold(power_hold)
 
-# Invert buttons
-def set_buttons(inverted=False):
-    global button_b
-    global button_c
-    if osc.INPUT_METHOD == 1:
-        if inverted:
-            button_b = Pin(osc.BUTTON_C_PIN, Pin.IN, Pin.PULL_UP)
-            button_c = Pin(osc.BUTTON_B_PIN, Pin.IN, Pin.PULL_UP)
-        else:
-            button_b = Pin(osc.BUTTON_B_PIN, Pin.IN, Pin.PULL_UP)
-            button_c = Pin(osc.BUTTON_C_PIN, Pin.IN, Pin.PULL_UP)
-        io_man.set_btn_b(button_b)
-        io_man.set_btn_c(button_c)
-
 render_bar("Wi-Fi init...", True)
 
 # Check Wi-Fi hostname
@@ -398,13 +384,13 @@ while True:
         if stable_orientation in [osc.LCD_ROTATIONS["BUTTON_UPPER"], osc.LCD_ROTATIONS["BUTTON_BOTTOM"]]:
             app_clock.run_clock_vert()
             menu = 1
-            set_buttons()
+            btn_init.set_buttons()
         else:
             app_clock.run_clock()
             if stable_orientation == osc.LCD_ROTATIONS["BUTTON_LEFT"]:
-                set_buttons()
+                btn_init.set_buttons()
             else:
-                set_buttons(True)
+                btn_init.set_buttons(True)
             menu = 0
 
         menu_change = False
