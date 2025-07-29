@@ -49,8 +49,8 @@ def comp_file(src_path, out_folder):
 
     rel_path = os.path.relpath(src_path, SRC_DIR).replace("\\", "/")
     base_name = os.path.splitext(rel_path)[0]
-
-    if ext == ".py":
+    
+    if ext == ".py" and not rel_path.endswith("main.py"):
         with open(src_path, "r", encoding="utf-8") as f:
             source = f.read()
 
