@@ -109,11 +109,11 @@ if __name__ == "__main__":
             print("Compilation started for: " + str(file))
             if "osconstants.py" in os.listdir("./src/modules"):
                 try:
-                    os.remove("./src/modules/osconstants.py")
+                    os.remove("./src/modules/os-constants.py")
                 except FileNotFoundError:
                     pass
             try:
-                os.rename(os.path.join("./configs", file), "./src/modules/osconstants.py")
+                os.rename(os.path.join("./configs", file), "./src/modules/os_constants.py")
             except Exception as e:
                 continue
             compilations += 1
@@ -127,7 +127,7 @@ if __name__ == "__main__":
             print(f"Output total size (.mpy + copied files): {size_output / 1024:.2f} KB")
 
             if size_original > 0:
-                saved = 100 * (size_original - size_minified) / size_original
-                print(f"Space saved by minification (only .py files): {saved:.2f}%")
+                saved = 100 * (size_original - size_output) / size_original
+                print(f"Space saved by mpy-cross: {saved:.2f}%")
     print("\nScript summary:")
     print("Builds: " + str(compilations))
