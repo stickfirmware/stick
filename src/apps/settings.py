@@ -1,20 +1,31 @@
+import modules.printer as printer
+printer.log("Importing menus")
 import modules.menus as menus
+printer.log("Importing nvs")
 import modules.nvs as nvs
+printer.log("Importing constants")
 import modules.os_constants as osc
+printer.log("Importing open_file")
 import modules.open_file as open_file
+printer.log("Importing f8x8")
 import fonts.def_8x8 as f8x8
+printer.log("Importing sdcard")
 import modules.sdcard as sd
+printer.log("Importing chandler")
 import modules.crash_handler as c_handler
 import esp32
 import machine
 import network
 import time
+printer.log("Importing qrcodes")
 import modules.qr_codes as qr
+printer.log("Importing keypad")
 import modules.numpad as keypad
 import gc
+printer.log("Importing io_man")
 import modules.io_manager as io_man
-import modules.printer as printer
 
+printer.log("Getting buttons")
 button_a = io_man.get_btn_a()
 button_b = io_man.get_btn_b()
 button_c = io_man.get_btn_c()
