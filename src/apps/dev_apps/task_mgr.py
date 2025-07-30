@@ -1,7 +1,5 @@
-from machine import I2C, Pin
 import gc
 import modules.menus as menus
-import modules.os_constants as osc
 
 def run():
         menu = []
