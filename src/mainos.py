@@ -190,19 +190,6 @@ else:
     auto_rotate = 0
     osc.HAS_IMU = False
     osc.HAS_RTC = False
-
-# Get screen orientation function for IMU
-def get_orientation(ax, ay, az, threshold=osc.IMU_ROTATE_THRESHOLD):
-    if ay < -threshold:
-        return osc.LCD_ROTATIONS["BUTTON_UPPER"]
-    elif ax > threshold:
-        return osc.LCD_ROTATIONS["BUTTON_RIGHT"]
-    elif ay > threshold:
-        return osc.LCD_ROTATIONS["BUTTON_BOTTOM"]
-    elif ax < -threshold:
-        return osc.LCD_ROTATIONS["BUTTON_LEFT"]
-    else:
-        return osc.LCD_ROTATIONS["BUTTON_LEFT"]
     
 render_bar("Init buttons...", True)
 
@@ -424,8 +411,7 @@ while True:
         prev_bl = nvs.get_float(n_settings, "backlight")
         if not is_in_saving:
             tft.set_backlight(prev_bl)
-        ax, ay, az = mpu.acceleration
-        orientation = get_orientation(ax, ay, az)
+        orientation = mpu.get_orientation()
         imu_delay = time.ticks_ms()
         current_rotation = orientation
         if current_rotation == last_orientation:
