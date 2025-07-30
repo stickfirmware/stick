@@ -1,16 +1,17 @@
 from machine import Pin
+import modules.os_constants as osc
 import time
 
 aa_toggle_state = False
 aa_debounce = False
 
-
-A0 = Pin(8, Pin.OUT)
-A1 = Pin(9, Pin.OUT)
-A2 = Pin(11, Pin.OUT)
-         
-col_pins_nums = [13,15,3,4,5,6,7]
-cols = [Pin(pin_num, Pin.IN, Pin.PULL_UP) for pin_num in col_pins_nums]
+if osc.INPUT_METHOD == 2:
+    A0 = Pin(8, Pin.OUT)
+    A1 = Pin(9, Pin.OUT)
+    A2 = Pin(11, Pin.OUT)
+            
+    col_pins_nums = [13,15,3,4,5,6,7]
+    cols = [Pin(pin_num, Pin.IN, Pin.PULL_UP) for pin_num in col_pins_nums]
 
 def set_decoder(val):
     A0.value(val & 0x01)
