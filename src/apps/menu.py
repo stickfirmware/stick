@@ -26,7 +26,7 @@ def run():
     tft = io_man.get_tft()
     
     machine.freq(osc.ULTRA_FREQ)
-    menu_apps = [("IR Remote", 1), ("Terminal", 2), ("Music Player", 6), ("File explorer", 7), ("Flashlight", 8), ("Others", 4), ("Settings", 3)]
+    menu_apps = [("IR Remote", 1), ("Music Player", 6), ("File explorer", 7), ("Flashlight", 8), ("Others", 4), ("Settings", 3)]
     if dev_settings == 1:
         menu_apps.append(("Developer apps", 99))
     menu_apps.append(("Close", 13))
@@ -48,12 +48,6 @@ def run():
         a_ir.exit()
         del a_ir
         decache('apps.IR')
-    elif menu1 == 2:
-        import apps.terminal as a_tm
-        a_tm.run()
-        a_tm.exit()
-        del a_tm
-        decache('apps.terminal')
     elif menu1 == 6:
         import apps.player as a_pl
         a_pl.run()

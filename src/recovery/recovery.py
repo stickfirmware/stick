@@ -58,7 +58,7 @@ def clear_temp():
         print("/temp deletion error")
         
 while True:
-    render = menus.menu("Recovery menu", [("Reset NVS configuration", 1), ("Delete update.py", 2), ("Clear /temp/", 3), ("Terminal", 4), ("File explorer", 5), ("Toggle dev apps", 6), ("Reboot", 13)])
+    render = menus.menu("Recovery menu", [("Reset NVS configuration", 1), ("Delete update.py", 2), ("Clear /temp/", 3), ("File explorer", 5), ("Toggle dev apps", 6), ("Reboot", 13)])
     if render == 1:
         render1 = menus.menu("Destroy nvs?", [("No", 1), ("Yes", 2)])
         if render1 == 2:
@@ -67,11 +67,6 @@ while True:
         remove_upd()
     elif render == 3:
         clear_temp()
-    elif render == 4:
-        import apps.terminal as a_tm
-        a_tm.run()
-        decache('apps.terminal')
-        del a_tm
     elif render == 5:
         import modules.file_explorer as a_fe
         a_fe.run()
