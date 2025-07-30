@@ -24,19 +24,10 @@ def comp_file(src_path, out_folder):
     if ext == ".py" and not rel_path.endswith("main.py"):
         out_mpy_path = os.path.join(out_folder, base_name + ".mpy")
         os.makedirs(os.path.dirname(out_mpy_path), exist_ok=True)
-
-        try:
-            subprocess.run(["mpy-cross", src_path, "-o", out_mpy_path, "-march=xtensawin"], check=True)
-            compiled_files += 1
-            size_output += os.path.getsize(out_mpy_path)
-            print(f"Compiled {src_path} -> {out_mpy_path}")
-        except subprocess.CalledProcessError:
-            out_py_path = os.path.join(out_folder, rel_path)
-            os.makedirs(os.path.dirname(out_py_path), exist_ok=True)
-            shutil.copy2(src_path, out_py_path)
-            not_compiled_files += 1
-            size_output += os.path.getsize(out_py_path)
-            print(f"mpy-cross failed, copied as .py: {src_path} -> {out_py_path}")
+        subprocess.run(["mpy-cross", src_path, "-o", out_mpy_path, "-march=xtensawin"], check=True)
+        compiled_files += 1
+        size_output += os.path.getsize(out_mpy_path)
+        print(f"Compiled {src_path} -> {out_mpy_path}")
     else:
         out_other_path = os.path.join(out_folder, rel_path)
         os.makedirs(os.path.dirname(out_other_path), exist_ok=True)
