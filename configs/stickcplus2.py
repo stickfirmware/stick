@@ -57,7 +57,7 @@ GROVE_YELLOW = const(2)
 GROVE_WHITE = const(1)
 
 # Shared I2C (RTC + IMU)
-HAS_SHARED_I2C = const(False) # True if has RTC + IMU shared i2c
+HAS_SHARED_I2C = const(True) # True if has RTC + IMU shared i2c
 HAS_RTC = const(True) # True if has RTC, overwritten by HAS_SHARED_I2C if it's False
 HAS_IMU = const(True) # True if has IMU
 I2C_SLOT = const(0) # I2C Slot???, can be 0 or 1 depending on the pins
@@ -104,8 +104,8 @@ POWER_SAVE_TIMEOUT = const(15000) # Time to enter power saving after no activity
 IMU_CHECK_TIME = const(200) # IMU update time, in ms
 IMU_STAY_TIME = const(1000) # IMU stay time, in ms, device needs to be in same rotatation for X ms to accept rotation as stable
 NTP_SYNC_TIME = const(600000) # NTP automatic sync time in ms
-LOOP_WAIT_TIME = const(0.025) # Time loops wait until starting again in seconds (Start, wait time, start)
-DEBOUNCE_TIME = const(0.02) # Button check debounce time in seconds
+LOOP_WAIT_TIME = const(0.04) # Time loops wait until starting again in seconds (Start, wait time, start)
+DEBOUNCE_TIME = const(0.04) # Button check debounce time in seconds
 DIAGNOSTIC_REFRESH_TIME = const(2000) # On-screen diagnostics (Voltage + CPU speed in menu)
 
 # Boot settings
