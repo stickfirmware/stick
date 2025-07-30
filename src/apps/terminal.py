@@ -1,3 +1,5 @@
+# TODO: Fix this script to work on M5StickC plus 2, cause watchdog timeout for now
+
 import machine
 import time
 import fonts.def_8x8 as f8x8
