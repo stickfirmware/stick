@@ -5,7 +5,7 @@ on:
       - "**"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -31,3 +31,17 @@ jobs:
         with:
           name: release-minified
           path: out/
+
+      - name: Set version from timestamp
+        id: version
+        run: echo "VERSION=v$(date +%s)" >> $GITHUB_OUTPUT
+
+      - name: Upload Release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.version.outputs.VERSION }}
+          name: Release for ${{ github.sha }}
+          prerelease: false
+          files: out/
