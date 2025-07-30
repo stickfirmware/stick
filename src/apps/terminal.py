@@ -1,12 +1,12 @@
-import modules.CardKB as CardKB
-import modules.StickSh.executor as term_exec
-import modules.menus as menus
 import machine
-import modules.numpad as npad
 import time
 import fonts.def_8x8 as f8x8
 import modules.io_manager as io_man
 from modules.decache import decache
+import modules.numpad as npad
+import modules.os_constants as osc
+import modules.CardKB as CardKB
+import modules.StickSh.executor as term_exec
 
 button_c = io_man.get_btn_c()
 tft = io_man.get_tft()
@@ -149,5 +149,5 @@ def run():
                     input_text += KB_Text
                 term_upd = True
         
-        time.sleep(0.01)
+        time.sleep(osc.LOOP_WAIT_TIME)
     
