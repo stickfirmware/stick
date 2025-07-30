@@ -61,8 +61,8 @@ HAS_SHARED_I2C = const(True) # True if has RTC + IMU shared i2c
 HAS_RTC = const(True) # True if has RTC, overwritten by HAS_SHARED_I2C if it's False
 HAS_IMU = const(True) # True if has IMU
 I2C_SLOT = const(0) # I2C Slot???, can be 0 or 1 depending on the pins
-I2C_SDA = const(32)
-I2C_SCL = const(33)
+I2C_SDA = const(21)
+I2C_SCL = const(22)
 
 # st7789
 LCD_LOAD_BG = const(0) # Loading screen background color
