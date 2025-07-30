@@ -1,22 +1,33 @@
 print("Kitki30 Stick")
 
-import modules.os_constants as osc
-import scripts.checkbattery as battery_shutdown
+# First party imports
 from machine import Pin, PWM, SPI
-import modules.uptime as uptime
-import modules.printer as debug
 import machine
 import esp32
-import modules.crash_handler as c_handler
-import modules.nvs as nvs
+import gc
 import network
 import os
 import time
+
+# System modules
 from modules.decache import decache
+import modules.crash_handler as c_handler
+import modules.nvs as nvs
+import modules.uptime as uptime
+import modules.printer as debug
+import modules.buzzer as buzz
+import modules.os_constants as osc
+import modules.fastboot_vars as fvars
+
+# Scripts
+import scripts.checkbattery as battery_shutdown
+
+# Set frequencies
+debug.log("Setting Ultra freq")
+machine.freq(osc.ULTRA_FREQ)
 
 # Buzzer
 debug.log("Buzz tone")
-import modules.buzzer as buzz
 if osc.HAS_BUZZER:
     buzzer = PWM(Pin(osc.BUZZER_PIN), duty_u16=0, freq=500)
     buzz.startup_sound(buzzer)
@@ -32,7 +43,6 @@ if "temp" not in os.listdir():
 
 # Garbage colector
 debug.log("Enabling garbage collector")
-import gc
 gc.enable()
 gc.threshold(gc.mem_free() // 4 + gc.mem_alloc())
 
@@ -43,11 +53,7 @@ if osc.HAS_HOLD_PIN:
     power_hold.value(1)
 else:
     power_hold = None
-
-# Set frequencies
-debug.log("Setting Ultra freq")
-machine.freq(osc.ULTRA_FREQ)
-  
+ 
 # Import fonts
 debug.log("Load fonts")
 import fonts.def_8x8 as f8x8
@@ -55,21 +61,14 @@ import fonts.def_16x32 as f16x32
 
 # Init tft
 debug.log("Init tft")
-import modules.st7789 as st7789
 
 try:
-    import modules.fastboot_vars as fvars
     tft = fvars.TFT
     if tft == None:
-        tft = st7789.ST7789(
-            SPI(osc.LCD_SPI_SLOT, baudrate=osc.LCD_SPI_BAUD, sck=Pin(osc.LCD_SPI_SCK), mosi=Pin(osc.LCD_SPI_MOSI), miso=osc.LCD_SPI_MISO),
-            osc.LCD_HEIGHT,
-            osc.LCD_WIDTH,
-            reset=Pin(osc.LCD_RESET, Pin.OUT),
-            cs=Pin(osc.LCD_SPI_CS, Pin.OUT),
-            dc=Pin(osc.LCD_DC, Pin.OUT),
-            backlight=PWM(Pin(osc.LCD_BL), freq=osc.LCD_BL_FREQ),
-            rotation=osc.LCD_ROTATIONS["BUTTON_LEFT"])
+        import modules.tft_init as tft_init
+        tft = tft_init.init_tft()
+        del tft_init
+        decache("modules.tft_init")
     load_bg = osc.LCD_LOAD_BG
     text_color = osc.LCD_LOAD_TEXT
 except Exception as e:

@@ -1,8 +1,7 @@
 import machine
-
+import network
 import fonts.def_8x8 as f8x8
 import fonts.def_16x32 as f16x32
-import network
 import modules.io_manager as io_man
 import modules.printer as printer
 
