@@ -20,7 +20,7 @@ def run():
     tft = io_man.get_tft()
     
     machine.freq(osc.ULTRA_FREQ)
-    menu_apps = [("Grove I2C scan", 1), ("Close", None)]
+    menu_apps = [("Grove I2C scan", 1), ("Hardware info", 2), ("Close", None)]
 
     menu1 = menus.menu("Menu", menu_apps)
     if menu1 == 1:
@@ -28,5 +28,10 @@ def run():
         i2c_scan.run()
         del i2c_scan
         decache('apps.dev_apps.iic_scan')
+    elif menu1 == 1:
+        import apps.dev_apps.iic_scan as taskmgr
+        taskmgr.run()
+        del taskmgr
+        decache('apps.dev_apps.task_mgr')
     gc.collect()
     machine.freq(osc.BASE_FREQ)
