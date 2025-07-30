@@ -20,6 +20,8 @@
 
 # https://github.com/tuupola/micropython-mpu6886
 
+import modules.os_constants as osc
+
 """
 MicroPython I2C driver for MPU6886 6-axis motion tracking device
 """
@@ -219,6 +221,19 @@ class MPU6886:
             return _GYRO_SO_1000DPS
         elif GYRO_FS_SEL_2000DPS == value:
             return _GYRO_SO_2000DPS
+        
+    def get_orientation(self, threshold=osc.IMU_ROTATE_THRESHOLD):
+        ax, ay, az = self.acceleration
+        if ay < -threshold:
+            return osc.LCD_ROTATIONS["BUTTON_UPPER"]
+        elif ax > threshold:
+            return osc.LCD_ROTATIONS["BUTTON_RIGHT"]
+        elif ay > threshold:
+            return osc.LCD_ROTATIONS["BUTTON_BOTTOM"]
+        elif ax < -threshold:
+            return osc.LCD_ROTATIONS["BUTTON_LEFT"]
+        else:
+            return osc.LCD_ROTATIONS["BUTTON_LEFT"]
 
     def __enter__(self):
         return self
