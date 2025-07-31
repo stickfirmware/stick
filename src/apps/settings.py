@@ -129,7 +129,7 @@ def run():
                         
         # Wi-Fi settings
         elif menu1 == 3:
-            rendr =  menus.menu("Settings/Wi-Fi", [("Setup AP", 1), ("Connection", 2), ("NTP Sync", 3), ("NTP Timezone", 4), ("Close", 13)])
+            rendr =  menus.menu("Settings/Wi-Fi", [("Setup AP", 1), ("Connection", 2), ("Wi-Fi Status", 5), ("NTP Sync", 3), ("NTP Timezone", 4), ("Close", 13)])
             
             # Wi-Fi AP setup
             if rendr == 1:
@@ -167,6 +167,19 @@ def run():
                         c_handler.crash_screen(tft, 3001, str(e), True, True, 2)
                 else:
                     menus.menu("Wi-Fi not set-up yet!", [("OK",  1)])
+
+            # Wi-Fi status
+            elif rendr == 5:
+                nic = network.WLAN(network.STA_IF)
+                nic_active = nic.active()
+                nic_ifconfig = nic.ifconfig()
+                tft.fill(0)
+                tft.text(f8x8, "WLAN Active?: " + str(nic_active),0,0, 65535)
+                tft.text(f8x8, "Connected?: " + str(nic.isconnected()),0,8, 65535)
+                tft.text(f8x8, "Local IP: " + str(nic_ifconfig[0]),0,16, 65535)
+                tft.text(f8x8, "Subnet mask: " + str(nic_ifconfig[1]),0,24, 65535)
+                tft.text(f8x8, "Gateway: " + str(nic_ifconfig[2]),0,32, 65535)
+                tft.text(f8x8, "DNS server: " + str(nic_ifconfig[3]),0,40, 65535)
                     
             # NTP Sync
             elif rendr == 3:
@@ -207,16 +220,16 @@ def run():
                 sd_menu = menus.menu("Settings/SD Card", [("Init", 1), ("Close", 13)])
                 if sd_menu == 1:
                     tft.fill(0)
-                    tft.text(f8x8, "Init SD...",135,30, 65535)
+                    tft.text(f8x8, "Init SD...",0,0, 65535)
                     sdin = sd.init()
                     time.sleep(2)
                     if sdin == True:
                         if sd.mount() == True:
-                            tft.text(f8x8, "Done!",135,38, 65535)
+                            tft.text(f8x8, "Done!",0,8, 65535)
                         else:
-                            tft.text(f8x8, "Failed!",135,38, 65535)
+                            tft.text(f8x8, "Failed!",0,8, 65535)
                     else:
-                        tft.text(f8x8, "Failed!",135,38, 65535)
+                        tft.text(f8x8, "Failed!",0,8, 65535)
                     time.sleep(2)
                     
             # Menu if SD is mounted
@@ -224,13 +237,13 @@ def run():
                 sd_menu = menus.menu("Settings/SD Card", [("Unmount", 1), ("Close", 13)])
                 if sd_menu == 1:
                     tft.fill(0)
-                    tft.text(f8x8, "Unmount SD...",135,30, 65535)
+                    tft.text(f8x8, "Unmount SD...",0,0, 65535)
                     sdin = sd.umount()
                     if sdin == True:
-                        tft.text(f8x8, "Done!",135,38, 65535)
+                        tft.text(f8x8, "Done!",0,8, 65535)
                         sd.sd = None
                     else:
-                        tft.text(f8x8, "Failed!",135,38, 65535)
+                        tft.text(f8x8, "Failed!",0,8, 65535)
                     time.sleep(2)
         
         # About screen
