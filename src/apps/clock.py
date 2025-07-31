@@ -1,13 +1,22 @@
 import machine
+import time
 import network
 import fonts.def_8x8 as f8x8
 import fonts.def_16x32 as f16x32
+from modules.decache import decache
+import modules.battery_check as battery_check
 import modules.io_manager as io_man
+import modules.menus as menus
+import modules.os_constants as osc
+import modules.text_utils as text_utils
 import modules.printer as printer
 
 tft = io_man.get_tft()
+rtc = machine.RTC()
 
 allow_drawing_battery = True
+
+nic = network.WLAN(network.STA_IF)
 
 def run_clock():
     printer.log("Rendering clock base")
@@ -31,8 +40,7 @@ def run_clock_vert():
     tft.fill_rect(3, 19, 129, 218, 0)
     tft.text(f8x8, "Clock",5,5,65535)
     
-def clock_vert():
-    rtc = machine.RTC()
+def clock_vert(): 
     time_tuple = rtc.datetime()
     
     # Time
@@ -40,22 +48,17 @@ def clock_vert():
     mm = time_tuple[5]
     ss = time_tuple[6]
     text = "{:02}:{:02}:{:02}".format(hh, mm, ss)
-    text_width = len(text) * 16
-    x = (135 - text_width) // 2
+    x = text_utils.center_x(text, 16)
     tft.text(f16x32, text, x, 104, 65535)
-    
     # Date
-    text = "{:02d}.{:02d}.{:04d}".format(rtc.datetime()[2], rtc.datetime()[1], rtc.datetime()[0])
-    text_width = len(text) * 8
-    x = (135 - text_width) // 2
+    text = "{:02d}.{:02d}.{:04d}".format(time_tuple[2], time_tuple[1], time_tuple[0])
+    x = text_utils.center_x(text, 8)
     tft.text(f8x8, text, x, 136, 65535)
 
 
 def clock():
-    rtc = machine.RTC()
     time_tuple = rtc.datetime()
     
-    nic = network.WLAN(network.STA_IF)
     if nic.isconnected() == True:
         tft.text(f8x8, "Wi-Fi",50,5,703)
     else:
@@ -66,12 +69,80 @@ def clock():
     mm = time_tuple[5]
     ss = time_tuple[6]
     text = "{:02}:{:02}:{:02}".format(hh, mm, ss)
-    text_width = len(text) * 16
-    x = (240 - text_width) // 2
+    x = text_utils.center_x(text, 16)
     tft.text(f16x32, text, x, 60, 65535)
     
     # Date
-    text = "{:02d}.{:02d}.{:04d}".format(rtc.datetime()[2], rtc.datetime()[1], rtc.datetime()[0])
-    text_width = len(text) * 8
-    x = (240 - text_width) // 2
+    text = "{:02d}.{:02d}.{:04d}".format(time_tuple[2], time_tuple[1], time_tuple[0])
+    x = text_utils.center_x(text, 8)
     tft.text(f8x8, text, x, 93, 65535)
+    
+def format_ticks_ms(ticks):
+    ms = ticks % 1000
+    seconds_total = ticks // 1000
+    s = seconds_total % 60
+    minutes_total = seconds_total // 60
+    m = minutes_total % 60
+    h = minutes_total // 60
+    return f"{h:02}:{m:02}:{s:02}:{ms:03}"
+    
+def stopwatch():
+    button_a = io_man.get_btn_a()
+    button_c = io_man.get_btn_c()
+    is_running = False
+    was_paused = True
+    working = True
+    pauses_total = 0
+    time_from_pause = time.ticks_ms()
+    app_start_time = time.ticks_ms()
+    time_from_battery_check = time.ticks_ms()
+    tft.fill(0)
+    tft.text(f8x8, "Stopwatch", 0, 0, 65535)
+    tft.text(f8x8, "Press A to start/pause", 0, 119, 65535)
+    tft.text(f8x8, "Press C to exit", 0, 127, 65535)
+    machine.freq(osc.ULTRA_FREQ)
+    while working:
+        time.sleep(osc.LOOP_WAIT_TIME)
+        if is_running and was_paused:
+            pauses_total += time.ticks_diff(time.ticks_ms(), time_from_pause)
+            was_paused = False
+        if is_running:
+            tft.text(f16x32, "                ", 0, 8, 0)
+            text = format_ticks_ms(time.ticks_diff(time.ticks_ms(), app_start_time) - pauses_total)
+            x = text_utils.center_x(text, 16)
+            y = text_utils.center_y(text, 32)
+            tft.text(f16x32, text, x, y, 65535)
+            if time.ticks_diff(time.ticks_ms(), time_from_battery_check) >= 5000:
+                volts = battery_check.voltage()
+                pr = battery_check.percentage(volts)
+                text = "Battery: " + str(volts) + "V / " + str(int(pr)) + "%"
+                x = text_utils.center_x(text, 8)
+                y = text_utils.center_y(text, 8) + 32
+                tft.text(f8x8, text,x,y,2016)
+                time_from_battery_check = time.ticks_ms()
+        if button_a.value() == 0:
+            if not is_running:
+                tft.text(f8x8, "Stopwatch         ", 0, 0, 65535)
+                is_running = True
+            else:
+                tft.text(f8x8, "Stopwatch [PAUSED]", 0, 0, 65535)
+                time_from_pause = time.ticks_ms()
+                is_running = False
+                was_paused = True
+            while button_a.value() == 0:
+                time.sleep(osc.DEBOUNCE_TIME)
+        if button_c.value() == 0:
+            working = False
+            while button_c.value() == 0:
+                time.sleep(osc.DEBOUNCE_TIME)
+
+def clock_menu():
+    machine.freq(osc.BASE_FREQ)
+    clock_menu = menus.menu("Clock", [("Stopwatch", 1),  ("NTP Sync", 3), ("Cancel", None)])
+    if clock_menu == 1:
+        stopwatch()
+    elif clock_menu == 3:
+        import modules.ntp as ntp
+        ntp.sync_interactive()
+        del ntp
+        decache("modules.ntp")

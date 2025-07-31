@@ -1,6 +1,8 @@
 import ntptime
 import time
 import esp32
+import network
+import modules.menus as menus
 import modules.nvs as nvs
 import modules.os_constants as osc
 import modules.io_manager as io_man
@@ -51,5 +53,20 @@ def sync():
     
     if osc.HAS_RTC == True:
         rtc.set_time((local_time[0], local_time[1], local_time[2], local_time[6], local_time[3], local_time[4], local_time[5], 0))
-        dt = rtc.get_time()
     return True
+
+def sync_interactive():
+    nic = network.WLAN(network.STA_IF)
+    if nic.isconnected() == True:
+        syncing = True
+        while syncing == True:
+            syn = sync()
+            if syn == True:
+                menus.menu("NTP Sync successfull!", [("OK",  1)])
+                syncing = False
+            elif syn == False:
+                rend = menus.menu("NTP Sync failed :(", [("Retry?",  1), ("OK",  2)])
+                if rend == 2:
+                    syncing = False
+    else:
+        menus.menu("No Wi-Fi connection!", [("OK",  1)])

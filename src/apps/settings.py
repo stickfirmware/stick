@@ -1,28 +1,19 @@
-import modules.printer as printer
-printer.log("Importing menus")
-import modules.menus as menus
-printer.log("Importing nvs")
-import modules.nvs as nvs
-printer.log("Importing constants")
-import modules.os_constants as osc
-printer.log("Importing open_file")
-import modules.open_file as open_file
-printer.log("Importing f8x8")
-import fonts.def_8x8 as f8x8
-printer.log("Importing sdcard")
-import modules.sdcard as sd
-printer.log("Importing chandler")
-import modules.crash_handler as c_handler
 import esp32
 import machine
 import network
 import time
-printer.log("Importing qrcodes")
-import modules.qr_codes as qr
-printer.log("Importing keypad")
-import modules.numpad as keypad
 import gc
-printer.log("Importing io_man")
+import fonts.def_8x8 as f8x8
+import modules.printer as printer
+from modules.decache import decache
+import modules.menus as menus
+import modules.nvs as nvs
+import modules.os_constants as osc
+import modules.open_file as open_file
+import modules.sdcard as sd
+import modules.crash_handler as c_handler
+import modules.qr_codes as qr
+import modules.numpad as keypad
 import modules.io_manager as io_man
 
 printer.log("Getting buttons")
@@ -180,22 +171,9 @@ def run():
                     
             # NTP Sync
             elif rendr == 3:
-                nic = network.WLAN(network.STA_IF)
-                if nic.isconnected() == True:
-                    syncing = True
-                    while syncing == True:
-                        import modules.ntp as ntp
-                        syn = ntp.sync()
-                        del ntp
-                        if syn == True:
-                            menus.menu("NTP Sync successfull!", [("OK",  1)])
-                            syncing = False
-                        elif syn == False:
-                            rend = menus.menu("NTP Sync failed :(", [("Retry?",  1), ("OK",  2)])
-                            if rend == 2:
-                                syncing = False
-                else:
-                    menus.menu("No Wi-Fi connection!", [("OK",  1)])
+                import modules.ntp as ntp
+                ntp.sync_interactive()
+                decache("modules.ntp")
                     
             # NTP Timezone
             elif rendr == 4:
