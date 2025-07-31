@@ -17,7 +17,7 @@ def run():
     button_c = io_man.get_btn_c()
     tft = io_man.get_tft()
     
-    render = menus.menu("Menu/Others", [("PiMarkX", 5), ("Scorekeeper", 1), ("Resistor decoder", 2), ("Metronome", 3), ("Close", 13)])
+    render = menus.menu("Menu/Others", [("QR Codes", 6), ("PiMarkX", 5), ("Scorekeeper", 1), ("Resistor decoder", 2), ("Metronome", 3), ("Close", 13)])
     if render == 1:
         import apps.scorekeeper as a_sc
         a_sc.run()
@@ -38,5 +38,10 @@ def run():
         a_pimark.run()
         del a_pimark
         decache('apps.pimarkx')
+    elif render == 6:
+        import apps.qr_gen as a_qr
+        a_qr.run()
+        del a_qr
+        decache('apps.qr_gen')
     gc.collect()
     machine.freq(osc.BASE_FREQ)
