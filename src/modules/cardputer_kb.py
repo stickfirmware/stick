@@ -93,7 +93,8 @@ class buttonemu:
     def __init__(self, btn):
         self.btn = btn
     def value(self):
-        if self.btn in scan_and_map():
+        scan = scan_and_map()
+        if any(b in scan for b in self.btn):
             return 0
         else:
             return 1

@@ -14,9 +14,9 @@ def init_buttons():
         debug.log("Input method 2 - Cardputer")
         # Cardputer inputs, fake machine.Pin using keyboard keys
         import modules.cardputer_kb as ckb
-        button_a = ckb.buttonemu('enter')
-        button_b = ckb.buttonemu('tab')
-        button_c = ckb.buttonemu('`')
+        button_a = ckb.buttonemu(['enter'])
+        button_b = ckb.buttonemu(['tab'])
+        button_c = ckb.buttonemu(['`', '~'])
     return [button_a, button_b, button_c]
 
 # Invert buttons
