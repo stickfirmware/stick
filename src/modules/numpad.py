@@ -105,6 +105,10 @@ def load_io():
 def numpad(title, maxlen=0, hideInput=False):
     load_io()
     import time
+    
+    if osc.INPUT_METHOD == 2:
+        return _KEYBOARD_CARDKB(title, maxlen, hideInput, True)
+    
     tft.fill(0)
     tft.fill_rect(0, 0, 240, 3, 65535)
     tft.fill_rect(0, 132, 240, 3, 65535)
@@ -181,7 +185,7 @@ def numpad(title, maxlen=0, hideInput=False):
     return inp
 
 
-def _KEYBOARD_CARDKB(title, maxlen=0, hideInput=False):
+def _KEYBOARD_CARDKB(title, maxlen=0, hideInput=False, numbers_only=False):
     import time
 
     inp = ""
@@ -224,13 +228,12 @@ def _KEYBOARD_CARDKB(title, maxlen=0, hideInput=False):
 
         if curr_letter:
             key = curr_letter[-1]
-            
+
             if key == prev_letter and time.ticks_diff(now, last_press_time) < debounce_delay:
                 continue
 
             prev_letter = key
             last_press_time = now
-
 
             if key.lower() in ignored_keys:
                 continue
@@ -251,6 +254,8 @@ def _KEYBOARD_CARDKB(title, maxlen=0, hideInput=False):
                     upd = True
 
             elif len(key) == 1:
+                if numbers_only and not key.isdigit():
+                    continue
                 if maxlen == 0 or len(inp) < maxlen:
                     inp += key
                     upd = True
@@ -260,7 +265,7 @@ def keyboard(title, maxlen=0, hideInput=False):
     import time
     
     if osc.INPUT_METHOD == 2:
-        return _KEYBOARD_CARDKB(title, maxlen, hideInput)
+        return _KEYBOARD_CARDKB(title, maxlen, hideInput, False)
     
     keys = [
         ["1", ".", ",", "!", "?"],
