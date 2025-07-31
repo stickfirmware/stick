@@ -1,5 +1,17 @@
 print("Kitki30 Stick")
 
+##########################
+#      IMPORTANT!!!!     #
+# If you add some import #
+# add it to whitelist in #
+# /modules/ram_cleaner   #
+# Only if main loop      #
+# needs it! Its for      #
+# saving ram!!!          #
+# Otherwise it will      #
+# de-init!!!             #
+##########################
+
 # First party imports
 from machine import Pin, PWM, SPI
 import machine
@@ -11,6 +23,7 @@ import time
 
 # System modules
 from modules.decache import decache
+import modules.ram_cleaner as ram_cleaner
 import modules.crash_handler as c_handler
 import modules.nvs as nvs
 import modules.uptime as uptime
@@ -323,6 +336,10 @@ was_sleep_triggered = False
 # Slow down CPU
 machine.freq(osc.BASE_FREQ)
 
+# Print sys.modules
+import sys
+debug.log(str(sys.modules))
+
 # Main loop
 while True:
 
@@ -508,6 +525,9 @@ while True:
             
         # Reset power saving
         pwr_save_time = time.ticks_ms()
+
+        # Clean ram
+        ram_cleaner.clean()
         
         continue
         
@@ -534,6 +554,9 @@ while True:
         
         # Reset power saving time
         pwr_save_time = time.ticks_ms()
+
+        # Clean ram
+        ram_cleaner.clean()
         
     # Locking menu / Clock menu
     if button_b.value() == 0:
@@ -569,6 +592,9 @@ while True:
             
         # Reset pwr save
         pwr_save_time = time.ticks_ms()
+
+        # Clean ram
+        ram_cleaner.clean()
             
     # Battery check (Diagnostics)
     if not is_in_saving and time.ticks_diff(time.ticks_ms(), diagnostic_time) >= osc.DIAGNOSTIC_REFRESH_TIME and menu == 0:
@@ -607,6 +633,9 @@ while True:
                 
         # Battery bitmap render
         b_check.run(tft)
+
+        # Clean ram
+        ram_cleaner.clean()
         
     # NTP sync
     if time.ticks_diff(time.ticks_ms(), ntp_time) >= osc.NTP_SYNC_TIME or ntp_first == False:
