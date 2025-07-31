@@ -1,14 +1,14 @@
-import modules.os_constants as osc
 import os
 import machine
-import modules.io_manager as io_man
 import esp32
+import network
+import machine
+import modules.os_constants as osc
 import modules.nvs as nvs
 import modules.menus as menus
-import machine
+import modules.io_manager as io_man
 import modules.sleep as m_sleep
 import fonts.def_8x8 as f8x8
-import network
 
 button_a = io_man.get_btn_a()
 button_b = io_man.get_btn_b()
@@ -37,7 +37,7 @@ def run():
         os.sync()
         if mpu != None:
             mpu.sleep_on()
-        m_sleep.sleep(True)
+        m_sleep.sleep(osc.ENABLE_DEBUG_PRINTS)
         if mpu != None:
             mpu.sleep_off()
         if wasConnected == True:
@@ -52,7 +52,7 @@ def run():
         os.sync()
         if osc.HAS_HOLD_PIN:
             power_hold.value(0)
-        m_sleep.sleep(True)
+        m_sleep.sleep(osc.ENABLE_DEBUG_PRINTS)
     elif powermenu == 3:
         machine.freq(osc.BASE_FREQ)
         nic.active(False)
