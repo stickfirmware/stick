@@ -325,7 +325,7 @@ machine.freq(osc.BASE_FREQ)
 
 # Main loop
 while True:
-    
+
     # Set CPU frequencies depending on power saving state
     if is_in_saving == False:
         machine.freq(osc.BASE_FREQ)
@@ -535,7 +535,7 @@ while True:
         # Reset power saving time
         pwr_save_time = time.ticks_ms()
         
-    # Locking menu
+    # Locking menu / Clock menu
     if button_b.value() == 0:
         hold_time = 0.00
         
@@ -549,7 +549,7 @@ while True:
         if button_c.value() == 0 or button_a.value() == 0:
             continue
         
-        # Allow if hold more than 1s
+        # Allow if hold more than 1s, else run clock menu
         if hold_time >= 1 and nvs.get_int(n_locks, "dummy") == 0:
             allow_only_landscape()
             # Open lock menu
@@ -558,6 +558,12 @@ while True:
             # De-cache lock menu
             decache("apps.lockmen")
             del app_lockmen
+            menu = 0
+            menu_change = True
+        # Run clock menu if hold less than seconds and not in dummy mode
+        elif nvs.get_int(n_locks, "dummy") == 0:
+            allow_only_landscape()
+            app_clock.clock_menu()
             menu = 0
             menu_change = True
             
