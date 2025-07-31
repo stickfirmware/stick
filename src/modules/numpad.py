@@ -187,7 +187,7 @@ def _KEYBOARD_CARDKB(title, maxlen=0, hideInput=False):
     inp = ""
     prev_letter = None
     last_press_time = 0
-    debounce_delay = osc.DEBOUNCE_TIME
+    debounce_delay = 200
 
     upd = True
     big_update = True
@@ -224,12 +224,13 @@ def _KEYBOARD_CARDKB(title, maxlen=0, hideInput=False):
 
         if curr_letter:
             key = curr_letter[-1]
-
-            if key == prev_letter and time.ticks_diff(now, last_press_time) < debounce_delay * 1000:
+            
+            if key == prev_letter and time.ticks_diff(now, last_press_time) < debounce_delay:
                 continue
 
             prev_letter = key
             last_press_time = now
+
 
             if key.lower() in ignored_keys:
                 continue
