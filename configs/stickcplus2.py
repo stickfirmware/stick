@@ -96,7 +96,8 @@ SLOW_FREQ = const(40_000_000) # Slow, used in power saving, clock can be 1 secon
 ULTRA_SLOW_FREQ = const(20_000_000)
 
 # Networking
-WIFI_DEF_HOST = const("M5StickCPlus2") # Default WLAN hostname
+WIFI_DEF_HOST = const("M5Stick") # Default WLAN hostname
+REQUESTS_USERAGENT = const("Stick firmware/M5Stick") # User agent for requests module (WIP)
 
 # Loop timings
 WIFI_DISABLE_TIMEOUT = const(15000) # Timeout for disabling wifi if not connected
@@ -104,8 +105,8 @@ POWER_SAVE_TIMEOUT = const(15000) # Time to enter power saving after no activity
 IMU_CHECK_TIME = const(200) # IMU update time, in ms
 IMU_STAY_TIME = const(1000) # IMU stay time, in ms, device needs to be in same rotatation for X ms to accept rotation as stable
 NTP_SYNC_TIME = const(600000) # NTP automatic sync time in ms
-LOOP_WAIT_TIME = const(0.04) # Time loops wait until starting again in seconds (Start, wait time, start)
-DEBOUNCE_TIME = const(0.04) # Button check debounce time in seconds
+LOOP_WAIT_TIME = const(0.03) # Time loops wait until starting again in seconds (Start, wait time, start)
+DEBOUNCE_TIME = const(0.03) # Button check debounce time in seconds
 DIAGNOSTIC_REFRESH_TIME = const(2000) # On-screen diagnostics (Voltage + CPU speed in menu)
 
 # Boot settings

@@ -97,6 +97,7 @@ ULTRA_SLOW_FREQ = const(20_000_000)
 
 # Networking
 WIFI_DEF_HOST = const("Cardputer") # Default WLAN hostname
+REQUESTS_USERAGENT = const("Stick firmware/Cardputer") # User agent for requests module (WIP)
 
 # Loop timings
 WIFI_DISABLE_TIMEOUT = const(15000) # Timeout for disabling wifi if not connected
