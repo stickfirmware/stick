@@ -29,7 +29,7 @@ def run():
         del i2c_scan
         decache('apps.dev_apps.iic_scan')
     elif menu1 == 2:
-        import apps.dev_apps.iic_scan as taskmgr
+        import apps.dev_apps.task_mgr as taskmgr
         taskmgr.run()
         del taskmgr
         decache('apps.dev_apps.task_mgr')
