@@ -3,6 +3,7 @@ import machine
 import esp32
 import network
 import machine
+from modules.decache import decache
 import modules.os_constants as osc
 import modules.nvs as nvs
 import modules.menus as menus
@@ -23,7 +24,17 @@ def run():
     button_b = io_man.get_btn_b()
     button_c = io_man.get_btn_c()
     tft = io_man.get_tft()
-    
+
+    q_actions = menus.menu("Quick actions", [("Power menu", 1), ("Settings", 2), ("Cancel", None)])
+    if q_actions == 1:
+        power_menu()
+    elif q_actions == 2:
+        import apps.settings as a_se
+        a_se.run()
+        del a_se
+        decache('apps.settings')
+
+def power_menu():
     nic = network.WLAN(network.STA_IF)
     powermenu = menus.menu("Power", [("Sleep", 1), ("Power off", 2), ("Reboot", 3), ("Cancel", 4)])
     n_wifi = esp32.NVS("wifi")

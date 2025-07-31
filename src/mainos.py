@@ -511,7 +511,7 @@ while True:
         
         continue
         
-    # Power menu
+    # Power menu / Quick actions
     if button_c.value() == 0:
         # Wake up
         wake_up()
