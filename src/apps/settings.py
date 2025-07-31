@@ -52,7 +52,6 @@ def run():
     
     work = True
     while work == True:
-        
         # Main menu
         menu1 = menus.menu("Settings", [("LCD / st7789", 1), ("Sound", 2), ("Wi-Fi", 3), ("SD Card", 7), ("About", 8), ("Close", 13)])
         
