@@ -1,9 +1,11 @@
 import esp32
 import machine
+
 import modules.nvs as nvs
+
 import fonts.def_8x8 as f8x8
 import fonts.def_16x16 as f16x16
-import apps.oobe as oobe
+
 import modules.printer as printer
 
 def check(tft):

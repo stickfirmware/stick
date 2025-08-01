@@ -1,7 +1,8 @@
 import esp32
 import machine
-import modules.nvs as nvs
 import time
+
+import modules.nvs as nvs
 import modules.os_constants as osc
 import modules.io_manager as io_man
 

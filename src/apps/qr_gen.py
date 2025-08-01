@@ -1,8 +1,10 @@
 import time
+
 import modules.numpad as numpad
 import modules.qr_codes as qr
 import modules.os_constants as osc
 import modules.io_manager as io_man
+
 import fonts.def_8x8 as f8x8
 
 def run():

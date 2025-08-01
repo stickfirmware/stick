@@ -2,10 +2,12 @@
 # App ID: 1002
 
 import time
+import machine
+
+import fonts.def_8x8 as f8x8
+
 import modules.os_constants as osc
 import modules.menus as menus
-import fonts.def_8x8 as f8x8
-import machine
 import modules.io_manager as io_man
 import modules.printer as printer
 

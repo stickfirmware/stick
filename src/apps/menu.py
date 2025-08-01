@@ -1,11 +1,14 @@
+import machine
+import esp32
+import gc
+
+import fonts.def_8x8 as f8x8
+
 import modules.io_manager as io_man
 from modules.decache import decache
 import modules.menus as menus
 import modules.os_constants as osc
-import esp32
 import modules.nvs as nvs
-import machine
-import gc
 
 n_settings = esp32.NVS("settings")
 
@@ -13,16 +16,7 @@ dev_settings = nvs.get_int(n_settings, "dev_apps")
 if dev_settings == None:
     dev_settings = 0
 
-button_a = None
-button_b = None
-button_c = None
-tft = None
-
 def run():
-    global button_c, button_a, button_b, tft
-    button_a = io_man.get_btn_a()
-    button_b = io_man.get_btn_b()
-    button_c = io_man.get_btn_c()
     tft = io_man.get_tft()
     
     menu_apps = [("IR Remote", 1), ("Music Player", 6), ("File explorer", 7), ("Flashlight", 8), ("Others", 4), ("Settings", 3)]
@@ -43,6 +37,7 @@ def run():
         decache('apps.others')
     elif menu1 == 1:
         import apps.IR as a_ir
+        tft.text(f8x8, "Loading, please wait!", 0,0, 60000)
         a_ir.run()
         a_ir.exit()
         del a_ir

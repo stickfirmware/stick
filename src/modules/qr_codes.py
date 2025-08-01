@@ -1,5 +1,6 @@
-import modules.uQR as uQR
 import framebuf
+
+import modules.uQR as uQR
 
 def make_qr(tft, data, xd, yd, size=1):
     qr = uQR.make(data=data)

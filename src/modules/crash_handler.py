@@ -2,11 +2,13 @@ import esp32
 import time
 import machine
 import os
-import modules.nvs as nvs
+import gc
+
 import fonts.def_8x8 as f8x8
+
+import modules.nvs as nvs
 import modules.text_utils as t_utils
 import modules.error_db as error_db
-import gc
 
 n_crash = esp32.NVS("crash")
 

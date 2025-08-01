@@ -1,7 +1,8 @@
-import modules.io_manager as io_man
-import modules.os_constants as osc
 import time
 import esp32
+
+import modules.io_manager as io_man
+import modules.os_constants as osc
 import modules.nvs as nvs
 
 n_settings = esp32.NVS("settings")

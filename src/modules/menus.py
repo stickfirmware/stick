@@ -1,8 +1,10 @@
-import fonts.def_8x8 as f8x8
 import time
 import machine
-import modules.os_constants as osc
 import gc
+
+import fonts.def_8x8 as f8x8
+
+import modules.os_constants as osc
 import modules.io_manager as io_man
 
 button_a = io_man.get_btn_a()

@@ -1,13 +1,17 @@
 # Metronome app
 # App ID: 1003
 
+from machine import Pin, PWM
+import time
+
 import fonts.def_8x8 as f8x8
 import fonts.def_16x32 as f16x32
 
-from machine import Pin, PWM
+import modules.buzzer as buzz
 import modules.io_manager as io_man
 import modules.os_constants as osc
 import modules.printer as printer
+import modules.menus as menus
 
 button_a = io_man.get_btn_a()
 button_b = io_man.get_btn_b()
@@ -15,8 +19,6 @@ button_c = io_man.get_btn_c()
 tft = io_man.get_tft()
 
 def play(bpm):
-    import time
-    import modules.buzzer as buzz
     buzzer = PWM(Pin(2), duty_u16=0, freq=500)
     delay = ((60 / bpm) * 1000)
     tft.fill(0)
@@ -34,11 +36,9 @@ def run():
     button_c = io_man.get_btn_c()
     tft = io_man.get_tft()
     
-    import modules.menus as menus
     if osc.HAS_BUZZER == False:
         menus.menu("You don't have buzzer!", [("OK", None)])
         return
-    import machine
     
     bpm_max = 250
     bpm_min = 30
