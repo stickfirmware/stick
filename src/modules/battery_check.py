@@ -6,11 +6,6 @@ from machine import ADC, Pin
 
 import modules.os_constants as osc
 
-import bitmaps.battery as b_battery
-import bitmaps.battery_1 as b_battery_1
-import bitmaps.battery_2 as b_battery_2
-import bitmaps.battery_3 as b_battery_3
-
 adc = ADC(Pin(osc.BATTERY_ADC))
 adc.atten(ADC.ATTN_11DB)
 
@@ -55,10 +50,14 @@ def run(tft):
         return
     last_bitmap = bitm
     if bitm == 3:
+        import bitmaps.battery_3 as b_battery_3
         tft.bitmap(b_battery_3, 210,3)
     elif bitm == 2:
+        import bitmaps.battery_2 as b_battery_2
         tft.bitmap(b_battery_2, 210,3)
     elif bitm == 1:
+        import bitmaps.battery_1 as b_battery_1
         tft.bitmap(b_battery_1, 210,3)
     else:
+        import bitmaps.battery as b_battery
         tft.bitmap(b_battery, 210,3)
