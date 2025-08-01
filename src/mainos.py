@@ -356,6 +356,9 @@ while True:
         app_clock.clock_vert()
     # Render entire clock
     elif menu_change == True:
+        # Change bitmap cache to none so battery bitmap renders after render clock
+        b_check.last_bitmap = None
+
         if was_sleep_triggered:
             tft.set_backlight(prev_bl)
             was_sleep_triggered = False
@@ -413,6 +416,9 @@ while True:
         # Disable debug/battery info for less lag
         tft.fill_rect(4, 116, 190, 16, 0) # Info text
         tft.fill_rect(210, 3, 25, 12, 0) # Battery icon
+        
+        # Change bitmap cache to none so battery bitmap renders after wake up
+        b_check.last_bitmap = None
         
         is_in_saving = True
         tft.set_backlight(osc.LCD_POWER_SAVE_BL)
