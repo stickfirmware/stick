@@ -215,13 +215,18 @@ def run():
         # SD Card settings
         elif menu1 == 7:
             
+            # SD Slot check
+            if osc.HAS_SD_SLOT == False:
+                menus.menu("No SD slot!", [("OK", None)])
+                continue
+
             # SD Card menu if SD is not mounted
             if sd.sd is None:
                 sd_menu = menus.menu("Settings/SD Card", [("Init", 1), ("Close", 13)])
                 if sd_menu == 1:
                     tft.fill(0)
                     tft.text(f8x8, "Init SD...",0,0, 65535)
-                    sdin = sd.init()
+                    sdin = sd.init(2, osc.SD_CLK, osc.SD_CS, osc.SD_MISO, osc.SD_MOSI)
                     time.sleep(2)
                     if sdin == True:
                         if sd.mount() == True:
