@@ -55,7 +55,7 @@ def run():
         decache('apps.player')
     elif menu1 == 7:
         import modules.file_explorer as a_fe
-        a_fe.raun()
+        a_fe.run()
         del a_fe
         decache('modules.file_explorer')
     elif menu1 == 8:
