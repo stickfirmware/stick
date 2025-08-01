@@ -1,8 +1,10 @@
 import machine
 import time
 import network
+
 import fonts.def_8x8 as f8x8
 import fonts.def_16x32 as f16x32
+
 from modules.decache import decache
 import modules.battery_check as battery_check
 import modules.io_manager as io_man
@@ -95,10 +97,10 @@ def stopwatch():
     working = True
     render_time = True
     pauses_total = 0
-    zeroed = time.ticks_ms()
-    time_from_pause = zeroed
-    app_start_time = zeroed
-    time_from_battery_check = zeroed
+    time_from_battery_check = time.ticks_ms()
+    start_offset = time.ticks_ms()
+    time_from_pause = time.ticks_ms()
+    paused_time = 0
     tft.fill(0)
     tft.text(f8x8, "Stopwatch", 0, 0, 65535)
     tft.text(f8x8, "Press A to start/pause", 0, 111, 65535)
@@ -113,7 +115,10 @@ def stopwatch():
         if is_running or render_time:
             render_time = False
             tft.text(f16x32, "                ", 0, 8, 0)
-            text = format_ticks_ms(time.ticks_diff(time.ticks_ms(), app_start_time) - pauses_total)
+            elapsed = time.ticks_diff(time.ticks_ms(), start_offset) - pauses_total
+            if elapsed < 0:
+                elapsed = 0
+            text = format_ticks_ms(elapsed)
             x = text_utils.center_x(text, 16)
             y = text_utils.center_y(text, 32)
             tft.text(f16x32, text, x, y, 65535)
@@ -138,12 +143,15 @@ def stopwatch():
                 time.sleep(osc.DEBOUNCE_TIME)
         if button_b.value() == 0:
             pauses_total = 0
-            zeroed = time.ticks_ms()
-            time_from_pause = zeroed
-            app_start_time = zeroed
+            start_offset = time.ticks_ms()
+            time_from_pause = start_offset
+            is_running = False
+            was_paused = True
             render_time = True
-            while button_b.value == 0:
+            tft.text(f8x8, "Stopwatch [PAUSED]", 0, 0, 65535)
+            while button_b.value() == 0:
                 time.sleep(osc.DEBOUNCE_TIME)
+
         if button_c.value() == 0:
             working = False
             while button_c.value() == 0:
