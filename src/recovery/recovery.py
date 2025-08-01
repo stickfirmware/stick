@@ -1,39 +1,19 @@
-import modules.os_constants as osc
 import esp32
 import modules.nvs as nvs
 from modules.decache import decache
 
-def init_tft():
-    import modules.st7789 as st7789
-    from machine import PWM, Pin, SPI
-    try:
-        tft = st7789.ST7789(
-            machine.SPI(osc.LCD_SPI_SLOT, baudrate=osc.LCD_SPI_BAUD, sck=machine.Pin(osc.LCD_SPI_SCK), mosi=machine.Pin(osc.LCD_SPI_MOSI), miso=osc.LCD_SPI_MISO),
-            osc.LCD_HEIGHT,
-            osc.LCD_WIDTH,
-            reset=machine.Pin(osc.LCD_RESET, Pin.OUT),
-            cs=machine.Pin(osc.LCD_SPI_CS, Pin.OUT),
-            dc=machine.Pin(osc.LCD_DC, Pin.OUT),
-            backlight=machine.PWM(Pin(osc.LCD_BL), freq=osc.LCD_BL_FREQ),
-            rotation=osc.LCD_ROTATIONS["BUTTON_LEFT"])
-        tft.fill(0)
-        return tft
-    except Exception as e:
-        print(e)
-        return None
-    
-import modules.fastboot_vars as fvars
-if fvars.TFT != None:
-    tft = fvars.TFT
+print("Init IO manager")
+import modules.io_manager as io_man
+if io_man.get_tft() != None:
+    tft = io_man.get_tft()
 else:
-    tft = init_tft()
+    import modules.tft_init as tft_init
+    tft = tft_init.init_tft()
 import modules.button_init as btn_init
 buttons = btn_init.init_buttons()
 button_a = buttons[0]
 button_b = buttons[1]
 button_c = buttons[2]
-print("Init IO manager")
-import modules.io_manager as io_man
 io_man.set_btn_a(button_a)
 io_man.set_btn_b(button_b)
 io_man.set_btn_c(button_c)

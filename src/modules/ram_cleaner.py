@@ -21,7 +21,6 @@ _WHITELIST = {
         'modules.io_manager',
         'modules.st7789',
         'modules.uptime',
-        'modules.fastboot_vars',
         'modules.json',
         'modules.decache',
         'modules.crash_handler',

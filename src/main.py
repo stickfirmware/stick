@@ -43,15 +43,8 @@ try:
     # Init tft
     printer.log("Init tft")
     import modules.st7789 as st7789
-    tft = st7789.ST7789(
-            machine.SPI(osc.LCD_SPI_SLOT, baudrate=osc.LCD_SPI_BAUD, sck=machine.Pin(osc.LCD_SPI_SCK), mosi=machine.Pin(osc.LCD_SPI_MOSI), miso=osc.LCD_SPI_MISO),
-            osc.LCD_HEIGHT,
-            osc.LCD_WIDTH,
-            reset=machine.Pin(osc.LCD_RESET, machine.Pin.OUT),
-            cs=machine.Pin(osc.LCD_SPI_CS, machine.Pin.OUT),
-            dc=machine.Pin(osc.LCD_DC, machine.Pin.OUT),
-            backlight=machine.PWM(machine.Pin(osc.LCD_BL), freq=osc.LCD_BL_FREQ),
-            rotation=osc.LCD_ROTATIONS["BUTTON_LEFT"])
+    import modules.tft_init as tft_init
+    tft = tft_init.init_tft()
     load_bg = osc.LCD_LOAD_BG
     text_color = osc.LCD_LOAD_TEXT
     tft.fill(load_bg)
@@ -68,8 +61,8 @@ except Exception as e:
     
 def set_f_boot(var):
     try:
-        import modules.fastboot_vars as fvars
-        fvars.TFT = var
+        import modules.io_manager as io_man
+        io_man.set_tft(var)
     except:
         print("Failed to set fastboot vars")
     
