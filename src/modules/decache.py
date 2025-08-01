@@ -1,4 +1,3 @@
-import sys
 import gc
 import modules.ram_cleaner as r_cleaner
 
