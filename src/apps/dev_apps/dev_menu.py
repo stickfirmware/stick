@@ -1,9 +1,11 @@
 import gc
 import machine
+import os
 
 import modules.io_manager as io_man
 from modules.decache import decache
 import modules.menus as menus
+import modules.crash_handler as c_handler
 import modules.os_constants as osc
 
 button_a = None
@@ -19,7 +21,7 @@ def run():
     tft = io_man.get_tft()
     
     machine.freq(osc.ULTRA_FREQ)
-    menu_apps = [("Grove I2C scan", 1), ("Hardware info", 2), ("Close", None)]
+    menu_apps = [("Grove I2C scan", 1), ("Hardware info", 2), ("Trigger crash", 3), ("Close", None)]
 
     menu1 = menus.menu("Menu", menu_apps)
     if menu1 == 1:
@@ -32,5 +34,8 @@ def run():
         taskmgr.run()
         del taskmgr
         decache('apps.dev_apps.task_mgr')
+    elif menu1 == 3:
+        os.sync()
+        c_handler.crash_screen(tft, 1, "User triggered test crash from menu", True, 1)
     gc.collect()
     machine.freq(osc.BASE_FREQ)
