@@ -106,12 +106,13 @@ def fileMenu(file):
         if "helpers/runinreader" in sys.modules:
             del sys.modules["helpers/runinreader"]
     elif render == 2:
-        try:
-            os.remove(file)
-        except Exception as e:
-            print(e)
-            menus.menu("Error deleting file!", [("Close", 1)])
-        return
+        if menus.menu("Delete?", [("Yes", 1), ("No", None)]) == 1:
+            try:
+                os.remove(file)
+            except Exception as e:
+                print(e)
+                menus.menu("Error deleting file!", [("Close", 1)])
+            return
         
 def detect():
     global sd_present
