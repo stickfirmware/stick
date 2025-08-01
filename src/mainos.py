@@ -30,7 +30,7 @@ import modules.uptime as uptime
 import modules.printer as debug
 import modules.buzzer as buzz
 import modules.os_constants as osc
-import modules.fastboot_vars as fvars
+import modules.io_manager as io_man
 
 # Scripts
 import scripts.checkbattery as battery_shutdown
@@ -76,7 +76,7 @@ import fonts.def_16x32 as f16x32
 debug.log("Init tft")
 
 try:
-    tft = fvars.TFT
+    tft = io_man.get_tft()
     if tft == None:
         import modules.tft_init as tft_init
         tft = tft_init.init_tft()
@@ -217,7 +217,6 @@ button_c = buttons[2]
 # Init IO manager
 render_bar("Init IO manager", True)
 debug.log("Init IO manager")
-import modules.io_manager as io_man
 io_man.set_btn_a(button_a)
 io_man.set_btn_b(button_b)
 io_man.set_btn_c(button_c)
