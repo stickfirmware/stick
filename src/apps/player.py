@@ -1,14 +1,11 @@
-import fonts.def_8x8 as f8x8
-import modules.os_constants as osc
-import fonts.def_16x32 as f16x32
-import modules.menus as menus
 import uos
 import gc
-import array
-
 from time import sleep, ticks_ms, ticks_diff
 from machine import Pin, I2S
-
+import fonts.def_8x8 as f8x8
+import fonts.def_16x32 as f16x32
+import modules.menus as menus
+import modules.os_constants as osc
 import modules.io_manager as io_man
 
 button_a = io_man.get_btn_a()
