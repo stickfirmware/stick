@@ -99,13 +99,13 @@ def fileMenu(file):
                 tm[2], tm[0], tm[3], tm[4], tm[5]
             ))
 
-        comd = __import__("helpers.runinreader")
-        parts = "helpers.runinreader".split(".")
+        comd = __import__("helpers.run_in_reader")
+        parts = "helpers.run_in_reader".split(".")
         for part in parts[1:]:
             comd = getattr(comd, part)
         comd.open_file("/temp/fileprop.txt")
-        if "helpers/runinreader" in sys.modules:
-            del sys.modules["helpers/runinreader"]
+        if "helpers/run_in_reader" in sys.modules:
+            del sys.modules["helpers/run_in_reader"]
     elif render == 2:
         if menus.menu("Delete?", [("Yes", 1), ("No", None)]) == 1:
             try:
