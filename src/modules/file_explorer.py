@@ -131,6 +131,15 @@ def detect():
     # Check free space on flash
     stat = os.statvfs("/")
     freespace_flash = stat[0] * stat[3]
+
+def rmdir_recursive(path):
+    for file in os.listdir(path):
+        full_path = path_join(path, file)
+        if is_file(full_path):
+            os.remove(full_path)
+        else:
+            rmdir_recursive(full_path)
+    os.rmdir(path)
     
 def explorerLoop(startingpath, disablemenu = False):
     currpath = startingpath
@@ -138,10 +147,30 @@ def explorerLoop(startingpath, disablemenu = False):
     while work == True:
         browse = browser(currpath)
         if browse == None:
-            if currpath == "/":
-                work = False
+            if disablemenu:
+                if currpath == "/":
+                    work = False
+                else:
+                    currpath = parent_path(currpath)
             else:
-                currpath = parent_path(currpath)
+                folder_exit_menu = menus.menu("Menu", [("Go back", None), ("Create folder", 1)])
+                if folder_exit_menu == None:
+                    if currpath == "/":
+                        work = False
+                    else:
+                        currpath = parent_path(currpath)
+                elif folder_exit_menu == 1:
+                    import modules.numpad as keyboard
+                    folder_create_name = keyboard.keyboard("Enter folder name", 200)
+                    from modules.decache import decache
+                    decache("modules.numpad")
+                    if folder_create_name != "" and folder_create_name != None:
+                        try:
+                            os.mkdir(path_join(currpath, folder_create_name))
+                        except:
+                            menus.menu("Couldn't make folder!", [("OK", None)])
+                    else:
+                        menus.menu("Invalid name!", [("OK", 1)])
         else:
             if is_file(browse):
                 if disablemenu == False:
@@ -149,7 +178,18 @@ def explorerLoop(startingpath, disablemenu = False):
                 else:
                     return browse
             else:
-                currpath = browse
+                if disablemenu:
+                    currpath = browse
+                else:
+                    folder_enter_menu = menus.menu("Folder menu", [("Change dir", 1), ("Delete", 2)])
+                    if folder_enter_menu == 1:
+                        currpath = browse
+                    elif folder_enter_menu == 2:
+                        if menus.menu("Remove folder?", [("Yes", 1), ("No", None)]) == 1:
+                            try:
+                                rmdir_recursive(path_join(currpath, browse))
+                            except:
+                                menus.menu("Couldn't remove folder!", [("OK", None)])
     
 def run(fileselectmode=False, startingselectpath="/"):
     load_io()
