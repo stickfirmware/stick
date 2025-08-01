@@ -411,7 +411,8 @@ while True:
     # Power saving
     if not is_in_saving and time.ticks_diff(time.ticks_ms(), pwr_save_time) >= osc.POWER_SAVE_TIMEOUT and allow_saving == 1:
         # Disable debug/battery info for less lag
-        tft.fill_rect(4, 116, 190, 16, 0)
+        tft.fill_rect(4, 116, 190, 16, 0) # Info text
+        tft.fill_rect(210, 3, 25, 12, 0) # Battery icon
         
         is_in_saving = True
         tft.set_backlight(osc.LCD_POWER_SAVE_BL)
