@@ -18,7 +18,7 @@ def run():
     button_c = io_man.get_btn_c()
     tft = io_man.get_tft()
     
-    render = menus.menu("Menu/Others", [("QR Codes", 6), ("PiMarkX", 5), ("Scorekeeper", 1), ("Resistor decoder", 2), ("Metronome", 3), ("Close", 13)])
+    render = menus.menu("Menu/Others", [("QR Codes", 6), ("PiMarkX", 5), ("Dice", 7), ("Scorekeeper", 1), ("Resistor decoder", 2), ("Metronome", 3), ("Close", 13)])
     if render == 1:
         import apps.scorekeeper as a_sc
         a_sc.run()
@@ -44,5 +44,10 @@ def run():
         a_qr.run()
         del a_qr
         decache('apps.qr_gen')
+    elif render == 7:
+        import apps.dice as a_dc
+        a_dc.run()
+        del a_dc
+        decache('apps.dice')
     gc.collect()
     machine.freq(osc.BASE_FREQ)
