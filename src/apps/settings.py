@@ -3,7 +3,9 @@ import machine
 import network
 import time
 import gc
+
 import fonts.def_8x8 as f8x8
+
 import modules.printer as printer
 from modules.decache import decache
 import modules.menus as menus

@@ -1,9 +1,11 @@
+import time
+
 import modules.nvs as nvs
 import modules.error_db as error_db
+import modules.printer as printer
+
 import fonts.def_16x32 as f16x32
 import fonts.def_8x8 as f8x8
-import time
-import modules.printer as printer
 
 def run_check(tft, n_crash):
     latest = nvs.get_int(n_crash, "latest")

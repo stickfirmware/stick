@@ -1,4 +1,6 @@
-import machine, time
+import machine
+import time
+
 import modules.os_constants as osc
 import modules.io_manager as io_man
 

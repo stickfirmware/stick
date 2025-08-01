@@ -1,6 +1,7 @@
 from machine import Pin
-import modules.os_constants as osc
 import time
+
+import modules.os_constants as osc
 
 aa_toggle_state = False
 aa_debounce = False

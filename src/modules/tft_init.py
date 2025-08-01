@@ -1,4 +1,5 @@
 from machine import SPI, Pin, PWM
+
 import modules.os_constants as osc
 import modules.st7789 as st7789
 

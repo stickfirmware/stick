@@ -1,9 +1,10 @@
+import machine
+import gc
+
 import modules.io_manager as io_man
 from modules.decache import decache
 import modules.os_constants as osc
 import modules.menus as menus
-import machine
-import gc
 
 button_a = None
 button_b = None

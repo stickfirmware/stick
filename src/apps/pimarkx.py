@@ -1,8 +1,10 @@
 import time
 import machine
 import os
-import modules.menus as menus
+
 import fonts.def_8x8 as f8x8
+
+import modules.menus as menus
 import modules.os_constants as osc
 import modules.printer as printer
 

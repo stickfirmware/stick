@@ -1,5 +1,6 @@
 import sys
 import gc
+
 import modules.printer as printer
 
 _WHITELIST = {

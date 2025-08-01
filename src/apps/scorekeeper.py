@@ -1,12 +1,13 @@
 # Score keeper app
 # App ID: 1001
 
+import esp32
+import machine
+
 import modules.io_manager as io_man
 import modules.printer as printer
 import modules.menus as menus
 import modules.nvs as nvs
-import esp32
-import machine
 import modules.os_constants as osc
 
 button_a = io_man.get_btn_a()

@@ -1,11 +1,10 @@
-import esp32
 import gc
+import machine
+
 import modules.io_manager as io_man
 from modules.decache import decache
 import modules.menus as menus
 import modules.os_constants as osc
-import modules.nvs as nvs
-import machine
 
 button_a = None
 button_b = None

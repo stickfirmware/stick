@@ -1,4 +1,5 @@
 from machine import Pin
+
 import modules.printer as debug
 import modules.io_manager as io_man
 import modules.os_constants as osc

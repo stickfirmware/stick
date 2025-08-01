@@ -1,11 +1,13 @@
 import time
+import machine
+import esp32
+
 import fonts.def_8x8 as f8x8
 
 import modules.io_manager as io_man
-
-button_a = io_man.get_btn_a()
-button_b = io_man.get_btn_b()
-button_c = io_man.get_btn_c()
+import modules.nvs as nvs
+import modules.menus as menus
+    
 tft = io_man.get_tft()
 
 def dummyMsg():
@@ -20,16 +22,9 @@ def dummyMsg():
     time.sleep(5)
 
 def run():
-    global button_c, button_a, button_b, tft
-    button_a = io_man.get_btn_a()
-    button_b = io_man.get_btn_b()
-    button_c = io_man.get_btn_c()
+    global tft
     tft = io_man.get_tft()
-    
-    import esp32
-    import modules.nvs as nvs
-    import modules.menus as menus
-    import machine
+
     n_locks = esp32.NVS("locks")
     work = True
     while work == True:

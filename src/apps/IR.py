@@ -1,6 +1,12 @@
 from machine import Pin
 import machine
 import time
+import esp32
+import os
+import json
+
+import modules.io_manager as io_man
+import modules.printer as printer
 import modules.os_constants as osc
 import modules.IR.db_nec as db_nec
 import modules.IR.db_sony as db_sony
@@ -16,11 +22,6 @@ import modules.IR.recv as recv
 import modules.menus as menus
 import fonts.def_8x8 as f8x8
 import modules.nvs as nvs
-import esp32
-import os
-import json
-import modules.io_manager as io_man
-import modules.printer as printer
 from modules.decache import decache
 
 button_a = io_man.get_btn_a()

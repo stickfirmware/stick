@@ -1,6 +1,7 @@
 # Buzzer script
 
 import time
+
 import modules.os_constants as osc
 
 duty = 0.5

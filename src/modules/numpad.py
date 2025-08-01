@@ -1,10 +1,8 @@
-import modules.printer as debug
-debug.log("Numpad")
-debug.log("Importing fonts")
 import fonts.def_8x8 as f8x8
 import fonts.def_8x16 as f8x16
 import fonts.def_16x16 as f16x16
 
+import modules.printer as debug
 import modules.cardputer_kb as ckb
 import modules.os_constants as osc
 import modules.menus as menus

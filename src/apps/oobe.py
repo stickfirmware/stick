@@ -1,7 +1,6 @@
 import os
-import fonts.def_8x8 as f8x8
+
 import modules.json as jso
-import time
 
 def createConfig():
     appsConfig = {

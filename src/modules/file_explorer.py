@@ -1,12 +1,13 @@
-import fonts.def_8x8 as f8x8
-import fonts.def_16x32 as f16x32
-import modules.menus as menus
 import sys
 import time
 import os
 import gc
-import modules.open_file as open_file
-    
+
+import fonts.def_8x8 as f8x8
+import fonts.def_16x32 as f16x32
+
+import modules.menus as menus
+import modules.open_file as open_file   
 import modules.io_manager as io_man
 
 button_a = io_man.get_btn_a()
