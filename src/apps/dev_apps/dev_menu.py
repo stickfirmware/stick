@@ -36,6 +36,6 @@ def run():
         decache('apps.dev_apps.task_mgr')
     elif menu1 == 3:
         os.sync()
-        c_handler.crash_screen(tft, 1, "User triggered test crash from menu", True, 1)
+        c_handler.crash_screen(tft, 1, "User triggered test crash from menu", True, True, 1)
     gc.collect()
     machine.freq(osc.BASE_FREQ)
