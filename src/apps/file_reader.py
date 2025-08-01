@@ -6,51 +6,42 @@ import fonts.def_8x8 as f8x8
 import modules.os_constants as osc
 import modules.io_manager as io_man
 
-def splittext(text):
-    CHARLIMIT = 27
-    LINELIMIT = 16
-
-    pages = []
+def splittext_stream(fileobj, charlimit=27, linelimit=16):
     page = []
-    
-    raw_lines = text.split('\n')
-    
-    for raw in raw_lines:
-        if raw.strip() == "":
-            page.append([""])
-            if len(page) >= LINELIMIT:
-                pages.append(page)
+    for raw in fileobj:
+        try:
+            raw = raw.decode("utf-8")
+        except UnicodeDecodeError:
+            yield ["[Decode error]"]
+            return
+
+        raw = raw.replace('\t', '    ').rstrip("\r\n")
+
+        if not raw.strip():
+            page.append("")  # pusty wiersz
+            if len(page) >= linelimit:
+                yield page
                 page = []
             continue
-        
-        start = 0
-        while start < len(raw):
-            chunk = raw[start:start+CHARLIMIT]
-            page.append([chunk])
-            start += CHARLIMIT
-            
-            if len(page) >= LINELIMIT:
-                pages.append(page)
-                page = []
-    
-    if page:
-        pages.append(page)
 
-    return pages
+        for i in range(0, len(raw), charlimit):
+            page.append(raw[i:i+charlimit])
+            if len(page) >= linelimit:
+                yield page
+                page = []
+
+    if page:
+        yield page
+
 
 def read(filename):
     gc.collect()
-    max_bytes=500*1024
-    
     try:
         with open(filename, "rb") as f:
-            data = f.read(max_bytes)
-        text = data.decode("utf-8")
-        text = text.replace('\t', '    ')
+            return list(splittext_stream(f))
     except Exception as e:
-        return splittext("Error: {str(e)}")
-    
-    return splittext(text)
+        return [[["Error: " + str(e)]]]
+
 
 def showfile(file):
     button_a = io_man.get_btn_a()
@@ -82,7 +73,7 @@ def showfile(file):
                 pos = 0
             tft.fill_rect(223, pos, 14, thumb_height, 50776)
             for i in split[current_page]:
-                tft.text(f8x8, i[0],3,3 + (index * 8),65535)
+                tft.text(f8x8, i,3,3 + (index * 8),65535)
                 index += 1
             update = False
         if button_c.value() == 0:
