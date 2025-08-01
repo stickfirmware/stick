@@ -1,16 +1,10 @@
-import fonts.def_8x8 as f8x8
-import fonts.def_16x32 as f16x32
-import modules.menus as menus
 import gc
 import time
+
+import fonts.def_8x8 as f8x8
+
 import modules.os_constants as osc
 import modules.io_manager as io_man
-
-button_a = io_man.get_btn_a()
-button_b = io_man.get_btn_b()
-button_c = io_man.get_btn_c()
-tft = io_man.get_tft()
-
 
 def splittext(text):
     CHARLIMIT = 27
@@ -45,6 +39,7 @@ def splittext(text):
     return pages
 
 def read(filename):
+    gc.collect()
     max_bytes=500*1024
     
     try:
@@ -58,6 +53,10 @@ def read(filename):
     return splittext(text)
 
 def showfile(file):
+    button_a = io_man.get_btn_a()
+    button_b = io_man.get_btn_b()
+    button_c = io_man.get_btn_c()
+    tft = io_man.get_tft()
     tft.fill(0)
     tft.text(f8x8, "Loading file preview...",0,8,65535)
     tft.text(f8x8, "Kitki30 Stick File Reader",0,0,65535)
@@ -107,36 +106,4 @@ def showfile(file):
             while button_a.value() == 0:
                 time.sleep(osc.DEBOUNCE_TIME)
             work = False
-        time.sleep(osc.LOOP_DELAY)
-    
-def run():
-    global button_c, button_a, button_b, tft
-    button_a = io_man.get_btn_a()
-    button_b = io_man.get_btn_b()
-    button_c = io_man.get_btn_c()
-    tft = io_man.get_tft()
-    
-    import sys
-    work = True
-    while work == True:
-        render = menus.menu("File reader", [("Browse files", 1), ("Exit", 3)])
-        try:
-            if render == 3:
-                work = False
-            elif render == 1:
-                import modules.file_explorer as a_fe
-                browser = a_fe.run(True)
-                if browser != None:
-                    showfile(browser)
-                del a_fe
-                sys.modules.pop('modules.fileexplorer', None)
-            else:
-                work = False
-        except Exception as e:
-            print("Oops!\nSomething wrong has happened in File reader\nLogs:\n"+str(e))
-            tft.fill(0)
-            gc.collect()
-            tft.text(f16x32, "Oops!",0,0,31)
-            tft.text(f8x8, "Something wrong has happened!",0,32,65535)
-            tft.text(f8x8, "Please try again!",0,40,65535)
-            time.sleep(3)
+        time.sleep(osc.LOOP_WAIT_TIME)
