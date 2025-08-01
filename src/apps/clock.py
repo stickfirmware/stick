@@ -88,17 +88,21 @@ def format_ticks_ms(ticks):
     
 def stopwatch():
     button_a = io_man.get_btn_a()
+    button_b = io_man.get_btn_b()
     button_c = io_man.get_btn_c()
     is_running = False
     was_paused = True
     working = True
+    render_time = True
     pauses_total = 0
-    time_from_pause = time.ticks_ms()
-    app_start_time = time.ticks_ms()
-    time_from_battery_check = time.ticks_ms()
+    zeroed = time.ticks_ms()
+    time_from_pause = zeroed
+    app_start_time = zeroed
+    time_from_battery_check = zeroed
     tft.fill(0)
     tft.text(f8x8, "Stopwatch", 0, 0, 65535)
-    tft.text(f8x8, "Press A to start/pause", 0, 119, 65535)
+    tft.text(f8x8, "Press A to start/pause", 0, 111, 65535)
+    tft.text(f8x8, "Press B to reset", 0, 119, 65535)
     tft.text(f8x8, "Press C to exit", 0, 127, 65535)
     machine.freq(osc.ULTRA_FREQ)
     while working:
@@ -106,7 +110,8 @@ def stopwatch():
         if is_running and was_paused:
             pauses_total += time.ticks_diff(time.ticks_ms(), time_from_pause)
             was_paused = False
-        if is_running:
+        if is_running or render_time:
+            render_time = False
             tft.text(f16x32, "                ", 0, 8, 0)
             text = format_ticks_ms(time.ticks_diff(time.ticks_ms(), app_start_time) - pauses_total)
             x = text_utils.center_x(text, 16)
@@ -130,6 +135,14 @@ def stopwatch():
                 is_running = False
                 was_paused = True
             while button_a.value() == 0:
+                time.sleep(osc.DEBOUNCE_TIME)
+        if button_b.value() == 0:
+            pauses_total = 0
+            zeroed = time.ticks_ms()
+            time_from_pause = zeroed
+            app_start_time = zeroed
+            render_time = True
+            while button_b.value == 0:
                 time.sleep(osc.DEBOUNCE_TIME)
         if button_c.value() == 0:
             working = False
