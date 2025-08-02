@@ -23,31 +23,13 @@ io_man.set('tft', tft)
 import machine
 import modules.menus as menus
 import os
-
-def reset_nvs():
-    import scripts.reset_nvs
-
-def remove_upd():
-    try:
-        os.remove("/update.py")
-    except:
-        print("Update.py deletion error")
-def clear_temp():
-    try:
-        os.rmdir("/temp")
-    except:
-        print("/temp deletion error")
         
 while True:
-    render = menus.menu("Recovery menu", [("Reset NVS configuration", 1), ("Delete update.py", 2), ("Clear /temp/", 3), ("File explorer", 5), ("Toggle dev apps", 6), ("Reboot", 13)])
+    render = menus.menu("Recovery menu", [("Reset NVS configuration", 1), ("File explorer", 5), ("Toggle dev apps", 6), ("Reboot", 13)])
     if render == 1:
         render1 = menus.menu("Destroy nvs?", [("No", 1), ("Yes", 2)])
         if render1 == 2:
-            reset_nvs()
-    elif render == 2:
-        remove_upd()
-    elif render == 3:
-        clear_temp()
+            import scripts.reset_nvs
     elif render == 5:
         import modules.file_explorer as a_fe
         a_fe.run()

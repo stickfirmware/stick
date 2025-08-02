@@ -26,7 +26,6 @@ from modules.decache import decache
 import modules.ram_cleaner as ram_cleaner
 import modules.crash_handler as c_handler
 import modules.nvs as nvs
-import modules.uptime as uptime
 import modules.printer as debug
 import modules.buzzer as buzz
 import modules.os_constants as osc
@@ -342,8 +341,6 @@ def wake_up():
     tft.set_backlight(nvs.get_float(n_settings, "backlight"))
     machine.freq(osc.BASE_FREQ)
 
-# Set uptime
-uptime.uptime_loaded = time.ticks_ms()
 was_sleep_triggered = False
 
 # Slow down CPU

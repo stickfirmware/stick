@@ -79,6 +79,7 @@ def menu(name, choices):
             update = True
             page_upd = False
             
+        # Exit
         if button_c.value() == 0 and bt3_d == 1:
             while button_c.value() == 0:
                 time.sleep(osc.DEBOUNCE_TIME)
@@ -86,7 +87,8 @@ def menu(name, choices):
             chosen = True
         elif button_c.value() == 1 and bt3_d == 0:
             bt3_d = 1
-            
+
+        # Select    
         if button_a.value() == 0 and bt1_d == 1:
             while button_a.value() == 0:
                 time.sleep(osc.DEBOUNCE_TIME)
@@ -94,6 +96,7 @@ def menu(name, choices):
         elif button_a.value() == 1 and bt1_d == 0:
             bt1_d = 1
             
+        # Cycle
         if button_b.value() == 0 and bt2_d == 1:
             while button_b.value() == 0:
                 time.sleep(osc.DEBOUNCE_TIME)
