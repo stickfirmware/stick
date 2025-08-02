@@ -148,7 +148,7 @@ def run():
                 num = menus.menu("Select SSID", wlan_scan)
                 if num == None:
                     continue
-                ssid = nic_scan[num].decode()
+                ssid = nic_scan[num][0].decode()
                 if nic_scan[num][4] != 0:
                     password = str(keypad.keyboard("Enter password", maxlen=63, hideInput=False))
                     if password == None:
