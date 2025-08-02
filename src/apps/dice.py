@@ -10,7 +10,7 @@ import modules.text_utils as text_utils
 import modules.io_manager as io_man
 
 def random_int(tft):
-    text =random.randint(1,6)
+    text = str(random.randint(1,6))
     x = text_utils.center_x(text, 16)
     y = text_utils.center_y(text, 32)
     tft.text(f16x32, text, x, y, st.WHITE)
