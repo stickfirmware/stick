@@ -15,7 +15,7 @@ def run():
     
     tft.set_backlight(1.0)
     tft.fill(65535)
-    tft.set_backlight(nvs.get_float(n_settings, "backlight"))
     
     while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
         time.sleep(osc.DEBOUNCE_TIME)
+    tft.set_backlight(nvs.get_float(n_settings, "backlight"))
