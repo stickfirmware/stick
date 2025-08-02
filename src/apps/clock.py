@@ -108,7 +108,6 @@ def stopwatch():
     tft.text(f8x8, "Press A to start/pause", 0, 111, 65535)
     tft.text(f8x8, "Press B to reset", 0, 119, 65535)
     tft.text(f8x8, "Press C to exit", 0, 127, 65535)
-    machine.freq(osc.ULTRA_FREQ)
     while working:
         time.sleep(osc.LOOP_WAIT_TIME)
         if is_running and was_paused:
@@ -136,6 +135,7 @@ def stopwatch():
             if not is_running:
                 while button_a.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
+                    machine.freq(osc.ULTRA_FREQ)
                 tft.text(f8x8, "Stopwatch         ", 0, 0, 65535)
                 is_running = True
             else:
@@ -145,6 +145,7 @@ def stopwatch():
                 was_paused = True
                 while button_a.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
+                machine.freq(osc.SLOW_FREQ)
         if button_b.value() == 0:
             tft.text(f8x8, "Release to reset!", 0, 0, 65535)
             while button_b.value() == 0:
