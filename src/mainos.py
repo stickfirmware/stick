@@ -256,7 +256,12 @@ if int(nvs.get_float(n_wifi, "conf")) == 1:
             nic.active(True)
             debug.log("Wifi connecting")
             conn_time = time.ticks_ms()
-            nic.connect(nvs.get_string(n_wifi, "ssid"), nvs.get_string(n_wifi, "passwd"))
+            ssid = nvs.get_string(n_wifi, "ssid")
+            passwd = nvs.get_string(n_wifi, "passwd")
+            if passwd != "":
+                nic.connect(ssid, passwd)
+            else:
+                nic.connect(ssid)
         except Exception as e:
             c_handler.crash_screen(tft, 3001, str(e), True, True, 2)
         
