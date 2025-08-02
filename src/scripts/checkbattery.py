@@ -19,7 +19,8 @@ def run():
         volt = avg / 4095 * 3.6 * 2
         return round(volt, 2)
     if voltage() <= DISCHARGE_VOLTAGE:
-        power_hold = Pin(4, Pin.OUT)
-        power_hold.value(0)
+        if osc.HAS_HOLD_PIN:
+            power_hold = Pin(osc.HOLD_PIN, Pin.OUT)
+            power_hold.value(0)
         
 run()

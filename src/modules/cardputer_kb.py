@@ -57,16 +57,6 @@ keymap_Aa = [
     ['ctrl','opt','alt','Z','X','C','V','B','N','M','<','>','?',' ']
 ]
 
-def scan_and_map_raw():
-    matrix = scan_keyboard()
-    keymap = keymap_Aa if AA_pressed else keymap_normal
-    pressed_keys = []
-    for r in range(4):
-        for c in range(14):
-            if matrix[r][c]:
-                pressed_keys.append(keymap[r][c])
-    return pressed_keys
-
 def scan_and_map():
     global aa_toggle_state, aa_debounce
 

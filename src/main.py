@@ -1,8 +1,5 @@
 print("Stick Boot")
 
-# Uptime
-import modules.uptime as uptime
-
 class FakeST:
     def text(self, *k):
         return None
@@ -94,7 +91,6 @@ while True:
             machine.soft_reset()
     else:
         try:
-            uptime.uptime_bootloader = time.ticks_ms()
             printer.log("Booting mainos")
             import mainos
         except Exception as e:

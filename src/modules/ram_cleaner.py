@@ -17,7 +17,6 @@ _WHITELIST = {
         'modules.os_constants',
         'modules.io_manager',
         'modules.st7789',
-        'modules.uptime',
         'modules.json',
         'modules.decache',
         'modules.crash_handler',

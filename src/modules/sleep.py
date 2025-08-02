@@ -2,6 +2,7 @@ import esp32
 import machine
 import time
 
+from modules.printer import log
 import modules.nvs as nvs
 import modules.os_constants as osc
 import modules.io_manager as io_man
@@ -9,9 +10,6 @@ import modules.io_manager as io_man
 def sleep(verbose=False):
     button_c = io_man.get('button_c')
     tft = io_man.get('tft')
-    def log(msg):
-        if verbose == True:
-            print("[SLEEP]" + msg)
     n_settings = esp32.NVS("settings")
     log("Sleeping")
     log("Set wake on ext0")
