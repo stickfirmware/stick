@@ -1,7 +1,7 @@
 import time
 import modules.io_manager as io_man
 
-pwm = io_man.get_IR()
+pwm = io_man.get('IR')
 
 def ir_on(): pwm.duty_u16(32768)
 def ir_off(): pwm.duty_u16(0)

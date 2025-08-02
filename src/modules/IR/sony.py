@@ -3,7 +3,7 @@ import time
 import modules.io_manager as io_man
 import modules.printer as printer
 
-ir_pin = io_man.get_IR()
+ir_pin = io_man.get('IR')
 
 def mark(dur):
     ir_pin.freq(40000)
@@ -29,7 +29,7 @@ def send_sony(data, bits=12):
     
 def send_array(codes):
     global ir_pin
-    ir_pin = io_man.get_IR()
+    ir_pin = io_man.get('IR')
     for data, bits in codes:
         printer.log("Sending Sony (Code: " + str(data) + " Bits: " + str(bits) +")")
         send_sony(data, bits)

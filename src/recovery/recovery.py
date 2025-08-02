@@ -5,8 +5,8 @@ from modules.decache import decache
 
 print("Init IO manager")
 import modules.io_manager as io_man
-if io_man.get_tft() != None:
-    tft = io_man.get_tft()
+if io_man.get('tft') != None:
+    tft = io_man.get('tft')
 else:
     import modules.tft_init as tft_init
     tft = tft_init.init_tft()
@@ -15,10 +15,10 @@ buttons = btn_init.init_buttons()
 button_a = buttons[0]
 button_b = buttons[1]
 button_c = buttons[2]
-io_man.set_btn_a(button_a)
-io_man.set_btn_b(button_b)
-io_man.set_btn_c(button_c)
-io_man.set_tft(tft)
+io_man.set('button_a', button_a)
+io_man.set('button_b', button_b)
+io_man.set('button_c', button_c)
+io_man.set('tft', tft)
 
 import machine
 import modules.menus as menus

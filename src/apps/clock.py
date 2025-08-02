@@ -13,7 +13,7 @@ import modules.os_constants as osc
 import modules.text_utils as text_utils
 import modules.printer as printer
 
-tft = io_man.get_tft()
+tft = io_man.get('tft')
 rtc = machine.RTC()
 
 allow_drawing_battery = True
@@ -89,11 +89,11 @@ def format_ticks_ms(ticks):
     return f"{h:02}:{m:02}:{s:02}:{ms:03}"
     
 def stopwatch():
-    button_a = io_man.get_btn_a()
+    button_a = io_man.get('button_a')
     while button_a.value() == 0:
         time.sleep(osc.DEBOUNCE_TIME)
-    button_b = io_man.get_btn_b()
-    button_c = io_man.get_btn_c()
+    button_b = io_man.get('button_b')
+    button_c = io_man.get('button_c')
     is_running = False
     was_paused = True
     working = True

@@ -13,10 +13,10 @@ import modules.os_constants as osc
 import modules.printer as printer
 import modules.menus as menus
 
-button_a = io_man.get_btn_a()
-button_b = io_man.get_btn_b()
-button_c = io_man.get_btn_c()
-tft = io_man.get_tft()
+button_a = io_man.get('button_a')
+button_b = io_man.get('button_b')
+button_c = io_man.get('button_c')
+tft = io_man.get('tft')
 
 def play(bpm):
     buzzer = PWM(Pin(2), duty_u16=0, freq=500)
@@ -31,10 +31,10 @@ def play(bpm):
     
 def run():
     global button_c, button_a, button_b, tft
-    button_a = io_man.get_btn_a()
-    button_b = io_man.get_btn_b()
-    button_c = io_man.get_btn_c()
-    tft = io_man.get_tft()
+    button_a = io_man.get('button_a')
+    button_b = io_man.get('button_b')
+    button_c = io_man.get('button_c')
+    tft = io_man.get('tft')
     
     if osc.HAS_BUZZER == False:
         menus.menu("You don't have buzzer!", [("OK", None)])

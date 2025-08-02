@@ -8,7 +8,7 @@ import modules.io_manager as io_man
 import modules.nvs as nvs
 import modules.menus as menus
     
-tft = io_man.get_tft()
+tft = io_man.get('tft')
 
 def dummyMsg():
     tft.fill(0)
@@ -23,7 +23,7 @@ def dummyMsg():
 
 def run():
     global tft
-    tft = io_man.get_tft()
+    tft = io_man.get('tft')
 
     n_locks = esp32.NVS("locks")
     work = True

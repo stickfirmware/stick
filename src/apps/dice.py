@@ -16,9 +16,9 @@ def random_int(tft):
     tft.text(f16x32, text, x, y, st.WHITE)
 
 def run():
-    tft = io_man.get_tft()
-    button_a = io_man.get_btn_a()
-    button_c = io_man.get_btn_c()
+    tft = io_man.get('tft')
+    button_a = io_man.get('button_a')
+    button_c = io_man.get('button_c')
 
     tft.fill(0)
     tft.text(f8x8, "Roll again? Press btn A", 0, 0, st.WHITE)

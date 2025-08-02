@@ -42,7 +42,7 @@ def record_ir(wait_timeout_ms=15000, silence_timeout_ms=3000):
 
 def send_ir(pulses):
     global pwm
-    pwm = io_man.get_IR()
+    pwm = io_man.get('IR')
     for i, dur in enumerate(pulses):
         if i % 2 == 0:
             pwm.duty_u16(32768)
