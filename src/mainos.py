@@ -357,6 +357,9 @@ while True:
         app_clock.clock_vert()
     # Render entire clock
     elif menu_change == True:
+        # Reset eastereggs on render
+        eg_click_entry = 0
+
         # Change bitmap cache to none so battery bitmap renders after render clock
         b_check.last_bitmap = None
 
