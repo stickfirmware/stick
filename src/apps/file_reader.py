@@ -44,10 +44,10 @@ def read(filename):
 
 
 def showfile(file):
-    button_a = io_man.get_btn_a()
-    button_b = io_man.get_btn_b()
-    button_c = io_man.get_btn_c()
-    tft = io_man.get_tft()
+    button_a = io_man.get('button_a')
+    button_b = io_man.get('button_b')
+    button_c = io_man.get('button_c')
+    tft = io_man.get('tft')
     tft.fill(0)
     tft.text(f8x8, "Loading file preview...",0,8,65535)
     tft.text(f8x8, "Kitki30 Stick File Reader",0,0,65535)

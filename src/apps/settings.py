@@ -19,18 +19,18 @@ import modules.numpad as keypad
 import modules.io_manager as io_man
 
 printer.log("Getting buttons")
-button_a = io_man.get_btn_a()
-button_b = io_man.get_btn_b()
-button_c = io_man.get_btn_c()
-tft = io_man.get_tft()
+button_a = io_man.get('button_a')
+button_b = io_man.get('button_b')
+button_c = io_man.get('button_c')
+tft = io_man.get('tft')
 
 # Refresh io
 def load_io():
     global button_c, button_a, button_b, tft
-    button_a = io_man.get_btn_a()
-    button_b = io_man.get_btn_b()
-    button_c = io_man.get_btn_c()
-    tft = io_man.get_tft()
+    button_a = io_man.get('button_a')
+    button_b = io_man.get('button_b')
+    button_c = io_man.get('button_c')
+    tft = io_man.get('tft')
     
 def url_decode(s):
     res = ''

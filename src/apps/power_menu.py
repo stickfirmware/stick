@@ -11,19 +11,19 @@ import modules.io_manager as io_man
 import modules.sleep as m_sleep
 import fonts.def_8x8 as f8x8
 
-button_a = io_man.get_btn_a()
-button_b = io_man.get_btn_b()
-button_c = io_man.get_btn_c()
-tft = io_man.get_tft()
-power_hold = io_man.get_power_hold()
-mpu = io_man.get_imu()
+button_a = io_man.get('button_a')
+button_b = io_man.get('button_b')
+button_c = io_man.get('button_c')
+tft = io_man.get('tft')
+power_hold = io_man.get('power_hold')
+mpu = io_man.get('imu')
 
 def run():
     global button_c, button_a, button_b, tft
-    button_a = io_man.get_btn_a()
-    button_b = io_man.get_btn_b()
-    button_c = io_man.get_btn_c()
-    tft = io_man.get_tft()
+    button_a = io_man.get('button_a')
+    button_b = io_man.get('button_b')
+    button_c = io_man.get('button_c')
+    tft = io_man.get('tft')
 
     q_actions = menus.menu("Quick actions", [("Power menu", 1), ("Settings", 2), ("Cancel", None)])
     if q_actions == 1:

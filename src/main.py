@@ -62,7 +62,7 @@ except Exception as e:
 def set_f_boot(var):
     try:
         import modules.io_manager as io_man
-        io_man.set_tft(var)
+        io_man.set('tft',var)
     except:
         print("Failed to set fastboot vars")
     

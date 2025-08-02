@@ -16,10 +16,10 @@ result = ""
 
 import modules.io_manager as io_man
 
-button_a = io_man.get_btn_a()
-button_b = io_man.get_btn_b()
-button_c = io_man.get_btn_c()
-tft = io_man.get_tft()
+button_a = io_man.get('button_a')
+button_b = io_man.get('button_b')
+button_c = io_man.get('button_c')
+tft = io_man.get('tft')
 
 def format_duration(seconds):
     m = seconds // 60
@@ -71,10 +71,10 @@ def saveResult():
 
 def run():
     global button_c, button_a, button_b, tft
-    button_a = io_man.get_btn_a()
-    button_b = io_man.get_btn_b()
-    button_c = io_man.get_btn_c()
-    tft = io_man.get_tft()
+    button_a = io_man.get('button_a')
+    button_b = io_man.get('button_b')
+    button_c = io_man.get('button_c')
+    tft = io_man.get('tft')
     
     render = menus.menu("Do you want to run it?", [("Yes", 1), ("No", None)])
     if render == None:

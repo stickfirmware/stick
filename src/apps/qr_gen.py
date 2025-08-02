@@ -10,10 +10,10 @@ import fonts.def_8x8 as f8x8
 def run():
     inp = numpad.keyboard("QR Code text")
     work = True
-    tft = io_man.get_tft()
-    btn_b = io_man.get_btn_b()
-    btn_a = io_man.get_btn_a()
-    btn_c = io_man.get_btn_c()
+    tft = io_man.get('tft')
+    btn_b = io_man.get('button_b')
+    btn_a = io_man.get('button_a')
+    btn_c = io_man.get('button_c')
     didnt_scale = True
     while work == True:
         if inp != None or inp != "":

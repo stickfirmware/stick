@@ -76,7 +76,7 @@ import fonts.def_16x32 as f16x32
 debug.log("Init tft")
 
 try:
-    tft = io_man.get_tft()
+    tft = io_man.get('tft')
     if tft == None:
         import modules.tft_init as tft_init
         tft = tft_init.init_tft()
@@ -217,13 +217,13 @@ button_c = buttons[2]
 # Init IO manager
 render_bar("Init IO manager", True)
 debug.log("Init IO manager")
-io_man.set_btn_a(button_a)
-io_man.set_btn_b(button_b)
-io_man.set_btn_c(button_c)
-io_man.set_tft(tft)
-io_man.set_rtc(rtc)
-io_man.set_imu(mpu)
-io_man.set_power_hold(power_hold)
+io_man.set('button_a', button_a)
+io_man.set('button_b', button_b)
+io_man.set('button_c', button_c)
+io_man.set('tft', tft)
+io_man.set('rtc', rtc)
+io_man.set('mpu', mpu)
+io_man.set('power_hold', power_hold)
 
 render_bar("Wi-Fi init...", True)
 

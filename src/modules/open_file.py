@@ -4,10 +4,10 @@ import modules.menus as menus
 import modules.json as json
 import modules.io_manager as io_man
 
-button_a = io_man.get_btn_a()
-button_b = io_man.get_btn_b()
-button_c = io_man.get_btn_c()
-tft = io_man.get_tft()
+button_a = io_man.get('button_a')
+button_b = io_man.get('button_b')
+button_c = io_man.get('button_c')
+tft = io_man.get('tft')
 
 def matchesPattern(filename, pattern):
     if pattern == "*":
@@ -30,10 +30,10 @@ def getSupportedApps(appsConfig, filename):
     return menu
     
 def openMenu(file):
-    button_a = io_man.get_btn_a()
-    button_b = io_man.get_btn_b()
-    button_c = io_man.get_btn_c()
-    tft = io_man.get_tft()
+    button_a = io_man.get('button_a')
+    button_b = io_man.get('button_b')
+    button_c = io_man.get('button_c')
+    tft = io_man.get('tft')
     appsConfig = json.read("/usr/config/apps.json")
     supportedAppsMenu = getSupportedApps(appsConfig, file)
     selected_index = menus.menu("Open in", supportedAppsMenu)

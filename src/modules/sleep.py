@@ -7,8 +7,8 @@ import modules.os_constants as osc
 import modules.io_manager as io_man
 
 def sleep(verbose=False):
-    button_c = io_man.get_btn_c()
-    tft = io_man.get_tft()
+    button_c = io_man.get('button_c')
+    tft = io_man.get('tft')
     def log(msg):
         if verbose == True:
             print("[SLEEP]" + msg)

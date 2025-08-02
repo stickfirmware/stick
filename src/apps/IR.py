@@ -24,10 +24,10 @@ import fonts.def_8x8 as f8x8
 import modules.nvs as nvs
 from modules.decache import decache
 
-button_a = io_man.get_btn_a()
-button_b = io_man.get_btn_b()
-button_c = io_man.get_btn_c()
-tft = io_man.get_tft()
+button_a = io_man.get('button_a')
+button_b = io_man.get('button_b')
+button_c = io_man.get('button_c')
+tft = io_man.get('tft')
 
 n_settings = esp32.NVS("settings")
 pin_nvs = nvs.get_int(n_settings, "irPin")
@@ -36,7 +36,7 @@ if pin_nvs is None or pin_nvs not in osc.IR_ALLOWED_PINS:
     pin_nvs = osc.IR_PIN
 printer.log("IR pin from NVS:" + repr(pin_nvs))
 ir_pin = machine.PWM(machine.Pin(pin_nvs, machine.Pin.OUT), duty=0)
-io_man.set_IR(ir_pin)
+io_man.set('IR', ir_pin)
 
 def exit():
     decache('modules.IR.db_nec')
@@ -89,10 +89,10 @@ def send(necc, sonyc, panac, samsac, gcc):
 
 def run():
     global button_c, button_a, button_b, tft
-    button_a = io_man.get_btn_a()
-    button_b = io_man.get_btn_b()
-    button_c = io_man.get_btn_c()
-    tft = io_man.get_tft()
+    button_a = io_man.get('button_a')
+    button_b = io_man.get('button_b')
+    button_c = io_man.get('button_c')
+    tft = io_man.get('tft')
     
     global ir_pin
     work = True
@@ -121,7 +121,7 @@ def run():
             if render != 99 and render != None:
                 nvs.set_int(n_settings, "irPin", render)
             ir_pin = machine.PWM(machine.Pin(nvs.get_int(n_settings, "irPin"), machine.Pin.OUT), duty = 0)
-            io_man.set_IR(ir_pin)
+            io_man.set('IR', ir_pin)
         elif render == 9:
             if osc.ALLOW_IR_RECORD == False:
                 menus.menu("IR recording is not allowed!", [("Close", 1)])

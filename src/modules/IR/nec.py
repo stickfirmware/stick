@@ -3,7 +3,7 @@ import time
 import modules.io_manager as io_man
 import modules.printer as printer
 
-pwm = io_man.get_IR()
+pwm = io_man.get('IR')
 
 def ir_on():
     pwm.freq(38000)
@@ -48,7 +48,7 @@ def send_nec(address, command):
 
 def send_array(codes):
     global pwm
-    pwm = io_man.get_IR()
+    pwm = io_man.get('IR')
     for address, command in codes:
         printer.log("Sending NEC (Addr: "+ str(address) + " Cmd: " + str(command) + ")")
         send_nec(address, command)

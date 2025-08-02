@@ -7,18 +7,18 @@ import fonts.def_8x8 as f8x8
 import modules.os_constants as osc
 import modules.io_manager as io_man
 
-button_a = io_man.get_btn_a()
-button_b = io_man.get_btn_b()
-button_c = io_man.get_btn_c()
-tft = io_man.get_tft()
+button_a = io_man.get('button_a')
+button_b = io_man.get('button_b')
+button_c = io_man.get('button_c')
+tft = io_man.get('tft')
     
 # Refresh io
 def load_io():
     global button_c, button_a, button_b, tft
-    button_a = io_man.get_btn_a()
-    button_b = io_man.get_btn_b()
-    button_c = io_man.get_btn_c()
-    tft = io_man.get_tft()
+    button_a = io_man.get('button_a')
+    button_b = io_man.get('button_b')
+    button_c = io_man.get('button_c')
+    tft = io_man.get('tft')
     
 def elems_split(arr, chunk_size=13):
     return [arr[i:i+chunk_size] for i in range(0, len(arr), chunk_size)]

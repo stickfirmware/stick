@@ -28,7 +28,7 @@ def wait_for_new_second():
         time.sleep(0.01)
 
 def sync():
-    rtc = io_man.get_rtc()
+    rtc = io_man.get('rtc')rtc()
     n_settings = esp32.NVS("settings")
     timezoneIndex = nvs.get_int(n_settings, "timezoneIndex")
     if timezoneIndex is None:

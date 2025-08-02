@@ -31,5 +31,5 @@ def set_buttons(inverted=False):
         else:
             button_b = Pin(osc.BUTTON_B_PIN, Pin.IN, Pin.PULL_UP)
             button_c = Pin(osc.BUTTON_C_PIN, Pin.IN, Pin.PULL_UP)
-        io_man.set_btn_b(button_b)
-        io_man.set_btn_c(button_c)
+        io_man.set('button_b', button_b)
+        io_man.set('button_c', button_c)

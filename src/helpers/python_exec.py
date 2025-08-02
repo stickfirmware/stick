@@ -2,7 +2,7 @@ import fonts.def_8x8 as f8x8
 
 import modules.io_manager as io_man
 
-tft = io_man.get_tft()
+tft = io_man.get('tft')
     
 def open_file(path):
     tft.text(f8x8, "Python executor",0,0,2016)

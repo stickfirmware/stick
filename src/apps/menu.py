@@ -17,7 +17,7 @@ if dev_settings == None:
     dev_settings = 0
 
 def run():
-    tft = io_man.get_tft()
+    tft = io_man.get('tft')
     
     menu_apps = [("IR Remote", 1), ("Music Player", 6), ("File explorer", 7), ("Flashlight", 8), ("Others", 4), ("Settings", 3)]
     if dev_settings == 1:
