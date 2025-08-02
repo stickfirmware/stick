@@ -265,6 +265,9 @@ diagnostic_time = time.ticks_ms()
 prev_bl = tft.get_backlight()
 is_in_saving = False
 
+# Secret variables
+eeg_click_entry = 0
+
 # IMU Rotations cheat sheet
 # 0 - button side down
 # 1 - button side right
