@@ -135,6 +135,7 @@ def run():
             
             # Wi-Fi AP setup
             if rendr == 1:
+                tft.text(f8x8, "Scanning...", 0,0, 65535)
                 nic = network.WLAN(network.STA_IF)
                 nic.active()
                 nic_scan = nic.scan()
@@ -147,9 +148,9 @@ def run():
                 num = menus.menu("Select SSID", wlan_scan)
                 if num == None:
                     continue
-                ssid = nic_scan[num]
+                ssid = nic_scan[num].decode()
                 if nic_scan[num][4] != 0:
-                    password = keypad.keyboard("Enter password", maxlen=63, hideInput=False)
+                    password = str(keypad.keyboard("Enter password", maxlen=63, hideInput=False))
                     if password == None:
                         continue
                 else:
