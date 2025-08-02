@@ -26,12 +26,6 @@ if osc.HAS_BUZZER:
 
 printer.log("Checking boot options...")
 
-# Recovery button
-RECOVERY_BTN_PIN = osc.BOOT_RECOVERY_PIN
-
-rbtn = machine.Pin(RECOVERY_BTN_PIN, machine.Pin.IN, machine.Pin.PULL_UP)
-recovery = rbtn.value() == 0
-
 try:
     printer.log("Load fonts")
     import fonts.def_8x8 as f8x8
@@ -72,6 +66,12 @@ else:
 
 def recoveryf():
     import recovery.recovery
+
+# Recovery button
+RECOVERY_BTN_PIN = osc.BOOT_RECOVERY_PIN
+
+rbtn = machine.Pin(RECOVERY_BTN_PIN, machine.Pin.IN, machine.Pin.PULL_UP)
+recovery = rbtn.value() == 0
 
 while True:
     if recovery and osc.BOOT_ENABLE_RECOVERY == True:
