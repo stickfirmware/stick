@@ -200,6 +200,8 @@ def run():
                 tft.text(f8x8, "Subnet mask: " + str(nic_ifconfig[1]),0,24, 65535)
                 tft.text(f8x8, "Gateway: " + str(nic_ifconfig[2]),0,32, 65535)
                 tft.text(f8x8, "DNS server: " + str(nic_ifconfig[3]),0,40, 65535)
+                while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
+                    time.sleep(osc.DEBOUNCE_TIME)
                     
             # NTP Sync
             elif rendr == 3:
