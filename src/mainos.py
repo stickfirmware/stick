@@ -456,7 +456,8 @@ while True:
             while clicker.value() == 0:
                 time.sleep(osc.DEBOUNCE_TIME)
             eeg_click_entry += 1
-            if eeg_click_entry >= 100:
+            if eeg_click_entry >= 50:
+                menu_change = True
                 eeg_click_entry = 0
                 import apps.eastereggs as eggs
                 eggs.trigger(2)
