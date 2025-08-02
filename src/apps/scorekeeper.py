@@ -22,8 +22,6 @@ def run():
     button_c = io_man.get('button_c')
     tft = io_man.get('tft')
     
-    machine.freq(osc.ULTRA_FREQ)
-    
     app_storage = esp32.NVS("apps_1001")
     
     printer.log("Going into main loop")
