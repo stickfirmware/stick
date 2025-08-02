@@ -4,6 +4,7 @@ import esp32
 
 import fonts.def_8x8 as f8x8
 
+import modules.os_constants as osc
 import modules.io_manager as io_man
 import modules.nvs as nvs
 import modules.menus as menus
@@ -31,11 +32,11 @@ def run():
         if nvs.get_int(n_locks, "dummy") == 0:
             lockmen = menus.menu("Lock menu", [("Dummy mode", 1), ("Dummy mode with PIN", 2), ("Cancel", 13)])
             if lockmen == 1:
-                machine.freq(80000000)
+                machine.freq(osc.BASE_FREQ)
                 nvs.set_int(n_locks, "dummy", 1)
                 dummyMsg()
             if lockmen == 2:
-                machine.freq(80000000)
+                machine.freq(osc.BASE_FREQ)
                 import modules.numpad as npad
                 pin = npad.numpad("Enter PIN", 6, True)
                 if pin == None or pin == "":
@@ -52,12 +53,12 @@ def run():
                 nvs.set_string(n_locks, "pin", str(pin))
                 dummyMsg()
             else:
-                machine.freq(80000000)
+                machine.freq(osc.BASE_FREQ)
             work = False
         elif nvs.get_int(n_locks, "dummy") == 1:
             lockmen = menus.menu("Lock menu", [("Disable dummy mode", 1), ("Cancel", 13)])
             if lockmen == 1:
-                machine.freq(80000000)
+                machine.freq(osc.BASE_FREQ)
                 nvs.set_int(n_locks, "dummy", 0)
                 tft.fill(0)
                 tft.text(f8x8, "Disabled dummy mode!",0,0,65535)
@@ -66,7 +67,7 @@ def run():
                 time.sleep(2)
                 work = False
             else:
-                machine.freq(80000000)
+                machine.freq(osc.BASE_FREQ)
                 work = False
                 if nvs.get_string(n_locks, "pin") != "":
                     nvs.set_int(n_locks, "dummy", 2)
