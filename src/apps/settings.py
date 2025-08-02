@@ -137,16 +137,23 @@ def run():
             if rendr == 1:
                 nic = network.WLAN(network.STA_IF)
                 nic.active()
+                nic_scan = nic.scan()
                 wlan_scan = []
-                for ap in nic.scan():
+                index = 0
+                for ap in nic_scan:
                     ap_name = ap[0].decode()
-                    wlan_scan.append((ap_name, ap_name))
-                ssid = menus.menu("Select SSID", wlan_scan)
-                if ssid == None:
+                    wlan_scan.append((ap_name, index))
+                    index += 1
+                num = menus.menu("Select SSID", wlan_scan)
+                if num == None:
                     continue
-                password = keypad.keyboard("Enter password", maxlen=63, hideInput=False)
-                if password == None:
-                    continue
+                ssid = nic_scan[num]
+                if nic_scan[num][4] != 0:
+                    password = keypad.keyboard("Enter password", maxlen=63, hideInput=False)
+                    if password == None:
+                        continue
+                else:
+                    password == ""
                 nvs.set_float(n_wifi, "conf", 1)
                 nvs.set_int(n_wifi, "autoConnect", 1)
                 nvs.set_string(n_wifi, "ssid", ssid)
@@ -165,7 +172,12 @@ def run():
                                 time.sleep(0.2)
                                 nic.active(True)
                                 printer.log("Wifi connecting")
-                                nic.connect(nvs.get_string(n_wifi, "ssid"), nvs.get_string(n_wifi, "passwd"))
+                                ssid = nvs.get_string(n_wifi, "ssid")
+                                passwd = nvs.get_string(n_wifi, "passwd")
+                                if passwd != "":
+                                    nic.connect(ssid, passwd)
+                                else:
+                                    nic.connect(ssid)
                                 menus.menu("Please wait for connection!", [("OK",  1)])
                         else:
                             rend = menus.menu("Wi-Fi connected, diconnect?", [("Yes",  1), ("No",  2)])
