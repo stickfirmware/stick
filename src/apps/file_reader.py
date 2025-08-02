@@ -12,13 +12,13 @@ def splittext_stream(fileobj, charlimit=27, linelimit=16):
         try:
             raw = raw.decode("utf-8")
         except UnicodeDecodeError:
-            yield ["[Decode error]"]
+            yield [[["[Decode error]"]]]
             return
 
         raw = raw.replace('\t', '    ').rstrip("\r\n")
 
         if not raw.strip():
-            page.append("")  # pusty wiersz
+            page.append("")
             if len(page) >= linelimit:
                 yield page
                 page = []
