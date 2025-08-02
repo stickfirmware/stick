@@ -39,7 +39,6 @@ def run():
         import apps.IR as a_ir
         tft.text(f8x8, "Loading, please wait!", 0,0, 60000)
         a_ir.run()
-        a_ir.exit()
         del a_ir
         decache('apps.IR')
     elif menu1 == 6:
