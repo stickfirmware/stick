@@ -209,10 +209,7 @@ render_bar("Init buttons...", True)
 # Init buttons
 debug.log("Init buttons")
 import modules.button_init as btn_init
-buttons = btn_init.init_buttons()
-button_a = buttons[0]
-button_b = buttons[1]
-button_c = buttons[2]
+button_a, button_b, button_c, clicker = btn_init.init_buttons()
 
 # Init IO manager
 render_bar("Init IO manager", True)
@@ -220,6 +217,7 @@ debug.log("Init IO manager")
 io_man.set('button_a', button_a)
 io_man.set('button_b', button_b)
 io_man.set('button_c', button_c)
+io_man.set('clicker_btn', clicker)
 io_man.set('tft', tft)
 io_man.set('rtc', rtc)
 io_man.set('mpu', mpu)
@@ -448,6 +446,17 @@ while True:
         else:
             last_orientation = current_rotation
             orientation_start_time = time.ticks_ms()
+
+    # Detect spam (Very secret!!!)
+    if clicker != None:
+        if clicker.value() == 0:
+            while clicker.value() == 0:
+                time.sleep(osc.DEBOUNCE_TIME)
+            eeg_click_entry += 1
+            if eeg_click_entry >= 100:
+                eeg_click_entry = 0
+                import apps.eastereggs as eggs
+                eggs.trigger(2)
             
     # Dummy mode unlocking
     if button_a.value() == 0 and button_b.value() == 0:
@@ -579,7 +588,7 @@ while True:
             continue
         
         # Allow if hold more than 1s, else run clock menu
-        if hold_time >= 1 and nvs.get_int(n_locks, "dummy") == 0:
+        if hold_time >= 1 and hold_time <= 9.99 and nvs.get_int(n_locks, "dummy") == 0:
             allow_only_landscape()
             # Open lock menu
             import apps.lock_menu as app_lockmen
@@ -588,6 +597,12 @@ while True:
             decache("apps.lockmen")
             del app_lockmen
             menu = 0
+            menu_change = True
+        # Easteregg if more than 10s (VERY SECRET!!!)
+        elif nvs.get_int(n_locks, "dummy") == 0 and hold_time >= 9.99:
+            allow_only_landscape()
+            import apps.eastereggs as eggs
+            eggs.trigger(1)
             menu_change = True
         # Run clock menu if hold less than seconds and not in dummy mode
         elif nvs.get_int(n_locks, "dummy") == 0:

@@ -2,6 +2,9 @@ def check_code(code):
     # Testing code
     if code == 1:
         return "TEST_CRASH"
+    # Easter egg
+    elif code == 2:
+        return "YOU_WANTED_IT"
     # External I2C RTC error
     elif code == 1001:
         return "RTC_INIT_ERROR"
