@@ -135,7 +135,13 @@ def run():
             
             # Wi-Fi AP setup
             if rendr == 1:
-                ssid = keypad.keyboard("Enter SSID", maxlen=32, hideInput=False)
+                nic = network.WLAN(network.STA_IF)
+                nic.active()
+                wlan_scan = []
+                for ap in nic.scan():
+                    ap_name = ap[0].decode()
+                    wlan_scan.append((ap_name, ap_name))
+                ssid = menus.menu("Select SSID", wlan_scan)
                 if ssid == None:
                     continue
                 password = keypad.keyboard("Enter password", maxlen=63, hideInput=False)
