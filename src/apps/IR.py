@@ -38,20 +38,8 @@ printer.log("IR pin from NVS:" + repr(pin_nvs))
 ir_pin = machine.PWM(machine.Pin(pin_nvs, machine.Pin.OUT), duty=0)
 io_man.set('IR', ir_pin)
 
-def exit():
-    decache('modules.IR.db_nec')
-    decache('modules.IR.db_sony')
-    decache('modules.IR.db_panasonic')
-    decache('modules.IR.db_samsung')
-    decache('modules.IR.db_gc')
-    decache('modules.IR.nec')
-    decache('modules.IR.sony')
-    decache('modules.IR.panasonic')
-    decache('modules.IR.samsung')
-    decache('modules.IR.gc_send')
-    decache('modules.IR.recv')
-
 def send(necc, sonyc, panac, samsac, gcc):
+    machine.freq(osc.ULTRA_FREQ)
     tft.text(f8x8, "Sending nec...",0,0,65535)
     nec.send_array(necc)
     time.sleep(osc.IR_SENDING_WAIT_TIME)
@@ -66,26 +54,12 @@ def send(necc, sonyc, panac, samsac, gcc):
     time.sleep(osc.IR_SENDING_WAIT_TIME)
     tft.text(f8x8, "Sending GC...",0,32,65535)
     gc_send.send_array(gcc)
-    work = True
-    while work == True:
-        render = menus.menu("Repeat?", [("Yes", 1), ("No", 2)])
-        if render == 1:
-            tft.text(f8x8, "Sending nec...",0,0,65535)
-            nec.send_array(necc)
-            time.sleep(osc.IR_SENDING_WAIT_TIME)
-            tft.text(f8x8, "Sending sony...",0,8,65535)
-            sony.send_array(sonyc)
-            time.sleep(osc.IR_SENDING_WAIT_TIME)
-            tft.text(f8x8, "Sending samsung...",0,16,65535)
-            samsa.send_array(samsac)
-            time.sleep(osc.IR_SENDING_WAIT_TIME)
-            tft.text(f8x8, "Sending panasonic...",0,24,65535)
-            pana.send_array(panac)
-            time.sleep(osc.IR_SENDING_WAIT_TIME)
-            tft.text(f8x8, "Sending GC...",0,32,65535)
-            gc_send.send_array(gcc)
-        else:
-            work = False
+    render = menus.menu("Repeat?", [("Yes", 1), ("No", 2)])
+    machine.freq(osc.BASE_FREQ)
+    if render == 1:
+        send(necc, sonyc, panac, samsac, gcc)
+    else:
+        work = False
 
 def run():
     global button_c, button_a, button_b, tft
@@ -93,10 +67,9 @@ def run():
     button_b = io_man.get('button_b')
     button_c = io_man.get('button_c')
     tft = io_man.get('tft')
-    
+    machine.freq(osc.BASE_FREQ)
     global ir_pin
     work = True
-    machine.freq(osc.ULTRA_FREQ)
     while work == True:
         render = menus.menu("IR Remote", [("ON/OFF", 1), ("VOL+", 2), ("VOL-", 3), ("Mute", 4), ("CHANNEL+ / NEXT", 5), ("CHANNEL- / PREV", 6), ("FREEZE", 7), ("Change IR pin", 8), ("Receive", 9), ("Close", 10)])
         if render == 1:
