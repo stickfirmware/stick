@@ -203,7 +203,7 @@ else:
     auto_rotate = 0
     osc.HAS_IMU = False
     osc.HAS_RTC = False
-    
+
 render_bar("Init buttons...", True)
 
 # Init buttons
@@ -222,6 +222,19 @@ io_man.set('tft', tft)
 io_man.set('rtc', rtc)
 io_man.set('mpu', mpu)
 io_man.set('power_hold', power_hold)
+
+render_bar("Check time...", True)
+
+# TODO: Make this build time
+min_time = (2025, 8, 2) 
+localtime = time.localtime()
+
+# ESP's usually have default time set to 2000 something, 
+# check if its greater than the time im programming this.
+if localtime[0] < min_time[0] and localtime[1] < min_time[1] and localtime[2] < min_time[2] and osc.HAS_RTC == True:
+    import modules.menus as menus
+    menus.menu("Time incorrect, please sync", [("OK", None)])
+    
 
 render_bar("Wi-Fi init...", True)
 
