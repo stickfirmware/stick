@@ -122,7 +122,7 @@ def run():
             if rendr == 1:
                 tft.text(f8x8, "Scanning...", 0,0, 65535)
                 nic = network.WLAN(network.STA_IF)
-                nic.active()
+                nic.active(True)
                 nic_scan = nic.scan()
                 wlan_scan = []
                 index = 0
@@ -130,15 +130,10 @@ def run():
                     ap_name = ap[0].decode()
                     wlan_scan.append((ap_name, index))
                     index += 1
-                wlan_scan.append(("Manual input", 999))
                 wlan_scan.append(("Close", None))
                 num = menus.menu("Select SSID", wlan_scan)
                 if num == None:
                     continue
-                if num == 999:
-                    ssid = keypad.keyboard("Enter ssid", maxlen=63, hideInput=False)
-                    if ssid == None:
-                        continue
                 ssid = nic_scan[num][0].decode()
                 if nic_scan[num][4] != 0:
                     password = str(keypad.keyboard("Enter password", maxlen=63, hideInput=False))
@@ -156,7 +151,7 @@ def run():
                     nic.connect(ssid, password)
                 else:
                     nic.connect(ssid)
-                while nic.isconnected() == False or nic.status() != network.STAT_CONNECTING:
+                while nic.isconnected() == False and nic.status() != network.STAT_CONNECTING:
                     time.sleep(0.2)
                 if nic.isconnected():
                     nvs.set_float(n_wifi, "conf", 1)
