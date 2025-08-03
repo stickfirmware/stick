@@ -31,21 +31,6 @@ def load_io():
     button_b = io_man.get('button_b')
     button_c = io_man.get('button_c')
     tft = io_man.get('tft')
-    
-def url_decode(s):
-    res = ''
-    i = 0
-    while i < len(s):
-        if s[i] == '+':
-            res += ' '
-        elif s[i] == '%' and i + 2 < len(s):
-            res += chr(int(s[i+1:i+3], 16))
-            i += 2
-        else:
-            res += s[i]
-        i += 1
-    return res
-
 
 def run():
     load_io()
@@ -159,11 +144,27 @@ def run():
                 autoconnect = menus.menu("Auto connect?", [("Yes", 1), ("No", 0)])
                 if autoconnect == None:
                     autoconnect = 0
-                nvs.set_float(n_wifi, "conf", 1)
-                nvs.set_int(n_wifi, "autoConnect", autoconnect)
-                nvs.set_string(n_wifi, "ssid", ssid)
-                nvs.set_string(n_wifi, "passwd", password)
-                menus.menu("Now you can connect!", [("OK",  1)])
+                tft.fill(0)
+                tft.text(f8x8, "Connecting...", 0,0, 65535)
+                tft.text(f8x8, ssid, 0,8, 65535)
+                if passwd != "":
+                    nic.connect(ssid, passwd)
+                else:
+                    nic.connect(ssid)
+                while nic.isconnected() == False or nic.status() != network.STAT_CONNECTING:
+                    time.sleep(0.2)
+                if nic.isconnected():
+                    nvs.set_float(n_wifi, "conf", 1)
+                    nvs.set_int(n_wifi, "autoConnect", autoconnect)
+                    nvs.set_string(n_wifi, "ssid", ssid)
+                    nvs.set_string(n_wifi, "passwd", password)
+                    menus.menu("Connected!", [("OK", 1)])
+                elif nic.status() == network.STAT_WRONG_PASSWORD:
+                    menus.menu("Wrong password!", [("OK", 1)])
+                elif nic.status() == network.STAT_NO_AP_FOUND:
+                    menus.menu("AP not found!", [("OK", 1)])
+                else:
+                    menus.menu("Couldn't connect!", [("OK", 1)])
                 
             # Wi-Fi connection
             elif rendr == 2:
