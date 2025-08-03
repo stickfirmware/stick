@@ -145,6 +145,7 @@ def run():
                     ap_name = ap[0].decode()
                     wlan_scan.append((ap_name, index))
                     index += 1
+                wlan_scan.append(("Close", None))
                 num = menus.menu("Select SSID", wlan_scan)
                 if num == None:
                     continue
@@ -155,8 +156,11 @@ def run():
                         continue
                 else:
                     password == ""
+                autoconnect = menus.menu("Auto connect?", [("Yes", 1), ("No", 0)])
+                if autoconnect == None:
+                    autoconnect = 0
                 nvs.set_float(n_wifi, "conf", 1)
-                nvs.set_int(n_wifi, "autoConnect", 1)
+                nvs.set_int(n_wifi, "autoConnect", autoconnect)
                 nvs.set_string(n_wifi, "ssid", ssid)
                 nvs.set_string(n_wifi, "passwd", password)
                 menus.menu("Now you can connect!", [("OK",  1)])
