@@ -82,8 +82,14 @@ requires_postinstall = nvs.get_int(n_updates, "postinstall")
 if requires_postinstall == None:
     requires_postinstall = 1
 if requires_postinstall == 1:
+    tft.text(f8x8, "Postinstall...",0,106,text_color, load_bg)
     import modules.postinstall as pinstall
     pinstall.postinstall()
+factory_reset = nvs.get_int(n_updates, "factory")
+if factory_reset == 1:
+    tft.text(f8x8, "Factory reset...",0,106,text_color, load_bg)
+    nvs.set_int(n_updates, "factory", 0)
+    import scripts.factory
 
 while True:
     if recovery and osc.BOOT_ENABLE_RECOVERY == True:

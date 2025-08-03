@@ -36,12 +36,13 @@ def load_io():
 def run():
     load_io()
     n_settings = esp32.NVS("settings")
+    n_updates = esp32.NVS("updates")
     n_wifi = esp32.NVS("wifi")
     
     work = True
     while work == True:
         # Main menu
-        menu1 = menus.menu("Settings", [("LCD / st7789", 1), ("Sound", 2), ("Wi-Fi", 3), ("SD Card", 7), ("About", 8), ("Close", 13)])
+        menu1 = menus.menu("Settings", [("LCD / st7789", 1), ("Sound", 2), ("Wi-Fi", 3), ("SD Card", 7), ("About", 8), ("Factory reset", 9), ("Close", 13)])
         
         # LCD / st7789 settings
         if menu1 == 1:
@@ -337,6 +338,13 @@ def run():
                 open_file.openMenu("/CREDITS")
             if button_c.value() == 0:
                 open_file.openMenu("/LICENSE")
+        elif menu1 == 9:
+            confirm_reset = menus.menu("Reset all settings?", [("No", None), ("Yes", 1)])
+            if confirm_reset == 1:
+                confirm_reset = menus.menu("It removes all files!", [("Cancel", 2), ("Confirm", 1)])
+                if confirm_reset == 1:
+                    nvs.set_int(n_updates, "factory", 1)
+                    machine.reset()
         else:
             work = False
             
