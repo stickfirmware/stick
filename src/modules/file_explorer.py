@@ -9,6 +9,7 @@ import fonts.def_16x32 as f16x32
 import modules.menus as menus
 import modules.open_file as open_file   
 import modules.io_manager as io_man
+from modules.files import is_file, rmdir_recursive, parent_path, path_join
 
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')
@@ -29,30 +30,6 @@ def load_io():
     button_b = io_man.get('button_b')
     button_c = io_man.get('button_c')
     tft = io_man.get('tft')
-
-def is_file(path):
-    if os.stat(path)[0] & 0x4000:
-        return False
-    else:
-        return True
-
-def path_join(*args):
-    parts = [s.strip("/") for s in args if s != "/"]
-    return "/" + "/".join(parts) if parts else "/"
-
-
-def parent_path(path):
-    if path == "/" or path == "":
-        return "/"
-    if path.endswith("/") and path != "/":
-        path = path[:-1]
-    last_slash = path.rfind("/")
-    if last_slash == 0:
-        return "/"
-    elif last_slash > 0:
-        return path[:last_slash]
-    else:
-        return "/"
 
 def browser(path):
     load_io()
@@ -132,15 +109,6 @@ def detect():
     # Check free space on flash
     stat = os.statvfs("/")
     freespace_flash = stat[0] * stat[3]
-
-def rmdir_recursive(path):
-    for file in os.listdir(path):
-        full_path = path_join(path, file)
-        if is_file(full_path):
-            os.remove(full_path)
-        else:
-            rmdir_recursive(full_path)
-    os.rmdir(path)
     
 def explorerLoop(startingpath, disablemenu = False):
     currpath = startingpath
