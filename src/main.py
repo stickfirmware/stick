@@ -73,6 +73,18 @@ RECOVERY_BTN_PIN = osc.BOOT_RECOVERY_PIN
 rbtn = machine.Pin(RECOVERY_BTN_PIN, machine.Pin.IN, machine.Pin.PULL_UP)
 recovery = rbtn.value() == 0
 
+# Postinstall
+import esp32
+import modules.nvs as nvs
+
+n_updates = esp32.NVS("updates")
+requires_postinstall = nvs.get_int(n_updates, "postinstall")
+if requires_postinstall == None:
+    requires_postinstall = 1
+if requires_postinstall == 1:
+    import modules.postinstall as pinstall
+    pinstall.postinstall()
+
 while True:
     if recovery and osc.BOOT_ENABLE_RECOVERY == True:
         tft.text(f8x8, "Recovery",180,127,2016)

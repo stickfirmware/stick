@@ -119,3 +119,10 @@ BOOT_UPDATE_PATH = const("/update.py")
 # Others
 EMERG_BUFF_SIZE = const(1000) # Emergency buffer allocation size in bytes
 
+# Post install config
+POSTINSTALL_BLACKLIST = [
+    'modules/rtc.py',
+    'modules/mpu6886.py',
+    'modules/rtc.mpy',
+    'modules/mpu6886.mpy'
+    ]   
