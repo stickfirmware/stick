@@ -236,6 +236,7 @@ if localtime[0] < min_time[0] and localtime[1] < min_time[1] and localtime[2] < 
     
 
 render_bar("Wi-Fi init...", True)
+import modules.wifi_master as wifi_master
 
 # Check Wi-Fi hostname
 if nvs.get_string(n_wifi, "hostname") == None:
@@ -250,17 +251,13 @@ if nvs.get_float(n_wifi, "conf") == None:
     nvs.set_float(n_wifi, "conf", 0)
 if int(nvs.get_float(n_wifi, "conf")) == 1:
     if nvs.get_int(n_wifi, "autoConnect") == 1:
+        debug.log('Connecting to wifi!')
         try:
-            nic.active(False)
-            time.sleep(0.2)
-            nic.active(True)
-            pm_mode = nvs.get_int(n_wifi, "wifimode")
-            if pm_mode != None:
-                nic.config(pm=pm_mode)
-            else:
-                nvs.set_int(n_wifi, "wifimode", 2)
-                nic.config(pm=2)
-            debug.log("Wifi connecting")
+            debug.log('Reset nic')
+            wifi_master.nic_reset()
+            debug.log('Set modes')
+            wifi_master.set_pwr_modes(0)
+            debug.log("Connect")
             conn_time = time.ticks_ms()
             ssid = nvs.get_string(n_wifi, "ssid")
             passwd = nvs.get_string(n_wifi, "passwd")
@@ -282,9 +279,12 @@ render_battery = False
 
 # Loop timings
 ntp_first = True
-ntp_time = time.ticks_ms()
-pwr_save_time = time.ticks_ms()
-diagnostic_time = time.ticks_ms()
+ticks = time.ticks_ms()
+ntp_time = ticks
+pwr_save_time = ticks
+diagnostic_time = ticks
+wifi_master_dynamic = ticks
+
 prev_bl = tft.get_backlight()
 is_in_saving = False
 
@@ -298,7 +298,7 @@ eeg_click_entry = 0
 # 3 - button side left
 
 # IMU/rotation variables
-imu_delay = time.ticks_ms()
+imu_delay = ticks
 last_orientation = None
 orientation_start_time = 0
 stable_orientation = osc.LCD_ROTATIONS["BUTTON_LEFT"]
@@ -436,6 +436,11 @@ while True:
     if nic.active() and nic.isconnected() == False:
         conn_time = time.ticks_ms()
     
+    # Wifi power saver
+    if time.ticks_diff(time.ticks_ms(), wifi_master_dynamic) >= osc.WIFI_PWR_SAVER_TIME:
+        wifi_master.dynamic_pwr_save()
+        wifi_master_dynamic = time.ticks_ms()
+
     # Power saving
     if not is_in_saving and time.ticks_diff(time.ticks_ms(), pwr_save_time) >= osc.POWER_SAVE_TIMEOUT and allow_saving == 1:
         # Disable debug/battery info for less lag
@@ -682,9 +687,6 @@ while True:
                 
         # Battery bitmap render
         b_check.run(tft)
-
-        # Clean ram
-        ram_cleaner.clean()
         
     # NTP sync
     if time.ticks_diff(time.ticks_ms(), ntp_time) >= osc.NTP_SYNC_TIME or ntp_first == False:

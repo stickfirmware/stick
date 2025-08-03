@@ -12,6 +12,7 @@ _WHITELIST = {
         'scripts.checkbattery',
         'modules',
         'modules.battery_check',
+        'modules.wifi_master',
         'modules.sdcard',
         'modules.menus',
         'modules.os_constants',

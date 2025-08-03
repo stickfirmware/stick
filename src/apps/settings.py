@@ -17,6 +17,7 @@ import modules.crash_handler as c_handler
 import modules.qr_codes as qr
 import modules.numpad as keypad
 import modules.io_manager as io_man
+import modules.wifi_master as wifi_man
 
 printer.log("Getting buttons")
 button_a = io_man.get('button_a')
@@ -122,13 +123,18 @@ def run():
             if rendr == 1:
                 tft.text(f8x8, "Scanning...", 0,0, 65535)
                 nic = network.WLAN(network.STA_IF)
-                nic.active(False)
-                time.sleep(0.4)
-                nic.active(True)
-                time.sleep(0.5)
-                nic.config(pm=0)
-                nic.config(tx_power=20.0)
+                wifi_man.nic_reset()
+                wifi_man.set_pwr_modes(0)
                 nic_scan = nic.scan()
+                if nic_scan == []:
+                    attempts = 5
+                    while attempts != 0 and nic_scan == []:
+                        nic_scan = nic.scan()
+                        wifi_man.nic_reset()
+                        attempts -= 1
+                    if nic_scan == []:
+                        menus.menu("No ap found!", [("OK", None)])
+                        continue
                 wlan_scan = []
                 index = 0
                 for ap in nic_scan:
@@ -157,20 +163,7 @@ def run():
                 time.sleep(0.5)
                 nic.active(True)
                 time.sleep(0.3)
-                pm_mode = nvs.get_int(n_wifi, "wifimode")
-                tx_power = nvs.get_float(n_wifi, "txpower")
-                if pm_mode != None:
-                    nic.config(pm=pm_mode)
-                else:
-                    nvs.set_int(n_wifi, "wifimode", 2)
-                    pm_mode = 2
-                    nic.config(pm=2)
-                if tx_power != None:
-                    nic.config(txpower=tx_power)
-                else:
-                    tx_power = 10 + (pm_mode * 5)
-                    nvs.set_float(n_wifi, "txpower", tx_power)
-                    nic.config(txpower=tx_power)
+                wifi_man.set_pwr_modes()
                 printer.log("Wifi connecting")
                 if password != "":
                     nic.connect(ssid, password)
@@ -199,23 +192,8 @@ def run():
                         if nic.isconnected() == False:
                             rend = menus.menu("Connect with " + nvs.get_string(n_wifi, "ssid") + "?", [("Yes",  1), ("No",  2)])
                             if rend == 1:
-                                nic.active(False)
-                                time.sleep(0.2)
-                                nic.active(True)
-                                pm_mode = nvs.get_int(n_wifi, "wifimode")
-                                tx_power = nvs.get_float(n_wifi, "txpower")
-                                if pm_mode != None:
-                                    nic.config(pm=pm_mode)
-                                else:
-                                    nvs.set_int(n_wifi, "wifimode", 2)
-                                    pm_mode = 2
-                                    nic.config(pm=2)
-                                if tx_power != None:
-                                    nic.config(txpower=tx_power)
-                                else:
-                                    tx_power = 10 + (pm_mode * 5)
-                                    nvs.set_float(n_wifi, "txpower", tx_power)
-                                    nic.config(txpower=tx_power)
+                                wifi_man.nic_reset()
+                                wifi_man.set_pwr_modes(0)
                                 printer.log("Wifi connecting")
                                 ssid = nvs.get_string(n_wifi, "ssid")
                                 passwd = nvs.get_string(n_wifi, "passwd")
@@ -237,11 +215,13 @@ def run():
             elif rendr == 9:
                 nic = network.WLAN(network.STA_IF)
                 # It's actually 2 - Power saving, 1 - Performance and 0 - None. But performance sounds better than None
-                pwr_setting = menus.menu("Wifi pwr managament", [('Power saving', 2), ('Balanced', 1), ('Performance', 0)])
+                pwr_setting = menus.menu("Wifi pwr managament", [('Automatic (Recommended)', 3), ('Power saving', 2), ('Balanced', 1), ('Performance', 0)])
                 if pwr_setting != None:
                     nvs.set_int(n_wifi, "wifimode", pwr_setting)
-                    nvs.set_float(n_wifi, "txpower", 10 + (pwr_setting * 5))
-                    nic.config(pm=pwr_setting)
+                    if pwr_setting != 3:
+                        wifi_man.set_pwr_modes()
+                    else:
+                        nvs.set_float(n_wifi, "txpower", 15)
 
             # Wi-Fi status
             elif rendr == 5:
@@ -251,15 +231,16 @@ def run():
                 tft.fill(0)
                 tft.text(f8x8, "WLAN Active?: " + str(nic_active),0,0, 65535)
                 tft.text(f8x8, "Connected?: " + str(nic.isconnected()),0,8, 65535)
-                tft.text(f8x8, "Local IP: " + str(nic_ifconfig[0]),0,16, 65535)
-                tft.text(f8x8, "Subnet mask: " + str(nic_ifconfig[1]),0,24, 65535)
-                tft.text(f8x8, "Gateway: " + str(nic_ifconfig[2]),0,32, 65535)
-                tft.text(f8x8, "DNS server: " + str(nic_ifconfig[3]),0,40, 65535)
-                tft.text(f8x8, "SSID: " + nic.config('ssid'),0,48, 65535)
-                tft.text(f8x8, "Channel: " + str(nic.config('channel')),0,56, 65535)
-                tft.text(f8x8, "Hostname: " + network.hostname(),0,64, 65535)
-                tft.text(f8x8, "Tx power (dBm): " + str(nic.config('txpower')),0,72, 65535)
-                tft.text(f8x8, "Pwr managament: " + str(nic.config('pm')),0,80, 65535)
+                if nic.isconnected():
+                    tft.text(f8x8, "Local IP: " + str(nic_ifconfig[0]),0,16, 65535)
+                    tft.text(f8x8, "Subnet mask: " + str(nic_ifconfig[1]),0,24, 65535)
+                    tft.text(f8x8, "Gateway: " + str(nic_ifconfig[2]),0,32, 65535)
+                    tft.text(f8x8, "DNS server: " + str(nic_ifconfig[3]),0,40, 65535)
+                    tft.text(f8x8, "SSID: " + nic.config('ssid'),0,48, 65535)
+                    tft.text(f8x8, "Channel: " + str(nic.config('channel')),0,56, 65535)
+                    tft.text(f8x8, "Hostname: " + network.hostname(),0,64, 65535)
+                    tft.text(f8x8, "Tx power (dBm): " + str(nic.config('txpower')),0,72, 65535)
+                    tft.text(f8x8, "Pwr managament: " + str(nic.config('pm')),0,80, 65535)
                 while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
                     time.sleep(osc.DEBOUNCE_TIME)
                     
