@@ -130,10 +130,15 @@ def run():
                     ap_name = ap[0].decode()
                     wlan_scan.append((ap_name, index))
                     index += 1
+                wlan_scan.append(("Manual input", 999))
                 wlan_scan.append(("Close", None))
                 num = menus.menu("Select SSID", wlan_scan)
                 if num == None:
                     continue
+                if num == 999:
+                    ssid = keypad.keyboard("Enter ssid", maxlen=63, hideInput=False)
+                    if ssid == None:
+                        continue
                 ssid = nic_scan[num][0].decode()
                 if nic_scan[num][4] != 0:
                     password = str(keypad.keyboard("Enter password", maxlen=63, hideInput=False))
@@ -147,8 +152,8 @@ def run():
                 tft.fill(0)
                 tft.text(f8x8, "Connecting...", 0,0, 65535)
                 tft.text(f8x8, ssid, 0,8, 65535)
-                if passwd != "":
-                    nic.connect(ssid, passwd)
+                if password != "":
+                    nic.connect(ssid, password)
                 else:
                     nic.connect(ssid)
                 while nic.isconnected() == False or nic.status() != network.STAT_CONNECTING:
