@@ -144,9 +144,13 @@ def run():
                 autoconnect = menus.menu("Auto connect?", [("Yes", 1), ("No", 0)])
                 if autoconnect == None:
                     autoconnect = 0
+                nic.active(False)
                 tft.fill(0)
                 tft.text(f8x8, "Connecting...", 0,0, 65535)
                 tft.text(f8x8, ssid, 0,8, 65535)
+                time.sleep(0.5)
+                nic.active(True)
+                time.sleep(0.3)
                 if password != "":
                     nic.connect(ssid, password)
                 else:
