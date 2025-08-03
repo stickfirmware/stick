@@ -254,6 +254,12 @@ if int(nvs.get_float(n_wifi, "conf")) == 1:
             nic.active(False)
             time.sleep(0.2)
             nic.active(True)
+            pm_mode = nvs.get_int(n_wifi, "wifimode")
+            if pm_mode != None:
+                nic.config(pm=pm_mode)
+            else:
+                nvs.set_int(n_wifi, "wifimode", 2)
+                nic.config(pm=2)
             debug.log("Wifi connecting")
             conn_time = time.ticks_ms()
             ssid = nvs.get_string(n_wifi, "ssid")
