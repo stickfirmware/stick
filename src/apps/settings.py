@@ -127,6 +127,7 @@ def run():
                 nic.active(True)
                 time.sleep(0.5)
                 nic.config(pm=0)
+                nic.config(tx_power=20.0)
                 nic_scan = nic.scan()
                 wlan_scan = []
                 index = 0
@@ -157,11 +158,20 @@ def run():
                 nic.active(True)
                 time.sleep(0.3)
                 pm_mode = nvs.get_int(n_wifi, "wifimode")
+                tx_power = nvs.get_float(n_wifi, "txpower")
                 if pm_mode != None:
                     nic.config(pm=pm_mode)
                 else:
                     nvs.set_int(n_wifi, "wifimode", 2)
+                    pm_mode = 2
                     nic.config(pm=2)
+                if tx_power != None:
+                    nic.config(txpower=tx_power)
+                else:
+                    tx_power = 10 + (pm_mode * 5)
+                    nvs.set_float(n_wifi, "txpower", tx_power)
+                    nic.config(txpower=tx_power)
+                printer.log("Wifi connecting")
                 if password != "":
                     nic.connect(ssid, password)
                 else:
@@ -193,11 +203,19 @@ def run():
                                 time.sleep(0.2)
                                 nic.active(True)
                                 pm_mode = nvs.get_int(n_wifi, "wifimode")
+                                tx_power = nvs.get_float(n_wifi, "txpower")
                                 if pm_mode != None:
                                     nic.config(pm=pm_mode)
                                 else:
                                     nvs.set_int(n_wifi, "wifimode", 2)
+                                    pm_mode = 2
                                     nic.config(pm=2)
+                                if tx_power != None:
+                                    nic.config(txpower=tx_power)
+                                else:
+                                    tx_power = 10 + (pm_mode * 5)
+                                    nvs.set_float(n_wifi, "txpower", tx_power)
+                                    nic.config(txpower=tx_power)
                                 printer.log("Wifi connecting")
                                 ssid = nvs.get_string(n_wifi, "ssid")
                                 passwd = nvs.get_string(n_wifi, "passwd")
@@ -222,6 +240,7 @@ def run():
                 pwr_setting = menus.menu("Wifi pwr managament", [('Power saving', 2), ('Balanced', 1), ('Performance', 0)])
                 if pwr_setting != None:
                     nvs.set_int(n_wifi, "wifimode", pwr_setting)
+                    nvs.set_float(n_wifi, "txpower", 10 + (pwr_setting * 5))
                     nic.config(pm=pwr_setting)
 
             # Wi-Fi status
