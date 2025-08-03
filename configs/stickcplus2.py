@@ -122,5 +122,7 @@ EMERG_BUFF_SIZE = const(1000) # Emergency buffer allocation size in bytes
 # Post install config
 POSTINSTALL_BLACKLIST = [
     'modules/cardputer_kb.py',
-    'modules/cardputer_kb.mpy'
+    'modules/cardputer_kb.mpy',
+    'modules/sdcard.py',
+    'modules/sdcard.mpy'
     ]   
