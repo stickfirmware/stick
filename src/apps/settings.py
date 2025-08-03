@@ -122,13 +122,18 @@ def run():
             if rendr == 1:
                 tft.text(f8x8, "Scanning...", 0,0, 65535)
                 nic = network.WLAN(network.STA_IF)
+                nic.active(False)
+                time.sleep(0.4)
                 nic.active(True)
+                time.sleep(0.5)
+                nic.config(pm=0)
                 nic_scan = nic.scan()
                 wlan_scan = []
                 index = 0
                 for ap in nic_scan:
                     ap_name = ap[0].decode()
-                    wlan_scan.append((ap_name, index))
+                    if ap_name != '' and ap_name != None and ap[5] == False:
+                        wlan_scan.append((ap_name, index))
                     index += 1
                 wlan_scan.append(("Close", None))
                 num = menus.menu("Select SSID", wlan_scan)
@@ -212,6 +217,7 @@ def run():
 
             # Wifi power managament
             elif rendr == 9:
+                nic = network.WLAN(network.STA_IF)
                 # It's actually 2 - Power saving, 1 - Performance and 0 - None. But performance sounds better than None
                 pwr_setting = menus.menu("Wifi pwr managament", [('Power saving', 2), ('Balanced', 1), ('Performance', 0)])
                 if pwr_setting != None:
@@ -230,6 +236,11 @@ def run():
                 tft.text(f8x8, "Subnet mask: " + str(nic_ifconfig[1]),0,24, 65535)
                 tft.text(f8x8, "Gateway: " + str(nic_ifconfig[2]),0,32, 65535)
                 tft.text(f8x8, "DNS server: " + str(nic_ifconfig[3]),0,40, 65535)
+                tft.text(f8x8, "SSID: " + nic.config('ssid'),0,48, 65535)
+                tft.text(f8x8, "Channel: " + str(nic.config('channel')),0,56, 65535)
+                tft.text(f8x8, "Hostname: " + network.hostname(),0,64, 65535)
+                tft.text(f8x8, "Tx power (dBm): " + str(nic.config('txpower')),0,72, 65535)
+                tft.text(f8x8, "Pwr managament: " + str(nic.config('pm')),0,80, 65535)
                 while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
                     time.sleep(osc.DEBOUNCE_TIME)
                     
