@@ -116,7 +116,7 @@ def run():
                         
         # Wi-Fi settings
         elif menu1 == 3:
-            rendr =  menus.menu("Settings/Wi-Fi", [("Setup AP", 1), ("Connection", 2), ("Wi-Fi Status", 5), ("NTP Sync", 3), ("NTP Timezone", 4), ("Close", 13)])
+            rendr =  menus.menu("Settings/Wi-Fi", [("Setup AP", 1), ("Power managament", 9), ("Connection", 2), ("Wi-Fi Status", 5), ("NTP Sync", 3), ("NTP Timezone", 4), ("Close", 13)])
             
             # Wi-Fi AP setup
             if rendr == 1:
@@ -151,6 +151,12 @@ def run():
                 time.sleep(0.5)
                 nic.active(True)
                 time.sleep(0.3)
+                pm_mode = nvs.get_int(n_wifi, "wifimode")
+                if pm_mode != None:
+                    nic.config(pm=pm_mode)
+                else:
+                    nvs.set_int(n_wifi, "wifimode", 2)
+                    nic.config(pm=2)
                 if password != "":
                     nic.connect(ssid, password)
                 else:
@@ -181,6 +187,12 @@ def run():
                                 nic.active(False)
                                 time.sleep(0.2)
                                 nic.active(True)
+                                pm_mode = nvs.get_int(n_wifi, "wifimode")
+                                if pm_mode != None:
+                                    nic.config(pm=pm_mode)
+                                else:
+                                    nvs.set_int(n_wifi, "wifimode", 2)
+                                    nic.config(pm=2)
                                 printer.log("Wifi connecting")
                                 ssid = nvs.get_string(n_wifi, "ssid")
                                 passwd = nvs.get_string(n_wifi, "passwd")
@@ -197,6 +209,14 @@ def run():
                         c_handler.crash_screen(tft, 3001, str(e), True, True, 2)
                 else:
                     menus.menu("Wi-Fi not set-up yet!", [("OK",  1)])
+
+            # Wifi power managament
+            elif rendr == 9:
+                # It's actually 2 - Power saving, 1 - Performance and 0 - None. But performance sounds better than None
+                pwr_setting = menus.menu("Wifi pwr managament", [('Power saving', 2), ('Balanced', 1), ('Performance', 0)])
+                if pwr_setting != None:
+                    nvs.set_int(n_wifi, "wifimode", pwr_setting)
+                    nic.config(pm=pwr_setting)
 
             # Wi-Fi status
             elif rendr == 5:
