@@ -60,6 +60,10 @@ def browser(path):
     
 def fileMenu(file):
     global clipboard
+    if file.endswith(".mpy") or file == '/main.py':
+        confirmation = menus.menu('Modyfing may harm system!', [("Don't open", None), ("Open anyway", 1)])
+        if confirmation == None:
+            return
     render = menus.menu(str(file), [("Open in...", 4), ("Delete", 2), ("Properties", 1), ("Exit", 13)])
     if render == 4:
         open_file.openMenu(file)
