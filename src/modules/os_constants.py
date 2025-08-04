@@ -122,7 +122,9 @@ EMERG_BUFF_SIZE = const(1000) # Emergency buffer allocation size in bytes
 # Post install config
 POSTINSTALL_BLACKLIST = [
     'modules/rtc.py',
-    'modules/mpu6886.py',
     'modules/rtc.mpy',
-    'modules/mpu6886.mpy'
+    'modules/mpu6886.py',
+    'modules/mpu6886.mpy',
+    'apps/metronome.py',
+    'apps/metronome.mpy'
     ]   

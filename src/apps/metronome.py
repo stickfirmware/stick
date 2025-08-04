@@ -36,10 +36,6 @@ def run():
     button_c = io_man.get('button_c')
     tft = io_man.get('tft')
     
-    if osc.HAS_BUZZER == False:
-        menus.menu("You don't have buzzer!", [("OK", None)])
-        return
-    
     bpm_max = 250
     bpm_min = 30
     bpm = 120

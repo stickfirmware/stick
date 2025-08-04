@@ -30,6 +30,9 @@ def run():
         del a_re
         decache('apps.resistors')
     elif render == 3:
+        if osc.HAS_BUZZER == False:
+            menus.menu("You don't have buzzer!", [("OK", None)])
+            return
         import apps.metronome as a_me
         a_me.run()
         del a_me
