@@ -10,6 +10,7 @@ if io_man.get('tft') != None:
 else:
     import modules.tft_init as tft_init
     tft = tft_init.init_tft()
+
 import modules.button_init as btn_init
 buttons = btn_init.init_buttons()
 button_a = buttons[0]
@@ -22,14 +23,17 @@ io_man.set('tft', tft)
 
 import machine
 import modules.menus as menus
-import os
-        
+
 while True:
-    render = menus.menu("Recovery menu", [("Reset NVS configuration", 1), ("File explorer", 5), ("Toggle dev apps", 6), ("Reboot", 13)])
+    render = menus.menu("Recovery menu", [("Factory reset", 1), ("File explorer", 5), ("Toggle dev apps", 6), ("Reboot", 13)])
     if render == 1:
-        render1 = menus.menu("Destroy nvs?", [("No", 1), ("Yes", 2)])
-        if render1 == 2:
-            import scripts.reset_nvs
+        confirm_reset = menus.menu("Reset all settings?", [("No", None), ("Yes", 1)])
+        if confirm_reset == 1:
+            confirm_reset = menus.menu("It removes all files!", [("Cancel", 2), ("Confirm", 1)])
+            if confirm_reset == 1:
+                n_updates = esp32.NVS("updates")
+                nvs.set_int(n_updates, "factory", 1)
+                machine.reset()
     elif render == 5:
         import modules.file_explorer as a_fe
         a_fe.run()
