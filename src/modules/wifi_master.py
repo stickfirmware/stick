@@ -19,18 +19,18 @@ def nic_reset():
 # Default NVS vars
 def set_defaults():
     nvs.set_int(n_wifi, "wifimode", 3)
-    nvs.set_float(n_wifi, "txpower", 15.0)
+    nvs.set_int(n_wifi, "txpower", 15)
 
 # Set pwr mode based on NVS
 def set_pwr_modes(pmm=None):
     if pmm is None:
         pm_mode = nvs.get_int(n_wifi, "wifimode")
-        tx_power = nvs.get_float(n_wifi, "txpower")
+        tx_power = nvs.get_int(n_wifi, "txpower")
     else:
         nvs.set_int(n_wifi, "wifimode", pmm)
         pm_mode = pmm
         tx_power = 20 - (pmm * 5)
-        nvs.set_float(n_wifi, "txpower", tx_power)
+        nvs.set_int(n_wifi, "txpower", tx_power)
     
     if pm_mode is None:
         set_defaults()
@@ -46,31 +46,35 @@ def set_pwr_modes(pmm=None):
 
 
 # Dynamic power saving based on rssi (Change tx power and pm modes)
-_LAST_MODE = 3
+_LAST_MODE = 0
 _MARGIN = 5
 
 def dynamic_pwr_save():
     global _LAST_MODE
-    if nvs.get_int(n_wifi, "wifimode") == 3:
-        log('Started dynamic pwr save')
-        if nic.isconnected():
-            rssi = nic.status('rssi')
-            log(rssi)
-            if rssi < -75 - _MARGIN and _LAST_MODE != 0:
-                log("Mode changed to 0")
-                _LAST_MODE = 0
-                nic.config(txpower=20)
-                nic.config(pm=0)
-            elif rssi < -60 - _MARGIN and _LAST_MODE != 1:
-                log("Mode changed to 1")
-                _LAST_MODE = 1
-                nic.config(txpower=15)
-                nic.config(pm=1)
-            elif rssi > -60 + _MARGIN and _LAST_MODE != 2:
-                log("Mode changed to 2")
-                _LAST_MODE = 2
-                nic.config(txpower=10)
-                nic.config(pm=2)
-        else:
-            if nic.active() == True and nic.status() != network.STAT_CONNECTING:
-                nic.active(False)
+    if nvs.get_int(n_wifi, "wifimode") != 3:
+        return
+
+    if not nic.isconnected():
+        if nic.active() and nic.status() != network.STAT_CONNECTING:
+            nic.active(False)
+            log("WiFi inactive, turning off")
+        return
+
+    rssi = nic.status('rssi')
+    log(f"RSSI: {rssi}")
+
+    if _LAST_MODE is None:
+        _LAST_MODE = 0
+
+    if rssi < (-75 - _MARGIN) and _LAST_MODE > 0:
+        _LAST_MODE -= 1
+        log(f"RSSI is falling down, change mode to {_LAST_MODE}")
+    elif rssi > (-60 + _MARGIN) and _LAST_MODE < 2:
+        _LAST_MODE += 1
+        log(f"RSSI is rising, changing mode to {_LAST_MODE}")
+
+    pm_map = {0: 0, 1: 1, 2: 2}
+    tx_map = {0: 20, 1: 15, 2: 10}
+
+    nic.config(pm=pm_map[_LAST_MODE], txpower=tx_map[_LAST_MODE])
+    log(f"PM Set to {pm_map[_LAST_MODE]}, txpower to {tx_map[_LAST_MODE]}")
