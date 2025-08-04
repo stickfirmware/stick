@@ -152,17 +152,13 @@ def run():
                     if password == None:
                         continue
                 else:
-                    password == ""
+                    password = ""
                 autoconnect = menus.menu("Auto connect?", [("Yes", 1), ("No", 0)])
                 if autoconnect == None:
                     autoconnect = 0
-                nic.active(False)
                 tft.fill(0)
                 tft.text(f8x8, "Connecting...", 0,0, 65535)
                 tft.text(f8x8, ssid, 0,8, 65535)
-                time.sleep(0.5)
-                nic.active(True)
-                time.sleep(0.3)
                 wifi_man.set_pwr_modes()
                 printer.log("Wifi connecting")
                 if password != "":
@@ -220,8 +216,6 @@ def run():
                     nvs.set_int(n_wifi, "wifimode", pwr_setting)
                     if pwr_setting != 3:
                         wifi_man.set_pwr_modes()
-                    else:
-                        nvs.set_float(n_wifi, "txpower", 15)
 
             # Wi-Fi status
             elif rendr == 5:
