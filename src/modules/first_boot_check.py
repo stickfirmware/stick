@@ -25,20 +25,11 @@ def check(tft):
         nvs.set_int(n_boot, "firstBoot", 1)
         printer.log("boot:firstBoot:1")
         tft.text(f8x8, "boot:firstBoot:1",0,34,65535,7003)
-    
-        # Settings config
-        printer.log("Configuring 'settings' NVS")
-        nvs.set_float(n_settings, "volume", 0.5)
-        printer.log("settings:volume:0.5")
-        tft.text(f8x8, "settings:volume:0.5",0,52,65535,7003)
-        nvs.set_float(n_settings, "backlight", 0.5)
-        printer.log("settings:backlight:0.5")
-        tft.text(f8x8, "settings:backlight:0.5",0,60,65535,7003)
         
         import apps.oobe as oobe
         oobe.createUserFolder()
         oobe.createConfig()
     
         printer.log("Doing soft reset")
-        tft.text(f8x8, "Doing soft reset. Bye!",0,94,65535,7003)
+        tft.text(f8x8, "Doing soft reset. Bye!",0,127,65535,7003)
         machine.soft_reset()

@@ -105,7 +105,6 @@ debug.log("Load NVS")
 n_settings = esp32.NVS("settings")
 n_wifi = esp32.NVS("wifi")
 n_boot = esp32.NVS("boot")
-n_crash = esp32.NVS("crash")
 n_locks = esp32.NVS("locks")
 
 render_bar("Loading data...", True)
@@ -134,17 +133,6 @@ if auto_rotate == None:
 if allow_saving == None:
     nvs.set_int(n_settings, "allowsaving", 1)
     allow_saving = 1
-
-render_bar("Checking crash info...", True)
-    
-# Show crash info (if crashed last time)
-import modules.crash_info as c_info
-c_info.run_check(tft, n_crash)
-
-# Free up some space
-decache("modules.crash_info")
-del c_info
-del n_crash
 
 render_bar("Checking first boot...", True)
 
@@ -589,23 +577,32 @@ while True:
             time.sleep(osc.LOOP_WAIT_TIME)
         if button_a.value() == 0 or button_b.value() == 0:
             continue
-    
-        # Open power menu
-        import apps.power_menu as app_powermen
-        allow_only_landscape()
-        app_powermen.run()
-        # De-cache
-        decache("apps.power_menu")
-        del app_powermen
-        menu = 0
-        menu_change = True
         
-        # Reset power saving time
-        pwr_save_time = time.ticks_ms()
+        try:
+            # Open power menu
+            import apps.power_menu as app_powermen
+            allow_only_landscape()
+            app_powermen.run()
+            # De-cache
+            decache("apps.power_menu")
+            del app_powermen
+            menu = 0
+            menu_change = True
+            
+            # Reset power saving time
+            pwr_save_time = time.ticks_ms()
 
-        # Clean ram
-        ram_cleaner.clean()
-        
+            # Clean ram
+            ram_cleaner.clean()
+        except Exception as e:
+                tft.fill(0)
+                gc.collect()
+                tft.text(f16x32, "Oops!",0,0,17608)
+                tft.text(f8x8, "One of your apps has crashed!",0,32,65535)
+                tft.text(f8x8, "Please try again!",0,40,65535)
+                print(str(e))
+                time.sleep(3)
+
     # Locking menu / Clock menu
     if button_b.value() == 0:
         hold_time = 0.00

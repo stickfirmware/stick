@@ -88,7 +88,8 @@ def crash_screen(tft, error_code, log_message, log_error, enable_tft, reboot_met
         tft.text(f8x8, text, t_utils.center_x(text, 8), 90, 65535, 7003)
         text = "be rebooted!"
         tft.text(f8x8, text, t_utils.center_x(text, 8), 98, 65535, 7003)
-        text = "Error code: " + str(error_code)
+        import modules.error_db as edb
+        text = edb.check_code(error_code)
         tft.text(f8x8, text, t_utils.center_x(text, 8), 110, 65535, 7003)
         text = "Reboot method: " + method
         tft.text(f8x8, text, t_utils.center_x(text, 8), 120, 65535, 7003)

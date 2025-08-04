@@ -113,5 +113,6 @@ while True:
             import mainos
         except Exception as e:
             print(e)
-            print("Booting mainos failed, booting recovery!")
-            recoveryf()
+            print("Critical error, showing bsod")
+            import modules.crash_handler as c_handler
+            c_handler.crash_screen(tft, 4001, e, True, True, 2)
