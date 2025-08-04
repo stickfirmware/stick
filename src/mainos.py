@@ -116,12 +116,14 @@ if nvs.get_int(n_locks, "dummy") == None:
 s_bl = nvs.get_float(n_settings, "backlight")
 if s_bl is None:
     s_bl = 0.5
+    nvs.set_float(n_settings, "backlight", s_bl)
 debug.log("Backlight: " + str(s_bl))
 tft.set_backlight(s_bl)
 
 s_vl = nvs.get_float(n_settings, "volume")
 if s_vl is None:
     s_vl = 0.5
+    nvs.get_float(n_settings, "volume", s_vl)
 debug.log("Buzzer volume: " + str(s_vl))
 buzz.set_volume(s_vl)
 
