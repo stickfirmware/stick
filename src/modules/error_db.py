@@ -4,7 +4,7 @@ def check_code(code):
         return "TEST_CRASH"
     # Easter egg
     elif code == 2:
-        return "YOU_WANTED_IT"
+        return "BUTTON_GOT_CRUSHED"
     # External I2C RTC error
     elif code == 1001:
         return "RTC_INIT_ERROR"
@@ -17,5 +17,8 @@ def check_code(code):
     # Wi-Fi error
     elif code == 3001:
         return "WIFI_CONNECT_ERROR"
+    # Unhandled system error (From bootloader)
+    elif code == 4001:
+        return "UNHANDLED_SYS_ERROR"
     else:
-        return "UNKNOWN"
+        return "UNKNOWN_ERROR"
