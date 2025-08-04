@@ -101,8 +101,9 @@ REQUESTS_USERAGENT = const("Stick firmware/M5Stick") # User agent for requests m
 
 # Loop timings
 WIFI_PWR_SAVER_TIME = const(15000) # Wifi power saver trigger time (ms)
-WIFI_DISABLE_TIMEOUT = const(15000) # Timeout for disabling wifi if not connected
-POWER_SAVE_TIMEOUT = const(15000) # Time to enter power saving after no activity
+RAM_CLEANER_TIME = const(7500) # RAM Cleaner trigger time (ms)
+WIFI_DISABLE_TIMEOUT = const(15000) # Timeout for disabling wifi if not connected (ms)
+POWER_SAVE_TIMEOUT = const(15000) # Time to enter power saving after no activity (ms)
 IMU_CHECK_TIME = const(200) # IMU update time, in ms
 IMU_STAY_TIME = const(1000) # IMU stay time, in ms, device needs to be in same rotatation for X ms to accept rotation as stable
 NTP_SYNC_TIME = const(600000) # NTP automatic sync time in ms
@@ -115,9 +116,6 @@ BOOT_ENABLE_RECOVERY = const(True)
 BOOT_RECOVERY_PIN = const(39)
 BOOT_ENABLE_UPDATES = const(False) # Enable searching for updates on boot
 BOOT_UPDATE_PATH = const("/update.py")
-
-# Others
-EMERG_BUFF_SIZE = const(1000) # Emergency buffer allocation size in bytes
 
 # Post install config
 POSTINSTALL_BLACKLIST = [
