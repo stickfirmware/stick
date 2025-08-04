@@ -116,9 +116,6 @@ BOOT_RECOVERY_PIN = const(0)
 BOOT_ENABLE_UPDATES = const(False) # Enable searching for updates on boot
 BOOT_UPDATE_PATH = const("/update.py")
 
-# Others
-EMERG_BUFF_SIZE = const(1000) # Emergency buffer allocation size in bytes
-
 # Post install config
 POSTINSTALL_BLACKLIST = [
     'modules/rtc.py',
