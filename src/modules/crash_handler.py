@@ -30,7 +30,7 @@ def crash_screen(tft, error_code, log_message, log_error, enable_tft, reboot_met
     print("Showing crash screen")
     if enable_tft == True:
         print("Clear display")
-        tft.fill(7003)
+        tft.fill(7128)
         print("Show bitmap: sad")
         import bitmaps.sad as b_sad
         tft.bitmap(b_sad, 10,10)
@@ -38,16 +38,16 @@ def crash_screen(tft, error_code, log_message, log_error, enable_tft, reboot_met
         gc.collect()
         print("Showing text")
         text = "It seems like your"
-        tft.text(f8x8, text, t_utils.center_x(text, 8), 50, 65535, 7003)
+        tft.text(f8x8, text, t_utils.center_x(text, 8), 50, 65535, 7128)
         text = "device has crashed!"
-        tft.text(f8x8, text, t_utils.center_x(text, 8), 58, 65535, 7003)
+        tft.text(f8x8, text, t_utils.center_x(text, 8), 58, 65535, 7128)
     
     if log_error == True:
         print("NVS error logging turned on!")
         if enable_tft == True:
             print("Showing text")
             text = "Collecting logs..."
-            tft.text(f8x8, text, t_utils.center_x(text, 8), 70, 65535, 7003)
+            tft.text(f8x8, text, t_utils.center_x(text, 8), 70, 65535, 7128)
             
         print("Log error code to NVS and Flash")
         nvs.set_int(n_crash, "latest", error_code)
@@ -85,14 +85,14 @@ def crash_screen(tft, error_code, log_message, log_error, enable_tft, reboot_met
     if enable_tft == True:
         print("Showing text")
         text = "Your device will"
-        tft.text(f8x8, text, t_utils.center_x(text, 8), 90, 65535, 7003)
+        tft.text(f8x8, text, t_utils.center_x(text, 8), 90, 65535, 7128)
         text = "be rebooted!"
-        tft.text(f8x8, text, t_utils.center_x(text, 8), 98, 65535, 7003)
+        tft.text(f8x8, text, t_utils.center_x(text, 8), 98, 65535, 7128)
         import modules.error_db as edb
         text = edb.check_code(error_code)
-        tft.text(f8x8, text, t_utils.center_x(text, 8), 110, 65535, 7003)
+        tft.text(f8x8, text, t_utils.center_x(text, 8), 110, 65535, 7128)
         text = "Reboot method: " + method
-        tft.text(f8x8, text, t_utils.center_x(text, 8), 120, 65535, 7003)
+        tft.text(f8x8, text, t_utils.center_x(text, 8), 120, 65535, 7128)
     
     print("Waiting before reboot")
     time.sleep(5)
