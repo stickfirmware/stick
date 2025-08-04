@@ -40,6 +40,9 @@ def volume_to_shift(volume):
 
 def play(path):
     io_refresh()
+    if not osc.HAS_SPEAKER:
+        menus.menu("You don't have a speaker!", [("OK", 1)])
+        return
     tft.fill(0)
     tft.text(f8x8, "Loading...", 0, 0, 65535)
 
@@ -182,9 +185,6 @@ def run():
     io_refresh()
     
     import sys
-    if not osc.HAS_SPEAKER:
-        menus.menu("You don't have a speaker!", [("OK", 1)])
-        return
 
     work = True
     while work:

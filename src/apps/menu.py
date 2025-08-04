@@ -42,6 +42,9 @@ def run():
         del a_ir
         decache('apps.IR')
     elif menu1 == 6:
+        if not osc.HAS_SPEAKER:
+            menus.menu("You don't have a speaker!", [("OK", 1)])
+            return
         import apps.player as a_pl
         a_pl.run()
         del a_pl

@@ -124,5 +124,7 @@ POSTINSTALL_BLACKLIST = [
     'modules/cardputer_kb.py',
     'modules/cardputer_kb.mpy',
     'modules/sdcard.py',
-    'modules/sdcard.mpy'
+    'modules/sdcard.mpy',
+    'apps/player.py',
+    'apps/player.mpy'
     ]   
