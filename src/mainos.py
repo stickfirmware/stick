@@ -123,7 +123,7 @@ tft.set_backlight(s_bl)
 s_vl = nvs.get_float(n_settings, "volume")
 if s_vl is None:
     s_vl = 0.5
-    nvs.get_float(n_settings, "volume", s_vl)
+    nvs.set_float(n_settings, "volume", s_vl)
 debug.log("Buzzer volume: " + str(s_vl))
 buzz.set_volume(s_vl)
 
