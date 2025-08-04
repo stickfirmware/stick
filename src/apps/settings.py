@@ -12,7 +12,6 @@ import modules.menus as menus
 import modules.nvs as nvs
 import modules.os_constants as osc
 import modules.open_file as open_file
-import modules.sdcard as sd
 import modules.crash_handler as c_handler
 import modules.qr_codes as qr
 import modules.numpad as keypad
@@ -283,6 +282,8 @@ def run():
             if osc.HAS_SD_SLOT == False:
                 menus.menu("No SD slot!", [("OK", None)])
                 continue
+            
+            import modules.sdcard as sd
 
             # SD Card menu if SD is not mounted
             if sd.sd is None:
