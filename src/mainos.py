@@ -272,6 +272,7 @@ ntp_time = ticks
 pwr_save_time = ticks
 diagnostic_time = ticks
 wifi_master_dynamic = ticks
+cleaner_time = ticks
 
 prev_bl = tft.get_backlight()
 is_in_saving = False
@@ -646,6 +647,11 @@ while True:
 
         # Clean ram
         ram_cleaner.clean()
+
+    # Ram cleaner
+    if time.ticks_diff(time.ticks_ms(), cleaner_time) >= osc.RAM_CLEANER_TIME:
+        ram_cleaner.clean()
+        cleaner_time = time.ticks_ms()
             
     # Battery check (Diagnostics)
     if not is_in_saving and time.ticks_diff(time.ticks_ms(), diagnostic_time) >= osc.DIAGNOSTIC_REFRESH_TIME and menu == 0:

@@ -101,6 +101,7 @@ REQUESTS_USERAGENT = const("Stick firmware/Cardputer") # User agent for requests
 
 # Loop timings
 WIFI_PWR_SAVER_TIME = const(15000) # Wifi power saver trigger time (ms)
+RAM_CLEANER_TIME = const(7500) # RAM Cleaner trigger time (ms)
 WIFI_DISABLE_TIMEOUT = const(15000) # Timeout for disabling wifi if not connected
 POWER_SAVE_TIMEOUT = const(15000) # Time to enter power saving after no activity
 IMU_CHECK_TIME = const(200) # IMU update time, in ms
