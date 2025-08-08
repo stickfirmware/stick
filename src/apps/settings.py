@@ -117,14 +117,14 @@ def run():
                         
         # Wi-Fi settings
         elif menu1 == 3:
-            rendr =  menus.menu("Settings/Wi-Fi", [("Setup AP", 1), ("Power managament", 9), ("Connection", 2), ("Wi-Fi Status", 5), ("NTP Sync", 3), ("NTP Timezone", 4), ("Close", 13)])
+            rendr =  menus.menu("Settings/Wi-Fi", [("Setup AP", 1), ("Connection", 2), ("Wi-Fi Status", 5), ("NTP Sync", 3), ("NTP Timezone", 4), ("Close", 13)])
             
             # Wi-Fi AP setup
             if rendr == 1:
                 tft.text(f8x8, "Scanning...", 0,0, 65535)
                 nic = network.WLAN(network.STA_IF)
                 wifi_man.nic_reset()
-                wifi_man.set_pwr_modes(0)
+                #wifi_man.set_pwr_modes(0)
                 nic_scan = nic.scan()
                 if nic_scan == []:
                     attempts = 5
@@ -159,7 +159,7 @@ def run():
                 tft.fill(0)
                 tft.text(f8x8, "Connecting...", 0,0, 65535)
                 tft.text(f8x8, ssid, 0,8, 65535)
-                wifi_man.set_pwr_modes()
+                #wifi_man.set_pwr_modes()
                 printer.log("Wifi connecting")
                 if password != "":
                     nic.connect(ssid, password)
@@ -189,7 +189,7 @@ def run():
                             rend = menus.menu("Connect with " + nvs.get_string(n_wifi, "ssid") + "?", [("Yes",  1), ("No",  2)])
                             if rend == 1:
                                 wifi_man.nic_reset()
-                                wifi_man.set_pwr_modes(0)
+                                #wifi_man.set_pwr_modes(0)
                                 printer.log("Wifi connecting")
                                 ssid = nvs.get_string(n_wifi, "ssid")
                                 passwd = nvs.get_string(n_wifi, "passwd")
