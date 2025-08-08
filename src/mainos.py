@@ -245,8 +245,8 @@ if int(nvs.get_float(n_wifi, "conf")) == 1:
         try:
             debug.log('Reset nic')
             wifi_master.nic_reset()
-            debug.log('Set modes')
-            wifi_master.set_pwr_modes(0)
+            #debug.log('Set modes')
+            #wifi_master.set_pwr_modes(0)
             debug.log("Connect")
             conn_time = time.ticks_ms()
             ssid = nvs.get_string(n_wifi, "ssid")
@@ -428,9 +428,9 @@ while True:
         conn_time = time.ticks_ms()
     
     # Wifi power saver
-    if time.ticks_diff(time.ticks_ms(), wifi_master_dynamic) >= osc.WIFI_PWR_SAVER_TIME:
-        wifi_master.dynamic_pwr_save()
-        wifi_master_dynamic = time.ticks_ms()
+    #if time.ticks_diff(time.ticks_ms(), wifi_master_dynamic) >= osc.WIFI_PWR_SAVER_TIME:
+    #    wifi_master.dynamic_pwr_save()
+    #    wifi_master_dynamic = time.ticks_ms()
 
     # Power saving
     if not is_in_saving and time.ticks_diff(time.ticks_ms(), pwr_save_time) >= osc.POWER_SAVE_TIMEOUT and allow_saving == 1:
