@@ -12,6 +12,7 @@ import modules.menus as menus
 import modules.os_constants as osc
 import modules.text_utils as text_utils
 import modules.printer as printer
+import modules.powersaving as ps
 
 tft = io_man.get('tft')
 rtc = machine.RTC()
@@ -135,7 +136,7 @@ def stopwatch():
             if not is_running:
                 while button_a.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
-                    machine.freq(osc.ULTRA_FREQ)
+                    ps.set_freq(osc.ULTRA_FREQ)
                 tft.text(f8x8, "Stopwatch         ", 0, 0, 65535)
                 is_running = True
             else:
@@ -145,7 +146,7 @@ def stopwatch():
                 was_paused = True
                 while button_a.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
-                machine.freq(osc.SLOW_FREQ)
+                ps.set_freq(osc.SLOW_FREQ)
         if button_b.value() == 0:
             tft.text(f8x8, "Release to reset!", 0, 0, 65535)
             while button_b.value() == 0:
@@ -164,7 +165,7 @@ def stopwatch():
                 time.sleep(osc.DEBOUNCE_TIME)
 
 def clock_menu():
-    machine.freq(osc.BASE_FREQ)
+    ps.set_freq(osc.BASE_FREQ)
     clock_menu = menus.menu("Clock", [("Stopwatch", 1),  ("NTP Sync", 3), ("Cancel", None)])
     if clock_menu == 1:
         stopwatch()

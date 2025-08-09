@@ -22,7 +22,7 @@ import modules.IR.recv as recv
 import modules.menus as menus
 import fonts.def_8x8 as f8x8
 import modules.nvs as nvs
-from modules.decache import decache
+import modules.powersaving as ps
 
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')
@@ -39,7 +39,7 @@ ir_pin = machine.PWM(machine.Pin(pin_nvs, machine.Pin.OUT), duty=0)
 io_man.set('IR', ir_pin)
 
 def send(necc, sonyc, panac, samsac, gcc):
-    machine.freq(osc.ULTRA_FREQ)
+    ps.boost_freq()
     tft.text(f8x8, "Sending nec...",0,0,65535)
     nec.send_array(necc)
     time.sleep(osc.IR_SENDING_WAIT_TIME)
@@ -55,7 +55,7 @@ def send(necc, sonyc, panac, samsac, gcc):
     tft.text(f8x8, "Sending GC...",0,32,65535)
     gc_send.send_array(gcc)
     render = menus.menu("Repeat?", [("Yes", 1), ("No", 2)])
-    machine.freq(osc.BASE_FREQ)
+    ps.set_freq(osc.BASE_FREQ)
     if render == 1:
         send(necc, sonyc, panac, samsac, gcc)
     else:
@@ -67,7 +67,7 @@ def run():
     button_b = io_man.get('button_b')
     button_c = io_man.get('button_c')
     tft = io_man.get('tft')
-    machine.freq(osc.BASE_FREQ)
+    ps.set_freq(osc.BASE_FREQ)
     global ir_pin
     work = True
     while work == True:
@@ -141,4 +141,4 @@ def run():
             
         else:
             work = False
-    machine.freq(osc.BASE_FREQ)
+    ps.set_freq(osc.BASE_FREQ)

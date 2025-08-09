@@ -50,6 +50,9 @@ This driver supports:
 
 """
 
+# Powersaver (For boosting)
+import modules.powersaving as ps
+
 from math import sin, cos
 
 #
@@ -343,12 +346,14 @@ class ST7789:
         """
         Initialize display.
         """
+        ps.boost_clock()
         for command, data, delay in commands:
             self._write(command, data)
             sleep_ms(delay)
 
     def _write(self, command=None, data=None):
         """SPI write to the device: commands and data."""
+        ps.boost_clock()
         if self.cs:
             self.cs.off()
         if command is not None:

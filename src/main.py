@@ -10,7 +10,9 @@ import machine, time
 import os
 import modules.os_constants as osc
 import modules.printer as printer
-machine.freq(osc.ULTRA_FREQ)
+import modules.powersaving as ps
+
+ps.set_freq(osc.ULTRA_FREQ)
 
 # Hold power
 if osc.HAS_HOLD_PIN:

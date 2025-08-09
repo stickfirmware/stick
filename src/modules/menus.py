@@ -6,6 +6,7 @@ import fonts.def_8x8 as f8x8
 
 import modules.os_constants as osc
 import modules.io_manager as io_man
+import modules.powersaving as ps
 
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')
@@ -26,7 +27,8 @@ def elems_split(arr, chunk_size=13):
 def menu(name, choices):
     load_io()
     curr_freq = machine.freq()
-    machine.freq(osc.ULTRA_FREQ)
+    ps.boost_allowing_state(True)
+    ps.set_freq(osc.ULTRA_FREQ)
     tft.fill_rect(0, 0, 240, 3, 65535)
     tft.fill_rect(0, 16, 240, 3, 65535)
     tft.fill_rect(0, 132, 240, 3, 65535)
@@ -55,7 +57,7 @@ def menu(name, choices):
     bt3_d = button_c.value()
     
     # Return to base freq after render
-    machine.freq(osc.BASE_FREQ)
+    ps.set_freq(osc.BASE_FREQ)
     
     # Main menu loop
     while chosen == False:
@@ -118,7 +120,8 @@ def menu(name, choices):
         
     gc.collect()
     # Return to starting frequency
-    machine.freq(curr_freq)
+    ps.set_freq(curr_freq)
+    ps.boost_allowing_state(False)
     
     if didnt_choose == True:
         return None

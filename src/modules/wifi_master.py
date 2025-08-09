@@ -1,6 +1,7 @@
 import network
 import time
 import esp32
+import ubinascii
 
 from modules.printer import log
 import modules.nvs as nvs
@@ -15,6 +16,10 @@ def nic_reset():
     time.sleep(0.6)
     nic.active(True)
     time.sleep(0.5)
+
+# Get mac address
+def get_wifi_mac():
+    return ubinascii.hexlify(nic.config('mac'), ':').decode()
 
 # Default NVS vars
 def set_defaults():

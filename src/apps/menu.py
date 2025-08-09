@@ -9,6 +9,7 @@ from modules.decache import decache
 import modules.menus as menus
 import modules.os_constants as osc
 import modules.nvs as nvs
+import modules.powersaving as ps
 
 n_settings = esp32.NVS("settings")
 
@@ -65,4 +66,4 @@ def run():
         del d_dev
         decache('apps.dev_apps.dev_menu')
     gc.collect()
-    machine.freq(osc.BASE_FREQ)
+    ps.set_freq(osc.BASE_FREQ)

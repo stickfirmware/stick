@@ -17,6 +17,7 @@ import modules.qr_codes as qr
 import modules.numpad as keypad
 import modules.io_manager as io_man
 import modules.wifi_master as wifi_man
+import modules.powersaving as ps
 
 printer.log("Getting buttons")
 button_a = io_man.get('button_a')
@@ -345,4 +346,4 @@ def run():
             
         
     gc.collect()
-    machine.freq(osc.BASE_FREQ)
+    ps.set_freq(osc.BASE_FREQ)
