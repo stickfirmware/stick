@@ -19,9 +19,14 @@ rtc = machine.RTC()
 
 allow_drawing_battery = True
 
+last_clock_text = ""
+last_date_text = ""
+last_mode = 0
+
 nic = network.WLAN(network.STA_IF)
 
 def run_clock():
+    global last_clock_text, last_date_text, last_mode
     printer.log("Rendering clock base")
     tft.fill_rect(0, 0, 240, 3, 65535)
     tft.fill_rect(0, 16, 240, 3, 65535)
@@ -31,8 +36,12 @@ def run_clock():
     tft.fill_rect(3, 3, 234, 13, 0)
     tft.fill_rect(3, 19, 234, 113, 0)
     tft.text(f8x8, "Clock",5,5,65535)
+    last_clock_text = ""
+    last_date_text = ""
+    last_mode = 0
     
 def run_clock_vert():
+    global last_clock_text, last_date_text, last_mode
     printer.log("Rendering clock base")
     tft.fill_rect(0, 0, 3, 240, 65535)
     tft.fill_rect(132, 0, 3, 240, 65535)
@@ -42,8 +51,12 @@ def run_clock_vert():
     tft.fill_rect(3, 3, 129, 13, 0)
     tft.fill_rect(3, 19, 129, 218, 0)
     tft.text(f8x8, "Clock",5,5,65535)
+    last_clock_text = ""
+    last_date_text = ""
+    last_mode = 0
     
 def clock_vert(): 
+    global last_clock_text, last_date_text, last_mode
     time_tuple = rtc.datetime()
     
     # Time
@@ -51,15 +64,21 @@ def clock_vert():
     mm = time_tuple[5]
     ss = time_tuple[6]
     text = "{:02}:{:02}:{:02}".format(hh, mm, ss)
-    x = text_utils.center_x(text, 16)
-    tft.text(f16x32, text, x, 104, 65535)
+    if last_clock_text != text or last_mode != 1:
+        x = text_utils.center_x(text, 16)
+        tft.text(f16x32, text, x, 104, 65535)
+        last_clock_text = text
     # Date
     text = "{:02d}.{:02d}.{:04d}".format(time_tuple[2], time_tuple[1], time_tuple[0])
-    x = text_utils.center_x(text, 8)
-    tft.text(f8x8, text, x, 136, 65535)
+    if last_date_text != text or last_mode != 1:
+        x = text_utils.center_x(text, 8)
+        tft.text(f8x8, text, x, 136, 65535)
+        last_date_text = text
+    last_mode = 1
 
 
 def clock():
+    global last_clock_text, last_date_text, last_mode
     time_tuple = rtc.datetime()
     
     if nic.isconnected() == True:
@@ -72,13 +91,18 @@ def clock():
     mm = time_tuple[5]
     ss = time_tuple[6]
     text = "{:02}:{:02}:{:02}".format(hh, mm, ss)
-    x = text_utils.center_x(text, 16)
-    tft.text(f16x32, text, x, 60, 65535)
+    if last_clock_text != text or last_mode != 0:
+        x = text_utils.center_x(text, 16)
+        tft.text(f16x32, text, x, 60, 65535)
+        last_clock_text = text
     
     # Date
     text = "{:02d}.{:02d}.{:04d}".format(time_tuple[2], time_tuple[1], time_tuple[0])
-    x = text_utils.center_x(text, 8)
-    tft.text(f8x8, text, x, 93, 65535)
+    if last_date_text != text or last_mode != 0:
+        x = text_utils.center_x(text, 8)
+        tft.text(f8x8, text, x, 93, 65535)
+        last_date_text = text
+    last_mode = 0
     
 def format_ticks_ms(ticks):
     ms = ticks % 1000
