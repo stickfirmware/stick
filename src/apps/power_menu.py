@@ -3,13 +3,16 @@ import machine
 import esp32
 import network
 import machine
+
+import fonts.def_8x8 as f8x8
+
 from modules.decache import decache
 import modules.os_constants as osc
 import modules.nvs as nvs
 import modules.menus as menus
 import modules.io_manager as io_man
 import modules.sleep as m_sleep
-import fonts.def_8x8 as f8x8
+import modules.powersaving as ps
 
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')
@@ -39,7 +42,7 @@ def power_menu():
     powermenu = menus.menu("Power", [("Sleep", 1), ("Power off", 2), ("Reboot", 3), ("Cancel", 4)])
     n_wifi = esp32.NVS("wifi")
     if powermenu == 1:
-        machine.freq(osc.BASE_FREQ)
+        ps.set_freq(osc.BASE_FREQ)
         wasConnected = False
         if nic.isconnected() == True:
             nic.disconnect()
@@ -55,7 +58,7 @@ def power_menu():
             nic.active(True)
             nic.connect(nvs.get_string(n_wifi, "ssid"), nvs.get_string(n_wifi, "passwd"))
     elif powermenu == 2:
-        machine.freq(osc.BASE_FREQ)
+        ps.set_freq(osc.BASE_FREQ)
         nic.active(False)
         tft.fill(703)
         tft.text(f8x8, "Powering off...",0,0,65535,703)
@@ -65,7 +68,7 @@ def power_menu():
             power_hold.value(0)
         m_sleep.sleep(osc.ENABLE_DEBUG_PRINTS)
     elif powermenu == 3:
-        machine.freq(osc.BASE_FREQ)
+        ps.set_freq(osc.BASE_FREQ)
         nic.active(False)
         tft.fill(703)
         tft.text(f8x8, "Rebooting...",0,0,65535,703)
@@ -73,4 +76,4 @@ def power_menu():
         os.sync()
         machine.reset()
     else:
-        machine.freq(osc.BASE_FREQ)
+        ps.set_freq(osc.BASE_FREQ)

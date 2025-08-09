@@ -1,5 +1,4 @@
 import gc
-import machine
 import os
 
 import modules.io_manager as io_man
@@ -7,6 +6,7 @@ from modules.decache import decache
 import modules.menus as menus
 import modules.crash_handler as c_handler
 import modules.os_constants as osc
+import modules.powersaving as ps
 
 button_a = None
 button_b = None
@@ -37,4 +37,4 @@ def run():
         os.sync()
         c_handler.crash_screen(tft, 1, "User triggered test crash from menu", True, True, 1)
     gc.collect()
-    machine.freq(osc.BASE_FREQ)
+    ps.set_freq(osc.BASE_FREQ)

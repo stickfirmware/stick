@@ -2,7 +2,6 @@
 # App ID: 1002
 
 import time
-import machine
 
 import fonts.def_8x8 as f8x8
 
@@ -10,6 +9,7 @@ import modules.os_constants as osc
 import modules.menus as menus
 import modules.io_manager as io_man
 import modules.printer as printer
+import modules.powersaving as ps
 
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')
@@ -221,10 +221,9 @@ def run():
     button_c = io_man.get('button_c')
     tft = io_man.get('tft')
     
-    machine.freq(osc.BASE_FREQ)
+    ps.set_freq(osc.BASE_FREQ)
 
     printer.log("Going into main loop")
-    del machine
     
     render = menus.menu("Select resistor type", [("4 colors", 1), ("5 colors", 2), ("Close", 3)])
     if render == 1:

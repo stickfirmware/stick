@@ -30,13 +30,15 @@ import modules.printer as debug
 import modules.buzzer as buzz
 import modules.os_constants as osc
 import modules.io_manager as io_man
+import modules.cache as cache
+import modules.powersaving as ps
 
 # Scripts
 import scripts.checkbattery as battery_shutdown
 
 # Set frequencies
 debug.log("Setting Ultra freq")
-machine.freq(osc.ULTRA_FREQ)
+ps.set_freq(osc.ULTRA_FREQ)
 
 # Buzzer
 debug.log("Buzz tone")
@@ -195,6 +197,9 @@ else:
 
 render_bar("Init buttons...", True)
 
+# Pre-cache
+cache.precache()
+
 # Init buttons
 debug.log("Init buttons")
 import modules.button_init as btn_init
@@ -275,6 +280,7 @@ pwr_save_time = ticks
 diagnostic_time = ticks
 wifi_master_dynamic = ticks
 cleaner_time = ticks
+ps_time = ticks
 
 prev_bl = tft.get_backlight()
 is_in_saving = False
@@ -341,12 +347,12 @@ def wake_up():
             auto_rotate = 0
     pwr_save_time = time.ticks_ms()
     tft.set_backlight(nvs.get_float(n_settings, "backlight"))
-    machine.freq(osc.BASE_FREQ)
+    ps.set_freq(osc.BASE_FREQ)
 
 was_sleep_triggered = False
 
 # Slow down CPU
-machine.freq(osc.BASE_FREQ)
+ps.set_freq(osc.BASE_FREQ)
 
 # Print sys.modules
 import sys
@@ -357,9 +363,12 @@ while True:
 
     # Set CPU frequencies depending on power saving state
     if is_in_saving == False:
-        machine.freq(osc.BASE_FREQ)
+        ps.set_freq(osc.BASE_FREQ)
     else:
-        machine.freq(osc.SLOW_FREQ)
+        ps.set_freq(osc.SLOW_FREQ)
+
+    # Disallow boosting
+    ps.boost_allowing_state(False)
     
     # Render clock text
     if menu == 0 and menu_change == False:
@@ -369,6 +378,9 @@ while True:
         app_clock.clock_vert()
     # Render entire clock
     elif menu_change == True:
+        # Allow boosts for a while
+        ps.boost_allowing_state(True)
+
         # Reset eastereggs on render
         eg_click_entry = 0
 
@@ -379,8 +391,6 @@ while True:
             tft.set_backlight(prev_bl)
             was_sleep_triggered = False
 
-        # Set faster CPU freq for faster rendering
-        machine.freq(osc.ULTRA_FREQ)
         render_battery = True
         is_in_saving = False
         pwr_save_time = time.ticks_ms()
@@ -432,6 +442,11 @@ while True:
     #    wifi_master.dynamic_pwr_save()
     #    wifi_master_dynamic = time.ticks_ms()
 
+    # Power saver loop
+    if time.ticks_diff(time.ticks_ms(), ps_time) >= osc.POWER_SAVER_TIME:
+        ps.loop()
+        ps_time = time.ticks_ms()
+
     # Power saving
     if not is_in_saving and time.ticks_diff(time.ticks_ms(), pwr_save_time) >= osc.POWER_SAVE_TIMEOUT and allow_saving == 1:
         # Disable debug/battery info for less lag
@@ -448,7 +463,7 @@ while True:
         if osc.HAS_IMU:
             mpu.sleep_on()
         was_sleep_triggered = True
-        machine.freq(osc.SLOW_FREQ)
+        ps.set_freq(osc.SLOW_FREQ)
     
     # Auto rotation
     if auto_rotate == 1 and time.ticks_diff(time.ticks_ms(), imu_delay) >= osc.IMU_CHECK_TIME and osc.HAS_IMU:
@@ -521,7 +536,7 @@ while True:
         wake_up()
         
         # Set basic frequency
-        machine.freq(osc.BASE_FREQ)
+        ps.set_freq(osc.BASE_FREQ)
         
         # Button debounce (Reset loop if holding more than button a, for dummy unlock)
         while button_a.value() == 0 and button_c.value() == 1 and button_b.value() == 1:

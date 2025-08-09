@@ -5,6 +5,7 @@ import fonts.def_8x8 as f8x8
 
 import modules.os_constants as osc
 import modules.io_manager as io_man
+import modules.powersaving as ps
 
 def splittext_stream(fileobj, charlimit=27, linelimit=16):
     page = []
@@ -44,6 +45,7 @@ def read(filename):
 
 
 def showfile(file):
+    ps.boost_allowing_state(True)
     button_a = io_man.get('button_a')
     button_b = io_man.get('button_b')
     button_c = io_man.get('button_c')
@@ -98,3 +100,4 @@ def showfile(file):
                 time.sleep(osc.DEBOUNCE_TIME)
             work = False
         time.sleep(osc.LOOP_WAIT_TIME)
+        ps.boost_allowing_state(False)

@@ -7,6 +7,7 @@ import fonts.def_8x8 as f8x8
 import modules.menus as menus
 import modules.os_constants as osc
 import modules.printer as printer
+import modules.powersaving as ps
 
 frequencies = [osc.ULTRA_SLOW_FREQ, osc.SLOW_FREQ, osc.BASE_FREQ, osc.FAST_FREQ, osc.ULTRA_FREQ]
 testingTime = 15
@@ -88,7 +89,7 @@ def run():
     textpos = 28
     for freq in frequencies:
         tft.text(f8x8, "Testing on " + str(freq // 1000000) + " MHz",0,textpos,65535)
-        machine.freq(freq)
+        ps.set_freq(freq)
         time.sleep(1)
         count, pi = pi_benchmark(testingTime * 1000)
         res_add(freq, count, pi)
@@ -105,7 +106,7 @@ def run_no_gui():
     pre_res()
     for freq in frequencies:
         tft.text(f8x8, "Testing on " + str(freq // 1000000) + " MHz",0,textpos,65535)
-        machine.freq(freq)
+        ps.set_freq(freq)
         time.sleep(1)
         count, pi = pi_benchmark(testingTime * 1000)
         res_add(freq, count, pi)

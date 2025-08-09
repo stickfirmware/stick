@@ -104,6 +104,7 @@ WIFI_PWR_SAVER_TIME = const(15000) # Wifi power saver trigger time (ms)
 RAM_CLEANER_TIME = const(7500) # RAM Cleaner trigger time (ms)
 WIFI_DISABLE_TIMEOUT = const(15000) # Timeout for disabling wifi if not connected
 POWER_SAVE_TIMEOUT = const(15000) # Time to enter power saving after no activity
+POWER_SAVER_TIME = const(1000) # Time to trigger ps loop (modules.powersaving)
 IMU_CHECK_TIME = const(200) # IMU update time, in ms
 IMU_STAY_TIME = const(1000) # IMU stay time, in ms, device needs to be in same rotatation for X ms to accept rotation as stable
 NTP_SYNC_TIME = const(600000) # NTP automatic sync time in ms
