@@ -16,10 +16,8 @@ def boost_allowing_state(allow):
 
 # Boost freq for some cpu intensive tasks, then make it normal for power saving
 def boost_clock():
-    global last_clock_change
-    if time.ticks_diff(time.ticks_ms(), last_clock_change) >= cooldown and machine.freq() != osc.ULTRA_FREQ and allow_boosts == True:
-        machine.freq(osc.ULTRA_FREQ)
-        last_clock_change = time.ticks_ms()
+    if allow_boosts == True:
+        set_freq(osc.ULTRA_FREQ)
 
 # Set freq
 def set_freq(freq):
