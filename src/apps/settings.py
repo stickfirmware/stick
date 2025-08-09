@@ -18,6 +18,7 @@ import modules.numpad as keypad
 import modules.io_manager as io_man
 import modules.wifi_master as wifi_man
 import modules.powersaving as ps
+import modules.cache as cache
 
 printer.log("Getting buttons")
 button_a = io_man.get('button_a')
