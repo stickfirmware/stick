@@ -9,7 +9,6 @@ import fonts.def_16x32 as f16x32
 
 import modules.buzzer as buzz
 import modules.io_manager as io_man
-import modules.os_constants as osc
 import modules.printer as printer
 import modules.menus as menus
 
