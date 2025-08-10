@@ -5,6 +5,7 @@ import ubinascii
 from modules.printer import log
 import modules.nvs as nvs
 import modules.cache as cache
+import modules.crash_handler as c_handler
 
 n_wifi = cache.get_nvs('settings')
 
@@ -83,3 +84,31 @@ def dynamic_pwr_save():
 
     nic.config(pm=pm_map[_LAST_MODE], txpower=tx_map[_LAST_MODE])
     log(f"PM Set to {pm_map[_LAST_MODE]}, txpower to {tx_map[_LAST_MODE]}")
+
+def connect_main_loop():
+    # Check Wi-Fi hostname
+    if nvs.get_string(n_wifi, "hostname") == None:
+        network.hostname(osc.WIFI_DEF_HOST)
+    else:
+        network.hostname(nvs.get_string(n_wifi, "hostname"))
+        
+    # Connect to Wi-Fi if its setup
+    if nvs.get_float(n_wifi, "conf") == None:
+        nvs.set_float(n_wifi, "conf", 0)
+    if int(nvs.get_float(n_wifi, "conf")) == 1:
+        if nvs.get_int(n_wifi, "autoConnect") == 1:
+            log('Connecting to wifi!')
+            try:
+                log('Reset nic')
+                nic_reset()
+                log("Connect")
+                ssid = nvs.get_string(n_wifi, "ssid")
+                passwd = nvs.get_string(n_wifi, "passwd")
+                if passwd != "":
+                    nic.connect(ssid, passwd)
+                else:
+                    nic.connect(ssid)
+            except Exception as e:
+                import modules.io_manager as io_man
+                tft = io_man.get('tft')
+                c_handler.crash_screen(tft, 3001, str(e), True, True, 2)

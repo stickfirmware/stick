@@ -11,6 +11,15 @@ def clear(bypass_precache=False):
     if bypass_precache == False:
         precache()
 
+def remove(name):
+    if name in _CACHE:
+        del _CACHE[name]
+
+def get_and_remove(name):
+    val = get(name)
+    remove(name)
+    return val
+
 def get_nvs(name):
     key = "nvs_" + name
     nvs_obj = _CACHE.get(key)
