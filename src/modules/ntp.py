@@ -97,3 +97,10 @@ def sync_interactive():
                     syncing = False
     else:
         menus.menu("No Wi-Fi connection!", [("OK",  1)])
+
+def wrong_time_support():
+    # ESP's usually have default time set to 2000 something, 
+    # check if its greater than the time im programming this.
+    if localtime[0] < min_time[0] and localtime[1] < min_time[1] and localtime[2] < min_time[2] and osc.HAS_RTC == True:
+        import modules.menus as menus
+        menus.menu("Time incorrect, please sync", [("OK", None)])

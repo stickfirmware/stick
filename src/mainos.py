@@ -31,6 +31,7 @@ import modules.os_constants as osc
 import modules.io_manager as io_man
 import modules.cache as cache
 import modules.powersaving as ps
+import modules.files as files
 
 # Scripts
 import scripts.checkbattery as battery_shutdown
@@ -45,11 +46,7 @@ if osc.HAS_BUZZER:
     buzzer = PWM(Pin(osc.BUZZER_PIN), duty_u16=0, freq=500)
     buzz.startup_sound(buzzer)
 
-try:
-    os.rmdir("/temp")
-except Exception as e:
-    print(str(e))
-    print("temp deletion error")
+files.rmdir_recursive("/temp")
 
 if "temp" not in os.listdir():
         os.mkdir("temp")
@@ -86,6 +83,7 @@ try:
     text_color = osc.LCD_LOAD_TEXT
 except Exception as e:
     c_handler.crash_screen(None, 1002, str(e), True, False, 1)
+io_man.set('tft', tft)
 
 loading_count = 0 # Increased with every task
 loading_max = 10 # Max loading_count will reach
@@ -113,31 +111,19 @@ n_guides = cache.get_nvs('guides')
 render_bar("Loading data...", True)
 
 # Set default vars, load backlight, volume, autorotate and powersaving
-if nvs.get_int(n_locks, "dummy") == None:
-    nvs.set_int(n_locks, "dummy", 0)
+import modules.nvs_set_def as nsd
+nsd.run()
     
-s_bl = nvs.get_float(n_settings, "backlight")
-if s_bl is None:
-    s_bl = 0.5
-    nvs.set_float(n_settings, "backlight", s_bl)
+s_bl = cache.get_and_remove('n_cache_backlight')
 debug.log("Backlight: " + str(s_bl))
 tft.set_backlight(s_bl)
 
-s_vl = nvs.get_float(n_settings, "volume")
-if s_vl is None:
-    s_vl = 0.5
-    nvs.set_float(n_settings, "volume", s_vl)
+s_vl = cache.get_and_remove('n_cache_volume')
 debug.log("Buzzer volume: " + str(s_vl))
 buzz.set_volume(s_vl)
 
-auto_rotate = nvs.get_int(n_settings, "autorotate")
-allow_saving = nvs.get_int(n_settings, "allowsaving")
-if auto_rotate == None:
-    nvs.set_int(n_settings, "autorotate", 1)
-    auto_rotate = 1
-if allow_saving == None:
-    nvs.set_int(n_settings, "allowsaving", 1)
-    allow_saving = 1
+auto_rotate = cache.get_and_remove('n_cache_arotate')
+allow_saving = cache.get_and_remove('n_cache_pwrsave')
 
 render_bar("Checking first boot...", True)
 
@@ -158,36 +144,8 @@ rtc = None
 i2c = None
 mpu = None
 if osc.HAS_SHARED_I2C == True:
-    try:
-        # Init I2C
-        i2c = machine.I2C(osc.I2C_SLOT, scl=machine.Pin(osc.I2C_SCL), sda=machine.Pin(osc.I2C_SDA))
-    except Exception as e:
-        c_handler.crash_screen(tft, 1001, str(e), True, True, 2)
-        
-    # Init and sync time from rtc
-    if osc.HAS_RTC == True:
-        import modules.rtc as rtc_bm8536  
-        rtc = rtc_bm8536.BM8563(i2c)
-        # rtc.set_time((2025, 4, 29, 1, 13, 37, 0, 0))
-        dt = rtc.get_time()
-        machine.RTC().datetime(dt)
-        debug.log(dt)
-    else:
-        rtc = None
-    
-    # Init IMU/MPU
-    if osc.HAS_IMU == True: 
-        from modules.mpu6886 import MPU6886
-
-        mpu = MPU6886(i2c)
-        
-        # If autorotate is disabled, put IMU to sleep for power saving
-        if auto_rotate == 0:
-            mpu.sleep_on()
-    else:
-        mpu = None
-        nvs.set_int(n_settings, "autorotate", 0)
-        auto_rotate = 0
+    import modules.i2c_init as i2c_init
+    i2c, rtc, mpu = i2c_init.init()
 else:
     mpu = None
     rtc = None
@@ -210,7 +168,6 @@ io_man.set('button_a', button_a)
 io_man.set('button_b', button_b)
 io_man.set('button_c', button_c)
 io_man.set('clicker_btn', clicker)
-io_man.set('tft', tft)
 io_man.set('rtc', rtc)
 io_man.set('mpu', mpu)
 io_man.set('power_hold', power_hold)
@@ -222,49 +179,13 @@ if nvs.get_int(n_guides, 'quick_start') == None:
 
 render_bar("Check time...", True)
 
-# TODO: Make this build time
-min_time = (2025, 8, 2) 
-localtime = time.localtime()
-
-# ESP's usually have default time set to 2000 something, 
-# check if its greater than the time im programming this.
-if localtime[0] < min_time[0] and localtime[1] < min_time[1] and localtime[2] < min_time[2] and osc.HAS_RTC == True:
-    import modules.menus as menus
-    menus.menu("Time incorrect, please sync", [("OK", None)])
-    
+import modules.ntp as ntp
+ntp.wrong_time_support()
 
 render_bar("Wi-Fi init...", True)
 import modules.wifi_master as wifi_master
-
-# Check Wi-Fi hostname
-if nvs.get_string(n_wifi, "hostname") == None:
-    network.hostname(osc.WIFI_DEF_HOST)
-else:
-    network.hostname(nvs.get_string(n_wifi, "hostname"))
-    
-# Connect to Wi-Fi if its setup
-nic = network.WLAN(network.STA_IF)
-conn_time = None
-if nvs.get_float(n_wifi, "conf") == None:
-    nvs.set_float(n_wifi, "conf", 0)
-if int(nvs.get_float(n_wifi, "conf")) == 1:
-    if nvs.get_int(n_wifi, "autoConnect") == 1:
-        debug.log('Connecting to wifi!')
-        try:
-            debug.log('Reset nic')
-            wifi_master.nic_reset()
-            #debug.log('Set modes')
-            #wifi_master.set_pwr_modes(0)
-            debug.log("Connect")
-            conn_time = time.ticks_ms()
-            ssid = nvs.get_string(n_wifi, "ssid")
-            passwd = nvs.get_string(n_wifi, "passwd")
-            if passwd != "":
-                nic.connect(ssid, passwd)
-            else:
-                nic.connect(ssid)
-        except Exception as e:
-            c_handler.crash_screen(tft, 3001, str(e), True, True, 2)
+wifi_master.connect_main_loop()
+conn_time = time.ticks_ms()
         
 render_bar("Loading other libraries...", True)
 
@@ -336,7 +257,7 @@ import apps.clock as app_clock
 
 # Wake up function
 def wake_up():
-    global is_in_saving, pwr_save_time, prev_bl
+    global is_in_saving, pwr_save_time, prev_bl, stable_orientation
     is_in_saving = False
     auto_rotate = nvs.get_int(n_settings, "autorotate")
     if auto_rotate == 0:
