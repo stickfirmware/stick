@@ -32,6 +32,7 @@ _WHITELIST = {
         'modules.powersaving',
         'modules.ram_cleaner',
         'modules.rtc',
+        'modules.ntp',
         'modules.mpu6886',
         'fonts.def_8x8',
         'fonts.def_16x16',

@@ -5,7 +5,6 @@ import network
 import fonts.def_8x8 as f8x8
 import fonts.def_16x32 as f16x32
 
-from modules.decache import decache
 import modules.battery_check as battery_check
 import modules.io_manager as io_man
 import modules.menus as menus
@@ -13,9 +12,9 @@ import modules.os_constants as osc
 import modules.text_utils as text_utils
 import modules.printer as printer
 import modules.powersaving as ps
+import modules.ntp as ntp
 
 tft = io_man.get('tft')
-rtc = machine.RTC()
 
 allow_drawing_battery = True
 
@@ -57,12 +56,12 @@ def run_clock_vert():
     
 def clock_vert(): 
     global last_clock_text, last_date_text, last_mode
-    time_tuple = rtc.datetime()
+    time_tuple = ntp.get_time_timezoned()
     
     # Time
-    hh = time_tuple[4]
-    mm = time_tuple[5]
-    ss = time_tuple[6]
+    hh = time_tuple[3]
+    mm = time_tuple[4]
+    ss = time_tuple[5]
     text = "{:02}:{:02}:{:02}".format(hh, mm, ss)
     if last_clock_text != text or last_mode != 1:
         x = text_utils.center_x(text, 16)
@@ -79,17 +78,17 @@ def clock_vert():
 
 def clock():
     global last_clock_text, last_date_text, last_mode
-    time_tuple = rtc.datetime()
-    
+    time_tuple = ntp.get_time_timezoned()
+
     if nic.isconnected() == True:
         tft.text(f8x8, "Wi-Fi",50,5,703)
     else:
         tft.text(f8x8, "     ",50,5,703)
     
     # Time
-    hh = time_tuple[4]
-    mm = time_tuple[5]
-    ss = time_tuple[6]
+    hh = time_tuple[3]
+    mm = time_tuple[4]
+    ss = time_tuple[5]
     text = "{:02}:{:02}:{:02}".format(hh, mm, ss)
     if last_clock_text != text or last_mode != 0:
         x = text_utils.center_x(text, 16)
@@ -194,7 +193,4 @@ def clock_menu():
     if clock_menu == 1:
         stopwatch()
     elif clock_menu == 3:
-        import modules.ntp as ntp
         ntp.sync_interactive()
-        del ntp
-        decache("modules.ntp")

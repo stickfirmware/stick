@@ -1,4 +1,3 @@
-import ntptime
 import time
 import esp32
 import network
@@ -7,6 +6,9 @@ import modules.menus as menus
 import modules.nvs as nvs
 import modules.os_constants as osc
 import modules.io_manager as io_man
+import modules.cache as cache
+
+n_settings = esp32.NVS("settings")
 
 timezone_map = {
     0: (0, 0), 1: (1, 0), 2: (2, 0), 3: (3, 0),
@@ -21,26 +23,18 @@ timezone_map = {
     37: (-10, 0), 38: (-11, 0), 39: (-12, 0)
 }
 
-def wait_for_new_second():
-    now = time.localtime()
-    current_sec = now[5]
-    while time.localtime()[5] == current_sec:
-        time.sleep(0.01)
-
-def sync():
-    rtc = io_man.get('rtc')
-    n_settings = esp32.NVS("settings")
-    timezoneIndex = nvs.get_int(n_settings, "timezoneIndex")
-    if timezoneIndex is None:
-        timezoneIndex = 0
-    try:
-        ntptime.settime()
-    except Exception as e:
-        print("NTP sync failed")
-        print(str(e))
-        return False
-
-    wait_for_new_second()
+t_index_ttl = 0 # Time to live of NVS cache
+def get_time_timezoned(bypass_cache=False):
+    global t_index_ttl
+    timezoneIndex_cached = cache.get("timezone_index")
+    timezoneIndex = 0
+    if t_index_ttl <= 0 or bypass_cache:
+        timezoneIndex = nvs.get_int(n_settings, "timezoneIndex")
+        cache.set("timezone_index", timezoneIndex)
+        t_index_ttl = 50
+    else:
+        if timezoneIndex_cached != None:
+            timezoneIndex = timezoneIndex_cached
 
     current_time = time.localtime()
     
@@ -51,9 +45,39 @@ def sync():
     utc_timestamp = time.mktime(current_time)
     local_timestamp = utc_timestamp + offset_sec
     local_time = time.localtime(local_timestamp)
+    t_index_ttl -= 1
+    return local_time
+
+def wait_for_new_second():
+    now = time.localtime()
+    current_sec = now[5]
+    while time.localtime()[5] == current_sec:
+        time.sleep(0.01)
+
+def sync(): 
+    import ntptime # Add the import here cause ram cleaner will delete it
+
+
+    rtc = io_man.get('rtc')
+    
+    timezoneIndex = nvs.get_int(n_settings, "timezoneIndex")
+
+    if timezoneIndex is None:
+        timezoneIndex = 0
+    try:
+        ntptime.host = "time.google.com"
+        ntptime.settime()
+    except Exception as e:
+        print("NTP sync failed")
+        print(str(e))
+        return False
+
+    wait_for_new_second()
+
+    utc = time.localtime()
     
     if osc.HAS_RTC == True:
-        rtc.set_time((local_time[0], local_time[1], local_time[2], local_time[6], local_time[3], local_time[4], local_time[5], 0))
+        rtc.set_time((utc[0], utc[1], utc[2], utc[6], utc[3], utc[4], utc[5], 0))
     return True
 
 def sync_interactive():
