@@ -6,6 +6,7 @@ from modules.printer import log
 import modules.nvs as nvs
 import modules.cache as cache
 import modules.crash_handler as c_handler
+import modules.os_constants as osc
 
 n_wifi = cache.get_nvs('settings')
 
