@@ -15,6 +15,19 @@ button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')
 button_c = io_man.get('button_c')
 tft = io_man.get('tft')
+
+file_banlist = [
+    '/main.py',
+    '/mainos.py',
+    '/version.py',
+    '/modules',
+    '/apps',
+    '/helpers',
+    '/fonts',
+    '/bitmaps',
+    '/scripts',
+    '/recovery'
+]
     
 clipboard = ""
         
@@ -60,7 +73,7 @@ def browser(path):
     
 def fileMenu(file):
     global clipboard
-    if file.endswith(".mpy") or file == '/main.py':
+    if file.endswith(".mpy") or file in file_banlist:
         confirmation = menus.menu('Modyfing may harm system!', [("Don't open", None), ("Open anyway", 1)])
         if confirmation == None:
             return
@@ -154,6 +167,10 @@ def explorerLoop(startingpath, disablemenu = False):
                 if disablemenu:
                     currpath = browse
                 else:
+                    if browse in file_banlist:
+                        confirmation = menus.menu('Modyfing may harm system!', [("Don't open", None), ("Open anyway", 1)])
+                        if confirmation == None:
+                            return
                     folder_enter_menu = menus.menu("Folder menu", [("Change dir", 1), ("Delete", 2)])
                     if folder_enter_menu == 1:
                         currpath = browse
