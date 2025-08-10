@@ -29,9 +29,6 @@ Small stick but powerful beast.
 - [ ] Autoupdate
 - [X] Better SD card support
 
-## Supported UNIT modules
-- CardKB
-
 ## Instalation
 We need to add an installer later
 
