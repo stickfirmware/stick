@@ -7,7 +7,6 @@ import gc
 import fonts.def_8x8 as f8x8
 
 import modules.printer as printer
-from modules.decache import decache
 import modules.menus as menus
 import modules.nvs as nvs
 import modules.os_constants as osc
@@ -18,7 +17,7 @@ import modules.numpad as keypad
 import modules.io_manager as io_man
 import modules.wifi_master as wifi_man
 import modules.powersaving as ps
-import modules.cache as cache
+import modules.ntp as ntp
 
 printer.log("Getting buttons")
 button_a = io_man.get('button_a')
@@ -242,9 +241,7 @@ def run():
                     
             # NTP Sync
             elif rendr == 3:
-                import modules.ntp as ntp
                 ntp.sync_interactive()
-                decache("modules.ntp")
                     
             # NTP Timezone
             elif rendr == 4:
@@ -269,7 +266,7 @@ def run():
                         else:
                             nvs.set_int(n_settings, "timezoneIndex", timezone)
                             tim = False
-                timezone = menus.menu("Please sync NTP to apply!", [("OK", 1)])
+                ntp.get_time_timezoned(True)
                 
         # SD Card settings
         elif menu1 == 7:
