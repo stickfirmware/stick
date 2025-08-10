@@ -8,7 +8,7 @@ import modules.os_constants as osc
 import modules.io_manager as io_man
 import modules.cache as cache
 
-def sleep(verbose=False):
+def sleep():
     button_c = io_man.get('button_c')
     tft = io_man.get('tft')
     n_settings = cache.get_nvs('settings')
