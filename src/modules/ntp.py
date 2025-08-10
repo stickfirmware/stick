@@ -31,6 +31,8 @@ def get_time_timezoned(bypass_cache=False):
     timezoneIndex = 0
     if t_index_ttl <= 0 or bypass_cache:
         timezoneIndex = nvs.get_int(n_settings, "timezoneIndex")
+        if timezoneIndex is None:
+            timezoneIndex = 0
         cache.set("timezone_index", timezoneIndex)
         t_index_ttl = t_ttl_new
     else:
