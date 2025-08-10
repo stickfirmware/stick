@@ -51,7 +51,7 @@ def power_menu():
         os.sync()
         if mpu != None:
             mpu.sleep_on()
-        m_sleep.sleep(osc.ENABLE_DEBUG_PRINTS)
+        m_sleep.sleep()
         if mpu != None:
             mpu.sleep_off()
         if wasConnected == True:
@@ -61,18 +61,15 @@ def power_menu():
         ps.set_freq(osc.BASE_FREQ)
         nic.active(False)
         tft.fill(703)
-        tft.text(f8x8, "Powering off...",0,0,65535,703)
-        tft.text(f8x8, "Please wait!",0,8,65535,703)
+        tft.text(f8x8, "Powering off...",0,0,65535,0)
         os.sync()
         if osc.HAS_HOLD_PIN:
             power_hold.value(0)
-        m_sleep.sleep(osc.ENABLE_DEBUG_PRINTS)
+        m_sleep.sleep()
     elif powermenu == 3:
         ps.set_freq(osc.BASE_FREQ)
         nic.active(False)
-        tft.fill(703)
-        tft.text(f8x8, "Rebooting...",0,0,65535,703)
-        tft.text(f8x8, "Please wait!",0,8,65535,703)
+        tft.text(f8x8, "Rebooting...",0,0,65535,0)
         os.sync()
         machine.reset()
     else:
