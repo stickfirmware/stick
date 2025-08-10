@@ -23,7 +23,8 @@ timezone_map = {
     37: (-10, 0), 38: (-11, 0), 39: (-12, 0)
 }
 
-t_index_ttl = 0 # Time to live of NVS cache
+t_index_ttl = 0 # Time to live of NVS cache, make sure its 0 so timezone is right first time clock appears
+t_ttl_new = 50 # New ttl when cache expired
 def get_time_timezoned(bypass_cache=False):
     global t_index_ttl
     timezoneIndex_cached = cache.get("timezone_index")
@@ -31,7 +32,7 @@ def get_time_timezoned(bypass_cache=False):
     if t_index_ttl <= 0 or bypass_cache:
         timezoneIndex = nvs.get_int(n_settings, "timezoneIndex")
         cache.set("timezone_index", timezoneIndex)
-        t_index_ttl = 50
+        t_index_ttl = t_ttl_new
     else:
         if timezoneIndex_cached != None:
             timezoneIndex = timezoneIndex_cached
