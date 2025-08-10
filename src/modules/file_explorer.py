@@ -26,7 +26,8 @@ file_banlist = [
     '/fonts',
     '/bitmaps',
     '/scripts',
-    '/recovery'
+    '/recovery',
+    '/guides'
 ]
     
 clipboard = ""

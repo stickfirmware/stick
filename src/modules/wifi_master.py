@@ -1,12 +1,12 @@
 import network
 import time
-import esp32
 import ubinascii
 
 from modules.printer import log
 import modules.nvs as nvs
+import modules.cache as cache
 
-n_wifi = esp32.NVS("wifi")
+n_wifi = cache.get_nvs('settings')
 
 nic = network.WLAN(network.STA_IF)
 

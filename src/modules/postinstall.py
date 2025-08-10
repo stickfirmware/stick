@@ -1,10 +1,10 @@
 import os
-import esp32
 
 from modules.random_func_checker import check_random_extra_functions
 from modules.printer import log
 import modules.os_constants as osc
 import modules.nvs as nvs
+import modules.cache as cache
 
 _RANDOM_FUNC_BANLIST = [
     "/apps/dice.py"
@@ -30,5 +30,5 @@ def postinstall():
         del_it_all(_RANDOM_FUNC_BANLIST)
 
     log("Postinstall - setting NVS")
-    n_updates = esp32.NVS("updates")
+    n_updates = cache.get_nvs('updates')
     nvs.set_int(n_updates, "postinstall", 0)

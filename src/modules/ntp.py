@@ -1,5 +1,4 @@
 import time
-import esp32
 import network
 
 import modules.menus as menus
@@ -8,7 +7,7 @@ import modules.os_constants as osc
 import modules.io_manager as io_man
 import modules.cache as cache
 
-n_settings = esp32.NVS("settings")
+n_settings = cache.get_nvs('settings')
 
 timezone_map = {
     0: (0, 0), 1: (1, 0), 2: (2, 0), 3: (3, 0),

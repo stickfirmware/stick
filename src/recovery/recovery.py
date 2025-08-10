@@ -1,7 +1,6 @@
-import esp32
-
 import modules.nvs as nvs
 from modules.decache import decache
+import modules.cache as cache
 
 print("Init IO manager")
 import modules.io_manager as io_man
@@ -31,7 +30,7 @@ while True:
         if confirm_reset == 1:
             confirm_reset = menus.menu("It removes all files!", [("Cancel", 2), ("Confirm", 1)])
             if confirm_reset == 1:
-                n_updates = esp32.NVS("updates")
+                n_updates = cache.get_nvs('updates')
                 nvs.set_int(n_updates, "factory", 1)
                 machine.reset()
     elif render == 5:
@@ -40,7 +39,7 @@ while True:
         decache('modules.file_explorer')
         del a_fe
     elif render == 6:
-        n_settings = esp32.NVS("settings")
+        n_settings = cache.get_nvs('settings')
         dev_settings = nvs.get_int(n_settings, "dev_apps")
         if dev_settings == 1:
             nvs.set_int(n_settings, "dev_apps", 0)

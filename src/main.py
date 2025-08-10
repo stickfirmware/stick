@@ -1,16 +1,17 @@
 print("Stick Boot")
 
 class FakeST:
-    def text(self, *k):
-        return None
-    def fill(self, *k):
-        return None
+    def text(self, font, text, x, y, tc, bc):
+        return print(text + f" (x:{x}, y:{y}, text color: {tc}, bg col: {bc})")
+    def fill(self, col):
+        return print(f"Fill screen with color {col}")
 
-import machine, time
+import machine
 import os
 import modules.os_constants as osc
 import modules.printer as printer
 import modules.powersaving as ps
+import modules.cache as cache
 
 ps.set_freq(osc.ULTRA_FREQ)
 
@@ -35,7 +36,6 @@ try:
 
     # Init tft
     printer.log("Init tft")
-    import modules.st7789 as st7789
     import modules.tft_init as tft_init
     tft = tft_init.init_tft()
     load_bg = osc.LCD_LOAD_BG
@@ -76,10 +76,9 @@ rbtn = machine.Pin(RECOVERY_BTN_PIN, machine.Pin.IN, machine.Pin.PULL_UP)
 recovery = rbtn.value() == 0
 
 # Postinstall
-import esp32
 import modules.nvs as nvs
 
-n_updates = esp32.NVS("updates")
+n_updates = cache.get_nvs('updates')
 requires_postinstall = nvs.get_int(n_updates, "postinstall")
 if requires_postinstall == None:
     requires_postinstall = 1

@@ -13,9 +13,8 @@ print("Kitki30 Stick")
 ##########################
 
 # First party imports
-from machine import Pin, PWM, SPI
+from machine import Pin, PWM
 import machine
-import esp32
 import gc
 import network
 import os
@@ -103,11 +102,13 @@ def render_bar(text, increase_count=False):
 render_bar("Preparing NVS...")
 
 # Load NVS
-debug.log("Load NVS")
-n_settings = esp32.NVS("settings")
-n_wifi = esp32.NVS("wifi")
-n_boot = esp32.NVS("boot")
-n_locks = esp32.NVS("locks")
+debug.log("Load cache")
+cache.precache()
+n_settings = cache.get_nvs('settings')
+n_wifi = cache.get_nvs('wifi')
+n_boot = cache.get_nvs('boot')
+n_locks = cache.get_nvs('locks')
+n_guides = cache.get_nvs('guides')
 
 render_bar("Loading data...", True)
 
@@ -197,15 +198,12 @@ else:
 
 render_bar("Init buttons...", True)
 
-# Pre-cache
-cache.precache()
-
 # Init buttons
 debug.log("Init buttons")
 import modules.button_init as btn_init
 button_a, button_b, button_c, clicker = btn_init.init_buttons()
 
-# Init IO manager
+# Init IO manager (Set buttons, tft, etc.)
 render_bar("Init IO manager", True)
 debug.log("Init IO manager")
 io_man.set('button_a', button_a)
@@ -216,6 +214,11 @@ io_man.set('tft', tft)
 io_man.set('rtc', rtc)
 io_man.set('mpu', mpu)
 io_man.set('power_hold', power_hold)
+
+if nvs.get_int(n_guides, 'quick_start') == None:
+    import helpers.run_in_reader as rir
+    rir.open_file('/guides/quick_start.txt')
+    nvs.set_int(n_guides, 'quick_start', 1)
 
 render_bar("Check time...", True)
 

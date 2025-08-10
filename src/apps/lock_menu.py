@@ -1,6 +1,4 @@
 import time
-import machine
-import esp32
 
 import fonts.def_8x8 as f8x8
 
@@ -9,7 +7,8 @@ import modules.io_manager as io_man
 import modules.nvs as nvs
 import modules.powersaving as ps
 import modules.menus as menus
-    
+import modules.cache as cache
+
 tft = io_man.get('tft')
 
 def dummyMsg():
@@ -27,7 +26,7 @@ def run():
     global tft
     tft = io_man.get('tft')
 
-    n_locks = esp32.NVS("locks")
+    n_locks = cache.get_nvs('locks')
     work = True
     while work == True:
         if nvs.get_int(n_locks, "dummy") == 0:

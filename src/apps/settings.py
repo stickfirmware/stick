@@ -1,4 +1,3 @@
-import esp32
 import machine
 import network
 import time
@@ -18,6 +17,7 @@ import modules.io_manager as io_man
 import modules.wifi_master as wifi_man
 import modules.powersaving as ps
 import modules.ntp as ntp
+import modules.cache as cache
 
 printer.log("Getting buttons")
 button_a = io_man.get('button_a')
@@ -35,9 +35,9 @@ def load_io():
 
 def run():
     load_io()
-    n_settings = esp32.NVS("settings")
-    n_updates = esp32.NVS("updates")
-    n_wifi = esp32.NVS("wifi")
+    n_settings = cache.get_nvs('settings')
+    n_updates = cache.get_nvs('updates')
+    n_wifi = cache.get_nvs('wifi')
     
     work = True
     while work == True:
