@@ -185,6 +185,7 @@ ntp.wrong_time_support()
 render_bar("Wi-Fi init...", True)
 import modules.wifi_master as wifi_master
 wifi_master.connect_main_loop()
+nic = network.WLAN(network.STA_IF)
 conn_time = time.ticks_ms()
         
 render_bar("Loading other libraries...", True)
