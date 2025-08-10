@@ -101,6 +101,8 @@ def sync_interactive():
 def wrong_time_support():
     # ESP's usually have default time set to 2000 something, 
     # check if its greater than the time im programming this.
+    localtime = time.localtime()
+    min_time = (2025, 8,8) # My cats birthday
     if localtime[0] < min_time[0] and localtime[1] < min_time[1] and localtime[2] < min_time[2] and osc.HAS_RTC == True:
         import modules.menus as menus
         menus.menu("Time incorrect, please sync", [("OK", None)])
