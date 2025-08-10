@@ -1,4 +1,4 @@
-# Kitki30 Stick
+# Stick firmware
 Small stick but powerful beast.
 
 ![GitHub License](https://img.shields.io/github/license/stickfirmware/stick?label=License)
