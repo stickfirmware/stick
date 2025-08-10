@@ -525,7 +525,10 @@ while True:
             # Open power menu
             import apps.power_menu as app_powermen
             allow_only_landscape()
-            app_powermen.run()
+            if nvs.get_int(n_locks, 'dummy') != 0:
+                app_powermen.power_menu()
+            else:
+                app_powermen.run()
             # De-cache
             decache("apps.power_menu")
             del app_powermen
