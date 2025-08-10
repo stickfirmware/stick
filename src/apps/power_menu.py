@@ -1,6 +1,5 @@
 import os
 import machine
-import esp32
 import network
 import machine
 
@@ -13,6 +12,7 @@ import modules.menus as menus
 import modules.io_manager as io_man
 import modules.sleep as m_sleep
 import modules.powersaving as ps
+import modules.cache as cache
 
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')
@@ -40,7 +40,7 @@ def run():
 def power_menu():
     nic = network.WLAN(network.STA_IF)
     powermenu = menus.menu("Power", [("Sleep", 1), ("Power off", 2), ("Reboot", 3), ("Cancel", 4)])
-    n_wifi = esp32.NVS("wifi")
+    n_wifi = cache.get_nvs('wifi')
     if powermenu == 1:
         ps.set_freq(osc.BASE_FREQ)
         wasConnected = False

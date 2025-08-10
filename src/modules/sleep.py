@@ -6,11 +6,12 @@ from modules.printer import log
 import modules.nvs as nvs
 import modules.os_constants as osc
 import modules.io_manager as io_man
+import modules.cache as cache
 
 def sleep(verbose=False):
     button_c = io_man.get('button_c')
     tft = io_man.get('tft')
-    n_settings = esp32.NVS("settings")
+    n_settings = cache.get_nvs('settings')
     log("Sleeping")
     log("Set wake on ext0")
     if osc.INPUT_METHOD == 1:

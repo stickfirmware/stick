@@ -1,7 +1,6 @@
 from machine import Pin
 import machine
 import time
-import esp32
 import os
 import json
 
@@ -23,13 +22,14 @@ import modules.menus as menus
 import fonts.def_8x8 as f8x8
 import modules.nvs as nvs
 import modules.powersaving as ps
+import modules.cache as cache
 
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')
 button_c = io_man.get('button_c')
 tft = io_man.get('tft')
 
-n_settings = esp32.NVS("settings")
+n_settings = cache.get_nvs('settings')
 pin_nvs = nvs.get_int(n_settings, "irPin")
 if pin_nvs is None or pin_nvs not in osc.IR_ALLOWED_PINS:
     nvs.set_int(n_settings, "irPin", osc.IR_PIN)

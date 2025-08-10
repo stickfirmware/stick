@@ -10,8 +10,9 @@ import modules.menus as menus
 import modules.os_constants as osc
 import modules.nvs as nvs
 import modules.powersaving as ps
+import modules.cache as cache
 
-n_settings = esp32.NVS("settings")
+n_settings = cache.get_nvs('settings')
 
 dev_settings = nvs.get_int(n_settings, "dev_apps")
 if dev_settings == None:

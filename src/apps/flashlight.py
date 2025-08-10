@@ -1,11 +1,11 @@
 import time
-import esp32
 
 import modules.io_manager as io_man
 import modules.os_constants as osc
 import modules.nvs as nvs
+import modules.cache as cache
 
-n_settings = esp32.NVS("settings")
+n_settings = cache.get_nvs('settings')
 
 def run():
     button_a = io_man.get('button_a')
