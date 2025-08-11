@@ -1,5 +1,30 @@
 import os
 
+# Create folders recursivly (ex. /usr/games/wordly)
+def mkdir_recursive(path):
+    parts = path.split('/')
+    if parts[0] == '':
+        current = '/'
+        parts = parts[1:]
+    else:
+        current = ''
+    
+    for part in parts:
+        if not part:
+            continue
+        if current == '/' or current == '':
+            current += part
+        else:
+            current += '/' + part
+
+        try:
+            os.mkdir(current)
+        except OSError as e:
+            if e.args[0] == 17:
+                pass
+            else:
+                raise
+
 def rmdir_recursive(path):
     for file in os.listdir(path):
         full_path = path_join(path, file)

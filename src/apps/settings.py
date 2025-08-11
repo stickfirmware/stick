@@ -166,10 +166,15 @@ def run():
                     nic.connect(ssid, password)
                 else:
                     nic.connect(ssid)
+
+                
                 while nic.isconnected() == False and nic.status() != network.STAT_CONNECTING:
                     time.sleep(0.2)
+
+                time.sleep(2)
+
                 if nic.isconnected():
-                    nvs.set_float(n_wifi, "conf", 1)
+                    nvs.set_float(n_wifi, "conf", 1.0)
                     nvs.set_int(n_wifi, "autoConnect", autoconnect)
                     nvs.set_string(n_wifi, "ssid", ssid)
                     nvs.set_string(n_wifi, "passwd", password)
@@ -183,9 +188,9 @@ def run():
                 
             # Wi-Fi connection
             elif rendr == 2:
-                if int(nvs.get_float(n_wifi, "conf")) == 1:
+                if int(nvs.get_float(n_wifi, "conf")) == 1.0:
                     try:
-                        nic = network.WLAN(network.STA_IF)
+                        nic = wifi_man.nic
                         if nic.isconnected() == False:
                             rend = menus.menu("Connect with " + nvs.get_string(n_wifi, "ssid") + "?", [("Yes",  1), ("No",  2)])
                             if rend == 1:
