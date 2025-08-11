@@ -4,31 +4,43 @@ import modules.numpad as numpad
 import modules.qr_codes as qr
 import modules.os_constants as osc
 import modules.io_manager as io_man
-
-import fonts.def_8x8 as f8x8
+import modules.menus as menus
 
 def run():
-    inp = numpad.keyboard("QR Code text")
+    inp = None
     work = True
     tft = io_man.get('tft')
     btn_b = io_man.get('button_b')
     btn_a = io_man.get('button_a')
     btn_c = io_man.get('button_c')
-    didnt_scale = True
+    allow_input = True
+    size = 1
+
     while work == True:
-        if inp != None or inp != "":
-            tft.fill(0)
-            size = 1
-            if didnt_scale == True:
-                tft.text(f8x8, "Too small? Press btn b.", 0, 127)
-            else:
-                size = 3
-            qr.make_qr(tft, inp, 0, 0, size)
+        if inp != None and inp != "":
+            # Render qr
+            qr.make_qr(tft, inp, 0, 0, size, True)
+
             while btn_a.value() == 1 and btn_b.value() == 1 and btn_c.value() == 1:
                 time.sleep(osc.LOOP_WAIT_TIME)
-            if btn_b.value() == 1 or didnt_scale == False:
-                work = False
+
+            if btn_a.value() == 0:
+                menu = menus.menu("QR Menu", [("Size", 1), ("Change input", 2), ("Exit", 3)])
+                if menu == 2:
+                    inp = None
+                    allow_input = True
+                elif menu == 1:
+                    qr_size_menu = menus.menu("Size menu", [("Size +1", 1), ("Size -1", 2), ("Exit", 3)])
+                    if qr_size_menu == 1:
+                        size += 1
+                    elif qr_size_menu == 2:
+                        size -= 1
+                else:
+                    work = False
+        else:
+            if allow_input == True:
+                inp = numpad.keyboard("QR Code text")
+                allow_input = False
+                size = 1
             else:
-                didnt_scale = False
-            while btn_a.value() == 0 or btn_b.value() == 0 or btn_c.value() == 0:
-                time.sleep(osc.DEBOUNCE_TIME)
+                work = False

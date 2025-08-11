@@ -26,9 +26,10 @@ def elems_split(arr, chunk_size=13):
 
 def menu(name, choices):
     load_io()
+    # Boost freq
     curr_freq = machine.freq()
     ps.boost_allowing_state(True)
-    ps.set_freq(osc.ULTRA_FREQ)
+    ps.boost_clock()
     tft.fill_rect(0, 0, 240, 3, 65535)
     tft.fill_rect(0, 16, 240, 3, 65535)
     tft.fill_rect(0, 132, 240, 3, 65535)
@@ -58,6 +59,7 @@ def menu(name, choices):
     
     # Return to base freq after render
     ps.set_freq(osc.BASE_FREQ)
+    ps.boost_allowing_state(False)
     
     # Main menu loop
     while chosen == False:
@@ -121,7 +123,6 @@ def menu(name, choices):
     gc.collect()
     # Return to starting frequency
     ps.set_freq(curr_freq)
-    ps.boost_allowing_state(False)
     
     if didnt_choose == True:
         return None

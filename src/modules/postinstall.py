@@ -6,10 +6,12 @@ import modules.os_constants as osc
 import modules.nvs as nvs
 import modules.cache as cache
 
+# File list if there are no random extra func
 _RANDOM_FUNC_BANLIST = [
     "/apps/dice.py"
 ]
 
+# Delete entire list of files
 def del_it_all(list):
     for file in list:
         try:
