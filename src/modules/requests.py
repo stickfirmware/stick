@@ -1,10 +1,10 @@
 import gc
 import socket
+import ssl
 
 def download(url, filename, bufsize=512):
-    # Split to parts
-    assert url.startswith("http://"), "Only http supported"
-    url = url[7:]  # delete http://
+    assert url.startswith("https://"), "Only https supported now"
+    url = url[8:]
 
     slash_pos = url.find('/')
     if slash_pos == -1:
@@ -14,13 +14,16 @@ def download(url, filename, bufsize=512):
         host = url[:slash_pos]
         path = url[slash_pos:]
 
-    addr_info = socket.getaddrinfo(host, 80)
+    addr_info = socket.getaddrinfo(host, 443)
     addr = addr_info[0][-1]
 
     s = socket.socket()
     s.connect(addr)
+
+    s = ssl.wrap_socket(s, server_hostname=host)
+
     req = "GET {} HTTP/1.0\r\nHost: {}\r\n\r\n".format(path, host)
-    s.send(req.encode())
+    s.write(req.encode())
 
     gc.collect()
     with open(filename, "wb") as f:
@@ -28,7 +31,7 @@ def download(url, filename, bufsize=512):
         leftover = b""
         while True:
             gc.collect()
-            data = s.recv(bufsize)
+            data = s.read(bufsize)
             if not data:
                 break
 
@@ -42,4 +45,5 @@ def download(url, filename, bufsize=512):
                     leftover = b""
             else:
                 f.write(data)
+
     s.close()
