@@ -170,16 +170,17 @@ def explorerLoop(startingpath, disablemenu = False):
                 else:
                     if browse in file_banlist:
                         confirmation = menus.menu('Modyfing may harm system!', [("Don't open", None), ("Open anyway", 1)])
-                        if confirmation == 1:
-                            folder_enter_menu = menus.menu("Folder menu", [("Change dir", 1), ("Delete", 2)])
-                            if folder_enter_menu == 1:
-                                currpath = browse
-                            elif folder_enter_menu == 2:
-                                if menus.menu("Remove folder?", [("Yes", 1), ("No", None)]) == 1:
-                                    try:
-                                        rmdir_recursive(path_join(currpath, browse))
-                                    except:
-                                        menus.menu("Couldn't remove folder!", [("OK", None)])
+                        if confirmation != 1:
+                            continue
+                    folder_enter_menu = menus.menu("Folder menu", [("Change dir", 1), ("Delete", 2)])
+                    if folder_enter_menu == 1:
+                        currpath = browse
+                    elif folder_enter_menu == 2:
+                        if menus.menu("Remove folder?", [("Yes", 1), ("No", None)]) == 1:
+                            try:
+                                rmdir_recursive(path_join(currpath, browse))
+                            except:
+                                menus.menu("Couldn't remove folder!", [("OK", None)])
     
 def run(fileselectmode=False, startingselectpath="/"):
     load_io()
