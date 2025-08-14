@@ -5,9 +5,6 @@ Makes your stick a usefull EDC device
 - Screen auto-rotate by IMU
 - Custom and built in apps
 
-> [!NOTE]
-> Don't be scared if there was no commit for a whole month, i work in the backgroud and don't feel like commiting broken features. You can contact me on telegram (@Kitki300) if you want latest off github copy.
-
 ## Supported devices
 **M5StickC Plus2** is the only device supported, if M5Stack will release a new stick, i will probably try to port this firmware to it.
 
