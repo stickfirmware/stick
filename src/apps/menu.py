@@ -11,6 +11,7 @@ import modules.os_constants as osc
 import modules.nvs as nvs
 import modules.powersaving as ps
 import modules.cache as cache
+import modules.popup as popup
 
 n_settings = cache.get_nvs('settings')
 
@@ -45,7 +46,7 @@ def run():
         decache('apps.IR')
     elif menu1 == 6:
         if not osc.HAS_SPEAKER:
-            menus.menu("You don't have a speaker!", [("OK", 1)])
+            popup.show("Speaker was not detected in your device, music player is not supported.", "Error", 10)
             return
         import apps.player as a_pl
         a_pl.run()

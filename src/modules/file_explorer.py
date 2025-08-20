@@ -9,6 +9,7 @@ import fonts.def_16x32 as f16x32
 import modules.menus as menus
 import modules.open_file as open_file   
 import modules.io_manager as io_man
+import modules.popup as popup
 from modules.files import is_file, rmdir_recursive, parent_path, path_join
 
 button_a = io_man.get('button_a')
@@ -155,9 +156,9 @@ def explorerLoop(startingpath, disablemenu = False):
                         try:
                             os.mkdir(path_join(currpath, folder_create_name))
                         except:
-                            menus.menu("Couldn't make folder!", [("OK", None)])
+                            popup.show("Could not make folder.", "Error", 10)
                     else:
-                        menus.menu("Invalid name!", [("OK", 1)])
+                        popup.show("Invalid file name was provided.", "Error", 10)
         else:
             if is_file(browse):
                 if disablemenu == False:
@@ -180,7 +181,7 @@ def explorerLoop(startingpath, disablemenu = False):
                             try:
                                 rmdir_recursive(path_join(currpath, browse))
                             except:
-                                menus.menu("Couldn't remove folder!", [("OK", None)])
+                                popup.show("Could not remove folder.", "Error", 10)
     
 def run(fileselectmode=False, startingselectpath="/"):
     load_io()
