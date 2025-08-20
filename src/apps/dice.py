@@ -13,8 +13,8 @@ def random_int(tft):
     random.seed(None)
     text = str(random.randint(1,6))
     x = text_utils.center_x(text, 16)
-    y = text_utils.center_y(text, 32)
-    tft.text(f16x32, text, x, y, st.WHITE)
+    y = text_utils.center_y(32)
+    tft.text(f16x32, text, x, y, random.randint(60000, 65535))
 
 def run():
     tft = io_man.get('tft')
