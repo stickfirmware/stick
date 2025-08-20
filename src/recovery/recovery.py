@@ -5,7 +5,9 @@ import modules.nvs as nvs
 from modules.decache import decache
 import modules.cache as cache
 import modules.menus as menus
+import modules.popup as popup
 import modules.io_manager as io_man
+import modules.os_constants as osc
 
 print("Init IO manager")
 if io_man.get('tft') != None:
@@ -24,7 +26,7 @@ io_man.set('button_c', button_c)
 io_man.set('tft', tft)
 
 while True:
-    render = menus.menu("Recovery menu", [("Factory reset", 1), ("File explorer", 2), ("Toggle dev apps", 3), ("Disable custom SD", 4), ("Reboot", None)])
+    render = menus.menu("Recovery menu", [("Factory reset", 1), ("File explorer", 2), ("Toggle dev apps", 3), ("Disable custom SD", 4), ("Mount sd card", 5), ("Reboot", None)])
     if render == 1:
         confirm_reset = menus.menu("Reset all settings?", [("No", None), ("Yes", 1)])
         if confirm_reset == 1:
@@ -48,5 +50,12 @@ while True:
     elif render == 4:
         n_settings = cache.get_nvs('settings')
         nvs.set_int(n_settings, "sd_overwrite", 0)
+    elif render == 5:
+        try:
+            import modules.sdcard as sd
+            sd.init(2, osc.SD_CLK, osc.SD_CS, osc.SD_MISO, osc.SD_MOSI)
+            sd.mount()
+        except Exception as e:
+            popup.show(f"Error mounting SD card.\nDoes your device have sdcard slot?\nCustom sd card is not currently supported here!\nError msg:\n{str(e)}", "Error", 10)
     elif render == 13:
         machine.reset()
