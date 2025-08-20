@@ -2,6 +2,7 @@ from machine import I2C, Pin
 
 import modules.menus as menus
 import modules.os_constants as osc
+import modules.popup as popup
 
 def run():
     if osc.HAS_GROVE:
@@ -13,4 +14,4 @@ def run():
         menu.append(("Close", None))
         menus.menu("I2C Scanner", menu)
     else:
-        menus.menu("No Grove slot!!!", [("OK", None)])
+        popup.show("No grove slot in your device.", "Error", 10)
