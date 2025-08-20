@@ -47,7 +47,7 @@ def split_text(text, max_len=29, max_lines=13):
 
 
 def show(message, title="Info", timeout=3600):
-    ps.allow_boosts(True)
+    ps.boost_allowing_state(True)
     
     # Clear / Display title
     tft = io_man.get("tft")
