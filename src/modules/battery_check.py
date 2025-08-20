@@ -1,16 +1,14 @@
-BATTERY_FULL = 3.95
-BATTERY_MID = 3.65
-BATTERY_LOW = 3.25
-
 from machine import ADC, Pin
 
 import modules.os_constants as osc
 
+import fonts.def_8x8 as f8x8
+
 adc = ADC(Pin(osc.BATTERY_ADC))
 adc.atten(ADC.ATTN_11DB)
 
-# Bitmap anti-rerender
-last_bitmap = None
+# Percentage anti-rerender
+last_percent = None # temp value to force refresh
 
 def voltage(samplecount=10):
     samples = []
@@ -31,33 +29,7 @@ def percentage(voltage):
     elif pr >= 100.00:
         pr = 100.00
     return pr
-
-def bitmap():
-    v = voltage()
-    if v >= BATTERY_FULL:
-        return 3
-    elif v >= BATTERY_MID:
-        return 2
-    elif v >= 3.25:
-        return 1
-    else:
-        return 0
     
 def run(tft):
-    bitm = bitmap()
-    global last_bitmap
-    if last_bitmap == bitm:
-        return
-    last_bitmap = bitm
-    if bitm == 3:
-        import bitmaps.battery_3 as b_battery_3
-        tft.bitmap(b_battery_3, 210,3)
-    elif bitm == 2:
-        import bitmaps.battery_2 as b_battery_2
-        tft.bitmap(b_battery_2, 210,3)
-    elif bitm == 1:
-        import bitmaps.battery_1 as b_battery_1
-        tft.bitmap(b_battery_1, 210,3)
-    else:
-        import bitmaps.battery as b_battery
-        tft.bitmap(b_battery, 210,3)
+    percentage = percentage(voltage())
+    tft.text(f8x8, f"{percentage}%", 200, 3, 2027)
