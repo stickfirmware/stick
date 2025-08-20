@@ -73,7 +73,7 @@ def show(message, title="Info", timeout=3600):
         if current_y >= max_y:
             break
         
-    tft.fill_rect(0, any_button_line_y, osc.LCD_WIDTH, 3) # Separator
+    tft.fill_rect(0, any_button_line_y, osc.LCD_WIDTH, 3, 65535) # Separator
     tft.text(f8x8, "Press any button to close", 0, any_button_y, 65535)
     
     if timeout > 3600:
