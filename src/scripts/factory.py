@@ -14,6 +14,7 @@ try:
     files.rmdir_recursive("/temp")
 except:
     log("Failed!")
+    
 log("Reset NVS, bye!")
 
 import scripts.reset_nvs
