@@ -32,8 +32,8 @@ def percentage(voltage):
     
 def run(tft):
     global last_bitmap
-    perc = percentage(voltage())
+    perc = int(percentage(voltage()))
     if last_bitmap != perc:
         last_bitmap = perc
-        tft.text(f8x8, "    ", 200, 3, 2027)
-        tft.text(f8x8, f"{perc}%", 200, 3, 2027)
+        tft.text(f8x8, "    ", 200, 5, 2027)
+        tft.text(f8x8, f"{perc}%", 200, 5, 2027)
