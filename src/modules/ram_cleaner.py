@@ -16,6 +16,7 @@ _WHITELIST = {
         'modules.wifi_master',
         'modules.sdcard',
         'modules.menus',
+        'modules.popup',
         'modules.os_constants',
         'modules.io_manager',
         'modules.st7789',
