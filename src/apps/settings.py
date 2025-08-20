@@ -11,13 +11,12 @@ import modules.nvs as nvs
 import modules.os_constants as osc
 import modules.open_file as open_file
 import modules.crash_handler as c_handler
-import modules.qr_codes as qr
-import modules.numpad as keypad
 import modules.io_manager as io_man
 import modules.wifi_master as wifi_man
 import modules.powersaving as ps
-import modules.ntp as ntp
 import modules.cache as cache
+import modules.ntp as ntp
+import modules.popup as popup
 
 printer.log("Getting buttons")
 button_a = io_man.get('button_a')
@@ -42,10 +41,17 @@ def run():
     work = True
     while work == True:
         # Main menu
-        menu1 = menus.menu("Settings", [("LCD / st7789", 1), ("Sound", 2), ("Wi-Fi", 3), ("SD Card", 7), ("About", 8), ("Factory reset", 9), ("Close", 13)])
+        menu1 = menus.menu("Settings", [("LCD / st7789", 1), ("Sound", 2), ("Wi-Fi", 3), ("SD Card", 7), ("About", 8), ("Factory reset", 9), ("Close", None)]) # ("Account", 10),
         
+        # Account settings
+        if menu1 == 10:
+            import modules.account_manager as account_manager
+            menu2 = menus.menu("Settings/Account", [("Link account", 1), ("Close", None)])
+            if menu2 == 1:
+                account_manager.link()
+            
         # LCD / st7789 settings
-        if menu1 == 1:
+        elif menu1 == 1:
             menu2 = menus.menu("Settings/st7789", [("Backlight", 1), ("Autorotate", 2), ("Power saving", 3), ("Close", 13)])
             
             # Backlight settings
@@ -70,7 +76,7 @@ def run():
                 work1 = True
                 if osc.HAS_IMU == False:
                     work1 = False
-                    menus.menu("No IMU in your device :(", [("OK", 13)])
+                    popup.show("IMU/MPU was not detected in your device!!!", "Error", 10)
                 while work1 == True:
                     menu3 = menus.menu("Settings/st7789/Autorotate", [("Current: " + str(nvs.get_int(n_settings, "autorotate")), 1), ("Enable", 2), ("Disable", 3), ("Close", 13)])
                     if menu3 == 1:
@@ -134,7 +140,7 @@ def run():
                         wifi_man.nic_reset()
                         attempts -= 1
                     if nic_scan == []:
-                        menus.menu("No ap found!", [("OK", None)])
+                        popup.show("No AP found!\nTry hard resetting your device, as ESP's Wi-Fi stack may be broken.", "Error", 10)
                         continue
                 wlan_scan = []
                 index = 0
@@ -149,6 +155,7 @@ def run():
                     continue
                 ssid = nic_scan[num][0].decode()
                 if nic_scan[num][4] != 0:
+                    import modules.numpad as keypad
                     password = str(keypad.keyboard("Enter password", maxlen=63, hideInput=False))
                     if password == None:
                         continue
@@ -167,24 +174,22 @@ def run():
                 else:
                     nic.connect(ssid)
 
-                
-                while nic.isconnected() == False and nic.status() != network.STAT_CONNECTING:
+                start_time = time.ticks_ms()
+                while nic.isconnected() == False and time.ticks_diff(time.ticks_ms(), start_time) < 10000:
                     time.sleep(0.2)
-
-                time.sleep(2)
 
                 if nic.isconnected():
                     nvs.set_float(n_wifi, "conf", 1.0)
                     nvs.set_int(n_wifi, "autoConnect", autoconnect)
                     nvs.set_string(n_wifi, "ssid", ssid)
                     nvs.set_string(n_wifi, "passwd", password)
-                    menus.menu("Connected!", [("OK", 1)])
+                    popup.show("Connected to: " + ssid, "Info", 10)
                 elif nic.status() == network.STAT_WRONG_PASSWORD:
-                    menus.menu("Wrong password!", [("OK", 1)])
+                    popup.show("Wrong password.", "Error", 10)
                 elif nic.status() == network.STAT_NO_AP_FOUND:
-                    menus.menu("AP not found!", [("OK", 1)])
+                    popup.show("Access Point was not found.\nMake sure you are in your access points signal", "Error", 10)
                 else:
-                    menus.menu("Couldn't connect!", [("OK", 1)])
+                    popup.show("Could not connect!\nTry hard resetting your device, as ESP's Wi-Fi stack may be broken.", "Error", 10)
                 
             # Wi-Fi connection
             elif rendr == 2:
@@ -203,7 +208,7 @@ def run():
                                     nic.connect(ssid, passwd)
                                 else:
                                     nic.connect(ssid)
-                                menus.menu("Please wait for connection!", [("OK",  1)])
+                                popup.show("Please wait until wifi connects!", "Info", 10)
                         else:
                             rend = menus.menu("Wi-Fi connected, diconnect?", [("Yes",  1), ("No",  2)])
                             if rend == 1:
@@ -211,7 +216,7 @@ def run():
                     except Exception as e:
                         c_handler.crash_screen(tft, 3001, str(e), True, True, 2)
                 else:
-                    menus.menu("Wi-Fi not set-up yet!", [("OK",  1)])
+                    popup.show("Wi-Fi was not setup yet!", "Error", 10)
 
             # Wifi power managament
             elif rendr == 9:
@@ -277,19 +282,25 @@ def run():
         elif menu1 == 7:
             
             # SD Slot check
-            if osc.HAS_SD_SLOT == False:
-                menus.menu("No SD slot!", [("OK", None)])
+            if osc.HAS_SD_SLOT == False or nvs.get_int(n_settings, "sd_overwrite") == 1:
+                popup.show("No SD card slot detected in your device!", "Error", 10)
                 continue
             
             import modules.sdcard as sd
-
+            
             # SD Card menu if SD is not mounted
             if sd.sd is None:
                 sd_menu = menus.menu("Settings/SD Card", [("Init", 1), ("Close", 13)])
                 if sd_menu == 1:
                     tft.fill(0)
                     tft.text(f8x8, "Init SD...",0,0, 65535)
-                    sdin = sd.init(2, osc.SD_CLK, osc.SD_CS, osc.SD_MISO, osc.SD_MOSI)
+                    if nvs.get_int(n_settings, "sd_overwrite") == 1 and nvs.get_int(n_settings, "sd_automount") == 1:
+                        cs = nvs.get_int(n_settings, "sd_cs")
+                        if cs == 99:
+                            cs = None
+                        sdin = sd.init(2, nvs.get_int(n_settings, "sd_clk"), cs, nvs.get_int(n_settings, "sd_miso"), nvs.get_int(n_settings, "sd_mosi"))
+                    else:
+                        sdin = sd.init(2, osc.SD_CLK, osc.SD_CS, osc.SD_MISO, osc.SD_MOSI)
                     time.sleep(2)
                     if sdin == True:
                         if sd.mount() == True:
@@ -326,6 +337,7 @@ def run():
             tft.text(f8x8, "Kitki30 Stick version " + str(v.MAJOR) + "." + str(v.MINOR) + "." + str(v.PATCH),0,0,ver_color)
             tft.text(f8x8, "by @Kitki30",0,8,ver_color)
             tft.text(f8x8, "MIT License",0,16,65535)
+            import modules.qr_codes as qr
             tft.text(f8x8, "For more details, scan the QR",0,30,2016)
             qr.make_qr(tft, "https://github.com/stickfirmware/stick", 0, 38, size=2)
             tft.text(f8x8, "Press button A to exit,",0,111,65535)
