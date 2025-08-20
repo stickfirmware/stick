@@ -8,7 +8,7 @@ adc = ADC(Pin(osc.BATTERY_ADC))
 adc.atten(ADC.ATTN_11DB)
 
 # Percentage anti-rerender
-last_percent = None # temp value to force refresh
+last_bitmap = None # temp value to force refresh
 
 def voltage(samplecount=10):
     samples = []
@@ -31,5 +31,9 @@ def percentage(voltage):
     return pr
     
 def run(tft):
+    global last_bitmap
     percentage = percentage(voltage())
-    tft.text(f8x8, f"{percentage}%", 200, 3, 2027)
+    if last_bitmap != percentage:
+        last_bitmap = percentage
+        tft.text(f8x8, "    ", 200, 3, 2027)
+        tft.text(f8x8, f"{percentage}%", 200, 3, 2027)
