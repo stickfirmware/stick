@@ -36,4 +36,4 @@ def run(tft):
     if last_bitmap != perc:
         last_bitmap = perc
         tft.text(f8x8, "    ", 200, 3, 2027)
-        tft.text(f8x8, f"{percentage}%", 200, 3, 2027)
+        tft.text(f8x8, f"{perc}%", 200, 3, 2027)
