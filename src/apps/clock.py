@@ -144,15 +144,15 @@ def stopwatch():
             if elapsed < 0:
                 elapsed = 0
             text = format_ticks_ms(elapsed)
-            x = text_utils.center_x(text, 16)
-            y = text_utils.center_y(text, 32)
+            x = text_utils.center_x(16)
+            y = text_utils.center_y(32)
             tft.text(f16x32, text, x, y, 65535)
             if time.ticks_diff(time.ticks_ms(), time_from_battery_check) >= 5000:
                 volts = battery_check.voltage()
                 pr = battery_check.percentage(volts)
                 text = "Battery: " + str(volts) + "V / " + str(int(pr)) + "%"
                 x = text_utils.center_x(text, 8)
-                y = text_utils.center_y(text, 8) + 32
+                y = text_utils.center_y(8) + 32
                 tft.text(f8x8, text,x,y,2016)
                 time_from_battery_check = time.ticks_ms()
         if button_a.value() == 0:
