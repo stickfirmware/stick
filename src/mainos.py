@@ -172,11 +172,6 @@ io_man.set('rtc', rtc)
 io_man.set('mpu', mpu)
 io_man.set('power_hold', power_hold)
 
-if nvs.get_int(n_guides, 'quick_start') == None:
-    import helpers.run_in_reader as rir
-    rir.open_file('/guides/quick_start.txt')
-    nvs.set_int(n_guides, 'quick_start', 1)
-
 render_bar("Check time...", True)
 
 import modules.ntp as ntp
@@ -247,9 +242,15 @@ debug.log("Loading count: " + str(loading_count))
 
 # Init SD Card
 render_bar("SD Init", True)
-if osc.HAS_SD_SLOT:
+if osc.HAS_SD_SLOT or nvs.get_int(n_settings, "sd_overwrite") == 1:
     import modules.sdcard as sdcard
-    sdcard.init(2, osc.SD_CLK, osc.SD_CS, osc.SD_MISO, osc.SD_MOSI)
+    if nvs.get_int(n_settings, "sd_overwrite") == 1 and nvs.get_int(n_settings, "sd_automount") == 1:
+        cs = nvs.get_int(n_settings, "sd_cs")
+        if cs == 99:
+            cs = None
+        sdcard.init(2, nvs.get_int(n_settings, "sd_clk"), cs, nvs.get_int(n_settings, "sd_miso"), nvs.get_int(n_settings, "sd_mosi"))
+    else:
+        sdcard.init(2, osc.SD_CLK, osc.SD_CS, osc.SD_MISO, osc.SD_MOSI)
     sdcard.mount()
 
 # Load clock
@@ -282,6 +283,19 @@ ps.set_freq(osc.BASE_FREQ)
 # Print sys.modules
 import sys
 debug.log(str(sys.modules))
+
+# Show quick start guide if not shown yet
+if nvs.get_int(n_guides, 'quick_start') == None:
+    import helpers.run_in_reader as rir
+    rir.open_file('/guides/quick_start.txt')
+    nvs.set_int(n_guides, 'quick_start', 1)
+    
+# Show account popup if not shown yet and account is not logged in
+allow_account_popup = False
+if nvs.get_int(n_guides, 'account_popup') == None and nvs.get_int(n_wifi, 'account_logged_in') != 1 and allow_account_popup:
+    import apps.popups.account_popup as account_popup
+    account_popup.run()
+    nvs.set_int(n_guides, 'account_popup', 1)
 
 # Main loop
 while True:
@@ -376,7 +390,7 @@ while True:
     if not is_in_saving and time.ticks_diff(time.ticks_ms(), pwr_save_time) >= osc.POWER_SAVE_TIMEOUT and allow_saving == 1:
         # Disable debug/battery info for less lag
         tft.fill_rect(4, 116, 190, 16, 0) # Info text
-        tft.fill_rect(210, 3, 25, 12, 0) # Battery icon
+        tft.text(f8x8, "    ", 200, 5, 2027) # Battery percentage
         
         # Change bitmap cache to none so battery bitmap renders after wake up
         b_check.last_bitmap = None
@@ -627,11 +641,8 @@ while True:
             # Check percentage
             pr = b_check.percentage(volts)
             
-            # Show either battery percentage or voltage based on dummy mode
             if locks == 0:
-                tft.text(f8x8, "Battery: " + str(volts) + "V / " + str(int(pr)) + "%",4,124,2016)
-            else:
-                tft.text(f8x8, "Battery: " + str(int(pr)) + "%",4,124,2016)
+                tft.text(f8x8, "Battery: " + str(volts) + "V",4,124,2016)
                 
         # Battery bitmap render
         b_check.run(tft)
