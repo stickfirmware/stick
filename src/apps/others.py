@@ -7,6 +7,7 @@ from modules.decache import decache
 import modules.os_constants as osc
 import modules.menus as menus
 import modules.powersaving as ps
+import modules.popup as popup
 
 button_a = None
 button_b = None
@@ -33,7 +34,7 @@ def run():
         decache('apps.resistors')
     elif render == 3:
         if osc.HAS_BUZZER == False:
-            menus.menu("You don't have buzzer!", [("OK", None)])
+            popup.show("Buzzer was not detected in your device, metronome is not supported.", "Error", 10)
             return
         import apps.metronome as a_me
         a_me.run()
