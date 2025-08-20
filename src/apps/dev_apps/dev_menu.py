@@ -20,7 +20,7 @@ def run():
     button_c = io_man.get('button_c')
     tft = io_man.get('tft')
     
-    menu_apps = [("Grove I2C scan", 1), ("Hardware info", 2), ("Trigger crash", 3), ("SD Activator (Experimental)", 3), ("Close", None)]
+    menu_apps = [("Grove I2C scan", 1), ("Hardware info", 2), ("Trigger crash", 3), ("SD Activator (Beta)", 4), ("Close", None)]
 
     menu1 = menus.menu("Menu", menu_apps)
     if menu1 == 1:
