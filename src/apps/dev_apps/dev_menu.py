@@ -20,7 +20,7 @@ def run():
     button_c = io_man.get('button_c')
     tft = io_man.get('tft')
     
-    menu_apps = [("Grove I2C scan", 1), ("Hardware info", 2), ("Trigger crash", 3), ("Close", None)]
+    menu_apps = [("Grove I2C scan", 1), ("Hardware info", 2), ("Trigger crash", 3), ("SD Activator (Experimental)", 3), ("Close", None)]
 
     menu1 = menus.menu("Menu", menu_apps)
     if menu1 == 1:
@@ -36,5 +36,10 @@ def run():
     elif menu1 == 3:
         os.sync()
         c_handler.crash_screen(tft, 1, "User triggered test crash from menu", True, True, 1)
+    elif menu1 == 4:
+        import apps.dev_apps.sd_activator as sd_act
+        sd_act.run()
+        del sd_act
+        decache('apps.dev_apps.sd_activator')
     gc.collect()
     ps.set_freq(osc.BASE_FREQ)
