@@ -17,7 +17,7 @@ def run():
             nvs.set_int(n_settings, "sd_overwrite", 0)
             popup.show("SD Card Activator was disabled.", "Info", 10)
         return
-    if osc.HAS_SDCARD:
+    if osc.HAS_SD_SLOT:
         popup.show("SD Card Activator is not needed. Your config has SD Card Slot setup.", "Info", 10)
         return
     
