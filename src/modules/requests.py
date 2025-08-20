@@ -1,5 +1,6 @@
 import gc
 import socket
+import urequests
 import ssl
 
 def download(url, filename, bufsize=512):
@@ -47,3 +48,7 @@ def download(url, filename, bufsize=512):
                 f.write(data)
 
     s.close()
+    
+def get(url):
+    result = urequests.get(url, headers={"User-Agent": "Stick firmware (https://github.com/stick)"})
+    return result
