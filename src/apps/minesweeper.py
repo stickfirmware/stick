@@ -390,48 +390,55 @@ def game():
             while button_a.value() == 0:
                 time.sleep(osc.DEBOUNCE_TIME)
 
-        # Button B – move X direction
-        if button_b.value() == 0:
-            selection_x = (selection_x + 1) % tiles
-            while button_b.value() == 0:
-                time.sleep(osc.DEBOUNCE_TIME)
-            upd = True
+        if osc.INPUT_METHOD == 1:
+            # Button B – move X direction
+            if button_b.value() == 0:
+                selection_x = (selection_x + 1) % tiles
+                while button_b.value() == 0:
+                    time.sleep(osc.DEBOUNCE_TIME)
+                upd = True
 
-        # Button C – move Y direction
-        if button_c.value() == 0:
-            selection_y = (selection_y + 1) % tiles
-            while button_c.value() == 0:
-                time.sleep(osc.DEBOUNCE_TIME)
-            upd = True
+            # Button C – move Y direction
+            if button_c.value() == 0:
+                selection_y = (selection_y + 1) % tiles
+                while button_c.value() == 0:
+                    time.sleep(osc.DEBOUNCE_TIME)
+                upd = True
             
         if osc.INPUT_METHOD == 2:
+            # Dig
             if d.value() == 0:
                 dig(tft, selection_x, selection_y, tiles_map, states, start_time)
                 upd = True
                 upd_full = True
                 while d.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
+            # Flag
             if f.value() == 0:
                 flag(selection_x, selection_y, states)
                 upd = True
                 upd_full = True
                 while f.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
+            # Up
             if arrow_up.value() == 0:
                 selection_y = (selection_y - 1) % tiles
                 while arrow_up.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
                 upd = True 
+            # Down
             if arrow_down.value() == 0:
                 selection_y = (selection_y + 1) % tiles
                 while arrow_down.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
                 upd = True 
+            # Right
             if arrow_right.value() == 0:
                 selection_x = (selection_x + 1) % tiles
                 while arrow_right.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
-                upd = True   
+                upd = True  
+            # Left 
             if arrow_left.value() == 0:
                 selection_x = (selection_x - 1) % tiles
                 while arrow_left.value() == 0:
