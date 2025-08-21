@@ -394,13 +394,12 @@ def run():
     global tiles
     global bombs_max
     
-    # Main menu
-    menu = menus.menu(
-        "Minesweeper",
-        [("Start", 1), ("Controls", 2), ("Exit", None)],
-    )
-    
     while True:
+        # Main menu
+        menu = menus.menu(
+            "Minesweeper",
+            [("Start", 1), ("Controls", 2), ("Exit", None)],
+        )
         if menu == 1:
             mode = menus.menu("Select game mode", [("Begginer: 8x8", 0), ("Easy: 10x10", 1), ("Medium: 12x12", 2), ("Hard: 16x16", 3), ("Custom", 99), ("Close", None)])
             if mode != None:
