@@ -22,7 +22,7 @@ if dev_settings == None:
 def run():
     tft = io_man.get('tft')
     
-    menu_apps = [("IR Remote", 1), ("Music Player", 6), ("File explorer", 7), ("Flashlight", 8), ("Others", 4), ("Settings", 3)]
+    menu_apps = [("IR Remote", 1), ("File explorer", 7), ("Flashlight", 8), ("Others", 4), ("Others", 4), ("Settings", 3)]
     if dev_settings == 1:
         menu_apps.append(("Developer apps", 99))
     menu_apps.append(("Close", 13))
@@ -44,14 +44,6 @@ def run():
         a_ir.run()
         del a_ir
         decache('apps.IR')
-    elif menu1 == 6:
-        if not osc.HAS_SPEAKER:
-            popup.show("Speaker was not detected in your device, music player is not supported.", "Error", 10)
-            return
-        import apps.player as a_pl
-        a_pl.run()
-        del a_pl
-        decache('apps.player')
     elif menu1 == 7:
         import modules.file_explorer as a_fe
         a_fe.run()
