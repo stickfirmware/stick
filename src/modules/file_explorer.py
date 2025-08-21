@@ -58,9 +58,9 @@ def browser(path):
     files_menu.append(("../", 0))
     for i in files:
         if is_file(path_join(path, i)) == True:
-            files_menu.append(("      " + str(i), index))
+            files_menu.append(("D " + str(i), index))
         else:
-            files_menu.append(("<DIR> " + str(i), index))
+            files_menu.append(("D " + str(i), index))
         index += 1
     chunks = [path[i:i+28] for i in range(0, len(path), 28)]
     last_chunk = chunks[-1] if chunks else ""
