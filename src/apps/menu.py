@@ -54,6 +54,11 @@ def run():
         a_fl.run()
         del a_fl
         decache('apps.flashlight')
+    elif menu1 == 5:
+        import apps.games as a_g
+        a_g.run()
+        del a_g
+        decache('apps.games')
     elif menu1 == 99:
         import apps.dev_apps.dev_menu as d_dev
         d_dev.run()
