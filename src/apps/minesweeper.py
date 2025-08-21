@@ -6,6 +6,7 @@ import modules.io_manager as io_man
 import modules.powersaving as ps
 import modules.popup as popup
 import modules.menus as menus
+import modules.os_constants as osc
 
 import fonts.def_8x8 as f8x8
 
@@ -100,8 +101,12 @@ def draw_tile(tft, x, y, tiles_map, state, tile_size):
             tft.fill_rect(px, py, tile_size, tile_size, 63488)
         else:
             tft.fill_rect(px, py, tile_size, tile_size, 0)
-            tft.text(f8x8, str(tiles_map[y][x]), px+4, py+4, 2019)
-    tft.rect(px, py, tile_size, tile_size, 0)
+            # Draw only not 0no wl
+            if str(tiles_map[y][x]) != "0":
+                num = str(tiles_map[y][x])
+                x_text = px + (tile_size - 6) // 2
+                y_text = py + (tile_size - 8) // 2
+                tft.text(f8x8, num, x_text, y_text, 2019)
     
 # Render full map
 def render_grid_full(tft, tiles_map, states, sel_x=0, sel_y=0):
@@ -190,18 +195,94 @@ def format_ticks_ms(ticks):
     return f"{m:02}:{s:02}"
 
 # Win cb, popup
-def win_callback(time):
-    elapsed = time.ticks_diff(time.ticks_ms(), time)
+def win_callback(tick):
+    elapsed = time.ticks_diff(time.ticks_ms(), tick)
     text = format_ticks_ms(elapsed)
     popup.show(f"Time: {text}\nMap: {tiles}x{tiles}\nBombs: {bombs_max}", "You win!", 60)
     return True
 
 # Callback for losing, popup
-def lose_callback(time):
-    elapsed = time.ticks_diff(time.ticks_ms(), time)
+def lose_callback(tick):
+    elapsed = time.ticks_diff(time.ticks_ms(), tick)
     text = format_ticks_ms(elapsed)
     popup.show(f"Time: {text}\nMap: {tiles}x{tiles}\nBombs: {bombs_max}", "You lose!", 60)
     return True
+
+def draw_bomb_cell(tft, x, y, tile_size, detonated=False, bg_color=None):
+    px = x * tile_size
+    py = y * tile_size
+
+    # Random color
+    if detonated:
+        bg = 63488  # red
+    else:
+        bg = bg_color if bg_color is not None else random.choice([2019, 63488, 65504, 64512, 2016])
+
+    tft.fill_rect(px, py, tile_size, tile_size, bg)
+
+    char_w, char_h = 6, 8
+    x_text = px + (tile_size - char_w) // 2
+    y_text = py + (tile_size - char_h) // 2
+    tft.text(f8x8, "*", x_text, y_text, 0, bg)  # *
+    tft.rect(px, py, tile_size, tile_size, 0)
+
+
+def mark_wrong_flag(tft, x, y, tile_size, bg_color=0):
+    px = x * tile_size
+    py = y * tile_size
+    tft.fill_rect(px, py, tile_size, tile_size, bg_color)
+    
+    char_w, char_h = 6, 8
+    x_text = px + (tile_size - char_w) // 2
+    y_text = py + (tile_size - char_h) // 2
+    tft.text(f8x8, "X", x_text, y_text, 63488, bg_color)  # X
+    tft.rect(px, py, tile_size, tile_size, 0)
+
+
+
+# Animated bomb reveal
+def animate_reveal_bombs(tft, tiles_map, states, boom_x, boom_y, delay_ms=15):
+    ps.boost_allowing_state(True)
+    tile_size = tile_max // tiles
+
+    # Build distance map
+    order = []
+    for y in range(tiles):
+        for x in range(tiles):
+            d = abs(x - boom_x) + abs(y - boom_y)
+            d += random.randint(0, 1)
+            order.append((d, x, y))
+    order.sort(key=lambda e: e[0])
+
+    # Detonate central bomb with flash
+    for flash in range(2):
+        draw_bomb_cell(tft, boom_x, boom_y, tile_size, detonated=True,
+                    bg_color=63488 if flash % 2 == 0 else 64512)
+        time.sleep_ms(40)
+
+    last_d = -1
+    for d, x, y in order:
+        if d != last_d:
+            time.sleep_ms(delay_ms)
+            last_d = d
+
+        is_bomb = (tiles_map[y][x] == -1)
+        is_flag = (states[y][x] == 2)
+
+        if is_bomb:
+            if x == boom_x and y == boom_y:
+                continue
+            # small flash before settling on bomb color
+            for flash in range(2):
+                color = random.choice([2019, 63488, 65504, 64512, 2016])
+                draw_bomb_cell(tft, x, y, tile_size, detonated=False, bg_color=color)
+                time.sleep_ms(10)
+        else:
+            if is_flag:
+                mark_wrong_flag(tft, x, y, tile_size, bg_color=0)
+
+    ps.boost_allowing_state(False)
+    ps.loop()
     
 # Main game loop
 def game():
@@ -233,6 +314,8 @@ def game():
                 tft.fill(0)
                 render_grid_full(tft, tiles_map, states, selection_x, selection_y)
                 upd_full = False
+                if osc.ENABLE_DEBUG_PRINTS:
+                    tft.text(f8x8, "Debugging enabled, can cheat", 0, 127, 63488)
             else:
                 render_grid_partial(
                     tft, tiles_map, states, states_prev,
@@ -250,15 +333,15 @@ def game():
             
             if check_win(tiles_map, states):
                 time.sleep(2)
-                win_callback()
+                win_callback(start_time)
                 break
             
-        elapsed = time.ticks_diff(time.ticks_ms(), time)
+        # Update time
+        elapsed = time.ticks_diff(time.ticks_ms(), start_time)
         text = format_ticks_ms(elapsed)
         if last_time_text != text:
             last_time_text = text
             tft.text(f8x8, "Time: " + text, tile_max+2, 10, 2019)
-            
         
         # Button A – tile action
         if button_a.value() == 0:
@@ -268,19 +351,21 @@ def game():
                 if tiles_map[selection_y][selection_x] == -1:
                     tft.fill(0)
                     render_grid_full(tft, tiles_map, states, selection_x, selection_y)
-                    time.sleep(2)
-                    lose_callback()
+                    animate_reveal_bombs(
+                        tft, tiles_map, states,
+                        selection_x, selection_y,
+                        delay_ms=60
+                    )
+                    time.sleep(0.4)
+                    lose_callback(start_time)
                     break
             elif res == 2:  # Flag
-                # Toggle flag
-                if flags_count >= bombs_max and states[selection_y][selection_x] == 2:
+                current_flags = count_flags(states)
+                if current_flags >= bombs_max and states[selection_y][selection_x] != 2:
                     log("Cannot place more flags")
                     popup.show("Cannot place more flags", "Error", 13)
                 else:
-                    if states[selection_y][selection_x] == 2:
-                        states[selection_y][selection_x] = 0
-                    else:
-                        states[selection_y][selection_x] = 2
+                    states[selection_y][selection_x] = 0 if states[selection_y][selection_x] == 2 else 2
             elif res == 3:  # Exit
                 return
             upd = True
@@ -305,18 +390,44 @@ def game():
         time.sleep(0.02)
 
 def run():
+    global tiles
+    global bombs_max
+    
+    # Main menu
     menu = menus.menu(
         "Minesweeper",
         [("Start", 1), ("Controls", 2), ("Exit", None)],
     )
     
-    if menu == 1:
-        game()
-    elif menu == 2:
-        popup.show(
-            "Use A to dig/flag tiles.\n"
-            "Use B to move right.\n"
-            "Use C to move down.\n",
-            "Controls",
-            60
-        )
+    while True:
+        if menu == 1:
+            mode = menus.menu("Select game mode", [("Begginer: 8x8", 0), ("Easy: 10x10", 1), ("Medium: 12x12", 2), ("Hard: 16x16", 3), ("Custom", 99), ("Close", None)])
+            if mode != None:
+                if mode == 99:
+                    import modules.numpad as kb
+                    tiles = kb.numpad("Enter map size max. 16")
+                    if tiles < 1 or tiles > 16:
+                        popup.show("Map size must be between 1 and 16", "Error", 15)
+                        continue
+                    bombs_max = kb.numpad("Enter bombs")
+                    if bombs_max < 1 or bombs_max > (tiles*tiles//2):
+                        popup.show("Bombs must be between 1 and half of total tiles", "Error", 15)
+                        continue
+                else:
+                    mode_tiles = [8, 10, 12, 16]
+                    tiles = mode_tiles[mode]
+                    
+                    # Calculate bombs, 16%
+                    bombs_max = max(1, (tiles * tiles * 16) // 100)
+                
+                game()
+        elif menu == 2:
+            popup.show(
+                "Use A to dig/flag tiles.\n"
+                "Use B to move right.\n"
+                "Use C to move down.\n",
+                "Controls",
+                60
+            )
+        else:
+            break
