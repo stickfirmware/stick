@@ -286,7 +286,7 @@ def animate_reveal_bombs(tft, tiles_map, states, boom_x, boom_y, delay_ms=15):
     
 # Dig
 def dig(tft, selection_x, selection_y, tiles_map, states, start_time):
-    reveal_tile(current_X, current_Y, tiles_map, states)
+    reveal_tile(selection_x, selection_y, tiles_map, states)
     if tiles_map[selection_y][selection_x] == -1:
         tft.fill(0)
         render_grid_full(tft, tiles_map, states, selection_x, selection_y)
