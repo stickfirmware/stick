@@ -31,10 +31,6 @@ def crash_screen(tft, error_code, log_message, log_error, enable_tft, reboot_met
     if enable_tft == True:
         print("Clear display")
         tft.fill(7128)
-        print("Show bitmap: sad")
-        import bitmaps.sad as b_sad
-        tft.bitmap(b_sad, 10,10)
-        del b_sad
         gc.collect()
         print("Showing text")
         text = "It seems like your"
