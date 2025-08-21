@@ -22,7 +22,7 @@ if dev_settings == None:
 def run():
     tft = io_man.get('tft')
     
-    menu_apps = [("IR Remote", 1), ("File explorer", 7), ("Flashlight", 8), ("Others", 4), ("Others", 4), ("Settings", 3)]
+    menu_apps = [("IR Remote", 1), ("File explorer", 7), ("Flashlight", 8), ("Games", 5), ("Others", 4), ("Settings", 3)]
     if dev_settings == 1:
         menu_apps.append(("Developer apps", 99))
     menu_apps.append(("Close", 13))
