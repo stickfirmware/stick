@@ -360,12 +360,13 @@ def game():
                     lose_callback(start_time)
                     break
             elif res == 2:  # Flag
-                current_flags = count_flags(states)
-                if current_flags >= bombs_max and states[selection_y][selection_x] != 2:
-                    log("Cannot place more flags")
-                    popup.show("Cannot place more flags", "Error", 13)
-                else:
-                    states[selection_y][selection_x] = 0 if states[selection_y][selection_x] == 2 else 2
+                if states[selection_y][selection_x] == 0 or states[selection_y][selection_x] == 2:
+                    current_flags = count_flags(states)
+                    if current_flags >= bombs_max and states[selection_y][selection_x] != 2:
+                        log("Cannot place more flags")
+                        popup.show("Cannot place more flags", "Error", 13)
+                    else:
+                        states[selection_y][selection_x] = 0 if states[selection_y][selection_x] == 2 else 2
             elif res == 3:  # Exit
                 return
             upd = True
