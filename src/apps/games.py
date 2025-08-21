@@ -9,7 +9,7 @@ def run():
     menu_apps = [("Minesweeper", 1)]
     menu_apps.append(("Close", None))
 
-    menu1 = menus.menu("Menu", menu_apps)
+    menu1 = menus.menu("Games", menu_apps)
     if menu1 == 1:
         import apps.minesweeper as a_ms
         a_ms.run()
