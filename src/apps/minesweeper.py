@@ -284,12 +284,44 @@ def animate_reveal_bombs(tft, tiles_map, states, boom_x, boom_y, delay_ms=15):
     ps.boost_allowing_state(False)
     ps.loop()
     
+# Dig
+def dig(tft, selection_x, selection_y, tiles_map, states, start_time):
+    reveal_tile(current_X, current_Y, tiles_map, states)
+    if tiles_map[selection_y][selection_x] == -1:
+        tft.fill(0)
+        render_grid_full(tft, tiles_map, states, selection_x, selection_y)
+        animate_reveal_bombs(
+            tft, tiles_map, states,
+            selection_x, selection_y,
+            delay_ms=60
+        )
+        time.sleep(0.4)
+        lose_callback(start_time)
+        
+def flag(selection_x, selection_y, states):
+    if states[selection_y][selection_x] == 0 or states[selection_y][selection_x] == 2:
+        current_flags = count_flags(states)
+        if current_flags >= bombs_max and states[selection_y][selection_x] != 2:
+            log("Cannot place more flags")
+            popup.show("Cannot place more flags", "Error", 13)
+        else:
+            states[selection_y][selection_x] = 0 if states[selection_y][selection_x] == 2 else 2
+    
 # Main game loop
 def game():
     tft = io_man.get('tft')
     button_a = io_man.get('button_a')
     button_b = io_man.get('button_b')
     button_c = io_man.get('button_c')
+    
+    if osc.INPUT_METHOD == 2:
+        import modules.cardputer_kb as ckb
+        arrow_up = ckb.buttonemu([';', ':'])
+        arrow_down = ckb.buttonemu(['.', '>'])
+        arrow_right = ckb.buttonemu(['/', '?'])
+        arrow_left = ckb.buttonemu([',', '<'])
+        f = ckb.buttonemu(['f', 'F'])
+        d = ckb.buttonemu(['d', 'D'])
     
     # Current and previous selection coordinates
     selection_x, selection_y = 0, 0
@@ -347,48 +379,66 @@ def game():
         if button_a.value() == 0:
             res = menus.menu("Tile", [("Dig", 1), ("Flag", 2), ("Cancel", None), ("Exit", 3)],)
             if res == 1:  # Dig
-                reveal_tile(selection_x, selection_y, tiles_map, states)
-                if tiles_map[selection_y][selection_x] == -1:
-                    tft.fill(0)
-                    render_grid_full(tft, tiles_map, states, selection_x, selection_y)
-                    animate_reveal_bombs(
-                        tft, tiles_map, states,
-                        selection_x, selection_y,
-                        delay_ms=60
-                    )
-                    time.sleep(0.4)
-                    lose_callback(start_time)
+                if dig(tft, selection_x, selection_y, tiles_map, states, start_time) == True:
                     break
             elif res == 2:  # Flag
-                if states[selection_y][selection_x] == 0 or states[selection_y][selection_x] == 2:
-                    current_flags = count_flags(states)
-                    if current_flags >= bombs_max and states[selection_y][selection_x] != 2:
-                        log("Cannot place more flags")
-                        popup.show("Cannot place more flags", "Error", 13)
-                    else:
-                        states[selection_y][selection_x] = 0 if states[selection_y][selection_x] == 2 else 2
+                flag(selection_x, selection_y, states)
             elif res == 3:  # Exit
                 return
             upd = True
             upd_full = True
             while button_a.value() == 0:
-                time.sleep(0.05)
+                time.sleep(osc.DEBOUNCE_TIME)
 
         # Button B – move X direction
         if button_b.value() == 0:
             selection_x = (selection_x + 1) % tiles
             while button_b.value() == 0:
-                time.sleep(0.05)
+                time.sleep(osc.DEBOUNCE_TIME)
             upd = True
 
         # Button C – move Y direction
         if button_c.value() == 0:
             selection_y = (selection_y + 1) % tiles
             while button_c.value() == 0:
-                time.sleep(0.05)
+                time.sleep(osc.DEBOUNCE_TIME)
             upd = True
-
-        time.sleep(0.02)
+            
+        if osc.INPUT_METHOD == 2:
+            if d.value() == 0:
+                dig(tft, selection_x, selection_y, tiles_map, states, start_time)
+                upd = True
+                upd_full = True
+                while d.value() == 0:
+                    time.sleep(osc.DEBOUNCE_TIME)
+            if f.value() == 0:
+                flag(selection_x, selection_y, states)
+                upd = True
+                upd_full = True
+                while d.value() == 0:
+                    time.sleep(osc.DEBOUNCE_TIME)
+            if arrow_up.value() == 0:
+                selection_y = (selection_y - 1) % tiles
+                while button_c.value() == 0:
+                    time.sleep(osc.DEBOUNCE_TIME)
+                upd = True 
+            if arrow_down.value() == 0:
+                selection_y = (selection_y + 1) % tiles
+                while button_c.value() == 0:
+                    time.sleep(osc.DEBOUNCE_TIME)
+                upd = True 
+            if arrow_right.value() == 0:
+                selection_x = (selection_x + 1) % tiles
+                while button_c.value() == 0:
+                    time.sleep(osc.DEBOUNCE_TIME)
+                upd = True   
+            if arrow_left.value() == 0:
+                selection_x = (selection_x - 1) % tiles
+                while button_c.value() == 0:
+                    time.sleep(osc.DEBOUNCE_TIME)
+                upd = True  
+                
+        time.sleep(osc.LOOP_WAIT_TIME)
 
 def run():
     global tiles
@@ -422,12 +472,28 @@ def run():
                 
                 game()
         elif menu == 2:
-            popup.show(
-                "Use A to dig/flag tiles.\n"
-                "Use B to move right.\n"
-                "Use C to move down.\n",
-                "Controls",
-                60
-            )
+            if osc.INPUT_METHOD == 1:
+                popup.show(
+                    "Use A to dig/flag tiles.\n"
+                    "Use B to move right.\n"
+                    "Use C to move down.\n",
+                    "Controls",
+                    60
+                )
+            elif osc.INPUT_METHOD == 2:
+                popup.show(
+                    "Use Enter for action menu.\n"
+                    "Use arrows to move.\n"
+                    "Use D to Dig.\n"
+                    "Use F to flag.\n",
+                    "Controls",
+                    60
+                )
+            else:
+                popup.show(
+                    "Unknown input method"
+                    "Error",
+                    60
+                )
         else:
             break
