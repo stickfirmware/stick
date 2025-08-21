@@ -415,26 +415,26 @@ def game():
                 flag(selection_x, selection_y, states)
                 upd = True
                 upd_full = True
-                while d.value() == 0:
+                while f.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
             if arrow_up.value() == 0:
                 selection_y = (selection_y - 1) % tiles
-                while button_c.value() == 0:
+                while arrow_up.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
                 upd = True 
             if arrow_down.value() == 0:
                 selection_y = (selection_y + 1) % tiles
-                while button_c.value() == 0:
+                while arrow_down.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
                 upd = True 
             if arrow_right.value() == 0:
                 selection_x = (selection_x + 1) % tiles
-                while button_c.value() == 0:
+                while arrow_right.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
                 upd = True   
             if arrow_left.value() == 0:
                 selection_x = (selection_x - 1) % tiles
-                while button_c.value() == 0:
+                while arrow_left.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
                 upd = True  
                 
