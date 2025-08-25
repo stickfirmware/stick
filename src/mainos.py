@@ -1,4 +1,4 @@
-print("Kitki30 Stick")
+print("Stick firmware")
 
 ##########################
 #      IMPORTANT!!!!     #
