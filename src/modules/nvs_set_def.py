@@ -20,6 +20,13 @@ def floats(namespace, key, defvar, cachename):
         nvs.set_float(namespace, key, defvar)
         var = defvar
     cache.set("n_cache_" + cachename, var)
+    
+def strings(namespace, key, defvar, cachename):
+    var = nvs.get_string(namespace, key)
+    if var == None:
+        nvs.set_string(namespace, key, defvar)
+        var = defvar
+    cache.set("n_cache_" + cachename, var)
 
 def run():
 
@@ -37,3 +44,6 @@ def run():
 
     # Pwr saving
     ints(n_settings, 'allowsaving', 1, 'pwrsave')
+    
+    # Language settings
+    strings(n_settings, 'lang', "en", 'lang')

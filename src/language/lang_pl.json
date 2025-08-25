@@ -1,0 +1,355 @@
+{
+    "lang_info": {
+        "name": "Polski",
+        "code": "pl",
+        "version": [
+            1,
+            0
+        ],
+        "authors": [
+            "@Kitki30"
+        ]
+    },
+    "mainos_load": {
+        "loading": "Ladowanie...",
+        "first_boot_check": "Sprawdzanie pierwszego bootu.",
+        "shared_iic_init": "Inicjalizacja I2C...",
+        "init_btns": "Inicjalizacja przyciskow...",
+        "init_io_man": "Inicjalizacja io_mana..",
+        "check_time": "Sprawdzanie czasu...",
+        "init_wifi": "Inicjalizacja Wi-Fi...",
+        "load_libs": "Ladowanie innych bibliotek...",
+        "cleaning_up": "Czyszczenie RAMu...",
+        "sd_init": "Montowanie karty SD",
+        "load_clock": "Ladowanie zegara..."
+    },
+    "mainos_diagnostics": {
+        "battery": "Bateria"
+    },
+    "crashes": {
+        "error": "Blad",
+        "app_crashed_oops": "Ups!",
+        "app_crashed_info": "Aplikacja ulegla awarii!",
+        "app_crashed_try_again": "Sproboj ponownie!"
+    },
+    "apps": {
+        "clock": {
+            "name": "Zegar",
+            "stopwatch": {
+                "name": "Stoper",
+                "start_pause": "Przycisk A - Start/Pauza",
+                "reset": "Przycisk B - Reset",
+                "exit": "Przycisk C - Wyjscie",
+                "paused_text": "[PAUZA]",
+                "release": "Pusc aby zresetowac!"
+            },
+            "ntp_sync": "Synchronizuj czas"
+        },
+        "ir_remote": {
+            "name": "Pilot IR",
+            "sending": "Wysylanie",
+            "buttons": {
+                "power": "WL/WYL",
+                "vol_up": "GLOS+",
+                "vol_down": "GLOS-",
+                "mute": "Mute",
+                "chan_next": "KANAL+ / NAST",
+                "chan_prev": "KANAL- / POPRZ",
+                "freeze": "ZAMROZENIE"
+            },
+            "menu": {
+                "repeat": "Powtorzyc?",
+                "change_pin": "Zmien Pin diody IR",
+                "receive": "Odbieraj",
+                "receive_no_support": "Odbieranie IR nie wspierane!"
+            },
+            "receiver_mode": {
+                "title": "Tryb odbiornika!",
+                "pinout": "Pinout odbiornika:",
+                "pinout_5v": "Lub 5V jesli wspiera",
+                "save_info": "Wszystko zapisywane do /usr/ir",
+                "a_to_continue": "Nacisnij A aby kontynuowac,",
+                "c_to_exit": "C aby wyjsc!",
+                "scan_to_copy": "Skanuj IR aby skopiowac!",
+                "timeout": "Czas: 15s",
+                "saved_as": "Zapisano jako: ",
+                "timeout_no_signal": "Czas przekroczony. Brak sygnalu."
+            }
+        },
+        "file_explorer": {
+            "name": "Eksplorator plikow",
+            "name_big": "Eksplorator",
+            "modify_may_harm": "Modyfikacja moze zepsuc system",
+            "dont_open": "Nie otwieraj",
+            "open_anyway": "Otworz mimo to",
+            "open_in": "Otworz w...",
+            "delete": "Usun",
+            "properties": "Wlasciwosci",
+            "file_size": "Rozmiar pliku:",
+            "last_modified": "Ostatnia modyfikacja:",
+            "loading": "Ladowanie...",
+            "months_of_the_year": [
+                "Styczen",
+                "Luty",
+                "Marzec",
+                "Kwiecien",
+                "Maj",
+                "Czerwiec",
+                "Lipiec",
+                "Sierpien",
+                "Wrzesien",
+                "Pazdziernik",
+                "Listopad",
+                "Grudzien"
+            ],
+            "delete_confirmation": "Usunac?",
+            "error_deleting": "Blad usuwania plikow!",
+            "folder_menu": "Menu folderu",
+            "create_folder": "Utworz folder",
+            "enter_folder_name": "Podaj nazwe folderu",
+            "could_not_make_folder": "Nie mozna zrobic folderu.",
+            "invalid_name": "Zla nazwa pliku.",
+            "change_dir": "Zmien folder",
+            "built-in_flash": "Wbudowana pamiec",
+            "sd_card": "Karta pamieci"
+        },
+        "file_reader": {
+            "load_preview": "Ladowanie pliku...",
+            "nothing_to_display": "Nic do wyswietlenia!",
+            "decode_err": "Blad dekodowania"
+        },
+        "flashlight": {
+            "name": "Latarka"
+        },
+        "games": {
+            "name": "Gry"
+        },
+        "others": {
+            "name": "Inne",
+            "title": "Menu/Inne",
+            "buzzer_info_metronome": "Buzzer nie wykryty! Metronom nie wspierany.",
+            "rand_extra_func": "Brak dodatkowych funkcji!"
+        },
+        "settings": {
+            "name": "Ustawienia",
+            "menu1": {
+                "title": "Ustawienia",
+                "lcd": "Ekran",
+                "sound": "Buzzer",
+                "wifi": "Wi-Fi",
+                "sdcard": "Karta SD",
+                "language": "Jezyk (Language)",
+                "about": "O oprogramowaniu",
+                "factory": "Reset ustawien fabrycznych",
+                "account": "Konto"
+            },
+            "acc_menu": {
+                "title": "Ustawienia/Konto",
+                "link": "Polacz konto"
+            },
+            "lang_menu": {
+                "title": "Jezyk (Language)",
+                "reboot": "Restartowac teraz?"
+            },
+            "lcd_menu": {
+                "title": "Ustawienia/lcd",
+                "backlight": "Podswietlenie",
+                "autorotate": "Autoobrot",
+                "pwr_save": "Oszczedzanie energii",
+                "backlight_title": "Ustawienia/lcd/Podsw.",
+                "imu_error_popup": "IMU nie zostalo wykryte w twoim urzadzeniu!!!",
+                "autorotate_title": "Ustawienia/lcd/Autoobrot",
+                "power_saver_title": "Ustawienia/lcd/Oszcze."
+            },
+            "buzzer_menu": {
+                "buzzer_title": "Ustawienia/Buzzer",
+                "volume": "Glosnosc",
+                "volume_title": "Ustawienia/Buzzer/Glos."
+            },
+            "about": {
+                "version": "wersja",
+                "by_kitki30": "od",
+                "apache_license": "Licencja Apache 2.0",
+                "more_details_scan_qr": "Po wiecej info, zeskanuj QR",
+                "a_exit": "Nacisnij przyc. A aby wyjsc,",
+                "b_credits": "B dla kredytow",
+                "c_license": "i C pelnej dla licencji."
+            },
+            "factory": {
+                "reset_all": "Resetowac ustawienia?",
+                "it_removes_all": "To usuwa wszystkie pliki!",
+                "confirm": "Potwierdz"
+            },
+            "sd": {
+                "no_slot_detected_popup": "Czytnik kart pamieci nie zostal wykryty w twoim urzadzeniu!",
+                "title": "Ustawienia/Karta SD",
+                "init": "Inicjalizuj",
+                "init_load": "Init SD...",
+                "done": "Sukces!",
+                "failed": "Blad!",
+                "unmount": "Odmontuj SD",
+                "unmount_load": "Odmontowuje SD..."
+            },
+            "current": "Aktualny"
+        },
+        "minesweeper": {
+            "name": "Saper",
+            "popups": {
+                "time": "Czas:",
+                "map": "Mapa:",
+                "bombs": "Bomby:",
+                "win": "Wygrales!",
+                "lose": "Przegrales!",
+                "cannot_more_flags": "Nie mozna postawic wiecej flag!"
+            },
+            "action_menu": {
+                "tile": "Plytka",
+                "dig": "Kop / Odkryj",
+                "flag": "Flaga"
+            },
+            "debug_enabled": "Debugowanie wl. Mozna oszukac",
+            "flags": "Flagi:",
+            "controls": "Sterowanie",
+            "select_mode": "Wybierz tryb gry",
+            "modes": {
+                "mode1": "Poczatkujacy",
+                "mode2": "Latwy",
+                "mode3": "Sredni",
+                "mode4": "Trudny",
+                "custom": "Wlasne"
+            },
+            "custom_mode": {
+                "map_size": "Podaj rozmiar mapy max. 16",
+                "bombs": "Podaj liczbe bomb",
+                "map_size_error": "Rozmiar mapy musi byc 1-16",
+                "bombs_error": "Bomby musza byc miedzy 1 a "
+            },
+            "input": {
+                "method1": "Uzyj A do menu akcji.\nUzyj B do ruchu w prawo.\nUzyj C do ruchu w dol.\n",
+                "method2": "Uzyj Enter dla menu akcji.\nUzyj strzalek do ruchu.\nUzyj D do kopania.\nUzyj F do flag.\n",
+                "unknown": "Nieznana metoda wejscia"
+            }
+        },
+        "qr_gen": {
+            "name": "Kody QR",
+            "qr_menu": "Menu kodow QR",
+            "size": "Rozmiar",
+            "change_text": "Zmien tekst",
+            "text": "Tekst"
+        },
+        "pimarkx": {
+            "preparing": "Przygotowywanie...",
+            "test_on": "Test na",
+            "benchmark_finish": "Benchmark zakonczony",
+            "do_you_want_to_run": "Uruchomic?",
+            "settings": "Ustawienia:",
+            "test_time": "Czas testu (Na czestotliwosc):",
+            "seconds_shortened": "s",
+            "frequencies": "Czestotliwosci:",
+            "tip": "Uwaga:",
+            "different": "Wyniki moga byc rozne przy uzyciu PiMarkX w Stick Firmware lub bez GUI. Przy porownaniach zawsze uruchamiaj PiMarkX w ten sam sposob aby test byl rzetelny.",
+            "frequency": "Czestotliwosc:",
+            "iterations": "Iteracje:",
+            "it_per_mhz": "iteracje na MHz:",
+            "pi": "Pi"
+        },
+        "dice": {
+            "name": "Kostka do gry",
+            "roll_again": "Jeszcze raz? Przycisk A"
+        },
+        "scorekeeper": {
+            "name": "Licznik punktow",
+            "team": "Druzyna"
+        },
+        "resistors": {
+            "name": "Dekoder rezystorow",
+            "four_color_mode": "Tryb cztero kolorowy!",
+            "five_color_mode": "Tryb piecio kolorowy!",
+            "c_exit": "Nacisnij C aby wyjsc",
+            "a_change": "A aby zmienic kolor",
+            "b_line": "B aby zmienic wybor",
+            "resistance": "Rezystancja",
+            "tolerance": "Tolerancja",
+            "select_type": "Wybierz typ rezystora",
+            "four_colors": "4 kolory",
+            "five_colors": "5 kolorow",
+            "wait": "Prosze czekac!"
+        },
+        "metronome": {
+            "name": "Metronom",
+            "play": "Odtworz",
+            "press_a_to_exit": "Nacisnij A aby wyjsc!"
+        },
+        "music_player": {
+            "name": "Odtwarzacz muzyki",
+            "loading": "Ladowanie...",
+            "file_not_found": "Blad, nie znaleziono pliku.",
+            "paused": "[PAUZA]",
+            "vol": "Vol",
+            "playback_err": "Blad odtwarzania!"
+        }
+    },
+    "menus": {
+        "menu_start": "Start",
+        "menu_reset": "Reset",
+        "menu_go_back": "Wroc",
+        "menu_close": "Zamknij",
+        "menu_exit": "Wyjdz",
+        "app_menu_title": "Menu aplikacji",
+        "popup_any_btn": "Nacisnij A, B lub C by zamknac",
+        "yes": "Tak",
+        "no": "Nie",
+        "ok": "OK",
+        "enable": "Wlacz",
+        "disable": "Wylacz"
+    },
+    "popups": {
+        "info": "Informacja"
+    },
+    "q_actions": {
+        "quick_actions": "Szybkie akcje",
+        "pwr_menu": "Menu zasilania",
+        "power": "Zasilanie",
+        "sleep": "Uspij",
+        "pwr_off": "Wylacz",
+        "reboot": "Uruchom ponow.",
+        "powering_off": "Wylaczanie...",
+        "rebooting": "Restartowanie...",
+        "you_can_now_switch": "Teraz mozesz odlaczyc zasilanie."
+    },
+    "lock_menu": {
+        "name": "Menu blokad",
+        "dummy_mode": "Tryb atrapy",
+        "dummy_with_pin": "Tryb atrapy z PINem",
+        "set_pin_first": "Najpierw wpisz pin",
+        "pin_too_short": "PIN za krotki",
+        "disable_dummy": "Wyl. tryb atrapy",
+        "disabled": "Wyl. tryb atrapy!",
+        "enter_pin": "Podaj PIN",
+        "invalid_pin": "Zly PIN!",
+        "making_sure_1": "Hashuje PIN",
+        "making_sure_2": "Moze sprawiac wrazenie zaw.",
+        "making_sure_3": "to zajmie ok. 15s",
+        "verify_hash_1": "Weryfikacja PINu,",
+        "verify_hash_2": "moze potrfac 15s",
+        "dummy_info_1": "Tryb atrapy",
+        "dummy_info_2": "Blokuje do zegara!",
+        "dummy_info_3": "Aby odblokowac nacisnij A+B",
+        "dummy_info_4": "jednoczesnie przez 1s.",
+        "dummy_info_5": "To pozostanie nawet po",
+        "dummy_info_6": "restarcie! Musisz najpierw",
+        "dummy_info_7": "je odblokowac!"
+    },
+    "ntp": {
+        "retry": "Sprobowac ponownie?",
+        "fail_popup": "Synchronizacja sie niepowiodla!",
+        "success_popup": "Synchronizacja powiodla sie!",
+        "no_wifi_popup": "Brak polaczenia z Wi-Fi.",
+        "time_incorrect_popup": "Czas ustawiony w twoim urzadzeniu jest nieprawidlowy, ale zewnetrzne RTC zostalo wykryte! Prosze zsynchronizowac w ustawieniach."
+    },
+    "keypad": {
+        "menu": "Menu",
+        "confirm": "Potwierdz",
+        "symbols": "Symbole"
+    }
+}

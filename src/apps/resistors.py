@@ -10,6 +10,7 @@ import modules.menus as menus
 import modules.io_manager as io_man
 import modules.printer as printer
 import modules.powersaving as ps
+from modules.translate import get as l_get
 
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')
@@ -52,10 +53,10 @@ def format_resistance(res):
 def four():
     import fonts.def_8x8 as f8x8
     tft.fill(0)
-    tft.text(f8x8, "Four color mode!",0,0,2022)
-    tft.text(f8x8, "Press button C to exit",0,8,2022)
-    tft.text(f8x8, "A to change colors",0,16,2022)
-    tft.text(f8x8, "B to change line",0,24,2022)
+    tft.text(f8x8, l_get("apps.resistors.four_color_mode"),0,0,2022)
+    tft.text(f8x8, l_get("apps.resistors.c_exit"),0,8,2022)
+    tft.text(f8x8, l_get("apps.resistors.a_change"),0,16,2022)
+    tft.text(f8x8, l_get("apps.resistors.b_line"),0,24,2022)
     tft.fill_rect(0, 65, 240, 20, 54938)
     tft.fill_rect(25, 35, 190, 80, 5119)
     
@@ -84,8 +85,8 @@ def four():
             tft.fill_rect(100, 40, 12, 60, colors_m[res3 - 1])
             tft.fill_rect(140, 40, 12, 60, colors_t[res4 - 1])
             resistance = (mapping_second[res1 - 1] + mapping_third[res2 - 1]) * mapping_fourth[res3 - 1]
-            tft.text(f8x8, "Resistance: " + str(format_resistance(resistance)),0,119,2022)
-            tft.text(f8x8, "Tolerance: +-" + str(mapping_fifth[res4 - 1]) + "%",0,127,2022)
+            tft.text(f8x8, l_get("apps.resistors.resistance") + ": " + str(format_resistance(resistance)),0,119,2022)
+            tft.text(f8x8, l_get("apps.resistors.tolerance") + ": +-" + str(mapping_fifth[res4 - 1]) + "%",0,127,2022)
             upd = False
         
         if button_a.value() == 0:
@@ -130,10 +131,10 @@ def four():
 def five():
     import fonts.def_8x8 as f8x8
     tft.fill(0)
-    tft.text(f8x8, "Five color mode!",0,0,2022)
-    tft.text(f8x8, "Press button C to exit",0,8,2022)
-    tft.text(f8x8, "A to change colors",0,16,2022)
-    tft.text(f8x8, "B to change line",0,24,2022)
+    tft.text(f8x8, l_get("apps.resistors.five_color_mode"),0,0,2022)
+    tft.text(f8x8, l_get("apps.resistors.c_exit"),0,8,2022)
+    tft.text(f8x8, l_get("apps.resistors.a_change"),0,16,2022)
+    tft.text(f8x8, l_get("apps.resistors.b_line"),0,24,2022)
     tft.fill_rect(0, 65, 240, 20, 54938)
     tft.fill_rect(25, 35, 190, 80, 5119)
     
@@ -166,8 +167,8 @@ def five():
             tft.fill_rect(120, 40, 12, 60, colors_m[res4 - 1])
             tft.fill_rect(160, 40, 12, 60, colors_t[res5 - 1])
             resistance = (mapping_first[res1 - 1] + mapping_second[res2 - 1] + mapping_third[res3 - 1]) * mapping_fourth[res4 - 1]
-            tft.text(f8x8, "Resistance: " + str(format_resistance(resistance)),0,119,2022)
-            tft.text(f8x8, "Tolerance: +-" + str(mapping_fifth[res5 - 1]) + "%",0,127,2022)
+            tft.text(f8x8, l_get("apps.resistors.resistance") + ": " + str(format_resistance(resistance)),0,119,2022)
+            tft.text(f8x8, l_get("apps.resistors.tolerance") + ": +-" + str(mapping_fifth[res5 - 1]) + "%",0,127,2022)
             upd = False
         
         if button_a.value() == 0:
@@ -225,12 +226,15 @@ def run():
 
     printer.log("Going into main loop")
     
-    render = menus.menu("Select resistor type", [("4 colors", 1), ("5 colors", 2), ("Close", 3)])
+    render = menus.menu(l_get("apps.resistors.select_type"),
+                        [(l_get("apps.resistors.four_colors"), 1),
+                         (l_get("apps.resistors.five_colors"), 2),
+                         (l_get("menus.menu_close"), 3)])
     if render == 1:
-        tft.text(f8x8, "Please wait for the render!",0,0,2022)
+        tft.text(f8x8, l_get("apps.resistors.wait"),0,0,2022)
         four()
     elif render == 2:
-        tft.text(f8x8, "Please wait for the render!",0,0,2022)
+        tft.text(f8x8, l_get("apps.resistors.wait"),0,0,2022)
         five()
     
         

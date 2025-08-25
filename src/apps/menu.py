@@ -1,8 +1,4 @@
-import machine
-import esp32
 import gc
-
-import fonts.def_8x8 as f8x8
 
 import modules.io_manager as io_man
 from modules.decache import decache
@@ -11,7 +7,7 @@ import modules.os_constants as osc
 import modules.nvs as nvs
 import modules.powersaving as ps
 import modules.cache as cache
-import modules.popup as popup
+from modules.translate import language as lang
 
 n_settings = cache.get_nvs('settings')
 
@@ -22,12 +18,12 @@ if dev_settings == None:
 def run():
     tft = io_man.get('tft')
     
-    menu_apps = [("IR Remote", 1), ("File explorer", 7), ("Flashlight", 8), ("Games", 5), ("Others", 4), ("Settings", 3)]
+    menu_apps = [(lang["apps"]["ir_remote"]["name"], 1), (lang["apps"]["file_explorer"]["name"], 7), (lang["apps"]["flashlight"]["name"], 8), (lang["apps"]["games"]["name"], 5), (lang["apps"]["others"]["name"], 4), (lang["apps"]["settings"]["name"], 3)]
     if dev_settings == 1:
         menu_apps.append(("Developer apps", 99))
-    menu_apps.append(("Close", 13))
+    menu_apps.append((lang["menus"]["menu_close"], 13))
 
-    menu1 = menus.menu("Menu", menu_apps)
+    menu1 = menus.menu(lang["menus"]["app_menu_title"], menu_apps)
     if menu1 == 3:
         import apps.settings as a_se
         a_se.run()
@@ -40,7 +36,6 @@ def run():
         decache('apps.others')
     elif menu1 == 1:
         import apps.IR as a_ir
-        tft.text(f8x8, "Loading, please wait!", 0,0, 60000)
         a_ir.run()
         del a_ir
         decache('apps.IR')

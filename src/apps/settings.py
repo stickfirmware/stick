@@ -17,6 +17,8 @@ import modules.powersaving as ps
 import modules.cache as cache
 import modules.ntp as ntp
 import modules.popup as popup
+import modules.translate as translate
+from modules.translate import get as l_get
 
 printer.log("Getting buttons")
 button_a = io_man.get('button_a')
@@ -41,24 +43,61 @@ def run():
     work = True
     while work == True:
         # Main menu
-        menu1 = menus.menu("Settings", [("LCD / st7789", 1), ("Sound", 2), ("Wi-Fi", 3), ("SD Card", 7), ("About", 8), ("Factory reset", 9), ("Close", None)]) # ("Account", 10),
+        menu1 = menus.menu(l_get("apps.settings.name"),
+                           [(l_get("apps.settings.menu1.lcd"), 1),
+                            (l_get("apps.settings.menu1.sound"), 2),
+                            (l_get("apps.settings.menu1.wifi"), 3),
+                            (l_get("apps.settings.menu1.sdcard"), 7),
+                            (l_get("apps.settings.menu1.language"), 11),
+                            (l_get("apps.settings.menu1.about"), 8),
+                            (l_get("apps.settings.menu1.factory"), 9),
+                            (l_get("menus.menu_close"), None)]) # ("Account", 10),
         
         # Account settings
         if menu1 == 10:
             import modules.account_manager as account_manager
-            menu2 = menus.menu("Settings/Account", [("Link account", 1), ("Close", None)])
+            menu2 = menus.menu(l_get("apps.settings.acc_menu.title"),
+                               [(l_get("apps.settings.acc_menu.link"), 1),
+                                (l_get("menus.menu_close"), None)])
             if menu2 == 1:
                 account_manager.link()
+                
+        # Langs
+        elif menu1 == 11:
+            lang_old = nvs.get_string(n_settings, "lang")
+            translations = []
+            for i in translate.main_file["langs"]:
+                translations.append((translate.main_file[i]["name"], i))
+            translations.append((l_get("menus.menu_close"), None))
+            ts_menu = menus.menu(l_get("apps.settings.lang_menu.title"), translations)
+            if ts_menu is not None:
+                if translate.load(ts_menu) == True:
+                    nvs.set_string(n_settings, "lang", ts_menu)
+                    reboot_confirm = menus.menu(l_get("apps.settings.lang_menu.reboot"),
+                                                [(l_get("menus.yes"), 1),
+                                                 (l_get("menus.no"), None)])
+                    if reboot_confirm == 1: machine.soft_reset()
+                else:
+                    popup.show("Translation loading error.", "Error", 10)
+                    translate.load(lang_old)
             
         # LCD / st7789 settings
         elif menu1 == 1:
-            menu2 = menus.menu("Settings/st7789", [("Backlight", 1), ("Autorotate", 2), ("Power saving", 3), ("Close", 13)])
+            menu2 = menus.menu(l_get("apps.settings.lcd_menu.title"),
+                               [(l_get("apps.settings.lcd_menu.backlight"), 1),
+                                (l_get("apps.settings.lcd_menu.autorotate"), 2),
+                                (l_get("apps.settings.lcd_menu.pwr_save"), 3),
+                                (l_get("menus.menu_close"), 13)])
             
             # Backlight settings
             if menu2 == 1:
                 work1 = True
                 while work1 == True:
-                    menu3 = menus.menu("Settings/st7789/Backlight", [("Current: " + str(round(nvs.get_float(n_settings, "backlight"), 1)), 1), ("+", 2), ("-", 3), ("Close", 13)])
+                    menu3 = menus.menu(l_get("apps.settings.lcd_menu.backlight_title"),
+                                       [(l_get("apps.settings.current") + ": " + str(round(nvs.get_float(n_settings, "backlight"), 1)), 1),
+                                        ("+", 2),
+                                        ("-", 3),
+                                        (l_get("menus.menu_close"), 13)])
                     if menu3 == 1:
                         time.sleep(0.02)
                     elif menu3 == 2:
@@ -76,9 +115,13 @@ def run():
                 work1 = True
                 if osc.HAS_IMU == False:
                     work1 = False
-                    popup.show("IMU/MPU was not detected in your device!!!", "Error", 10)
+                    popup.show(l_get("apps.settings.lcd_menu.imu_error_popup"), l_get("crashes.error"), 10)
                 while work1 == True:
-                    menu3 = menus.menu("Settings/st7789/Autorotate", [("Current: " + str(nvs.get_int(n_settings, "autorotate")), 1), ("Enable", 2), ("Disable", 3), ("Close", 13)])
+                    menu3 = menus.menu(l_get("apps.settings.lcd_menu.autorotate_title"),
+                                       [(l_get("apps.settings.current") + ": " + str(nvs.get_int(n_settings, "autorotate")), 1),
+                                        (l_get("menus.enable"), 2),
+                                        (l_get("menus.disable"), 3), 
+                                        (l_get("menus.menu_close"), 13)])
                     if menu3 == 1:
                         time.sleep(0.02)
                     elif menu3 == 2:
@@ -92,7 +135,11 @@ def run():
             elif menu2 == 3:
                 work1 = True
                 while work1 == True:
-                    menu3 = menus.menu("Settings/st7789/Power saving", [("Current: " + str(nvs.get_int(n_settings, "allowsaving")), 1), ("Enable", 2), ("Disable", 3), ("Close", 13)])
+                    menu3 = menus.menu(l_get("apps.settings.lcd_menu.power_saver_title"),
+                                       [(l_get("apps.settings.current") + ": " + str(nvs.get_int(n_settings, "allowsaving")), 1),
+                                        (l_get("menus.enable"), 2),
+                                        (l_get("menus.disable"), 3), 
+                                        (l_get("menus.menu_close"), 13)])
                     if menu3 == 1:
                         time.sleep(0.02)
                     elif menu3 == 2:
@@ -104,13 +151,19 @@ def run():
                         
         # Sound settings
         elif menu1 == 2:
-            menu2 = menus.menu("Settings/Buzzer", [("Volume", 1), ("Close", 13)])
+            menu2 = menus.menu(l_get("apps.settings.buzzer_menu.buzzer_title"),
+                               [(l_get("apps.settings.buzzer_menu.volume"), 1), 
+                                (l_get("menus.menu_close"), 13)])
             
             # Volume settings
             if menu2 == 1:
                 work1 = True
                 while work1 == True:
-                    menu3 = menus.menu("Settings/Buzzer/Volume", [("Current: " + str(round(nvs.get_float(n_settings, "volume"), 1)), 1), ("+", 2), ("-", 3), ("Close", 13)])
+                    menu3 = menus.menu(l_get("apps.settings.buzzer_menu.volume_title"),
+                                       [(l_get("apps.settings.current") + ": " + str(round(nvs.get_float(n_settings, "volume"), 1)), 1),
+                                        ("+", 2),
+                                        ("-", 3),
+                                        (l_get("menus.menu_close"), 13)])
                     if menu3 == 1:
                         time.sleep(0.02)
                     elif menu3 == 2:
@@ -124,7 +177,13 @@ def run():
                         
         # Wi-Fi settings
         elif menu1 == 3:
-            rendr =  menus.menu("Settings/Wi-Fi", [("Setup AP", 1), ("Connection", 2), ("Wi-Fi Status", 5), ("NTP Sync", 3), ("NTP Timezone", 4), ("Close", 13)])
+            rendr =  menus.menu("Settings/Wi-Fi", 
+                                [("Setup AP", 1),
+                                 ("Connection", 2),
+                                 ("Wi-Fi Status", 5),
+                                 ("NTP Sync", 3),
+                                 ("NTP Timezone", 4),
+                                 ("Close", 13)])
             
             # Wi-Fi AP setup
             if rendr == 1:
@@ -283,17 +342,19 @@ def run():
             
             # SD Slot check
             if osc.HAS_SD_SLOT == False or nvs.get_int(n_settings, "sd_overwrite") == 1:
-                popup.show("No SD card slot detected in your device!", "Error", 10)
+                popup.show(l_get("apps.settings.sd.no_slot_detected_popup"), l_get("crashes.error"), 10)
                 continue
             
             import modules.sdcard as sd
             
             # SD Card menu if SD is not mounted
             if sd.sd is None:
-                sd_menu = menus.menu("Settings/SD Card", [("Init", 1), ("Close", 13)])
+                sd_menu = menus.menu(l_get("apps.settings.sd.title"),
+                                     [(l_get("apps.settings.sd.init"), 1),
+                                      (l_get("menus.menu_close"), 13)])
                 if sd_menu == 1:
                     tft.fill(0)
-                    tft.text(f8x8, "Init SD...",0,0, 65535)
+                    tft.text(f8x8, l_get("apps.settings.sd.init_load"),0,0, 65535)
                     if nvs.get_int(n_settings, "sd_overwrite") == 1 and nvs.get_int(n_settings, "sd_automount") == 1:
                         cs = nvs.get_int(n_settings, "sd_cs")
                         if cs == 99:
@@ -304,25 +365,27 @@ def run():
                     time.sleep(2)
                     if sdin == True:
                         if sd.mount() == True:
-                            tft.text(f8x8, "Done!",0,8, 65535)
+                            tft.text(f8x8, l_get("apps.settings.sd.done"),0,8, 65535)
                         else:
-                            tft.text(f8x8, "Failed!",0,8, 65535)
+                            tft.text(f8x8, l_get("apps.settings.sd.failed"),0,8, 65535)
                     else:
-                        tft.text(f8x8, "Failed!",0,8, 65535)
+                        tft.text(f8x8, l_get("apps.settings.sd.failed"),0,8, 65535)
                     time.sleep(2)
                     
             # Menu if SD is mounted
             else:
-                sd_menu = menus.menu("Settings/SD Card", [("Unmount", 1), ("Close", 13)])
+                sd_menu = menus.menu(l_get("apps.settings.sd.title"),
+                                     [(l_get("apps.settings.sd.unmount"), 1),
+                                      (l_get("menus.menu_close"), 13)])
                 if sd_menu == 1:
                     tft.fill(0)
-                    tft.text(f8x8, "Unmount SD...",0,0, 65535)
+                    tft.text(f8x8, l_get("apps.settings.sd.unmount_load"),0,0, 65535)
                     sdin = sd.umount()
                     if sdin == True:
-                        tft.text(f8x8, "Done!",0,8, 65535)
+                        tft.text(f8x8, l_get("apps.settings.sd.done"),0,8, 65535)
                         sd.sd = None
                     else:
-                        tft.text(f8x8, "Failed!",0,8, 65535)
+                        tft.text(f8x8, l_get("apps.settings.sd.failed"),0,8, 65535)
                     time.sleep(2)
         
         # About screen
@@ -334,28 +397,45 @@ def run():
                 ver_color = 65088
             else:
                 ver_color = 65535
-            tft.text(f8x8, "Kitki30 Stick version " + str(v.MAJOR) + "." + str(v.MINOR) + "." + str(v.PATCH),0,0,ver_color)
-            tft.text(f8x8, "by @Kitki30",0,8,ver_color)
-            tft.text(f8x8, "MIT License",0,16,65535)
+            tft.text(f8x8, f"Stick firmware {l_get("apps.settings.about.version")} " 
+                     + str(v.MAJOR) 
+                     + "." 
+                     + str(v.MINOR)
+                     + "." 
+                     + str(v.PATCH),0,0,ver_color)
+            tft.text(f8x8, l_get("apps.settings.about.by_kitki30") + " @Kitki30",0,8,ver_color)
+            tft.text(f8x8, l_get("apps.settings.about.apache_license"),0,16,65535)
+            
+            # Render QR, depending on metrics, include utm info
             import modules.qr_codes as qr
-            tft.text(f8x8, "For more details, scan the QR",0,30,2016)
+            tft.text(f8x8, l_get("apps.settings.about.more_details_scan_qr"),0,30,2016)
+            tracking = ""
+            if nvs.get_int(n_settings, "allow_metrics") == 1:
+                tracking += f"?utm_source={osc.DEVICE_NAME}&utm_medium=qrcode"
             qr.make_qr(tft, "https://github.com/stickfirmware/stick", 0, 38, size=2)
-            tft.text(f8x8, "Press button A to exit,",0,111,65535)
-            tft.text(f8x8, "button B for credits",0,119,65535)
-            tft.text(f8x8, "and button C for license.",0,127,65535)
+            
+            tft.text(f8x8, l_get("apps.settings.about.a_exit"),0,111,65535)
+            tft.text(f8x8, l_get("apps.settings.about.b_credits"),0,119,65535)
+            tft.text(f8x8, l_get("apps.settings.about.c_license"),0,127,65535)
             while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
                 time.sleep(osc.DEBOUNCE_TIME)
             if button_b.value() == 0:
                 open_file.openMenu("/CREDITS")
             if button_c.value() == 0:
                 open_file.openMenu("/LICENSE")
+                
+        # Factory
         elif menu1 == 9:
-            confirm_reset = menus.menu("Reset all settings?", [("No", None), ("Yes", 1)])
+            confirm_reset = menus.menu(l_get("apps.settings.factory.reset_all"),
+                                       [(l_get("menus.no"), None),
+                                        (l_get("menus.yes"), 1)])
             if confirm_reset == 1:
-                confirm_reset = menus.menu("It removes all files!", [("Cancel", 2), ("Confirm", 1)])
+                confirm_reset = menus.menu(l_get("apps.settings.factory.it_removes_all"),
+                                           [(l_get("menus.menu_cancel"), 2),
+                                            (l_get("apps.settings.factory.confirm"), 1)])
                 if confirm_reset == 1:
-                    nvs.set_int(n_updates, "factory", 1)
-                    machine.reset()
+                    nvs.set_int(n_updates, "factory", 1) # Set NVS bootloader entry
+                    machine.soft_reset() # Reboot
         else:
             work = False
             

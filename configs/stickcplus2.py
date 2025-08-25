@@ -8,6 +8,9 @@ RELEASE_NAME = const("stickcplus2") # Name in builder
 # Debug
 ENABLE_DEBUG_PRINTS = const(False)
 
+# Default language
+DEFAULT_LANGUAGE = "en"
+
 # Power managament
 HAS_HOLD_PIN = const(True) # Do we need to put power hold pin HIGH? (Like on M5StickC Plus 2)
 HOLD_PIN = const(4)

@@ -7,6 +7,7 @@ import modules.cardputer_kb as ckb
 import modules.os_constants as osc
 import modules.menus as menus
 import modules.io_manager as io_man
+from modules.translate import get as l_get
 
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')
@@ -237,7 +238,10 @@ def _KEYBOARD_CARDKB(title, maxlen=0, hideInput=False, numbers_only=False):
                 continue
 
             if key == "enter":
-                menu = menus.menu("Menu", [("Confirm", 1), ("Exit", 2), ("Back", 3)])
+                menu = menus.menu(l_get("keypad.menu"),
+                                  [(l_get("keypad.confirm"), 1),
+                                   (l_get("menus.menu_exit"), 2),
+                                   (l_get("menus.menu_go_back"), 3)])
                 if menu == 1:
                     return inp
                 elif menu == 2:
@@ -343,7 +347,10 @@ def keyboard(title, maxlen=0, hideInput=False):
             while button_a.value() == 0: time.sleep(osc.DEBOUNCE_TIME)
 
             if selection == 9:
-                menu = menus.menu("Menu", [("Confirm", 1), ("Exit", 2), ("Back", 3)])
+                menu = menus.menu(l_get("keypad.menu"),
+                                  [(l_get("keypad.confirm"), 1),
+                                   (l_get("menus.menu_exit"), 2),
+                                   (l_get("menus.menu_go_back"), 3)])
                 if menu == 1:
                     if tmp_letter:
                         inp += tmp_letter
@@ -355,7 +362,7 @@ def keyboard(title, maxlen=0, hideInput=False):
                     big_update = True
 
             elif selection == 11:  # symbols
-                symbol = menus.menu("Symbols", [
+                symbol = menus.menu(l_get("keypad.symbols"), [
                     ("@", "@"), ("#", "#"), ("$", "$"), ("%", "%"),
                     ("&", "&"), ("*", "*"), ("(", "("), (")", ")"),
                     ("+", "+"), ("-", "-"), ("_", "_"), ("=", "="),
@@ -363,7 +370,7 @@ def keyboard(title, maxlen=0, hideInput=False):
                     ("~", "~"), ("^", "^"), ("*", "*"), ("[", "]"),
                     ("{", "}"), ("|", "|"), ("'", "'"), ('"', '"'),
                     ('<', '<'), ('>', '>'),
-                    ("Back", None)
+                    (l_get("menus.menu_go_back"), None)
                 ])
                 if symbol and (maxlen == 0 or len(inp) < maxlen):
                     inp += symbol

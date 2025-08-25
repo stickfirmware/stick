@@ -7,6 +7,7 @@ import modules.io_manager as io_man
 import modules.printer as printer
 import modules.menus as menus
 import modules.nvs as nvs
+from modules.translate import get as l_get
 
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')
@@ -40,7 +41,11 @@ def run():
     
     work = True
     while work == True:
-        render = menus.menu("Scorekeeper", [("Team 1: " + str(team_1), 1), ("Team 2: " + str(team_2), 2), ("Reset", 3), ("Close", 4)])
+        render = menus.menu(l_get("apps.scorekeeper.name"), 
+                            [(l_get("apps.scorekeeper.team") + " 1: " + str(team_1), 1),
+                             (l_get("apps.scorekeeper.team") + " 2: " + str(team_2), 2),
+                             (l_get("menus.menu_reset"), 3),
+                             (l_get("menus.menu_close"), 4)])
         if render == 1:
             team_1 += 1
         elif render == 2:

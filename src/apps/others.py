@@ -1,4 +1,3 @@
-import machine
 import gc
 
 import modules.io_manager as io_man
@@ -8,6 +7,7 @@ import modules.os_constants as osc
 import modules.menus as menus
 import modules.powersaving as ps
 import modules.popup as popup
+from modules.translate import get as l_get
 
 button_a = None
 button_b = None
@@ -21,7 +21,14 @@ def run():
     button_c = io_man.get('button_c')
     tft = io_man.get('tft')
     
-    render = menus.menu("Menu/Others", [("QR Codes", 6), ("PiMarkX", 5), ("Dice", 7), ("Scorekeeper", 1), ("Resistor decoder", 2), ("Metronome", 3), ("Close", 13)])
+    render = menus.menu(l_get("apps.others.title"),
+                        [(l_get("apps.qr_gen.name"), 6),
+                         ("PiMarkX", 5),
+                         (l_get("apps.dice.name"), 7),
+                         (l_get("apps.scorekeeper.name"), 1),
+                         (l_get("apps.resistors.name"), 2),
+                         (l_get("apps.metronome.name"), 3),
+                         (l_get("menus.menu_close"), 13)])
     if render == 1:
         import apps.scorekeeper as a_sc
         a_sc.run()
@@ -34,7 +41,7 @@ def run():
         decache('apps.resistors')
     elif render == 3:
         if osc.HAS_BUZZER == False:
-            popup.show("Buzzer was not detected in your device, metronome is not supported.", "Error", 10)
+            popup.show(l_get("apps.others.buzzer_info_metronome"), l_get("crashes.error"), 10)
             return
         import apps.metronome as a_me
         a_me.run()
@@ -57,6 +64,6 @@ def run():
             del a_dc
             decache('apps.dice')
         else:
-            menus.menu('No rand extra func detected!', [("Leave",1)])
+            menus.menu(l_get("apps.others.rand_extra_func"), [(l_get("menus.menu_close"),1)])
     gc.collect()
     ps.set_freq(osc.BASE_FREQ)

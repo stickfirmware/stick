@@ -1,0 +1,14 @@
+{
+    "langs": [
+        "en",
+        "pl"
+    ],
+    "en": {
+        "name": "English",
+        "path": "/language/lang_en.json"
+    },
+    "pl": {
+        "name": "Polski",
+        "path": "/language/lang_pl.json"
+    }
+}

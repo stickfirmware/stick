@@ -34,6 +34,7 @@ _WHITELIST = {
         'modules.ram_cleaner',
         'modules.rtc',
         'modules.ntp',
+        'modules.translate',
         'modules.mpu6886',
         'fonts.def_8x8',
         'fonts.def_16x16',
