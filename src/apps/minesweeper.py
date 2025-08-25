@@ -7,6 +7,7 @@ import modules.powersaving as ps
 import modules.popup as popup
 import modules.menus as menus
 import modules.os_constants as osc
+from modules.translate import get as l_get
 
 import fonts.def_8x8 as f8x8
 
@@ -198,14 +199,24 @@ def format_ticks_ms(ticks):
 def win_callback(tick):
     elapsed = time.ticks_diff(time.ticks_ms(), tick)
     text = format_ticks_ms(elapsed)
-    popup.show(f"Time: {text}\nMap: {tiles}x{tiles}\nBombs: {bombs_max}", "You win!", 60)
+    popup.show(f"""
+               {l_get("apps.minesweeper.popups.time")} {text}
+               \n{l_get("apps.minesweeper.popups.map")} {tiles}x{tiles}
+               \n{l_get("apps.minesweeper.popups.bombs")} {bombs_max}
+               """,
+               l_get("apps.minesweeper.popups.win"), 60)
     return True
 
 # Callback for losing, popup
 def lose_callback(tick):
     elapsed = time.ticks_diff(time.ticks_ms(), tick)
     text = format_ticks_ms(elapsed)
-    popup.show(f"Time: {text}\nMap: {tiles}x{tiles}\nBombs: {bombs_max}", "You lose!", 60)
+    popup.show(f"""
+               {l_get("apps.minesweeper.popups.time")} {text}
+               \n{l_get("apps.minesweeper.popups.map")} {tiles}x{tiles}
+               \n{l_get("apps.minesweeper.popups.bombs")} {bombs_max}
+               """,
+               l_get("apps.minesweeper.popups.lose"), 60)
     return True
 
 def draw_bomb_cell(tft, x, y, tile_size, detonated=False, bg_color=None):
@@ -297,13 +308,15 @@ def dig(tft, selection_x, selection_y, tiles_map, states, start_time):
         )
         time.sleep(0.4)
         lose_callback(start_time)
+        return False
         
 def flag(selection_x, selection_y, states):
     if states[selection_y][selection_x] == 0 or states[selection_y][selection_x] == 2:
         current_flags = count_flags(states)
         if current_flags >= bombs_max and states[selection_y][selection_x] != 2:
             log("Cannot place more flags")
-            popup.show("Cannot place more flags", "Error", 13)
+            popup.show(l_get("apps.minesweeper.popups.cannot_more_flags"), 
+                       l_get("crashes.error"), 13)
         else:
             states[selection_y][selection_x] = 0 if states[selection_y][selection_x] == 2 else 2
     
@@ -347,7 +360,7 @@ def game():
                 render_grid_full(tft, tiles_map, states, selection_x, selection_y)
                 upd_full = False
                 if osc.ENABLE_DEBUG_PRINTS:
-                    tft.text(f8x8, "Debugging enabled, can cheat", 0, 127, 63488)
+                    tft.text(f8x8, l_get("apps.minesweeper.debug_enabled"), 0, 127, 63488)
             else:
                 render_grid_partial(
                     tft, tiles_map, states, states_prev,
@@ -361,26 +374,30 @@ def game():
             
             tft.fill_rect(tile_max, 0, 40, tile_max, 0)  # clear sidebar
             flags_count = count_flags(states)
-            tft.text(f8x8, f"Flags:\n{flags_count}/{bombs_max}", tile_max+2, 2, 2019)
+            tft.text(f8x8, f"{l_get("apps.minesweeper.flags")}\n{flags_count}/{bombs_max}", tile_max+2, 2, 2019)
             
             if check_win(tiles_map, states):
                 time.sleep(2)
                 win_callback(start_time)
-                break
+                return
             
         # Update time
         elapsed = time.ticks_diff(time.ticks_ms(), start_time)
         text = format_ticks_ms(elapsed)
         if last_time_text != text:
             last_time_text = text
-            tft.text(f8x8, "Time: " + text, tile_max+2, 10, 2019)
+            tft.text(f8x8, f"{l_get("apps.minesweeper.popups.time")} " + text, tile_max+2, 10, 2019)
         
         # Button A – tile action
         if button_a.value() == 0:
-            res = menus.menu("Tile", [("Dig", 1), ("Flag", 2), ("Cancel", None), ("Exit", 3)],)
+            res = menus.menu(l_get("apps.minesweeper.action_menu.tile"),
+                             [(l_get("apps.minesweeper.action_menu.dig"), 1),
+                              (l_get("apps.minesweeper.action_menu.flag"), 2),
+                              (l_get("menus.menu_close"), None),
+                              (l_get("menus.menu_exit"), 3)],)
             if res == 1:  # Dig
-                if dig(tft, selection_x, selection_y, tiles_map, states, start_time) == True:
-                    break
+                if dig(tft, selection_x, selection_y, tiles_map, states, start_time) == False:
+                    return
             elif res == 2:  # Flag
                 flag(selection_x, selection_y, states)
             elif res == 3:  # Exit
@@ -408,7 +425,8 @@ def game():
         if osc.INPUT_METHOD == 2:
             # Dig
             if d.value() == 0:
-                dig(tft, selection_x, selection_y, tiles_map, states, start_time)
+                if dig(tft, selection_x, selection_y, tiles_map, states, start_time) == False:
+                    return
                 upd = True
                 upd_full = True
                 while d.value() == 0:
@@ -454,21 +472,31 @@ def run():
     while True:
         # Main menu
         menu = menus.menu(
-            "Minesweeper",
-            [("Start", 1), ("Controls", 2), ("Exit", None)],
+            l_get("apps.minesweeper.name"),
+            [(l_get("menus.menu_start"), 1),
+             (l_get("apps.minesweeper.controls"), 2),
+             (l_get("menus.menu_exit"), None)],
         )
         if menu == 1:
-            mode = menus.menu("Select game mode", [("Begginer: 8x8", 0), ("Easy: 10x10", 1), ("Medium: 12x12", 2), ("Hard: 16x16", 3), ("Custom", 99), ("Close", None)])
+            mode = menus.menu(l_get("apps.minesweeper.select_mode"),
+                              [(f"{l_get("apps.minesweeper.modes.mode1")}: 8x8", 0),
+                               (f"{l_get("apps.minesweeper.modes.mode2")}: 10x10", 1),
+                               (f"{l_get("apps.minesweeper.modes.mode3")}: 12x12", 2),
+                               (f"{l_get("apps.minesweeper.modes.mode4")}: 16x16", 3),
+                               (l_get("apps.minesweeper.modes.custom"), 99),
+                               (l_get("menus.menu_close"), None)])
             if mode != None:
                 if mode == 99:
                     import modules.numpad as kb
-                    tiles = kb.numpad("Enter map size max. 16")
+                    tiles = kb.numpad(l_get("apps.minesweeper.custom_mode.map_size"))
                     if tiles < 1 or tiles > 16:
-                        popup.show("Map size must be between 1 and 16", "Error", 15)
+                        popup.show(l_get("apps.minesweeper.custom_mode.map_size_error"), l_get("crashes.error"), 15)
                         continue
-                    bombs_max = kb.numpad("Enter bombs")
+                    bombs_max = kb.numpad(l_get("apps.minesweeper.custom_mode.bombs"))
+                    # Check if bombs are more than 1 and less than half of tiles
                     if bombs_max < 1 or bombs_max > (tiles*tiles//2):
-                        popup.show("Bombs must be between 1 and half of total tiles", "Error", 15)
+                        popup.show(l_get("apps.minesweeper.custom_mode.bombs_error") + str((tiles*tiles//2)),
+                                   l_get("crashes.error"), 15)
                         continue
                 else:
                     mode_tiles = [8, 10, 12, 16]
@@ -481,25 +509,20 @@ def run():
         elif menu == 2:
             if osc.INPUT_METHOD == 1:
                 popup.show(
-                    "Use A to dig/flag tiles.\n"
-                    "Use B to move right.\n"
-                    "Use C to move down.\n",
-                    "Controls",
+                    l_get("apps.minesweeper.input.method1"),
+                    l_get("apps.minesweeper.controls"),
                     60
                 )
             elif osc.INPUT_METHOD == 2:
                 popup.show(
-                    "Use Enter for action menu.\n"
-                    "Use arrows to move.\n"
-                    "Use D to Dig.\n"
-                    "Use F to flag.\n",
-                    "Controls",
+                    l_get("apps.minesweeper.input.method2"),
+                    l_get("apps.minesweeper.controls"),
                     60
                 )
             else:
                 popup.show(
-                    "Unknown input method"
-                    "Error",
+                    l_get("apps.minesweeper.input.unknown"),
+                    l_get("crashes.error"),
                     60
                 )
         else:

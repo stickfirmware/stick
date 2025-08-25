@@ -8,6 +8,7 @@ import modules.menus as menus
 import modules.os_constants as osc
 import modules.printer as printer
 import modules.powersaving as ps
+from modules.translate import get as l_get
 
 frequencies = [osc.ULTRA_SLOW_FREQ, osc.SLOW_FREQ, osc.BASE_FREQ, osc.FAST_FREQ, osc.ULTRA_FREQ]
 testingTime = 15
@@ -42,10 +43,10 @@ def pi_benchmark(duration_ms=15000):
 
 def res_add(freq, count, pi):
     global result
-    result += "Frequency: {} MHz\n".format(freq // 1000000)
-    result += "Iterations: {}\n".format(count)
-    result += "it per MHz: {:.2f}\n".format(count / (freq / 1_000_000))
-    result += "Pi ~= {}\n".format(pi)
+    result += "{} {} MHz\n".format(l_get("apps.pimarkx.frequency"), freq // 1000000)
+    result += "{} {}\n".format(l_get("apps.pimarkx.iterations"), count)
+    result += "{} {:.2f}\n".format(l_get("apps.pimarkx.it_per_mhz"), count / (freq / 1_000_000))
+    result += "{} ~= {}\n".format(l_get("apps.pimarkx.pi"), pi)
     result += "-" * 20 + "\n"
 
 def pre_res():
@@ -57,12 +58,12 @@ def pre_res():
     result += "PiMarkX\n"
     result += "A part of Stick firmware\n"
     result += "-" * 20 + "\n"
-    result += "Settings:\n"
-    result += "Testing time (Per freq): {}s\n".format(testingTime)
-    result += "Frequencies: {}\n".format(frequencies)
+    result += f"{l_get("apps.pimarkx.settings")}\n"
+    result += "{} {}s\n".format(l_get("apps.pimarkx.test_time"), testingTime)
+    result += "{} {}\n".format(l_get("apps.pimarkx.frequencies"), frequencies)
     result += "-" * 20 + "\n"
-    result += "Tip:\n"
-    result += "Results may be different when running in Stick firmware or standalone, when comparing platforms it is recomended to run PiMarkX in the same way or it can be inaccurate.\n"
+    result += f"{l_get("apps.pimarkx.tip")}\n"
+    result += f"{l_get("apps.pimarkx.different")}\n"
     result += "-" * 20 + "\n"
     
 def saveResult():
@@ -77,25 +78,25 @@ def run():
     button_c = io_man.get('button_c')
     tft = io_man.get('tft')
     
-    render = menus.menu("Do you want to run it?", [("Yes", 1), ("No", None)])
+    render = menus.menu(l_get("apps.pimarkx.do_you_want_to_run"), 
+                        [(l_get("menus.yes"), 1),
+                         (l_get("menus.no"), None)])
     if render == None:
         return
     pre_res()
     tft.fill(0)
     tft.text(f8x8, "PiMarkX",0,0,2016)
-    tft.text(f8x8, "Prepairing...",0,8,65535)
-    seconds = len(frequencies) * testingTime
-    tft.text(f8x8, "Estimated testing time: " + format_duration(seconds),0,20,65535)
+    tft.text(f8x8, l_get("apps.pimarkx.preparing"),0,8,65535)
     textpos = 28
     for freq in frequencies:
-        tft.text(f8x8, "Testing on " + str(freq // 1000000) + " MHz",0,textpos,65535)
+        tft.text(f8x8, f"{l_get("apps.pimarkx.test_on")} " + str(freq // 1000000) + " MHz",0,textpos,65535)
         ps.set_freq(freq)
         time.sleep(1)
         count, pi = pi_benchmark(testingTime * 1000)
         res_add(freq, count, pi)
         textpos += 8
     tft.fill(0)
-    tft.text(f8x8, "Benchmark finished", 0, 0, 65535)
+    tft.text(f8x8, l_get("apps.pimarkx.benchmark_finish"), 0, 0, 65535)
     time.sleep(1)
     saveResult()
     import modules.open_file as open_file
@@ -105,7 +106,6 @@ def run_no_gui():
     printer.log("\nPiMarkX")
     pre_res()
     for freq in frequencies:
-        tft.text(f8x8, "Testing on " + str(freq // 1000000) + " MHz",0,textpos,65535)
         ps.set_freq(freq)
         time.sleep(1)
         count, pi = pi_benchmark(testingTime * 1000)

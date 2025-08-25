@@ -86,7 +86,7 @@ except Exception as e:
 io_man.set('tft', tft)
 
 loading_count = 0 # Increased with every task
-loading_max = 10 # Max loading_count will reach
+loading_max = 12 # Max loading_count will reach
 bar_color = 2016 # Color of progress bar
 
 def render_bar(text, increase_count=False):
@@ -125,7 +125,13 @@ buzz.set_volume(s_vl)
 auto_rotate = cache.get_and_remove('n_cache_arotate')
 allow_saving = cache.get_and_remove('n_cache_pwrsave')
 
-render_bar("Checking first boot...", True)
+render_bar("Load translations...", True)
+debug.log("Load translations")
+
+import modules.translate as translate
+translate.load(cache.get_and_remove('n_cache_lang'))
+from modules.translate import get as l_get
+render_bar(l_get("mainos_load.first_boot_check"), True) # Checking first boot...
 
 # Check if its first boot
 debug.log("Check for first boot")
@@ -136,7 +142,9 @@ del first_boot_check
     
 gc.collect()
 
-render_bar("Init shared I2C", True)
+# Init shared i2c
+debug.log("Init shared i2c")
+render_bar(l_get("mainos_load.shared_iic_init"), True) # Init shared I2C...
 
 # Import RTC
 debug.log("Sync time from external RTC")
@@ -154,7 +162,7 @@ else:
     osc.HAS_IMU = False
     osc.HAS_RTC = False
 
-render_bar("Init buttons...", True)
+render_bar(l_get("mainos_load.init_btns"), True) # Init buttons...
 
 # Init buttons
 debug.log("Init buttons")
@@ -162,7 +170,7 @@ import modules.button_init as btn_init
 button_a, button_b, button_c, clicker = btn_init.init_buttons()
 
 # Init IO manager (Set buttons, tft, etc.)
-render_bar("Init IO manager", True)
+render_bar(l_get("mainos_load.first_init_io_man"), True)
 debug.log("Init IO manager")
 io_man.set('button_a', button_a)
 io_man.set('button_b', button_b)
@@ -172,18 +180,18 @@ io_man.set('rtc', rtc)
 io_man.set('mpu', mpu)
 io_man.set('power_hold', power_hold)
 
-render_bar("Check time...", True)
+render_bar(l_get("mainos_load.check_time"), True)
 
 import modules.ntp as ntp
 ntp.wrong_time_support()
 
-render_bar("Wi-Fi init...", True)
+render_bar(l_get("mainos_load.init_wifi"), True)
 import modules.wifi_master as wifi_master
 wifi_master.connect_main_loop()
 nic = network.WLAN(network.STA_IF)
 conn_time = time.ticks_ms()
         
-render_bar("Loading other libraries...", True)
+render_bar(l_get("mainos_load.load_libs"), True) # Loading other libraries...
 
 # Battery check
 import modules.battery_check as b_check
@@ -230,8 +238,8 @@ def allow_only_landscape():
         tft.rotation(int(stable_orientation))
         
 # Clean up
-render_bar("Cleaning up...")
-debug.log("Cleaning up")
+render_bar(l_get("mainos_load.cleaning_up"), True) # Cleaning up...
+debug.log("Cleaning up...")
 debug.log("Before: " + str(gc.mem_free() / 1024 / 1024) + "MB")
 del n_boot
 gc.collect()
@@ -241,7 +249,7 @@ debug.log("After: " + str(gc.mem_free() / 1024 / 1024) + "MB")
 debug.log("Loading count: " + str(loading_count))
 
 # Init SD Card
-render_bar("SD Init", True)
+render_bar(l_get("mainos_load.sd_init"), True) # SD Init
 if osc.HAS_SD_SLOT or nvs.get_int(n_settings, "sd_overwrite") == 1:
     import modules.sdcard as sdcard
     if nvs.get_int(n_settings, "sd_overwrite") == 1 and nvs.get_int(n_settings, "sd_automount") == 1:
@@ -254,7 +262,8 @@ if osc.HAS_SD_SLOT or nvs.get_int(n_settings, "sd_overwrite") == 1:
     sdcard.mount()
 
 # Load clock
-render_bar("Loading clock...", True)
+render_bar(l_get("mainos_load.load_clock"), True) # Loading clock...
+del translate.language["mainos_load"]
 import apps.clock as app_clock
 
 # Wake up function
@@ -321,7 +330,7 @@ while True:
         ps.boost_allowing_state(True)
 
         # Reset eastereggs on render
-        eg_click_entry = 0
+        egg_click_entry = 0
 
         # Change bitmap cache to none so battery bitmap renders after render clock
         b_check.last_bitmap = None
@@ -435,15 +444,20 @@ while True:
                 eeg_click_entry = 0
                 import apps.eastereggs as eggs
                 eggs.trigger(2)
+                
+    # Load button states to not double poll them
+    btn_a_state = button_a.value()
+    btn_b_state = button_b.value()
+    btn_c_state = button_c.value()
             
     # Dummy mode unlocking
-    if button_a.value() == 0 and button_b.value() == 0:
+    if btn_a_state == 0 and btn_b_state == 0:
         hold_time = 0.00
         
         # Wake up (If in power saving)
         wake_up()
         
-        # Check how much time button c is held down
+        # Check how much time button b is held down
         while button_b.value() == 0:
             time.sleep(osc.LOOP_WAIT_TIME)
             hold_time += osc.LOOP_WAIT_TIME
@@ -470,7 +484,7 @@ while True:
         pwr_save_time = time.ticks_ms()
         
     # Menu
-    if button_a.value() == 0:
+    if btn_a_state == 0:
         # Wake up (If in power saving)
         wake_up()
         
@@ -501,9 +515,9 @@ while True:
             except Exception as e:
                 tft.fill(0)
                 gc.collect()
-                tft.text(f16x32, "Oops!",0,0,17608)
-                tft.text(f8x8, "One of your apps has crashed!",0,32,65535)
-                tft.text(f8x8, "Please try again!",0,40,65535)
+                tft.text(f16x32, l_get("crashes.app_crashed_oops"),0,0,17608) # Oops!
+                tft.text(f8x8, l_get("crashes.app_crashed_info"),0,32,65535) # One of your apps has crashed!
+                tft.text(f8x8, l_get("crashes.app_crashed_try_again"),0,40,65535) # Please try again!
                 print(str(e))
                 time.sleep(3)
             menu = 0
@@ -525,7 +539,7 @@ while True:
         continue
         
     # Power menu / Quick actions
-    if button_c.value() == 0:
+    if btn_c_state == 0:
         # Wake up
         wake_up()
         
@@ -557,14 +571,14 @@ while True:
         except Exception as e:
                 tft.fill(0)
                 gc.collect()
-                tft.text(f16x32, "Oops!",0,0,17608)
-                tft.text(f8x8, "One of your apps has crashed!",0,32,65535)
-                tft.text(f8x8, "Please try again!",0,40,65535)
+                tft.text(f16x32, l_get("crashes.app_crashed_oops"),0,0,17608) # Oops!
+                tft.text(f8x8, l_get("crashes.app_crashed_info"),0,32,65535) # One of your apps has crashed!
+                tft.text(f8x8, l_get("crashes.app_crashed_try_again"),0,40,65535) # Please try again!
                 print(str(e))
                 time.sleep(3)
 
     # Locking menu / Clock menu
-    if button_b.value() == 0:
+    if btn_b_state == 0:
         hold_time = 0.00
         
         # Wake up
@@ -642,7 +656,7 @@ while True:
             pr = b_check.percentage(volts)
             
             if locks == 0:
-                tft.text(f8x8, "Battery: " + str(volts) + "V",4,124,2016)
+                tft.text(f8x8, l_get("mainos_diagnostics.battery") + ": " + str(volts) + "V",4,124,2016)
                 
         # Battery bitmap render
         b_check.run(tft)

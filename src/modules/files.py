@@ -24,6 +24,14 @@ def mkdir_recursive(path):
                 pass
             else:
                 raise
+            
+
+def exists(path):
+    try:
+        os.stat(path)
+        return True
+    except OSError:
+        return False
 
 def rmdir_recursive(path):
     for file in os.listdir(path):

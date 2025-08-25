@@ -1,0 +1,64 @@
+import modules.json as json
+import modules.printer as printer
+main_file = None
+language = None
+
+def init():
+    global main_file
+    try:
+        main_file = json.read("/language/languages.json")
+        printer.log(main_file)
+    except Exception as e:
+        printer.log("Failed to load languages.json: " + str(e))
+        main_file = {"langs": [
+        "en",
+        "pl"
+    ],
+    "en": {
+        "name": "English",
+        "path": "/language/lang_en.json"
+    },
+    "pl": {
+        "name": "Polski",
+        "path": "/language/lang_pl.json"
+    }}
+    return
+
+def load(lang):
+    import modules.files as files
+    printer.log(lang)
+    global language
+    try:
+        lang_path = main_file[lang]["path"]
+        printer.log(lang_path)
+        if files.exists(lang_path + ".gz"):
+            try:
+                language = json.read_gzipped(lang_path + ".gz")
+                try:
+                    import os
+                    os.remove(lang_path - ".gz")
+                    printer.log("Removed ungzipped ver of language pack to save disk space")
+                except:
+                    printer.log("Failed to remove ungzipped lang")
+            except:
+                language = json.read(lang_path)
+        else:
+            language = json.read(lang_path)
+        printer.log(language)
+        return True
+    except Exception as e:
+        printer.log(f"Failed to load {lang_path}: {e}")
+        language = {}
+        return False
+        
+def get(path):
+    try:
+        parts = path.split(".")
+        d = language
+        for p in parts:
+            d = d[p]
+        return d
+    except (KeyError, TypeError):
+        return "Translate error"
+        
+init()

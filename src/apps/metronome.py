@@ -11,6 +11,7 @@ import modules.buzzer as buzz
 import modules.io_manager as io_man
 import modules.printer as printer
 import modules.menus as menus
+from modules.translate import get as l_get
 
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')
@@ -22,7 +23,7 @@ def play(bpm):
     delay = ((60 / bpm) * 1000)
     tft.fill(0)
     tft.text(f16x32, "BPM: " + str(bpm),0,0,24552)
-    tft.text(f8x8, "Press button A to exit!",0,127,65535)
+    tft.text(f8x8, l_get("apps.metronome.press_a_to_exit"),0,127,65535)
     while button_a.value() == 1:
         time.sleep_ms(int(delay))
         buzz.play_sound_ms(buzzer, 400, 50)
@@ -43,7 +44,15 @@ def run():
     
     work = True
     while work == True:
-        render = menus.menu("Metronome", [("BPM: "+ str(bpm), 0), ("+", 1), ("-", 2), ("+10", 3), ("-10", 4), ("Play", 5), ("Reset", 6), ("Close", 7)])
+        render = menus.menu(l_get("apps.metronome.name"),
+                            [("BPM: "+ str(bpm), 0), 
+                             ("+", 1),
+                             ("-", 2),
+                             ("+10", 3),
+                             ("-10", 4),
+                             (l_get("apps.metronome.play"), 5),
+                             (l_get("menus.menu_reset"), 6),
+                             (l_get("menus.menu_close"), 7)])
         if render == 1:
             bp_temp = bpm + 1
             if bp_temp <= bpm_max:

@@ -36,6 +36,9 @@ while True:
                 nvs.set_int(n_updates, "factory", 1)
                 machine.reset()
     elif render == 2:
+        popup.show("To run file explorer properly, I will need to load english translation. Make sure it is working, or else you can expect crashes/freezes.")
+        import modules.translate as translate
+        translate.load("en")
         import modules.file_explorer as a_fe
         a_fe.run()
         decache('modules.file_explorer')

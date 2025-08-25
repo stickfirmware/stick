@@ -7,6 +7,7 @@ import modules.os_constants as osc
 import modules.io_manager as io_man
 import modules.cache as cache
 import modules.popup as popup
+from modules.translate import get as l_get
 
 n_settings = cache.get_nvs('settings')
 
@@ -90,14 +91,16 @@ def sync_interactive():
         while syncing == True:
             syn = sync()
             if syn == True:
-                popup.show("NTP Sync successfull!", "Info", 10)
+                popup.show(l_get("ntp.success_popup"), l_get("popups.info"), 10)
                 syncing = False
             elif syn == False:
-                rend = menus.menu("NTP Sync failed :(", [("Retry?",  1), ("OK",  2)])
+                rend = menus.menu(l_get("ntp.fail_popup"), 
+                                  [(l_get("ntp.retry"),  1),
+                                   (l_get("menus.ok"),  2)])
                 if rend == 2:
                     syncing = False
     else:
-        popup.show("No Wi-Fi connection, please connect.", "Error", 10)
+        popup.show(l_get("ntp.no_wifi_popup"), l_get("crashes.error"), 10)
 
 def wrong_time_support():
     # ESP's usually have default time set to 2000 something, 
@@ -105,5 +108,4 @@ def wrong_time_support():
     localtime = time.localtime()
     min_time = (2025, 8,8) # My cats birthday
     if localtime[0] < min_time[0] and localtime[1] < min_time[1] and localtime[2] < min_time[2] and osc.HAS_RTC == True:
-        import modules.menus as menus
-        popup.show("Time set in your device is incorrect but external RTC was detected! Please sync through settings!", "Info", 30)
+        popup.show(l_get("ntp.time_incorrect_popup"), l_get("popups.info"), 30)

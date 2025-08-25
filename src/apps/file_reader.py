@@ -6,6 +6,7 @@ import fonts.def_8x8 as f8x8
 import modules.os_constants as osc
 import modules.io_manager as io_man
 import modules.powersaving as ps
+from modules.translate import get as l_get
 
 def splittext_stream(fileobj, charlimit=27, linelimit=16):
     page = []
@@ -13,7 +14,7 @@ def splittext_stream(fileobj, charlimit=27, linelimit=16):
         try:
             raw = raw.decode("utf-8")
         except UnicodeDecodeError:
-            yield [[["[Decode error]"]]]
+            yield [[[l_get("apps.file_reader.decode_err")]]]
             return
 
         raw = raw.replace('\t', '    ').rstrip("\r\n")
@@ -41,7 +42,7 @@ def read(filename):
         with open(filename, "rb") as f:
             return list(splittext_stream(f))
     except Exception as e:
-        return [[["Error: " + str(e)]]]
+        return [[[l_get("crashes.error") + ": " + str(e)]]]
 
 
 def showfile(file):
@@ -51,11 +52,10 @@ def showfile(file):
     button_c = io_man.get('button_c')
     tft = io_man.get('tft')
     tft.fill(0)
-    tft.text(f8x8, "Loading file preview...",0,8,65535)
-    tft.text(f8x8, "Kitki30 Stick File Reader",0,0,65535)
+    tft.text(f8x8, l_get("apps.file_reader.load_preview"),0,0,65535)
     split = read(file)
     if not split or len(split) == 0:
-        split = [[["No content to display"]]]
+        split = [[[l_get("apps.file_reader.nothing_to_display")]]]
     current_page = 0
     tft.fill(0)
     tft.fill_rect(220, 0, 20, 135, 65535)

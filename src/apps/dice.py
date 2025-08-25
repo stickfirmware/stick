@@ -5,7 +5,7 @@ import fonts.def_16x32 as f16x32
 import fonts.def_8x8 as f8x8
 
 import modules.os_constants as osc
-import modules.st7789 as st
+from modules.translate import get as l_get
 import modules.text_utils as text_utils
 import modules.io_manager as io_man
 
@@ -22,7 +22,7 @@ def run():
     button_c = io_man.get('button_c')
 
     tft.fill(0)
-    tft.text(f8x8, "Roll again? Press btn A", 0, 0, st.WHITE)
+    tft.text(f8x8, l_get("apps.dice.roll_again"), 0, 0, 65535)
 
     random_int(tft)
 
