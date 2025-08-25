@@ -72,6 +72,9 @@ def run():
             ts_menu = menus.menu(l_get("apps.settings.lang_menu.title"), translations)
             if ts_menu is not None:
                 if translate.load(ts_menu) == True:
+                    import version
+                    if l_get("lang_info.version")[0] < version.LANG_VER[0] or l_get("lang_info.version")[1] < version.LANG_VER[1]:
+                        popup.show("The language pack is older than system pack version and can not work properly. Expect errors", "Info", 60)
                     nvs.set_string(n_settings, "lang", ts_menu)
                     reboot_confirm = menus.menu(l_get("apps.settings.lang_menu.reboot"),
                                                 [(l_get("menus.yes"), 1),
@@ -177,17 +180,17 @@ def run():
                         
         # Wi-Fi settings
         elif menu1 == 3:
-            rendr =  menus.menu("Settings/Wi-Fi", 
-                                [("Setup AP", 1),
-                                 ("Connection", 2),
-                                 ("Wi-Fi Status", 5),
-                                 ("NTP Sync", 3),
-                                 ("NTP Timezone", 4),
-                                 ("Close", 13)])
+            rendr =  menus.menu(l_get("apps.settings.wifi.title"), 
+                                [(l_get("apps.settings.wifi.setup_ap"), 1),
+                                 (l_get("apps.settings.wifi.connection"), 2),
+                                 (l_get("apps.settings.wifi.status"), 5),
+                                 (l_get("apps.clock.ntp_sync"), 3),
+                                 (l_get("apps.settings.wifi.timezone"), 4),
+                                 (l_get("menus.menu_close"), 13)])
             
             # Wi-Fi AP setup
             if rendr == 1:
-                tft.text(f8x8, "Scanning...", 0,0, 65535)
+                tft.text(f8x8, l_get("apps.settings.wifi.scanning"), 0,0, 65535)
                 nic = network.WLAN(network.STA_IF)
                 wifi_man.nic_reset()
                 #wifi_man.set_pwr_modes(0)
@@ -199,7 +202,7 @@ def run():
                         wifi_man.nic_reset()
                         attempts -= 1
                     if nic_scan == []:
-                        popup.show("No AP found!\nTry hard resetting your device, as ESP's Wi-Fi stack may be broken.", "Error", 10)
+                        popup.show(l_get("apps.settings.wifi.no_ap_error_popup"), l_get("crashes.error"), 10)
                         continue
                 wlan_scan = []
                 index = 0
@@ -208,23 +211,25 @@ def run():
                     if ap_name != '' and ap_name != None and ap[5] == False:
                         wlan_scan.append((ap_name, index))
                     index += 1
-                wlan_scan.append(("Close", None))
-                num = menus.menu("Select SSID", wlan_scan)
+                wlan_scan.append((l_get("menus.menu_close"), None))
+                num = menus.menu(l_get("apps.settings.wifi.select_ssid"), wlan_scan)
                 if num == None:
                     continue
                 ssid = nic_scan[num][0].decode()
                 if nic_scan[num][4] != 0:
                     import modules.numpad as keypad
-                    password = str(keypad.keyboard("Enter password", maxlen=63, hideInput=False))
+                    password = str(keypad.keyboard(l_get("apps.settings.wifi.enter_passwd"), maxlen=63, hideInput=False))
                     if password == None:
                         continue
                 else:
                     password = ""
-                autoconnect = menus.menu("Auto connect?", [("Yes", 1), ("No", 0)])
+                autoconnect = menus.menu(l_get("apps.settings.wifi.auto_connect_ask"),
+                                         [(l_get("menus.yes"), 1),
+                                          (l_get("menus.no"), 0)])
                 if autoconnect == None:
                     autoconnect = 0
                 tft.fill(0)
-                tft.text(f8x8, "Connecting...", 0,0, 65535)
+                tft.text(f8x8, l_get("apps.settings.wifi.connecting"), 0,0, 65535)
                 tft.text(f8x8, ssid, 0,8, 65535)
                 #wifi_man.set_pwr_modes()
                 printer.log("Wifi connecting")
@@ -242,13 +247,13 @@ def run():
                     nvs.set_int(n_wifi, "autoConnect", autoconnect)
                     nvs.set_string(n_wifi, "ssid", ssid)
                     nvs.set_string(n_wifi, "passwd", password)
-                    popup.show("Connected to: " + ssid, "Info", 10)
+                    popup.show(l_get("apps.settings.wifi.connected_to") + ": " + ssid, "Info", 10)
                 elif nic.status() == network.STAT_WRONG_PASSWORD:
-                    popup.show("Wrong password.", "Error", 10)
+                    popup.show(l_get("apps.settings.wifi.wrong_passwd"), l_get("crashes.error"), 10)
                 elif nic.status() == network.STAT_NO_AP_FOUND:
-                    popup.show("Access Point was not found.\nMake sure you are in your access points signal", "Error", 10)
+                    popup.show(l_get("apps.settings.wifi.ap_not_found"), l_get("crashes.error"), 10)
                 else:
-                    popup.show("Could not connect!\nTry hard resetting your device, as ESP's Wi-Fi stack may be broken.", "Error", 10)
+                    popup.show(l_get("apps.settings.wifi.could_not_conn_popup"), l_get("crashes.error"), 10)
                 
             # Wi-Fi connection
             elif rendr == 2:
@@ -256,36 +261,47 @@ def run():
                     try:
                         nic = wifi_man.nic
                         if nic.isconnected() == False:
-                            rend = menus.menu("Connect with " + nvs.get_string(n_wifi, "ssid") + "?", [("Yes",  1), ("No",  2)])
+                            rend = menus.menu(l_get("apps.settings.wifi.connect_with") + nvs.get_string(n_wifi, "ssid") + "?", 
+                                              [(l_get("menus.yes"),  1),
+                                               (l_get("menus.no"),  2)])
                             if rend == 1:
+                                ssid = nvs.set_string(n_wifi, "ssid")
+                                password = nvs.set_string(n_wifi, "passwd")
+                                                                
                                 wifi_man.nic_reset()
                                 #wifi_man.set_pwr_modes(0)
+                                tft.fill(0)
+                                tft.text(f8x8, l_get("apps.settings.wifi.connecting"), 0,0, 65535)
+                                tft.text(f8x8, ssid, 0,8, 65535)
+                                
                                 printer.log("Wifi connecting")
-                                ssid = nvs.get_string(n_wifi, "ssid")
-                                passwd = nvs.get_string(n_wifi, "passwd")
-                                if passwd != "":
-                                    nic.connect(ssid, passwd)
+                                if password != "":
+                                    nic.connect(ssid, password)
                                 else:
                                     nic.connect(ssid)
-                                popup.show("Please wait until wifi connects!", "Info", 10)
+
+                                start_time = time.ticks_ms()
+                                while nic.isconnected() == False and time.ticks_diff(time.ticks_ms(), start_time) < 10000:
+                                    time.sleep(0.2)
+
+                                if nic.isconnected():
+                                    popup.show(l_get("apps.settings.wifi.connected_to") + ": " + ssid, "Info", 10)
+                                elif nic.status() == network.STAT_WRONG_PASSWORD:
+                                    popup.show(l_get("apps.settings.wifi.wrong_passwd"), l_get("crashes.error"), 10)
+                                elif nic.status() == network.STAT_NO_AP_FOUND:
+                                    popup.show(l_get("apps.settings.wifi.ap_not_found"), l_get("crashes.error"), 10)
+                                else:
+                                    popup.show(l_get("apps.settings.wifi.could_not_conn_popup"), l_get("crashes.error"), 10)
                         else:
-                            rend = menus.menu("Wi-Fi connected, diconnect?", [("Yes",  1), ("No",  2)])
+                            rend = menus.menu(l_get("apps.settings.wifi.connected_disconnect"),
+                                              [(l_get("menus.yes"),  1),
+                                               (l_get("menus.no"),  2)])
                             if rend == 1:
                                 nic.disconnect()
                     except Exception as e:
                         c_handler.crash_screen(tft, 3001, str(e), True, True, 2)
                 else:
-                    popup.show("Wi-Fi was not setup yet!", "Error", 10)
-
-            # Wifi power managament
-            elif rendr == 9:
-                nic = network.WLAN(network.STA_IF)
-                # It's actually 2 - Power saving, 1 - Performance and 0 - None. But performance sounds better than None
-                pwr_setting = menus.menu("Wifi pwr managament", [('Automatic (Recommended)', 3), ('Power saving', 2), ('Balanced', 1), ('Performance', 0)])
-                if pwr_setting != None:
-                    nvs.set_int(n_wifi, "wifimode", pwr_setting)
-                    if pwr_setting != 3:
-                        wifi_man.set_pwr_modes()
+                    popup.show(l_get("apps.settings.wifi.not_setup"), l_get("crashes.error"), 10)
 
             # Wi-Fi status
             elif rendr == 5:
@@ -293,18 +309,16 @@ def run():
                 nic_active = nic.active()
                 nic_ifconfig = nic.ifconfig()
                 tft.fill(0)
-                tft.text(f8x8, "WLAN Active?: " + str(nic_active),0,0, 65535)
-                tft.text(f8x8, "Connected?: " + str(nic.isconnected()),0,8, 65535)
+                tft.text(f8x8, l_get("apps.settings.wifi.wlan_active") + str(nic_active),0,0, 65535)
+                tft.text(f8x8, l_get("apps.settings.wifi.connected") + str(nic.isconnected()),0,8, 65535)
                 if nic.isconnected():
-                    tft.text(f8x8, "Local IP: " + str(nic_ifconfig[0]),0,16, 65535)
-                    tft.text(f8x8, "Subnet mask: " + str(nic_ifconfig[1]),0,24, 65535)
-                    tft.text(f8x8, "Gateway: " + str(nic_ifconfig[2]),0,32, 65535)
-                    tft.text(f8x8, "DNS server: " + str(nic_ifconfig[3]),0,40, 65535)
-                    tft.text(f8x8, "SSID: " + nic.config('ssid'),0,48, 65535)
-                    tft.text(f8x8, "Channel: " + str(nic.config('channel')),0,56, 65535)
-                    tft.text(f8x8, "Hostname: " + network.hostname(),0,64, 65535)
-                    tft.text(f8x8, "Tx power (dBm): " + str(nic.config('txpower')),0,72, 65535)
-                    tft.text(f8x8, "Pwr managament: " + str(nic.config('pm')),0,80, 65535)
+                    tft.text(f8x8, l_get("apps.settings.local_ip") + str(nic_ifconfig[0]),0,16, 65535)
+                    tft.text(f8x8, l_get("apps.settings.wifi.subnet") + str(nic_ifconfig[1]),0,24, 65535)
+                    tft.text(f8x8, l_get("apps.settings.wifi.gateway") + str(nic_ifconfig[2]),0,32, 65535)
+                    tft.text(f8x8, l_get("apps.settings.wifi.dns") + str(nic_ifconfig[3]),0,40, 65535)
+                    tft.text(f8x8, l_get("apps.settings.wifi.ssid") + nic.config('ssid'),0,48, 65535)
+                    tft.text(f8x8, l_get("apps.settings.wifi.channel") + str(nic.config('channel')),0,56, 65535)
+                    tft.text(f8x8, l_get("apps.settings.wifi.hostname") + network.hostname(),0,64, 65535)
                 while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
                     time.sleep(osc.DEBOUNCE_TIME)
                     
@@ -318,7 +332,7 @@ def run():
                 menu = 1
                 while tim:
                     if menu == 1:
-                        timezone = menus.menu("NTP Timezone", [
+                        timezone = menus.menu(l_get("apps.settings.wifi.timezone"), [
                             ("UTC+00:00", 0), ("UTC+01:00", 1), ("UTC+02:00", 2), ("UTC+03:00", 3),
                             ("UTC+03:30", 4), ("UTC+04:00", 5), ("UTC+04:30", 6), ("UTC+05:00", 7),
                             ("UTC+05:30", 8), ("UTC+05:45", 9), ("UTC+06:00", 10), ("UTC+06:30", 11),
