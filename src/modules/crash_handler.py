@@ -60,7 +60,7 @@ def crash_screen(tft, error_code, log_message, log_error, enable_tft, reboot_met
         try:
             stat = os.statvfs("/")
             free_flash = stat[0] * stat[3]
-            log_file = log_to_file("Kitki30 Stick Crash Handler\nCrash on " + str(d) + "." + str(m) + "." + str(y) + " " + str(h) + ":" + str(mi) + ":" + str(s) + "\nError code: " + str(error_code) + "(" + error_db.check_code(error_code) + ")\nCrash count: " + str(count) + "\nDevice info:\nMCU Frequency: " + str(machine.freq() / 1000 / 1000) + "MHz\nAvailable RAM (During logging): "+ str(gc.mem_free() / 1024) + "KB\nAvailable flash space: " + str(free_flash / 1024) + "KB\nSystem name: " + os.uname()[0] + "\nMicroPython version: " + os.uname()[3] + "\nMachine name: " + os.uname()[4]+"\n\nError message:\n" + str(log_message))
+            log_file = log_to_file("Stick Firmware Crash Handler\nCrash on " + str(d) + "." + str(m) + "." + str(y) + " " + str(h) + ":" + str(mi) + ":" + str(s) + "\nError code: " + str(error_code) + "(" + error_db.check_code(error_code) + ")\nCrash count: " + str(count) + "\nDevice info:\nMCU Frequency: " + str(machine.freq() / 1000 / 1000) + "MHz\nAvailable RAM (During logging): "+ str(gc.mem_free() / 1024) + "KB\nAvailable flash space: " + str(free_flash / 1024) + "KB\nSystem name: " + os.uname()[0] + "\nMicroPython version: " + os.uname()[3] + "\nMachine name: " + os.uname()[4]+"\n\nError message:\n" + str(log_message))
             nvs.set_string(n_crash, "latestPath", log_file)
             print("Log saved")
         except Exception as e:
