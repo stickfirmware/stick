@@ -58,17 +58,17 @@ def deep_clean_module(modname):
     sys.modules.pop(modname, None)
 
 def clean():
-    printer.log("Ram cleaner started")
+    printer.log_cleaner("Ram cleaner started")
     before = gc.mem_free()
 
     current_keys = list(sys.modules.keys())
     for k in current_keys:
         if k not in _WHITELIST and not k.startswith("uasyncio"):
-            printer.log(str(k))
+            printer.log_cleaner(str(k))
             deep_clean_module(k)
 
     gc.collect()
     after = gc.mem_free()
     freed = after - before
 
-    printer.log("Freed {} bytes of RAM".format(freed))
+    printer.log_cleaner("Freed {} bytes of RAM".format(freed))
