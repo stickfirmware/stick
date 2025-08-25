@@ -36,8 +36,10 @@ def load(lang):
                 language = json.read_gzipped(lang_path + ".gz")
                 try:
                     import os
-                    os.remove(lang_path - ".gz")
-                    printer.log("Removed ungzipped ver of language pack to save disk space")
+                    for file in os.listdir("/language"):
+                        if file.endswith(".json") and file.startswith("lang_"):
+                            os.remove(file)
+                    printer.log("Removed ungzipped ver of language packs to save disk space")
                 except:
                     printer.log("Failed to remove ungzipped lang")
             except:
