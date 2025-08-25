@@ -23,6 +23,14 @@ jobs:
       - name: Install mpy-cross
         run: pip install mpy-cross
 
+      - name: Compress languages to GZip
+        run: |
+          shopt -s nullglob
+          for file in src/language/lang_*.json; do
+            echo "Compressing $file..."
+            gzip -c -1 -S .gz --fast "$file" > "${file}.gz"
+          done
+
       - name: Build
         run: python tools/compile.py
 
