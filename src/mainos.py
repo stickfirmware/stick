@@ -122,7 +122,7 @@ s_vl = cache.get_and_remove('n_cache_volume')
 debug.log("Buzzer volume: " + str(s_vl))
 buzz.set_volume(s_vl)
 
-auto_rotate = cache.get_and_remove('n_cache_arotate')
+auto_rotate = cache.get('n_cache_arotate')
 allow_saving = cache.get_and_remove('n_cache_pwrsave')
 
 render_bar("Load translations...", True)
