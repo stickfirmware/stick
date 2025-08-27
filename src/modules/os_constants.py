@@ -69,6 +69,7 @@ I2C_SDA = const(21)
 I2C_SCL = const(22)
 
 # st7789
+LCD_USE_EXPERIMENTAL_RENDER = const(True) # Use framebuffer render
 LCD_LOAD_BG = const(0) # Loading screen background color
 LCD_LOAD_TEXT = const(65535) # Loading screen text color
 LCD_SPI_SLOT = const(1) # Something like with I2C, 0 or 1
