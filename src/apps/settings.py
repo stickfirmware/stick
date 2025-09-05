@@ -404,19 +404,13 @@ def run():
         
         # About screen
         elif menu1 == 8:
-            import version as v
             tft.fill(0)
             gc.collect()
-            if v.is_beta == True:
+            if cache.get("ver_isbeta") == True:
                 ver_color = 65088
             else:
                 ver_color = 65535
-            tft.text(f8x8, f"Stick firmware {l_get("apps.settings.about.version")} " 
-                     + str(v.MAJOR) 
-                     + "." 
-                     + str(v.MINOR)
-                     + "." 
-                     + str(v.PATCH),0,0,ver_color)
+            tft.text(f8x8, f"Stick firmware {l_get("apps.settings.about.version")} {cache.get("ver_displayname")}" ,0,0,ver_color)
             tft.text(f8x8, l_get("apps.settings.about.by_kitki30") + " @Kitki30",0,8,ver_color)
             tft.text(f8x8, l_get("apps.settings.about.apache_license"),0,16,65535)
             

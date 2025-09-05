@@ -30,11 +30,8 @@ def getSupportedApps(appsConfig, filename):
     return menu
     
 def openMenu(file):
-    button_a = io_man.get('button_a')
-    button_b = io_man.get('button_b')
-    button_c = io_man.get('button_c')
-    tft = io_man.get('tft')
-    appsConfig = json.read("/usr/config/apps.json")
+    import apps.oobe as oobe
+    appsConfig = oobe.read_config()
     supportedAppsMenu = getSupportedApps(appsConfig, file)
     selected_index = menus.menu("Open in", supportedAppsMenu)
     if selected_index is not None:
@@ -45,7 +42,12 @@ def openMenu(file):
         comd = __import__(modpath)
         for part in parts[1:]:
             comd = getattr(comd, part)
+        # Support for legacy apps
         if hasattr(comd, "set_btf"):
+            button_a = io_man.get('button_a')
+            button_b = io_man.get('button_b')
+            button_c = io_man.get('button_c')
+            tft = io_man.get('tft')
             comd.set_btf(button_a, button_b, button_c, tft)
         if hasattr(comd, "open_file"):
             comd.open_file(file)

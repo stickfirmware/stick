@@ -53,6 +53,14 @@ SOFTWARE.
 
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
+Special thanks to jonnor for making micropython zipfile port.
+https://github.com/jonnor/micropython-zipfile
+
+Project now uses my fork of it, but still thanks jonnor!
+https://github.com/kitki30/micropython-zipfile-readonly
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
 uQR
 https://github.com/JASchilz/uQR
 

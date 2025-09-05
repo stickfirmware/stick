@@ -1,10 +1,10 @@
 # Stick firmware Version
 
 MAJOR = 2
-MINOR = 0
-PATCH = 1
+MINOR = 1
+PATCH = 0
 
-LANG_VER = [1, 0]
+LANG_VER = [1, 1]
 
 is_beta = True
 

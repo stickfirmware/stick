@@ -1,14 +1,20 @@
 import os
 
 import modules.json as jso
+import modules.cache as cache
 
-def createConfig():
-    appsConfig = {
+_APPS_JSON_PATH = "/usr/config/apps.json"
+_LAST_UPDATED_TIME = 0
+
+appsConfig = {
             "apps": [
                 {
                     "name": "Run in file reader",
                     "id": "com.kitki30.filereader",
                     "file": "helpers.run_in_reader",
+                    "main_folder": "",
+                    "is_system_app": True,
+                    "dependency": False,
                     "hidden": True,
                     "handleExtensions": ["*"]
                     },
@@ -16,20 +22,92 @@ def createConfig():
                     "name": "Play music",
                     "id": "com.kitki30.musicplayer",
                     "file": "helpers.play_music",
+                    "main_folder": "",
+                    "is_system_app": True,
+                    "dependency": False,
                     "hidden": True,
                     "handleExtensions": ["*.wav"]
+                    },
+                {
+                    "name": "Install app package",
+                    "id": "com.kitki30.packinstaller",
+                    "file": "modules.handle_apps",
+                    "main_folder": "",
+                    "is_system_app": True,
+                    "dependency": True,
+                    "hidden": True,
+                    "handleExtensions": ["*.zip", "*.stk"]
                     },
                 {
                     "name": "Run in Python executor",
                     "id": "com.kitki30.pythonexec",
                     "file": "helpers.python_exec",
+                    "main_folder": "",
+                    "is_system_app": True,
+                    "dependency": False,
                     "hidden": True,
                     "handleExtensions": ["*.py"]
                     }
                 ]
         }
-    jso.write("/usr/config/apps.json", appsConfig)
+
+# Create starting config
+def createConfig():
+    jso.write(_APPS_JSON_PATH, appsConfig)
+    cache.reload_apps()
     
+# Read app config
+def read_config(bypass_cache=False):
+    global _LAST_UPDATED_TIME
+    if cache.get("app_config_last_modify") != _LAST_UPDATED_TIME or bypass_cache:
+        config = jso.read(_APPS_JSON_PATH)
+        _LAST_UPDATED_TIME =  cache.update_last_mod()
+        return config
+    else:
+        return cache.get("app_config")
+    
+# Sync apps with actual ones
+def sync_apps():
+    config = read_config()
+    apps = config.setdefault("apps", [])
+    app_map = {app["id"]: app for app in apps}
+    
+    for new_app in appsConfig["apps"]:
+        app_id = new_app["id"]
+        if app_id in app_map:
+            app_map[app_id].update(new_app)
+        else:
+            apps.append(new_app)
+    
+    jso.write(_APPS_JSON_PATH, config)
+    cache.reload_apps()
+    
+# Edit app, example usage: edit_app("com.kitki30.musicplayer", name="Play music", handleExtensions=["*.wav", "*.mp3"])
+def edit_app(app_id, **changes):
+    try:
+        config = read_config()
+    except Exception:
+        return False
+
+    found = False
+    for app in config.get("apps", []):
+        if app.get("id") == app_id:
+            for key, value in changes.items():
+                app[key] = value
+            found = True
+            break
+
+    if not found:
+        new_app = {"id": app_id}
+        new_app.update(changes)
+        config.setdefault("apps", []).append(new_app)
+
+    jso.write(_APPS_JSON_PATH, config)
+    cache.reload_apps()
+    return True
+
+    
+# Create user
 def createUserFolder():
     if "usr" not in os.listdir("/"):
         os.mkdir("/usr")

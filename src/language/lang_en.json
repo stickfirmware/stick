@@ -4,7 +4,7 @@
         "code": "en",
         "version": [
             1,
-            0
+            1
         ],
         "authors": [
             "@Kitki30"
@@ -316,6 +316,24 @@
             "paused": "[PAUSED]",
             "vol": "Vol",
             "playback_err": "Playback Error!"
+        },
+        "custom_apps": {
+            "name": "User apps"
+        },
+        "app_installer": {
+            "name": "App installer",
+            "app_installer_short": "Installer",
+            "installing": "Installing...",
+            "delete_after_install": "Delete package after install?",
+            "popups": {
+                "success": "App package installed successfully!",
+                "memory_error": "RAM Memory too low, try restarting your device and try again.",
+                "unknown_manifest_ver": "Installer was given a manifest version that it doesn't recognize, maybe your file is corrupt, or firmware outdated?",
+                "package_size_too_high": "Package size too high, cannot install!",
+                "package_read_failed": "Could not read package, maybe its corrupt?",
+                "not_enough_flash": "Not enough free space, please free up your disk space and try again!",
+                "manifest_parse_error": "Manifest parsing error, is your manifest setup properly?"
+            }
         }
     },
     "menus": {

@@ -1,0 +1,10 @@
+{
+    "version": 1,
+    "app_ver": 2,
+    "name": "Test app",
+    "app_type": 0,
+    "install_dependencies": false,
+    "description": "Test app, for handle_apps testing purposes",
+    "entrypoint": "app",
+    "pack_id": "com.kitki30.test_app"
+}
