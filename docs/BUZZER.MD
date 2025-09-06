@@ -9,44 +9,43 @@ Buzzer module is made to help developers play buzzer sounds.
 
 ## API Reference
 
-### `get(name: str) -> HardwareObject`
-Returns a hardware object for the given device name.
+### `set_volume(volume: float)`
 
-**Returns:**  
-- A device-specific object depending on `name`.
+Sets buzzer duty (65536 * volume), max 1.0
 
 ---
 
-### `set(name: str, value: object)`
+### `play_sound(buzzer: PWM, freq: int, duration: float)`
 
-Set or override a device object in the IO Manager registry.
+Plays sound with a buzzer
+
+> [!WARNING]
+> This function is blocking, it will block your code for the time it plays sound!
 
 **Example:**
 
 ```python
 import modules.io_manager as io_man
+import modules.buzzer as buzzer
 
-custom_rtc = RtcDriver()
-io_man.set("rtc", custom_rtc)
+buzzer = io_man.get("buzzer")
+buzzer.set_volume(0.7)
+buzzer.play_sound(buzzer, 356, 0.1) # Plays 356 freq for 0.1s on buzzer
 ```
 
 ---
 
-### `clear()`
+### `play_sound_ms(buzzer: PWM, freq: int, duration: int)`
 
-Clears the IO Manager registry.
+Play sound with a buzzer, duration in ms
 
-> [!WARNING] 
-> Not recommended – may break the system until a reboot.
+> [!WARNING]
+> This function is blocking, it will block your code for the time it plays sound!
 
 ---
 
-> [!TIP]
-> Each device has its own handler, and the class can differ between devices. Handle them according to their methods/properties.
+### `startup_sound(buzzer: PWM)`
 
-**Example:**
-```python
-import modules.io_manager as io_man
+Plays startup sound with a buzzer, blocking, total duration: 0.7s
 
-tft = io_man.get("tft")
-print(tft.width(), tft.height())
+---

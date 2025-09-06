@@ -7,3 +7,4 @@ Welcome to stick firmware development docs, here you can find information needed
 ## Modules
 - [OS Constants](OS_CONSTANTS.MD)
 - [IO Manager](IO_MANAGER.MD)
+- [Buzzer](BUZZER.MD)
