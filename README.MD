@@ -5,7 +5,7 @@ Small stick but powerful beast.
 ![GitHub repo size](https://img.shields.io/github/repo-size/stickfirmware/stick?label=Repo%20size)
 ![GitHub last commit](https://img.shields.io/github/last-commit/stickfirmware/stick?label=Last%20commit)
 ![GitHub Repo stars](https://img.shields.io/github/stars/stickfirmware/stick?style=flat&label=Stars)
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/stickfirmware/stick/minify.yml?style=flat&label=Build)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/stickfirmware/stick/build.yml?style=flat&label=Build)
 ![GitHub Release](https://img.shields.io/github/v/release/stickfirmware/stick?label=Release)
 
 ## Features
