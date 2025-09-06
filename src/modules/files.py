@@ -1,4 +1,5 @@
 import os
+import re
 
 # Create folders recursivly (ex. /usr/games/wordly)
 def mkdir_recursive(path):
@@ -65,3 +66,11 @@ def parent_path(path):
         return path[:last_slash]
     else:
         return "/"
+    
+def cleanup_path(path):
+    parts = path.split('/')
+    clean_parts = []
+    for p in parts:
+        clean = re.sub(r'[^A-Za-z0-9 ._-]', '_', p)
+        clean_parts.append(clean)
+    return '/'.join(clean_parts)

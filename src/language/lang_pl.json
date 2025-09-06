@@ -4,7 +4,7 @@
         "code": "pl",
         "version": [
             1,
-            0
+            1
         ],
         "authors": [
             "@Kitki30"
@@ -316,6 +316,24 @@
             "paused": "[PAUZA]",
             "vol": "Vol",
             "playback_err": "Blad odtwarzania!"
+        },
+        "custom_apps": {
+            "name": "Aplikacje uzytkownika"
+        },
+        "app_installer": {
+            "name": "Instalator aplikacji",
+            "app_installer_short": "Instalator",
+            "installing": "Instaluje...",
+            "delete_after_install": "Usunac plik po instalacji?",
+            "popups": {
+                "success": "Aplikacja zainstalowana pomyslnie!",
+                "memory_error": "Za malo pamieci ram, zrestartuj swoje urzadzenie i sproboj ponownie.",
+                "unknown_manifest_ver": "Instalator dostal wersje manifestu ktorej nie zna. System za stary?",
+                "package_size_too_high": "Rozmiar paczki za duzy, nie mozna zainstalowac!",
+                "package_read_failed": "Nie mozna przeczytac paczki, moze jest zepsuta?",
+                "not_enough_flash": "Za malo miejsca na dysku, zwolnij miejsce i sproboj ponownie!",
+                "manifest_parse_error": "Blad parsowania manifest, czy manifest jest poprawny?"
+            }
         }
     },
     "menus": {

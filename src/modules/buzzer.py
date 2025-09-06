@@ -8,7 +8,10 @@ duty = 0.5
 
 def set_volume(volume):
     global duty
-    duty = volume
+    if volume >= 1:
+        duty = 1
+    else:
+        duty = volume
 
 def play_sound(buzzer, freq, duration):
     if osc.HAS_BUZZER:

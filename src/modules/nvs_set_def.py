@@ -41,7 +41,7 @@ def run():
     floats(n_settings, 'volume', 0.5, 'volume')
     
     # Wifi conf
-    float(n_wifi, 'conf', 0.0, 'conf')
+    floats(n_wifi, 'conf', 0.0, 'conf')
 
     # Auto rotation
     ints(n_settings, 'autorotate', 1, 'arotate')

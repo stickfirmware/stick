@@ -44,6 +44,7 @@ ps.set_freq(osc.ULTRA_FREQ)
 debug.log("Buzz tone")
 if osc.HAS_BUZZER:
     buzzer = PWM(Pin(osc.BUZZER_PIN), duty_u16=0, freq=500)
+    io_man.set("buzzer", buzzer)
     buzz.startup_sound(buzzer)
 
 files.rmdir_recursive("/temp")
@@ -122,7 +123,7 @@ s_vl = cache.get_and_remove('n_cache_volume')
 debug.log("Buzzer volume: " + str(s_vl))
 buzz.set_volume(s_vl)
 
-auto_rotate = cache.get_and_remove('n_cache_arotate')
+auto_rotate = cache.get('n_cache_arotate')
 allow_saving = cache.get_and_remove('n_cache_pwrsave')
 
 render_bar("Load translations...", True)
@@ -139,6 +140,10 @@ import modules.first_boot_check as first_boot_check
 first_boot_check.check(tft)
 decache("modules.first_boot_check")
 del first_boot_check
+
+# Sync apps
+import apps.oobe as oobe
+oobe.sync_apps()
     
 gc.collect()
 
