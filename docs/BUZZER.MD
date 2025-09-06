@@ -26,11 +26,11 @@ Plays sound with a buzzer
 
 ```python
 import modules.io_manager as io_man
-import modules.buzzer as buzzer
+import modules.buzzer as buzz
 
 buzzer = io_man.get("buzzer")
-buzzer.set_volume(0.7)
-buzzer.play_sound(buzzer, 356, 0.1) # Plays 356 freq for 0.1s on buzzer
+buzz.set_volume(0.7)
+buzz.play_sound(buzzer, 356, 0.1) # Plays 356 freq for 0.1s on buzzer
 ```
 
 ---

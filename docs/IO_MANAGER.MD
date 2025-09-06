@@ -2,7 +2,6 @@
 
 IO Manager is a core firmware module that manages the hardware of the device.  
 
----
 
 ## Basic Hardware Initialized on Boot
 
