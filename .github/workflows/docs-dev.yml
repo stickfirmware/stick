@@ -1,0 +1,31 @@
+name: Generate Docs for dev
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install pdoc
+        run: pip install pdoc3
+
+      - name: Generate docs
+        run: python /tools/pdoc.py
+
+      - name: Upload docs as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: stick-docs
+          path: docs/
