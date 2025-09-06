@@ -19,7 +19,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install pdoc
-        run: pip install pdoc3
+        run: pip install pdoc
 
       - name: Generate docs
         run: python tools/gen_docs.py
