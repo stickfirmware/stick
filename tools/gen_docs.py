@@ -1,5 +1,6 @@
 import pdoc
 import pathlib
+import os
 
 MODULES_DIR = "src/modules"
 DOCS_DIR = "docs"
