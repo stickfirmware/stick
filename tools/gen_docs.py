@@ -19,4 +19,4 @@ for file in MODULES_DIR.rglob("*.py"):
         with open(DOCS_DIR / f"{module_name}.md", "w", encoding="utf-8") as f:
             f.write(md)
     except Exception as e:
-        print(f"Failed to generate docs for {module_name}: {e}"
+        print(f"Failed to generate docs for {module_name}: {e}" )
