@@ -38,6 +38,9 @@ Standard app with UI type is an app type that is just an app with User Interface
 
 When user runs the app from menu, app is imported and ``run()`` functions is called, without any arguments, app doesn't need to return anything.
 
+# Where apps are saved?
+All apps are saved to ``/apps/thirdparty/{APP_ID_FROM_MANIFEST}`` all dots in app manifest are replaced with ``_``
+
 # Limitations
 - Apps are currently not sandboxed, they run "as root"
 - There is 64KB package size limit

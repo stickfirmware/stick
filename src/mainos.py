@@ -44,6 +44,7 @@ ps.set_freq(osc.ULTRA_FREQ)
 debug.log("Buzz tone")
 if osc.HAS_BUZZER:
     buzzer = PWM(Pin(osc.BUZZER_PIN), duty_u16=0, freq=500)
+    io_man.set("buzzer", buzzer)
     buzz.startup_sound(buzzer)
 
 files.rmdir_recursive("/temp")
