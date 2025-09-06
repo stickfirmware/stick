@@ -17,6 +17,7 @@ IO Manager is a core firmware module that manages the hardware of the device.
 | `rtc`            | External RTC class if supported              | Check device type before use |
 | `mpu`            | IMU/MPU class if supported                   | Check device type before use |
 | `power_hold`     | `Pin` class from `machine`                   | Keeps power on some M5Stack devices |
+| `buzzer`         | `PWM` class from machine                     | Buzzer PWM pin, check device type before use |
 
 ---
 
@@ -25,8 +26,18 @@ IO Manager is a core firmware module that manages the hardware of the device.
 ### `get(name: str) -> HardwareObject`
 Returns a hardware object for the given device name.
 
+> [!TIP]
+> Each device has its own handler, and the class can differ between devices. Handle them according to their methods/properties.
+
 **Returns:**  
 - A device-specific object depending on `name`.
+
+**Example:**
+```python
+import modules.io_manager as io_man
+
+tft = io_man.get("tft")
+print(tft.width(), tft.height())
 
 ---
 
@@ -53,13 +64,3 @@ Clears the IO Manager registry.
 > Not recommended – may break the system until a reboot.
 
 ---
-
-> [!TIP]
-> Each device has its own handler, and the class can differ between devices. Handle them according to their methods/properties.
-
-**Example:**
-```python
-import modules.io_manager as io_man
-
-tft = io_man.get("tft")
-print(tft.width(), tft.height())
