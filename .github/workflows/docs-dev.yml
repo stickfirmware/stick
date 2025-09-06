@@ -25,7 +25,7 @@ jobs:
         run: python /tools/pdoc.py
 
       - name: Upload docs as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: stick-docs
           path: docs/
