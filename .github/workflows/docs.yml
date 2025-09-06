@@ -22,7 +22,7 @@ jobs:
         run: pip install pdoc3
 
       - name: Generate docs
-        run: python tools/pdoc.py
+        run: python tools/gen_docs.py
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v4.0.0
