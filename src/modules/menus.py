@@ -15,7 +15,7 @@ button_c = io_man.get('button_c')
 tft = io_man.get('tft')
     
 # Refresh io
-def load_io():
+def _LOAD_IO():
     global button_c, button_a, button_b, tft
     button_a = io_man.get('button_a')
     button_b = io_man.get('button_b')
@@ -26,7 +26,7 @@ def elems_split(arr, chunk_size=13):
     return [arr[i:i+chunk_size] for i in range(0, len(arr), chunk_size)]
 
 def menu(name, choices):
-    load_io()
+    _LOAD_IO()
     # Boost freq
     curr_freq = machine.freq()
     ps.boost_allowing_state(True)

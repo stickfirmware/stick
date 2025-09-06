@@ -27,7 +27,7 @@ button_c = io_man.get('button_c')
 tft = io_man.get('tft')
 
 # Refresh io
-def load_io():
+def _LOAD_IO():
     global button_c, button_a, button_b, tft
     button_a = io_man.get('button_a')
     button_b = io_man.get('button_b')
@@ -35,7 +35,7 @@ def load_io():
     tft = io_man.get('tft')
 
 def run():
-    load_io()
+    _LOAD_IO()
     n_settings = cache.get_nvs('settings')
     n_updates = cache.get_nvs('updates')
     n_wifi = cache.get_nvs('wifi')

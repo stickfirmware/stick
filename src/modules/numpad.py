@@ -1,3 +1,7 @@
+"""
+On-screen keyboard prompts for Stick firmware
+"""
+
 import fonts.def_8x8 as f8x8
 import fonts.def_8x16 as f8x16
 import fonts.def_16x16 as f16x16
@@ -14,7 +18,7 @@ button_b = io_man.get('button_b')
 button_c = io_man.get('button_c')
 tft = io_man.get('tft')
 
-def writeNums(is_keyboard, number=99):
+def _WRITE_NUMS(is_keyboard, number=99):
     n = [65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535]
     
     if not number == 99:
@@ -94,7 +98,7 @@ def writeNums(is_keyboard, number=99):
         tft.text(f8x8, "|", 183, 91, 65535)
 
 # Refresh io
-def load_io():
+def _LOAD_IO():
     global button_c, button_a, button_b, tft
     button_a = io_man.get('button_a')
     button_b = io_man.get('button_b')
@@ -102,7 +106,18 @@ def load_io():
     tft = io_man.get('tft')
 
 def numpad(title, maxlen=0, hideInput=False):
-    load_io()
+    """
+    Show numpad input UI.
+
+    Args:
+        title (str): Title above numpad.
+        maxlen (int, optional): Max input length. 0 = unlimited.
+        hideInput (bool, optional): Mask input (with ``*``).
+
+    Returns:
+        str | None: Input string, or None if cancelled.
+    """
+    _LOAD_IO()
     import time
     
     if osc.INPUT_METHOD == 2:
@@ -129,7 +144,7 @@ def numpad(title, maxlen=0, hideInput=False):
     while work == True:
         time.sleep(osc.LOOP_WAIT_TIME)
         if upd == True:
-            writeNums(False, selection)
+            _WRITE_NUMS(False, selection)
             tft.fill_rect(3, 19, 234, 20, 0)
             chunks = [inp[i:i+28] for i in range(0, len(inp), 28)]
             last_chunk = chunks[-1] if chunks else ""
@@ -263,7 +278,18 @@ def _KEYBOARD_CARDKB(title, maxlen=0, hideInput=False, numbers_only=False):
                     upd = True
             
 def keyboard(title, maxlen=0, hideInput=False):
-    load_io()
+    """
+    Show keyboard input UI.
+
+    Args:
+        title (str): Title above keyboard.
+        maxlen (int, optional): Max input length. 0 = unlimited.
+        hideInput (bool, optional): Mask input (with ``*``).
+
+    Returns:
+        str | None: Input string, or None if cancelled.
+    """
+    _LOAD_IO()
     import time
     
     if osc.INPUT_METHOD == 2:
@@ -314,7 +340,7 @@ def keyboard(title, maxlen=0, hideInput=False):
             upd = True
 
         if upd:
-            writeNums(True, selection)
+            _WRITE_NUMS(True, selection)
             tft.fill_rect(3, 19, 234, 20, 0)
             chunks = [inp[i:i+28] for i in range(0, len(inp), 28)]
             last_chunk = chunks[-1] if chunks else ""

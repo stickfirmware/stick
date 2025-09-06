@@ -1,9 +1,17 @@
+"""
+Translations for Stick firmware.
+"""
+
 import modules.json as json
 import modules.printer as printer
 main_file = None
 language = None
 
 def init():
+    """
+    Reads main languages.json file.W
+    """
+    
     global main_file
     try:
         main_file = json.read("/language/languages.json")
@@ -25,6 +33,16 @@ def init():
     return
 
 def load(lang):
+    """
+    Loads language.
+
+    Args:
+        lang (str): Name of the language (ex. "pl" or "en")
+
+    Returns:
+        bool: True if success, False if failed
+    """
+    
     import modules.files as files
     printer.log(lang)
     global language
@@ -54,6 +72,19 @@ def load(lang):
         return False
         
 def get(path):
+    """
+    Gets translation
+
+    Args:
+        path (str): path to string in language file (ex. "crashes.error")
+
+    Returns:
+        str: Requested string, or "Translate error" if non-existent
+        
+    Example:
+        >>> get("crashes.error")
+        "Blad"
+    """
     try:
         parts = path.split(".")
         d = language

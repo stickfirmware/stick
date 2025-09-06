@@ -1,3 +1,7 @@
+"""
+NTP sync module for Stick firmware, with timezones and automatic ntp sync.
+"""
+
 import time
 import network
 
@@ -26,7 +30,25 @@ timezone_map = {
 
 t_index_ttl = 0 # Time to live of NVS cache, make sure its 0 so timezone is right first time clock appears
 t_ttl_new = 50 # New ttl when cache expired
+
 def get_time_timezoned(bypass_cache=False):
+    """
+    Gets timezoned time, gets timezone from NVS (or cache)
+
+    Args:
+        bypass_cache (bool, optional): Bypasses NVS cache if True
+
+    Returns:
+        tuple: (year, month, mday, hour, minute, second, weekday, yearday)
+            - year (int): year (ex. 2025)
+            - month (int): month (1–12)
+            - mday (int): day of the month (1–31)
+            - hour (int): hour (0–23)
+            - minute (int): minute (0–59)
+            - second (int): second (0–59)
+            - weekday (int): weekday (0 = monday, 6 = sunday)
+            - yearday (int): year day (1–366)
+    """
     global t_index_ttl
     timezoneIndex_cached = cache.get("timezone_index")
     timezoneIndex = 0
@@ -52,13 +74,22 @@ def get_time_timezoned(bypass_cache=False):
     t_index_ttl -= 1
     return local_time
 
-def wait_for_new_second():
+def _WAIT_FOR_NEW_SECOND():
     now = time.localtime()
     current_sec = now[5]
     while time.localtime()[5] == current_sec:
         time.sleep(0.01)
 
-def sync(): 
+def sync(host="time.google.com"): 
+    """
+    Sync ntp time
+    
+    Args:
+        host (str, optional): NTP server hostname, default is google ntp servers.
+
+    Returns:
+        bool: True if success, False if failed.
+    """
     import ntptime # Add the import here cause ram cleaner will delete it
 
 
@@ -69,14 +100,14 @@ def sync():
     if timezoneIndex is None:
         timezoneIndex = 0
     try:
-        ntptime.host = "time.google.com"
+        ntptime.host = host
         ntptime.settime()
     except Exception as e:
         print("NTP sync failed")
         print(str(e))
         return False
 
-    wait_for_new_second()
+    _WAIT_FOR_NEW_SECOND()
 
     utc = time.localtime()
     
@@ -84,12 +115,18 @@ def sync():
         rtc.set_time((utc[0], utc[1], utc[2], utc[6], utc[3], utc[4], utc[5], 0))
     return True
 
-def sync_interactive():
+def sync_interactive(host="time.google.com"):
+    """
+    Sync time with NTP with GUI
+
+    Args:
+        host (str, optional): NTP server hostname, default is google ntp servers.
+    """
     nic = network.WLAN(network.STA_IF)
     if nic.isconnected() == True:
         syncing = True
         while syncing == True:
-            syn = sync()
+            syn = sync(host)
             if syn == True:
                 popup.show(l_get("ntp.success_popup"), l_get("popups.info"), 10)
                 syncing = False
@@ -103,6 +140,10 @@ def sync_interactive():
         popup.show(l_get("ntp.no_wifi_popup"), l_get("crashes.error"), 10)
 
 def wrong_time_support():
+    """
+    Checks if time is setup correctly on your device, if no it shows a popup.
+    """
+    
     # ESP's usually have default time set to 2000 something, 
     # check if its greater than the time im programming this.
     localtime = time.localtime()

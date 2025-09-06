@@ -14,6 +14,10 @@ nic = network.WLAN(network.STA_IF)
 
 # Reset wifi
 def nic_reset():
+    """
+    Resets Wi-Fi
+    """
+    
     nic.active(False)
     time.sleep(0.6)
     nic.active(True)
@@ -21,35 +25,18 @@ def nic_reset():
 
 # Get mac address
 def get_wifi_mac():
+    """
+    Get formatted Wi-Fi mac addr.
+
+    Returns:
+        str: Mac address (ex. AA:00:04:00:XX:YY)
+    """
     return ubinascii.hexlify(nic.config('mac'), ':').decode()
 
-# Default NVS vars
-def set_defaults():
-    nvs.set_int(n_wifi, "wifimode", 3)
-    nvs.set_int(n_wifi, "txpower", 15)
-
-# Set pwr mode based on NVS
-def set_pwr_modes(pmm=None):
-    if pmm is None:
-        pm_mode = nvs.get_int(n_wifi, "wifimode")
-        tx_power = nvs.get_int(n_wifi, "txpower")
-    else:
-        nvs.set_int(n_wifi, "wifimode", pmm)
-        pm_mode = pmm
-        tx_power = 20 - (pmm * 5)
-        nvs.set_int(n_wifi, "txpower", tx_power)
-    
-    if pm_mode is None:
-        set_defaults()
-        return set_pwr_modes(pmm)
-
-    if pm_mode == 3:
-        dynamic_pwr_save()
-    else:
-        if nic.active():
-            nic.config(pm=pm_mode)
-            if tx_power is not None:
-                nic.config(txpower=tx_power)
+# # Default NVS vars
+# def set_defaults():
+#     nvs.set_int(n_wifi, "wifimode", 3)
+#     nvs.set_int(n_wifi, "txpower", 15)
 
 
 # Dynamic power saving based on rssi (Change tx power and pm modes)
@@ -88,6 +75,10 @@ def set_pwr_modes(pmm=None):
 #     log(f"PM Set to {pm_map[_LAST_MODE]}, txpower to {tx_map[_LAST_MODE]}")
 
 def connect_main_loop():
+    """
+    Connect to Wi-Fi, mainos boot helper.
+    """
+    
     # Check Wi-Fi hostname
     if nvs.get_string(n_wifi, "hostname") == None:
         network.hostname(osc.WIFI_DEF_HOST)

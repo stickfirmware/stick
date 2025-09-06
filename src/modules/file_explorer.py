@@ -40,7 +40,7 @@ freespace_flash = 0
 freespace_sd = 0
 
 # Refresh io
-def load_io():
+def _LOAD_IO():
     global button_c, button_a, button_b, tft
     button_a = io_man.get('button_a')
     button_b = io_man.get('button_b')
@@ -48,7 +48,7 @@ def load_io():
     tft = io_man.get('tft')
 
 def browser(path):
-    load_io()
+    _LOAD_IO()
     try:
         files = os.listdir(path)
     except OSError:
@@ -201,7 +201,7 @@ def explorerLoop(startingpath, disablemenu = False):
                                 popup.show(lang["apps"]["file_explorer"]["error_deleting"], "Error", 10)
     
 def run(fileselectmode=False, startingselectpath="/"):
-    load_io()
+    _LOAD_IO()
     tft.fill(0)
     tft.text(f16x32, lang["apps"]["file_explorer"]["name_big"],0,0,1984)
     tft.text(f8x8, lang["apps"]["file_explorer"]["loading"],0,32,65535)
