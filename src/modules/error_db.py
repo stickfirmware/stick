@@ -12,7 +12,7 @@ err_db = {
     "4001": "UNHANDLED_SYS_ERROR"
 }
 
-def check_code(code: str) -> str:
+def check_code(code: int | str) -> str:
     """
     Checks error codes
 

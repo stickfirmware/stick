@@ -1,7 +1,10 @@
+"""
+Context menu helper for Stick firmware
+"""
+
 import sys as nisysa
 
 import modules.menus as menus
-import modules.json as json
 import modules.io_manager as io_man
 
 button_a = io_man.get('button_a')
@@ -9,7 +12,17 @@ button_b = io_man.get('button_b')
 button_c = io_man.get('button_c')
 tft = io_man.get('tft')
 
-def matchesPattern(filename, pattern):
+def matches_pattern(filename: str, pattern: str) -> bool:
+    """
+    Check if filename matches pattern
+    
+    Args:
+        filename (str): Filename to check
+        pattern (str): Pattern
+    
+    Returns:
+        bool: True if matches, False if not
+    """
     if pattern == "*":
         return True
     elif pattern == "*.*":
@@ -19,20 +32,36 @@ def matchesPattern(filename, pattern):
         return filename.lower().endswith("." + ext.lower())
     return False
     
-def getSupportedApps(appsConfig, filename):
+def get_supported_apps(apps_config: dict, filename: str) -> list[tuple]:
+    """
+    Get supported apps menu
+    
+    Args:
+        apps_config (dict): JSON dict of apps config
+        filename (str): Filename to open
+    
+    Returns:
+        list[tuple]: List to display in menus.menu
+    """
     menu = []
-    for i, app in enumerate(appsConfig["apps"]):
+    for i, app in enumerate(apps_config["apps"]):
         for pattern in app.get("handleExtensions", []):
-            if matchesPattern(filename, pattern):
+            if matches_pattern(filename, pattern):
                 menu.append((app["name"], i))
                 break
     menu.append(("Exit", None))
     return menu
     
-def openMenu(file):
+def openMenu(file: str):
+    """
+    Open file open context menu
+    
+    Args:
+        filename (str): Filename to open
+    """
     import apps.oobe as oobe
     appsConfig = oobe.read_config()
-    supportedAppsMenu = getSupportedApps(appsConfig, file)
+    supportedAppsMenu = get_supported_apps(appsConfig, file)
     selected_index = menus.menu("Open in", supportedAppsMenu)
     if selected_index is not None:
         app_index = selected_index

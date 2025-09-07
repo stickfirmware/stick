@@ -14,7 +14,7 @@ last_clock_change = time.ticks_ms() # Just to not abuse the voltage regulator
 allow_boosts = True
 
 # Set boost state
-def boost_allowing_state(allow):
+def boost_allowing_state(allow: bool) -> bool:
     """
     Change clock boosting state
 
@@ -41,7 +41,7 @@ def boost_clock():
             set_freq(osc.FAST_FREQ)
 
 # Set freq
-def set_freq(freq):
+def set_freq(freq: int):
     """
     Set MCU frequency in Hz
 

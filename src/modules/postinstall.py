@@ -1,3 +1,7 @@
+"""
+Postinstalling script for Stick firmware
+"""
+
 import os
 
 from modules.random_func_checker import check_random_extra_functions
@@ -10,9 +14,16 @@ import modules.cache as cache
 _RANDOM_FUNC_BANLIST = [
     "/apps/dice.py"
 ]
+"""Banlist for RANDOM_EXTRA_FUNC, postinstall deletes all this files if extra func not detected"""
 
 # Delete entire list of files
-def del_it_all(list):
+def del_it_all(list: list[str]):
+    """
+    Delete all files from list
+    
+    Args:
+        list (list[str]): Array of file paths
+    """
     for file in list:
         try:
             os.remove(file)
@@ -21,6 +32,10 @@ def del_it_all(list):
             log("Failed to delete: " + file)
 
 def postinstall():
+    """
+    Delete all functions that are not supported on current device to save flash space
+    """
+    
     log("Postinstall - deleting files")
     del_it_all(osc.POSTINSTALL_BLACKLIST)
 

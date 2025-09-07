@@ -16,7 +16,7 @@ def get(name: str) -> any:
     """
     return _HW.get(name)
 
-def set(name, value):
+def set(name: str, value: any):
     """
     Set device in IO Managers registry
     

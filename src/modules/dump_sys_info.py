@@ -1,6 +1,15 @@
+"""
+Sys info dumping helper for Stick firmware
+"""
+
 import modules.translate as translate
 
 def language_pack():
+    """
+    Get language pack info
+    
+    Returns:
+        str: Language pack info in format: "{name} ({country_code}), v{version}, {authors}" """
     if translate.language == None:
         return "Pack not loaded"
     authors_list = translate.get("lang_info.authors")

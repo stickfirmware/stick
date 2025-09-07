@@ -63,7 +63,7 @@ def split_text(text: str, max_len: int = 29, max_lines: int = 13) -> list[str]:
     return lines
 
 
-def show(message: str, title:str = "Info", timeout:int = 3600):
+def show(message: str, title: str = "Info", timeout: int = 3600):
     """
     Show popup
 
