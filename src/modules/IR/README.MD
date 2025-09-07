@@ -9,3 +9,7 @@
 
 1. nec.py - nec protocol - Tested and working
 2. sony.py - sony's IR protocol - Didn't test.
+3. panasonic.py - panasonic protocol - Didn't test.
+4. samsung.py - samsung protocol - tested, works
+5. recv.py - receiver app
+6. gc_send.py - global cache protocol
