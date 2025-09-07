@@ -2,14 +2,17 @@ import os
 
 import modules.json as jso
 import modules.cache as cache
+from modules.translate import get as l_get
 
 _APPS_JSON_PATH = "/usr/config/apps.json"
 _LAST_UPDATED_TIME = 0
 
-appsConfig = {
+# Get apps config
+def app_config_translated():
+    appsConfig = {
             "apps": [
                 {
-                    "name": "Run in file reader",
+                    "name": l_get("apps.file_reader.context_menu_text"),
                     "id": "com.kitki30.filereader",
                     "file": "helpers.run_in_reader",
                     "main_folder": "",
@@ -19,7 +22,7 @@ appsConfig = {
                     "handleExtensions": ["*"]
                     },
                 {
-                    "name": "Play music",
+                    "name": l_get("apps.music_player.context_menu_text"),
                     "id": "com.kitki30.musicplayer",
                     "file": "helpers.play_music",
                     "main_folder": "",
@@ -29,7 +32,7 @@ appsConfig = {
                     "handleExtensions": ["*.wav"]
                     },
                 {
-                    "name": "Install app package",
+                    "name": l_get("apps.app_installer.context_menu_text"),
                     "id": "com.kitki30.packinstaller",
                     "file": "modules.handle_apps",
                     "main_folder": "",
@@ -39,7 +42,7 @@ appsConfig = {
                     "handleExtensions": ["*.zip", "*.stk"]
                     },
                 {
-                    "name": "Run in Python executor",
+                    "name": l_get("apps.python_executor.context_menu_text"),
                     "id": "com.kitki30.pythonexec",
                     "file": "helpers.python_exec",
                     "main_folder": "",
@@ -50,10 +53,11 @@ appsConfig = {
                     }
                 ]
         }
+    return appsConfig
 
 # Create starting config
 def createConfig():
-    jso.write(_APPS_JSON_PATH, appsConfig)
+    jso.write(_APPS_JSON_PATH, app_config_translated())
     cache.reload_apps()
     
 # Read app config
@@ -72,7 +76,7 @@ def sync_apps():
     apps = config.setdefault("apps", [])
     app_map = {app["id"]: app for app in apps}
     
-    for new_app in appsConfig["apps"]:
+    for new_app in app_config_translated()["apps"]:
         app_id = new_app["id"]
         if app_id in app_map:
             app_map[app_id].update(new_app)

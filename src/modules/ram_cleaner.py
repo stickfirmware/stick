@@ -41,6 +41,7 @@ _WHITELIST = {
         'fonts.def_16x32',
         'fonts',
         'apps.clock',
+        'apps.oobe',
         'apps',
         'mainos',
         'flashbdev',

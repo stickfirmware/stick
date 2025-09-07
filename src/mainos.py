@@ -87,7 +87,7 @@ except Exception as e:
 io_man.set('tft', tft)
 
 loading_count = 0 # Increased with every task
-loading_max = 12 # Max loading_count will reach
+loading_max = 11 # Max loading_count will reach
 bar_color = 2016 # Color of progress bar
 
 def render_bar(text, increase_count=False):
@@ -140,10 +140,6 @@ import modules.first_boot_check as first_boot_check
 first_boot_check.check(tft)
 decache("modules.first_boot_check")
 del first_boot_check
-
-# Sync apps
-import apps.oobe as oobe
-oobe.sync_apps()
     
 gc.collect()
 
@@ -195,6 +191,11 @@ import modules.wifi_master as wifi_master
 wifi_master.connect_main_loop()
 nic = network.WLAN(network.STA_IF)
 conn_time = time.ticks_ms()
+        
+# Sync apps
+render_bar(l_get("mainos_load.sync_apps"), True)
+import apps.oobe as oobe
+oobe.sync_apps()
         
 render_bar(l_get("mainos_load.load_libs"), True) # Loading other libraries...
 

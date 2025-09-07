@@ -4,7 +4,7 @@
         "code": "pl",
         "version": [
             1,
-            1
+            2
         ],
         "authors": [
             "@Kitki30"
@@ -18,6 +18,7 @@
         "init_io_man": "Inicjalizacja io_mana..",
         "check_time": "Sprawdzanie czasu...",
         "init_wifi": "Inicjalizacja Wi-Fi...",
+        "sync_apps": "Synchronizacja konfiguracji",
         "load_libs": "Ladowanie innych bibliotek...",
         "cleaning_up": "Czyszczenie RAMu...",
         "sd_init": "Montowanie karty SD",
@@ -115,6 +116,7 @@
         },
         "file_reader": {
             "load_preview": "Ladowanie pliku...",
+            "context_menu_text": "Uruchom w notatniku",
             "nothing_to_display": "Nic do wyswietlenia!",
             "decode_err": "Blad dekodowania"
         },
@@ -311,17 +313,20 @@
         },
         "music_player": {
             "name": "Odtwarzacz muzyki",
+            "context_menu_text": "Odtworz muzyke",
             "loading": "Ladowanie...",
             "file_not_found": "Blad, nie znaleziono pliku.",
             "paused": "[PAUZA]",
             "vol": "Vol",
-            "playback_err": "Blad odtwarzania!"
+            "playback_err": "Blad odtwarzania!",
+            "no_speaker_popup": "Nie wykryto glosnika w twoim urzadzeniu, odtwarzacz muzyki nie jest wspierany!"
         },
         "custom_apps": {
             "name": "Aplikacje uzytkownika"
         },
         "app_installer": {
             "name": "Instalator aplikacji",
+            "context_menu_text": "Zainstaluj aplikacje",
             "app_installer_short": "Instalator",
             "installing": "Instaluje...",
             "delete_after_install": "Usunac plik po instalacji?",
@@ -334,6 +339,12 @@
                 "not_enough_flash": "Za malo miejsca na dysku, zwolnij miejsce i sproboj ponownie!",
                 "manifest_parse_error": "Blad parsowania manifest, czy manifest jest poprawny?"
             }
+        },
+        "python_executor": {
+            "name": "Executor pythona",
+            "file": "Plik: ",
+            "in_progress": "Prosze czekac...",
+            "context_menu_text": "Uruchom w pythonie"
         }
     },
     "menus": {
