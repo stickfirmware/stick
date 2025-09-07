@@ -1,3 +1,7 @@
+"""
+Sleep helper for Stick firmware, helps to put device in sleep
+"""
+
 import esp32
 import machine
 import time
@@ -9,6 +13,10 @@ import modules.io_manager as io_man
 import modules.cache as cache
 
 def sleep():
+    """
+    Puts device to lightsleep,
+    disables display and backlight.
+    """
     button_c = io_man.get('button_c')
     tft = io_man.get('tft')
     n_settings = cache.get_nvs('settings')

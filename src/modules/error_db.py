@@ -1,24 +1,28 @@
-def check_code(code):
-    # Testing code
-    if code == 1:
-        return "TEST_CRASH"
-    # Easter egg
-    elif code == 2:
-        return "BUTTON_GOT_CRUSHED"
-    # External I2C RTC error
-    elif code == 1001:
-        return "RTC_INIT_ERROR"
-    # LCD / TFT init error
-    elif code == 1002:
-        return "LCD_INIT_ERROR"
-    # NVS init error
-    elif code == 2001:
-        return "NVS_INIT_ERROR"
-    # Wi-Fi error
-    elif code == 3001:
-        return "WIFI_CONNECT_ERROR"
-    # Unhandled system error (From bootloader)
-    elif code == 4001:
-        return "UNHANDLED_SYS_ERROR"
-    else:
+"""
+Error code checker for Stick firmware
+"""
+
+err_db = {
+    "1": "TEST_CRASH",
+    "2": "BUTTON_GOT_CRUSHED",
+    "1001": "RTC_INIT_ERROR",
+    "1002": "LCD_INIT_ERROR",
+    "2001": "NVS_INIT_ERROR",
+    "3001": "WIFI_CONNECT_ERROR",
+    "4001": "UNHANDLED_SYS_ERROR"
+}
+
+def check_code(code: str) -> str:
+    """
+    Checks error codes
+
+    Args:
+        code (int | str): Error code
+
+    Returns:
+        str: Human readable error code
+    """
+    try:
+        return err_db[str(code)]
+    except KeyError:
         return "UNKNOWN_ERROR"
