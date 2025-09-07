@@ -18,11 +18,11 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install pdoc
-        run: pip install pdoc
+      - name: Install requirements
+        run: pip install -r tools/requirements.txt
 
       - name: Generate docs
-        run: python tools/gen_docs.py
+        run: pydoctor --project-name=StickFirmware --project-url=https://github.com/stickfirmware/stick --make-html --html-output=docs src/modules --theme readthedocs
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v4.0.0
