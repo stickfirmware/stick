@@ -14,6 +14,13 @@ try:
     files.rmdir_recursive("/temp")
 except:
     log("Failed!")
+
+log("Delete user packages")
+try:
+    files.rmdir_recursive("/apps/thirdparty")
+    files.rmdir_recursive("/modules/thirdparty")
+except:
+    log("Failed!")
     
 log("Reset NVS, bye!")
 
