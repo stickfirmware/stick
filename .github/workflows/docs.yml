@@ -23,6 +23,7 @@ jobs:
 
       - name: Generate docs
         run: pydoctor --project-name=StickFirmware --project-url=https://github.com/stickfirmware/stick --make-html --html-output=docs src/modules --theme readthedocs
+        continue-on-error: true
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v4.0.0
