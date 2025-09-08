@@ -119,6 +119,11 @@ def menu(name, choices):
         elif button_b.value() == 1 and bt2_d == 0:
             bt2_d = 1
         
+        # Refresh neopixel
+        if osc.HAS_NEOPIXEL:
+            import modules.neopixel_anims as np_anims
+            np_anims.automatic()
+            
         time.sleep(osc.LOOP_WAIT_TIME)
         
     gc.collect()

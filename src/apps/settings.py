@@ -45,6 +45,7 @@ def run():
         # Main menu
         menu1 = menus.menu(l_get("apps.settings.name"),
                            [(l_get("apps.settings.menu1.lcd"), 1),
+                            (l_get("apps.settings.menu1.neopixel"), 5),
                             (l_get("apps.settings.menu1.sound"), 2),
                             (l_get("apps.settings.menu1.wifi"), 3),
                             (l_get("apps.settings.menu1.sdcard"), 7),
@@ -177,7 +178,61 @@ def run():
                             nvs.set_float(n_settings, "volume", (nvs.get_float(n_settings, "volume") - 0.1))
                     else:
                         work1 = False
-                        
+        
+        # Neopixel settings
+        elif menu1 == 5:
+            if osc.HAS_NEOPIXEL == False:
+                popup.show(l_get("apps.settings.neopixel.no_neo_popup"), l_get("popups.info"))
+                continue
+            
+            import modules.neopixel_anims as np_anims
+            
+            np_menu =  menus.menu(l_get("apps.settings.neopixel.title"),
+                                  [(l_get("apps.settings.neopixel.enable"), 0), 
+                                  (l_get("apps.settings.neopixel.anim_style"), 1),
+                                  (l_get("apps.settings.neopixel.notice_menu"), 2),
+                                    (l_get("menus.menu_close"), None)])
+            if np_menu == 0:
+                enable = menus.menu(l_get("apps.settings.neopixel.enable_ask"),
+                                    [(l_get("menus.yes"), 1),
+                                     (l_get("menus.no"), 0)])
+                if enable != None:
+                    nvs.set_int(n_settings, 'neo_enabled', enable)
+                    
+            elif np_menu == 1:
+                anim_style_selector = menus.menu(l_get("apps.settings.neopixel.anim_style"), 
+                                                 [(l_get("apps.settings.neopixel.static"), 1),
+                                                  (l_get("apps.settings.neopixel.rainbow"), 2),
+                                                  (l_get("menus.menu_close"), None)])
+                if anim_style_selector == 1:
+                    nvs.set_int(n_settings, "neo_anim_style", 1)
+                    color_change_ask = menus.menu(l_get("apps.settings.neopixel.also_change_colors"),
+                                                  [(l_get("menus.yes"), 1),
+                                                   (l_get("menus.no"), None)])
+                    if color_change_ask == 1:
+                        r = keypad.numpad("R color, 0-255", 3)
+                        g = keypad.numpad("G color, 0-255", 3)
+                        b = keypad.numpad("B color, 0-255", 3)
+                        if r > 255:
+                            r = 255
+                        if g > 255:
+                            g = 255
+                        if b > 255:
+                            b = 255
+                        nvs.set_int(n_settings, "neo_R", r)
+                        nvs.set_int(n_settings, "neo_G", g)
+                        nvs.set_int(n_settings, "neo_B", b)
+                    
+                elif anim_style_selector == 2:
+                    nvs.set_int(n_settings, "neo_anim_style", 2)
+            
+            elif np_menu == 2:
+                popup.show(
+                    l_get("apps.settings.neopixel.notice").replace("%backlight", str(osc.NEOPIXEL_BACKLIGHT_THRESHOLD)).replace("%ledtype", str(osc.NEOPIXEL_TYPE)),
+                    l_get("apps.settings.neopixel.notice_menu"))
+                    
+            np_anims.refresh_counters()
+                    
         # Wi-Fi settings
         elif menu1 == 3:
             rendr =  menus.menu(l_get("apps.settings.wifi.title"), 

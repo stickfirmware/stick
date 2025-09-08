@@ -1,5 +1,6 @@
-# NVS Set defaults script
-# Sets default nvs vars
+"""
+Helper for Stick firmware to set default vars in NVS
+"""
 
 import modules.cache as cache
 import modules.nvs as nvs
@@ -54,3 +55,10 @@ def run():
     
     # Language settings
     strings(n_settings, 'lang', "en", 'lang')
+    
+    # Neopixel settings
+    ints(n_settings, 'neo_anim_style', 1, 'neo_anim_style') # Default, static
+    ints(n_settings, 'neo_enabled', 1, 'neo_enabled')
+    ints(n_settings, 'neo_R', 64, 'neo_R') # Neopixel R led color
+    ints(n_settings, 'neo_G', 64, 'neo_G') # Neopixel G led color
+    ints(n_settings, 'neo_B', 64, 'neo_B') # Neopixel B led color

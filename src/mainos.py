@@ -170,6 +170,13 @@ debug.log("Init buttons")
 import modules.button_init as btn_init
 button_a, button_b, button_c, clicker = btn_init.init_buttons()
 
+# Init neopixel
+render_bar(l_get("mainos_load.init_neopixel"), True)
+if osc.HAS_NEOPIXEL == True:
+    import modules.neopixels as neopixels
+    import modules.neopixel_anims as np_anims
+    neopixels.make(osc.NEOPIXEL_PIN, osc.NEOPIXEL_LED_COUNT)
+
 # Init IO manager (Set buttons, tft, etc.)
 render_bar(l_get("mainos_load.first_init_io_man"), True)
 debug.log("Init IO manager")
@@ -680,5 +687,9 @@ while True:
                 tft.fill_rect(4, 124, 60, 8, 0)
                 if menu == 0:
                     tft.text(f8x8, "NTP",4,124,703)
+                    
+    # RGB Handler
+    if osc.HAS_NEOPIXEL:
+        np_anims.automatic()
                     
     time.sleep(osc.LOOP_WAIT_TIME)

@@ -54,6 +54,15 @@ BUTTON_A_PIN = 37
 BUTTON_B_PIN = 39
 BUTTON_C_PIN = 35
 
+# Neopixel led settings
+HAS_NEOPIXEL = False
+NEOPIXEL_PIN = None
+NEOPIXEL_LED_COUNT = None
+NEOPIXEL_TYPE = None # 1 - Cardputer style (Needs backlight fully on), 2 - Standalone (Has its own power source)
+
+# Neopixel cardputer style settings
+NEOPIXEL_BACKLIGHT_THRESHOLD = None # Backlight threshold for neopixel to be activated
+
 # GROVE Port
 HAS_GROVE = const(True)
 GROVE_SLOT = const(1)
@@ -128,6 +137,10 @@ POSTINSTALL_BLACKLIST = [
     'modules/cardputer_kb.mpy',
     'modules/sdcard.py',
     'modules/sdcard.mpy',
+    'modules/neopixels.py',
+    'modules/neopixels.mpy',
+    'modules/neopixel_anims.py',
+    'modules/neopixel_anims.mpy',
     'apps/player.py',
     'apps/player.mpy'
     ]   

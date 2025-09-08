@@ -54,6 +54,15 @@ BUTTON_A_PIN = None
 BUTTON_B_PIN = None
 BUTTON_C_PIN = None
 
+# Neopixel led settings
+HAS_NEOPIXEL = True
+NEOPIXEL_PIN = 21
+NEOPIXEL_LED_COUNT = 1
+NEOPIXEL_TYPE = 1 # 1 - Cardputer style (Needs backlight fully on), 2 - Standalone (Has its own power source)
+
+# Neopixel cardputer style settings
+NEOPIXEL_BACKLIGHT_THRESHOLD = 1.0 # Backlight threshold for neopixel to be activated
+
 # GROVE Port
 HAS_GROVE = const(True)
 GROVE_SLOT = const(1)
