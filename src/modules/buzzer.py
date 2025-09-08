@@ -24,10 +24,6 @@ def play_sound_ms(buzzer, freq, duration):
     play_sound(buzzer, freq, (duration / 1000))
     
 def startup_sound(buzzer):
-    play_sound(buzzer, 440, 0.1)
-    play_sound(buzzer, 494, 0.1)
-    play_sound(buzzer, 523, 0.1)
-    play_sound(buzzer, 494, 0.1)
-    play_sound(buzzer, 523, 0.1)
-    play_sound(buzzer, 587, 0.1)
-    play_sound(buzzer, 659, 0.1)
+    sounds = [440, 494, 523, 494, 523, 494, 523, 587, 659]
+    for freq in sounds:
+        play_sound(buzzer, freq, 0.1)
