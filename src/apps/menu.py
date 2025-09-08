@@ -68,6 +68,13 @@ def run():
         a_g.run()
         del a_g
         decache('apps.games')
+    elif menu1 == 10:
+        menu_selections = search_apps()
+        menu_selections.append((l_get("menus.menu_close"), None))
+        c_apps_menu = menus.menu(l_get("apps.custom_apps.name"), menu_selections)
+        if c_apps_menu is not None:
+            import modules.open_app as open_app
+            open_app.run(c_apps_menu)
     elif menu1 == 99:
         import apps.dev_apps.dev_menu as d_dev
         d_dev.run()
