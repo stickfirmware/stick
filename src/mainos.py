@@ -137,7 +137,7 @@ render_bar(l_get("mainos_load.first_boot_check"), True) # Checking first boot...
 # Check if its first boot
 debug.log("Check for first boot")
 import modules.first_boot_check as first_boot_check
-first_boot_check.check(tft)
+first_boot_check.check()
 decache("modules.first_boot_check")
 del first_boot_check
     
