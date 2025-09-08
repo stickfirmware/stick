@@ -1,6 +1,5 @@
 import gc
 
-import modules.io_manager as io_man
 from modules.decache import decache
 import modules.menus as menus
 import modules.os_constants as osc
@@ -26,13 +25,14 @@ def search_apps():
     return results
 
 def run():    
-    menu_apps = [(l_get("apps.ir_remote.name"), 1),
-                 (l_get("apps.file_explorer.name"), 7),
-                 (l_get("apps.flashlight.name"), 8),
-                 (l_get("apps.games.name"), 5),
-                 (l_get("apps.others.name"), 4),
-                 (l_get("apps.custom_apps.name"), 10),
-                 (l_get("apps.settings.name"), 3)]
+    menu_apps = search_apps()
+    menu_apps.extend([(l_get("apps.ir_remote.name"), 1),
+                    (l_get("apps.file_explorer.name"), 7),
+                    (l_get("apps.flashlight.name"), 8),
+                    (l_get("apps.games.name"), 5),
+                    (l_get("apps.others.name"), 4),
+                    (l_get("apps.custom_apps.name"), 10),
+                    (l_get("apps.settings.name"), 3)])
     if dev_settings == 1:
         menu_apps.append(("Developer apps", 99))
     menu_apps.append((l_get("menus.menu_close"), 13))
@@ -80,5 +80,8 @@ def run():
         d_dev.run()
         del d_dev
         decache('apps.dev_apps.dev_menu')
+    elif menu1 != None:
+        import modules.open_app as open_app
+        open_app.run(menu1)
     gc.collect()
     ps.set_freq(osc.BASE_FREQ)

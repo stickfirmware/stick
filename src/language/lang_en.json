@@ -4,7 +4,7 @@
         "code": "en",
         "version": [
             1,
-            1
+            3
         ],
         "authors": [
             "@Kitki30"
@@ -15,9 +15,11 @@
         "first_boot_check": "Checking first boot...",
         "shared_iic_init": "Init shared I2C...",
         "init_btns": "Init buttons...",
+        "init_neopixel": "Init neopixel...",
         "init_io_man": "Init io manager..",
         "check_time": "Checking time...",
         "init_wifi": "Init Wi-Fi...",
+        "sync_apps": "Sync config...",
         "load_libs": "Loading other libraries...",
         "cleaning_up": "Cleaning up...",
         "sd_init": "SD Init",
@@ -115,6 +117,7 @@
         },
         "file_reader": {
             "load_preview": "Loading file preview...",
+            "context_menu_text": "Run in file reader",
             "nothing_to_display": "No content to display",
             "decode_err": "Decode error"
         },
@@ -141,7 +144,8 @@
                 "language": "Language",
                 "about": "About",
                 "factory": "Factory reset",
-                "account": "Account"
+                "account": "Account",
+                "neopixel": "Neopixel"
             },
             "acc_menu": {
                 "title": "Settings/Account",
@@ -218,6 +222,18 @@
                 "local_ip": "Local IP: ",
                 "connected": "Connected?: ",
                 "wlan_active": "WLAN Active?: "
+            },
+            "neopixel": {
+                "title": "Settings/Neopixel",
+                "enable": "Enable/Disable",
+                "enable_ask": "Enable neopixel?",
+                "notice_menu": "Info",
+                "notice": "Info\nIf your device has led type 1 (Cardputer) - neopixel with power source shared with backlight, please make sure that your backlight is set to %backlight or more, or else led will not work.\nCurrent led type %ledtype.",
+                "anim_style": "Animation style",
+                "static": "Static color",
+                "rainbow": "Rainbow effect",
+                "also_change_colors": "Do you want to change color?",
+                "no_neo_popup": "No neopixel was detected in your device!"
             },
             "current": "Current"
         },
@@ -311,17 +327,20 @@
         },
         "music_player": {
             "name": "Music Player",
+            "context_menu_text": "Play music",
             "loading": "Loading player...",
             "file_not_found": "Error: File not found.",
             "paused": "[PAUSED]",
             "vol": "Vol",
-            "playback_err": "Playback Error!"
+            "playback_err": "Playback Error!",
+            "no_speaker_popup": "Speaker was not detected in your device, music player is not supported."
         },
         "custom_apps": {
             "name": "User apps"
         },
         "app_installer": {
             "name": "App installer",
+            "context_menu_text": "Install app package",
             "app_installer_short": "Installer",
             "installing": "Installing...",
             "delete_after_install": "Delete package after install?",
@@ -334,6 +353,12 @@
                 "not_enough_flash": "Not enough free space, please free up your disk space and try again!",
                 "manifest_parse_error": "Manifest parsing error, is your manifest setup properly?"
             }
+        },
+        "python_executor": {
+            "name": "Python executor",
+            "file": "File: ",
+            "in_progress": "Script execution in progress",
+            "context_menu_text": "Run in Python executor"
         }
     },
     "menus": {

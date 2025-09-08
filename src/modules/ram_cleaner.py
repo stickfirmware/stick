@@ -1,3 +1,7 @@
+"""
+RAM Cleaning helper for Stick firmware
+"""
+
 import sys
 import gc
 
@@ -7,11 +11,14 @@ _WHITELIST = {
         'esp32',
         'network',
         'os',
+        'neopixel',
         'bitmaps',
         'scripts',
         'scripts.checkbattery',
         'modules',
         'modules.battery_check',
+        'modules.neopixels',
+        'modules.neopixel_anims',
         'modules.cache',
         'modules.wifi_master',
         'modules.sdcard',
@@ -41,12 +48,20 @@ _WHITELIST = {
         'fonts.def_16x32',
         'fonts',
         'apps.clock',
+        'apps.oobe',
         'apps',
         'mainos',
         'flashbdev',
     }
+"""Module whitelist for main loop"""
 
-def deep_clean_module(modname):
+def deep_clean_module(modname: str):
+    """
+    Cleans module from RAM
+    
+    Args:
+        modname (str): Module name (in python format like: "modules.files")
+    """
     mod = sys.modules.get(modname)
     if not mod:
         return
@@ -58,6 +73,9 @@ def deep_clean_module(modname):
     sys.modules.pop(modname, None)
 
 def clean():
+    """
+    Cleans all modules that are not whitelisted from RAM
+    """
     printer.log_cleaner("Ram cleaner started")
     before = gc.mem_free()
 

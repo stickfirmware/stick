@@ -1,6 +1,9 @@
+"""
+Stick firmware package handler
+"""
+
 import os
 import gc
-import time
 
 import modules.json as json
 from modules.printer import log
@@ -27,6 +30,7 @@ class PackageSizeTooHigh(Exception):
 
 # Manifests classes
 class ManifestV1App:
+    """Manifest V1 Class"""
     def __init__(self):
         self.ver = 1
         self.app_name = "N/A"
@@ -38,9 +42,16 @@ class ManifestV1App:
         self.pack_id = ""
         self.did_init = False
         
-    # Validate manifes, check if all fields are in it
+    # Validate manifest, check if all fields are in it
     @staticmethod
-    def validate_manifest(manifest):
+    def validate_manifest(manifest: dict):
+        """
+        Manifest validation helper, returns ManifestParseError if manifest has missing fields
+        
+        Args:
+            manifest (dict): Manifest json dictionary
+        """
+        
         if "version" not in manifest:
             raise ManifestParseError("Missing 'version' field in manifest")
         
@@ -62,7 +73,14 @@ class ManifestV1App:
             raise ManifestParseError("Missing 'app_type' field in manifest")
         
     # Get stringified version of app_type
-    def type_stringified(self):
+    def type_stringified(self) -> str:
+        """
+        Get stringified type of app (Need to call handle_manifest first)
+        
+        Returns:
+            str: Stringified type of app (ex. "Dependency package")
+        """
+        
         a_type = self.app_type
         
         if a_type == 0:
@@ -73,7 +91,17 @@ class ManifestV1App:
             return "Unknown app_type"
     
     # Handle manifest, set variables correctly
-    def handle_manifest(self, manifest):
+    def handle_manifest(self, manifest: dict):
+        """
+        Handle manifest from json dictionary
+        
+        Args:
+            manifest (dict): Manifest dictionary
+        """
+        
+        if self.did_init == True:
+            return
+        
         self.validate_manifest(manifest)
         self.app_name = manifest["name"]
         self.app_description = manifest["description"]
@@ -94,6 +122,16 @@ class ManifestV1App:
 # Do not use it for large files,
 # please unpack them using the zip module to save ram
 def get_packed_file(zip_path, filename):
+    """
+    Gets file from zip archive
+    
+    Args:
+        zip_path (str): Path to zip archive
+        filename (str): Path to file in zip archive (were / is the root of zip archive)
+        
+    Return:
+        str | None: File content or None if failed to unpack
+    """
     gc.collect()
     import modules.zipfile as zipfile
 
@@ -106,6 +144,16 @@ def get_packed_file(zip_path, filename):
     
 # Slightly better unpacker, still eats ram
 def get_packed_file_bytes(zip_path, filename, chunk_size=1024):
+    """
+    Slightly better file getter
+    
+    Args:
+        zip_path (str): Path to zip archive
+        filename (str): Path to file in zip archive (were / is the root of zip archive)
+        
+    Return:
+        str | None: File content or None if failed to unpack
+    """
     import modules.zipfile as zipfile
     import gc
 
@@ -125,12 +173,30 @@ def get_packed_file_bytes(zip_path, filename, chunk_size=1024):
         
 # Clean pack file to not start with dot or slash
 def clean_pack_file(path: str) -> str:
+    """
+    Cleans pack file to not start with dot (.) or slash (/)
+    
+    Args:
+        path (str): Path
+        
+    Return:
+        str: Cleaned up path
+    """
     while path.startswith(('/', '.')):
         path = path[1:]
     return path
         
 # Get manifest class from zip package
-def get_manifest(zip_package):
+def get_manifest(zip_package: str) -> any:
+    """
+    Gets manifest class from zip package
+    
+    Args:
+        zip_package (str): Path to app archive
+        
+    Return:
+        any: Manifest class
+    """
     log("get_manifest()")
     
     try:
@@ -159,7 +225,16 @@ def get_manifest(zip_package):
         raise UnknownManifestVersion(f"This manifest version ({manifest_ver}) is not currently supported, is your app setup properly?")
     
 # Get version (int) from class (ex. ManifestV1App)
-def check_version_from_class(obj):
+def check_version_from_class(obj) -> int:
+    """
+    Get manifest version from class
+    
+    Args:
+        obj (any): Manifest class
+        
+    Return:
+        int: Manifest version or 0 if unknown
+    """
     if isinstance(obj, ManifestV1App):
         return 1
     else:
@@ -167,6 +242,16 @@ def check_version_from_class(obj):
     
 # Install app
 def install(zip_package, delete_app_package=True):
+    """
+    Install app package
+    
+    Args:
+        zip_package (str): Path to app package
+        delete_app_package (bool, optional): True if you want to delete app package after successful install
+        
+    Return:
+        bool: True if success, False if failed
+    """
     log("App installer")
     
     # Check how much free space, app requires: zip_size * _FLASH_FREE_SPACE_MULTI of free storage space
@@ -270,6 +355,12 @@ def install(zip_package, delete_app_package=True):
 
 # Gui installer context menu (File explorer)
 def open_file(path):
+    """
+    Context menu gui installer
+    
+    Args:
+        path (str): Path to app package
+    """
     import modules.menus as menus
     from modules.popup import show as popup
     import modules.io_manager as io_man

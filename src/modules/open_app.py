@@ -1,14 +1,34 @@
+"""
+App open helper for Stick firmware
+"""
+
 class AppNotFound(Exception):
     pass
 
-def app_exists(appsConfig, pack_id):
+def app_exists(appsConfig: dict, pack_id: str) -> str | None:
+    """
+    Gets module name of app if it exists
+    
+    Args:
+        appsConfig (dict): Apps config dictionary (Json)
+        pack_id (str): ID of package you are searching for
+
+    Returns:
+        str | None: Module name or None if not found
+    """
     for app in appsConfig.get("apps", []):
         if app.get("id") == pack_id:
             return app.get("file")
     return None
 
 
-def run(pack_id):
+def run(pack_id: str):
+    """
+    Run app with package id you provided
+
+    Args:
+        pack_id (str): Package ID to run
+    """
     import apps.oobe as oobe
     appsConfig = oobe.read_config()
     

@@ -1,3 +1,7 @@
+"""
+Popup system for Stick firmware
+"""
+
 import time
 
 import fonts.def_8x8 as f8x8
@@ -9,7 +13,19 @@ import modules.os_constants as osc
 from modules.translate import language as lang
 
 # Split text into array
-def split_text(text, max_len=29, max_lines=13):
+def split_text(text: str, max_len: int = 29, max_lines: int = 13) -> list[str]:
+    """
+    Splits text to fit on display
+
+    Args:
+        text (str): Text to split into array
+        max_len (int, optional): Max length of the line, default 29 chars
+        max_lines (int, optional): Max lines of text, default 13 chars
+
+    Returns:
+        list[str]: Array of split text
+    """
+    
     lines = []
     
     for paragraph in text.split("\n"):
@@ -47,7 +63,15 @@ def split_text(text, max_len=29, max_lines=13):
     return lines
 
 
-def show(message, title="Info", timeout=3600):
+def show(message: str, title: str = "Info", timeout: int = 3600):
+    """
+    Show popup
+
+    Args:
+        message (str): Long message to display in popup
+        title (str, optional): Short title, default "Info"
+        timeout (int, optional): Timeout in seconds, popup will automatically close after timeout, default 3600 (1 hour)
+    """
     ps.boost_allowing_state(True)
     
     # Clear / Display title
@@ -92,6 +116,10 @@ def show(message, title="Info", timeout=3600):
     import modules.button_combos as button_combos
     
     while time.ticks_diff(time.ticks_ms(), start_time) < timeout_ms and button_combos.any_btn(['a', 'b', 'c']) == False:
+        if osc.HAS_NEOPIXEL:
+            import modules.neopixel_anims as np_anim
+            np_anim.automatic()
+            
         time.sleep(osc.LOOP_WAIT_TIME)
     
     ps.loop()

@@ -35,24 +35,11 @@ from machine import I2C, Pin
 from micropython import const
 # pylint: enable=import-error
 
-_CONFIG = const(0x1a)
 _GYRO_CONFIG = const(0x1b)
 _ACCEL_CONFIG = const(0x1c)
-_ACCEL_CONFIG2 = const(0x1d)
 _ACCEL_XOUT_H = const(0x3b)
-_ACCEL_XOUT_L = const(0x3c)
-_ACCEL_YOUT_H = const(0x3d)
-_ACCEL_YOUT_L = const(0x3e)
-_ACCEL_ZOUT_H = const(0x3f)
-_ACCEL_ZOUT_L = const(0x40)
 _TEMP_OUT_H = const(0x41)
-_TEMP_OUT_L = const(0x42)
 _GYRO_XOUT_H = const(0x43)
-_GYRO_XOUT_L = const(0x44)
-_GYRO_YOUT_H = const(0x45)
-_GYRO_YOUT_L = const(0x46)
-_GYRO_ZOUT_H = const(0x47)
-_GYRO_ZOUT_L = const(0x48)
 _PWR_MGMT_1 = const(0x6b)
 _WHO_AM_I = const(0x75)
 

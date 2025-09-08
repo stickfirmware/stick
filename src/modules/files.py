@@ -1,3 +1,7 @@
+"""
+File helper for micropython devices
+"""
+
 import os
 import re
 

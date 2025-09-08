@@ -8,7 +8,7 @@ import modules.zipfile as zipfile
 import modules.files as files
 
 # Get file list of zip
-def get_file_list(zip_path):
+def get_file_list(zip_path: str) -> list[str]:
     """
     Gets file list of zip archive
 
@@ -25,7 +25,7 @@ def get_file_list(zip_path):
     with zipfile.ZipFile(zip_path, "r") as z:
         return z.namelist()
     
-def unpack_safe(zip_path, folder, chunk_size=1024):
+def unpack_safe(zip_path: str, folder: str, chunk_size: int = 1024):
     """
     Unpacks zip archive
 

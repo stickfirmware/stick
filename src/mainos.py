@@ -87,7 +87,7 @@ except Exception as e:
 io_man.set('tft', tft)
 
 loading_count = 0 # Increased with every task
-loading_max = 12 # Max loading_count will reach
+loading_max = 11 # Max loading_count will reach
 bar_color = 2016 # Color of progress bar
 
 def render_bar(text, increase_count=False):
@@ -137,7 +137,7 @@ render_bar(l_get("mainos_load.first_boot_check"), True) # Checking first boot...
 # Check if its first boot
 debug.log("Check for first boot")
 import modules.first_boot_check as first_boot_check
-first_boot_check.check(tft)
+first_boot_check.check()
 decache("modules.first_boot_check")
 del first_boot_check
 
@@ -174,6 +174,13 @@ debug.log("Init buttons")
 import modules.button_init as btn_init
 button_a, button_b, button_c, clicker = btn_init.init_buttons()
 
+# Init neopixel
+render_bar(l_get("mainos_load.init_neopixel"), True)
+if osc.HAS_NEOPIXEL == True:
+    import modules.neopixels as neopixels
+    import modules.neopixel_anims as np_anims
+    neopixels.make(osc.NEOPIXEL_PIN, osc.NEOPIXEL_LED_COUNT)
+
 # Init IO manager (Set buttons, tft, etc.)
 render_bar(l_get("mainos_load.first_init_io_man"), True)
 debug.log("Init IO manager")
@@ -195,6 +202,11 @@ import modules.wifi_master as wifi_master
 wifi_master.connect_main_loop()
 nic = network.WLAN(network.STA_IF)
 conn_time = time.ticks_ms()
+        
+# Sync apps
+render_bar(l_get("mainos_load.sync_apps"), True)
+import apps.oobe as oobe
+oobe.sync_apps()
         
 render_bar(l_get("mainos_load.load_libs"), True) # Loading other libraries...
 
@@ -679,5 +691,9 @@ while True:
                 tft.fill_rect(4, 124, 60, 8, 0)
                 if menu == 0:
                     tft.text(f8x8, "NTP",4,124,703)
+                    
+    # RGB Handler
+    if osc.HAS_NEOPIXEL:
+        np_anims.automatic()
                     
     time.sleep(osc.LOOP_WAIT_TIME)

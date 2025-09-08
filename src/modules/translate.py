@@ -91,7 +91,8 @@ def get(path):
         for p in parts:
             d = d[p]
         return d
-    except (KeyError, TypeError):
+    except (KeyError, TypeError) as e:
+        print(str(e))
         return "Translate error"
         
 init()

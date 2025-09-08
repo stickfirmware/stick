@@ -18,7 +18,7 @@ button_b = io_man.get('button_b')
 button_c = io_man.get('button_c')
 tft = io_man.get('tft')
 
-def _WRITE_NUMS(is_keyboard, number=99):
+def _WRITE_NUMS(is_keyboard: bool, number: int = 99):
     n = [65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535, 65535]
     
     if not number == 99:
@@ -105,7 +105,7 @@ def _LOAD_IO():
     button_c = io_man.get('button_c')
     tft = io_man.get('tft')
 
-def numpad(title, maxlen=0, hideInput=False):
+def numpad(title: str, maxlen: int = 0, hideInput: bool = False) -> str | None:
     """
     Show numpad input UI.
 
@@ -199,7 +199,7 @@ def numpad(title, maxlen=0, hideInput=False):
     return inp
 
 
-def _KEYBOARD_CARDKB(title, maxlen=0, hideInput=False, numbers_only=False):
+def _KEYBOARD_CARDKB(title: str, maxlen: int = 0, hideInput: bool = False, numbers_only: bool = False) -> str | None:
     import time
 
     inp = ""
@@ -277,7 +277,7 @@ def _KEYBOARD_CARDKB(title, maxlen=0, hideInput=False, numbers_only=False):
                     inp += key
                     upd = True
             
-def keyboard(title, maxlen=0, hideInput=False):
+def keyboard(title: str, maxlen:int = 0, hideInput: bool = False) -> str | None:
     """
     Show keyboard input UI.
 

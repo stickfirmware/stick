@@ -31,7 +31,7 @@ timezone_map = {
 t_index_ttl = 0 # Time to live of NVS cache, make sure its 0 so timezone is right first time clock appears
 t_ttl_new = 50 # New ttl when cache expired
 
-def get_time_timezoned(bypass_cache=False):
+def get_time_timezoned(bypass_cache: bool = False):
     """
     Gets timezoned time, gets timezone from NVS (or cache)
 
@@ -80,7 +80,7 @@ def _WAIT_FOR_NEW_SECOND():
     while time.localtime()[5] == current_sec:
         time.sleep(0.01)
 
-def sync(host="time.google.com"): 
+def sync(host: str = "time.google.com") -> bool: 
     """
     Sync ntp time
     
@@ -115,7 +115,7 @@ def sync(host="time.google.com"):
         rtc.set_time((utc[0], utc[1], utc[2], utc[6], utc[3], utc[4], utc[5], 0))
     return True
 
-def sync_interactive(host="time.google.com"):
+def sync_interactive(host: str = "time.google.com"):
     """
     Sync time with NTP with GUI
 

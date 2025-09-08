@@ -4,7 +4,7 @@
         "code": "pl",
         "version": [
             1,
-            1
+            3
         ],
         "authors": [
             "@Kitki30"
@@ -15,9 +15,11 @@
         "first_boot_check": "Sprawdzanie pierwszego bootu.",
         "shared_iic_init": "Inicjalizacja I2C...",
         "init_btns": "Inicjalizacja przyciskow...",
+        "init_neopixel": "Inicjalizacja neopixela...",
         "init_io_man": "Inicjalizacja io_mana..",
         "check_time": "Sprawdzanie czasu...",
         "init_wifi": "Inicjalizacja Wi-Fi...",
+        "sync_apps": "Synchronizacja konfiguracji",
         "load_libs": "Ladowanie innych bibliotek...",
         "cleaning_up": "Czyszczenie RAMu...",
         "sd_init": "Montowanie karty SD",
@@ -115,6 +117,7 @@
         },
         "file_reader": {
             "load_preview": "Ladowanie pliku...",
+            "context_menu_text": "Uruchom w notatniku",
             "nothing_to_display": "Nic do wyswietlenia!",
             "decode_err": "Blad dekodowania"
         },
@@ -141,7 +144,8 @@
                 "language": "Jezyk (Language)",
                 "about": "O oprogramowaniu",
                 "factory": "Reset ustawien fabrycznych",
-                "account": "Konto"
+                "account": "Konto",
+                "neopixel": "Neopixel"
             },
             "acc_menu": {
                 "title": "Ustawienia/Konto",
@@ -218,6 +222,18 @@
                 "local_ip": "IP Lokalne: ",
                 "connected": "Polaczono?: ",
                 "wlan_active": "WLAN Aktywne?: "
+            },
+            "neopixel": {
+                "title": "Ustawienia/Neopixel",
+                "enable": "Wlacz/Wylacz",
+                "enable_ask": "Wlaczyc neopixel?",
+                "notice_menu": "Informacja",
+                "notice": "Informacja\nJesli twoje urzadzenie ma led typu 1 (Cardputer) - zrodlo energii dzielone z podswietleniem ekranu, upewnij sie ze masz je ustawione na %backlight lub wiecej, albo led moze nie dzialac.\nTyp leda w tym urzadzeniu %ledtype.",
+                "anim_style": "Styl animacji",
+                "static": "Statyczny kolor",
+                "rainbow": "Efekt teczy",
+                "also_change_colors": "Zmienic kolor?",
+                "no_neo_popup": "Nie wykryto neopixela w tym urzadzeniu!"
             },
             "current": "Aktualny"
         },
@@ -311,17 +327,20 @@
         },
         "music_player": {
             "name": "Odtwarzacz muzyki",
+            "context_menu_text": "Odtworz muzyke",
             "loading": "Ladowanie...",
             "file_not_found": "Blad, nie znaleziono pliku.",
             "paused": "[PAUZA]",
             "vol": "Vol",
-            "playback_err": "Blad odtwarzania!"
+            "playback_err": "Blad odtwarzania!",
+            "no_speaker_popup": "Nie wykryto glosnika w twoim urzadzeniu, odtwarzacz muzyki nie jest wspierany!"
         },
         "custom_apps": {
             "name": "Aplikacje uzytkownika"
         },
         "app_installer": {
             "name": "Instalator aplikacji",
+            "context_menu_text": "Zainstaluj aplikacje",
             "app_installer_short": "Instalator",
             "installing": "Instaluje...",
             "delete_after_install": "Usunac plik po instalacji?",
@@ -334,6 +353,12 @@
                 "not_enough_flash": "Za malo miejsca na dysku, zwolnij miejsce i sproboj ponownie!",
                 "manifest_parse_error": "Blad parsowania manifest, czy manifest jest poprawny?"
             }
+        },
+        "python_executor": {
+            "name": "Executor pythona",
+            "file": "Plik: ",
+            "in_progress": "Prosze czekac...",
+            "context_menu_text": "Uruchom w pythonie"
         }
     },
     "menus": {
