@@ -10,9 +10,9 @@ import modules.cache as cache
 n_settings = cache.get_nvs("settings")
 tft = io_man.get('tft')
 
-auto_rotate = cache.get('n_cache_arotate')
-
 def init():
+    auto_rotate = nvs.get_int(n_settings, "autorotate")
+
     try:
         # Init I2C
         i2c = machine.I2C(osc.I2C_SLOT, scl=machine.Pin(osc.I2C_SCL), sda=machine.Pin(osc.I2C_SDA))
