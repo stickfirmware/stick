@@ -178,7 +178,7 @@ if osc.HAS_NEOPIXEL == True:
     neopixels.make(osc.NEOPIXEL_PIN, osc.NEOPIXEL_LED_COUNT)
 
 # Init IO manager (Set buttons, tft, etc.)
-render_bar(l_get("mainos_load.first_init_io_man"), True)
+render_bar(l_get("mainos_load.init_io_man"), True)
 debug.log("Init IO manager")
 io_man.set('button_a', button_a)
 io_man.set('button_b', button_b)
