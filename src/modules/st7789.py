@@ -292,6 +292,7 @@ class ST7789:
         """
         Initialize display.
         """
+        
         self.rotations = custom_rotations or self._find_rotations(width, height)
         if not self.rotations:
             supported_displays = ", ".join(
@@ -313,6 +314,8 @@ class ST7789:
         self.dc = dc
         self.cs = cs
         self.backlight = backlight
+        if backlight is not None:
+            self.set_backlight(0.5)
         self._rotation = rotation % 4
         self.color_order = color_order
         self.init_cmds = custom_init or _ST7789_INIT_CMDS
@@ -323,9 +326,6 @@ class ST7789:
         self.rotation(self._rotation)
         self.needs_swap = False
         self.fill(0x0)
-
-        if backlight is not None:
-            self.set_backlight(0.5)
 
     @staticmethod
     def _find_rotations(width, height):
