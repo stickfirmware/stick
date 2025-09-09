@@ -13,7 +13,7 @@ import modules.text_utils as text_utils
 import modules.printer as printer
 import modules.powersaving as ps
 import modules.ntp as ntp
-from modules.translate import language as lang
+from modules.translate import get as l_get
 
 tft = io_man.get('tft')
 
@@ -35,7 +35,7 @@ def run_clock():
     tft.fill_rect(237, 0, 3, 135, 65535)
     tft.fill_rect(3, 3, 234, 13, 0)
     tft.fill_rect(3, 19, 234, 113, 0)
-    tft.text(f8x8, lang["apps"]["clock"]["name"],5,5,65535)
+    tft.text(f8x8, l_get("apps.clock.name"),5,5,65535)
     last_clock_text = ""
     last_date_text = ""
     last_mode = 0
@@ -50,7 +50,7 @@ def run_clock_vert():
     tft.fill_rect(0, 237, 135, 3, 65535)
     tft.fill_rect(3, 3, 129, 13, 0)
     tft.fill_rect(3, 19, 129, 218, 0)
-    tft.text(f8x8, lang["apps"]["clock"]["name"],5,5,65535)
+    tft.text(f8x8, l_get("apps.clock.name"),5,5,65535)
     last_clock_text = ""
     last_date_text = ""
     last_mode = 0
@@ -129,10 +129,10 @@ def stopwatch():
     time_from_pause = time.ticks_ms()
     paused_time = 0
     tft.fill(0)
-    tft.text(f8x8, lang["apps"]["clock"]["stopwatch"]["name"], 0, 0, 65535)
-    tft.text(f8x8, lang["apps"]["clock"]["stopwatch"]["start_pause"], 0, 111, 65535)
-    tft.text(f8x8, lang["apps"]["clock"]["stopwatch"]["reset"], 0, 119, 65535)
-    tft.text(f8x8, lang["apps"]["clock"]["stopwatch"]["exit"], 0, 127, 65535)
+    tft.text(f8x8, l_get("apps.clock.stopwatch.name"), 0, 0, 65535)
+    tft.text(f8x8, l_get("apps.clock.stopwatch.start_pause"), 0, 111, 65535)
+    tft.text(f8x8, l_get("apps.clock.stopwatch.reset"), 0, 119, 65535)
+    tft.text(f8x8, l_get("apps.clock.stopwatch.exit"), 0, 127, 65535)
     while working:
         time.sleep(osc.LOOP_WAIT_TIME)
         if is_running and was_paused:
@@ -151,7 +151,7 @@ def stopwatch():
             if time.ticks_diff(time.ticks_ms(), time_from_battery_check) >= 5000:
                 volts = battery_check.voltage()
                 pr = battery_check.percentage(volts)
-                text = lang["mainos_diagnostics"]["battery"] + ": " + str(volts) + "V / " + str(int(pr)) + "%"
+                text = l_get("mainos_diagnostics.battery") + ": " + str(volts) + "V / " + str(int(pr)) + "%"
                 x = text_utils.center_x(text, 8)
                 y = text_utils.center_y(8) + 32
                 tft.text(f8x8, text,x,y,2016)
@@ -161,10 +161,10 @@ def stopwatch():
                 while button_a.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
                     ps.set_freq(osc.ULTRA_FREQ)
-                tft.text(f8x8, lang["apps"]["clock"]["stopwatch"]["name"] + " " + (" " * len(lang["apps"]["clock"]["stopwatch"]["paused_text"])), 0, 0, 65535)
+                tft.text(f8x8, l_get("apps.clock.stopwatch.name") + " " + (" " * len(l_get("apps.clock.stopwatch.paused_text"))), 0, 0, 65535)
                 is_running = True
             else:
-                tft.text(f8x8, lang["apps"]["clock"]["stopwatch"]["name"] + " " + lang["apps"]["clock"]["stopwatch"]["paused_text"], 0, 0, 65535)
+                tft.text(f8x8, l_get("apps.clock.stopwatch.name") + " " + l_get("apps.clock.stopwatch.paused_text"), 0, 0, 65535)
                 time_from_pause = time.ticks_ms()
                 is_running = False
                 was_paused = True
@@ -172,7 +172,7 @@ def stopwatch():
                     time.sleep(osc.DEBOUNCE_TIME)
                 ps.set_freq(osc.SLOW_FREQ)
         if button_b.value() == 0:
-            tft.text(f8x8, lang["apps"]["clock"]["stopwatch"]["release"], 0, 0, 65535)
+            tft.text(f8x8, l_get("apps.clock.stopwatch.release"), 0, 0, 65535)
             while button_b.value() == 0:
                 time.sleep(osc.DEBOUNCE_TIME)
             pauses_total = 0
@@ -181,7 +181,7 @@ def stopwatch():
             is_running = False
             was_paused = True
             render_time = True
-            tft.text(f8x8, lang["apps"]["clock"]["stopwatch"]["name"] + " " + lang["apps"]["clock"]["stopwatch"]["paused_text"], 0, 0, 65535)
+            tft.text(f8x8, l_get("apps.clock.stopwatch.name") + " " + l_get("apps.clock.stopwatch.paused_text"), 0, 0, 65535)
 
         if button_c.value() == 0:
             working = False
@@ -190,10 +190,10 @@ def stopwatch():
 
 def clock_menu():
     ps.set_freq(osc.BASE_FREQ)
-    clock_menu = menus.menu(lang["apps"]["clock"]["name"],
-                            [(lang["apps"]["clock"]["stopwatch"]["name"], 1),
-                             (lang["apps"]["clock"]["ntp_sync"], 3),
-                             (lang["menus"]["menu_close"], None)])
+    clock_menu = menus.menu(l_get("apps.clock.name"),
+                            [(l_get("apps.clock.stopwatch.name"), 1),
+                             (l_get("apps.clock.ntp_sync"), 3),
+                             (l_get("menus.menu_close"), None)])
     if clock_menu == 1:
         stopwatch()
     elif clock_menu == 3:
