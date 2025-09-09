@@ -65,13 +65,14 @@ def clock_vert():
     ss = time_tuple[5]
     text = "{:02}:{:02}:{:02}".format(hh, mm, ss)
     if last_clock_text != text or last_mode != 1:
-        x = text_utils.center_x(text, 16)
+        x = text_utils.center_x_vert(text, 16)
         tft.text(f16x32, text, x, 104, 65535)
         last_clock_text = text
+        
     # Date
     text = "{:02d}.{:02d}.{:04d}".format(time_tuple[2], time_tuple[1], time_tuple[0])
     if last_date_text != text or last_mode != 1:
-        x = text_utils.center_x(text, 8)
+        x = text_utils.center_x_vert(text, 8)
         tft.text(f8x8, text, x, 136, 65535)
         last_date_text = text
     last_mode = 1
