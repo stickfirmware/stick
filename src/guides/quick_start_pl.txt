@@ -1,8 +1,8 @@
 Instrukcja szybkiego startu Stick firmware
 
-Sterowanie notatnika (w nawiasie Cardputer):
-Gora - Przycisk C (ESC)
-Dol - Przycisk B (Tab)
+Sterowanie notatnika (w nawiasie - Cardputer):
+Do gory - Przycisk C (ESC)
+W dol - Przycisk B (Tab)
 Wyjdz - Przycisk A (Enter)
 
 Sterowanie systemu:
@@ -13,7 +13,7 @@ Wyjdz / Anulus - Przycisk C (ESC)
 Clock controls:
 Menu aplikacji - Przycisk A (Enter)
 Menu zegara - Przycisk B (Tab)
-Menu blokad - Hold Przycisk B (Tab) przez 1 second
+Menu blokad - Przytrzymaj przycisk B (Tab) przez 1 second
 Menu blokad (W trybie atrapy) - Trzymaj Przycisk A i B (Enter i Tab) przez 1 sekunde
 Szybkie akcje - Przycisk C (ESC)
 
