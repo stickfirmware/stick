@@ -2,7 +2,7 @@
 name: Language request
 about: Suggest an language to add to our project
 title: "[LANG]"
-labels: ''
+labels: language
 assignees: ''
 
 ---
