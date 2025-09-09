@@ -11,7 +11,7 @@ import modules.open_file as open_file
 import modules.io_manager as io_man
 import modules.popup as popup
 from modules.files import is_file, rmdir_recursive, parent_path, path_join
-from modules.translate import language as lang
+from modules.translate import get as l_get
 
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')
@@ -77,16 +77,16 @@ def browser(path):
 def fileMenu(file):
     global clipboard
     if file.endswith(".mpy") or file in file_banlist:
-        confirmation = menus.menu(lang["apps"]["file_explorer"]["modify_may_harm"], 
-                                  [(lang["apps"]["file_explorer"]["dont_open"], None),
-                                   (lang["apps"]["file_explorer"]["open_anyway"], 1)])
+        confirmation = menus.menu(l_get("apps.file_explorer.modify_may_harm"), 
+                                  [(l_get("apps.file_explorer.dont_open"), None),
+                                   (l_get("apps.file_explorer.open_anyway"), 1)])
         if confirmation == None:
             return
     render = menus.menu(str(file), 
-                        [(lang["apps"]["file_explorer"]["open_in"], 4),
-                         (lang["apps"]["file_explorer"]["delete"], 2),
-                         (lang["apps"]["file_explorer"]["properties"], 1),
-                         (lang["menus"]["menu_exit"], 13)])
+                        [(l_get("apps.file_explorer.open_in"), 4),
+                         (l_get("apps.file_explorer.delete"), 2),
+                         (l_get("apps.file_explorer.properties"), 1),
+                         (l_get("menus.menu_exit"), 13)])
     if render == 4:
         open_file.openMenu(file)
     elif render == 1:
@@ -96,9 +96,9 @@ def fileMenu(file):
         tm = time.localtime(stat[8])
         with open("/temp/fileprop.txt", "w") as f:
             f.write(str(file) + "\n")
-            f.write("{} {} B\n".format(lang["apps"]["file_explorer"]["file_size"], stat[6]))
-            f.write("{} {} {}, {} at {:02}:{:02}:{:02}\n".format(lang["apps"]["file_explorer"]["last_modified"],
-                lang["apps"]["file_explorer"]["months_of_the_year"][tm[1]-1],
+            f.write("{} {} B\n".format(l_get("apps.file_explorer.file_size"), stat[6]))
+            f.write("{} {} {}, {} at {:02}:{:02}:{:02}\n".format(l_get("apps.file_explorer.last_modified"),
+                l_get("apps.file_explorer.months_of_the_year")[tm[1]-1],
                 tm[2], tm[0], tm[3], tm[4], tm[5]
             ))
 
@@ -110,14 +110,14 @@ def fileMenu(file):
         if "helpers/run_in_reader" in sys.modules:
             del sys.modules["helpers/run_in_reader"]
     elif render == 2:
-        if menus.menu(lang["apps"]["file_explorer"]["delete_confirmation"], 
-                      [lang["menus"]["yes"], 
-                       (lang["menus"]["no"], None)]) == 1:
+        if menus.menu(l_get("apps.file_explorer.delete_confirmation"), 
+                      [l_get("menus.yes"), 
+                       (l_get("menus.no"), None)]) == 1:
             try:
                 os.remove(file)
             except Exception as e:
                 print(e)
-                menus.menu(lang["apps"]["file_explorer"]["error_deleting"], [(lang["menus"]["menu_close"], 1)])
+                menus.menu(l_get("apps.file_explorer.error_deleting"), [(l_get("menus.menu_close"), 1)])
             return
         
 def detect():
@@ -150,9 +150,9 @@ def explorerLoop(startingpath, disablemenu = False):
                 else:
                     currpath = parent_path(currpath)
             else:
-                folder_exit_menu = menus.menu(lang["apps"]["file_explorer"]["folder_menu"],
-                                              [(lang["menus"]["menu_go_back"], None),
-                                               (lang["apps"]["file_explorer"]["create_folder"], 1)])
+                folder_exit_menu = menus.menu(l_get("apps.file_explorer.folder_menu"),
+                                              [(l_get("menus.menu_go_back"), None),
+                                               (l_get("apps.file_explorer.create_folder"), 1)])
                 if folder_exit_menu == None:
                     if currpath == "/":
                         work = False
@@ -160,16 +160,16 @@ def explorerLoop(startingpath, disablemenu = False):
                         currpath = parent_path(currpath)
                 elif folder_exit_menu == 1:
                     import modules.numpad as keyboard
-                    folder_create_name = keyboard.keyboard(lang["apps"]["file_explorer"]["enter_folder_name"], 200)
+                    folder_create_name = keyboard.keyboard(l_get("apps.file_explorer.enter_folder_name"), 200)
                     from modules.decache import decache
                     decache("modules.numpad")
                     if folder_create_name != "" and folder_create_name != None:
                         try:
                             os.mkdir(path_join(currpath, folder_create_name))
                         except:
-                            popup.show(lang["apps"]["file_explorer"]["could_not_make_folder"], lang["crashes"]["error"], 10)
+                            popup.show(l_get("apps.file_explorer.could_not_make_folder"), l_get("crashes.error"), 10)
                     else:
-                        popup.show(lang["apps"]["file_explorer"]["invalid_name"], lang["crashes"]["error"], 10)
+                        popup.show(l_get("apps.file_explorer.invalid_name"), l_get("crashes.error"), 10)
         else:
             if is_file(browse):
                 if disablemenu == False:
@@ -181,30 +181,30 @@ def explorerLoop(startingpath, disablemenu = False):
                     currpath = browse
                 else:
                     if browse in file_banlist:
-                        confirmation = menus.menu(lang["apps"]["file_explorer"]["modify_may_harm"], 
-                                  [(lang["apps"]["file_explorer"]["dont_open"], None),
-                                   (lang["apps"]["file_explorer"]["open_anyway"], 1)])
+                        confirmation = menus.menu(l_get("apps.file_explorer.modify_may_harm"), 
+                                  [(l_get("apps.file_explorer.dont_open"), None),
+                                   (l_get("apps.file_explorer.open_anyway"), 1)])
                         if confirmation != 1:
                             continue
-                    folder_enter_menu = menus.menu(lang["apps"]["file_explorer"]["folder_menu"],
-                                                   [(lang["apps"]["file_explorer"]["change_dir"], 1), 
-                                                    (lang["apps"]["file_explorer"]["delete"], 2)])
+                    folder_enter_menu = menus.menu(l_get("apps.file_explorer.folder_menu"),
+                                                   [(l_get("apps.file_explorer.change_dir"), 1), 
+                                                    (l_get("apps.file_explorer.delete"), 2)])
                     if folder_enter_menu == 1:
                         currpath = browse
                     elif folder_enter_menu == 2:
-                        if menus.menu(lang["apps"]["file_explorer"]["delete_confirmation"], 
-                                [lang["menus"]["yes"], 
-                                (lang["menus"]["no"], None)]) == 1:
+                        if menus.menu(l_get("apps.file_explorer.delete_confirmation"), 
+                                [l_get("menus.yes"), 
+                                (l_get("menus.no"), None)]) == 1:
                             try:
                                 rmdir_recursive(path_join(currpath, browse))
                             except:
-                                popup.show(lang["apps"]["file_explorer"]["error_deleting"], "Error", 10)
+                                popup.show(l_get("apps.file_explorer.error_deleting"), "Error", 10)
     
 def run(fileselectmode=False, startingselectpath="/"):
     _LOAD_IO()
     tft.fill(0)
-    tft.text(f16x32, lang["apps"]["file_explorer"]["name_big"],0,0,1984)
-    tft.text(f8x8, lang["apps"]["file_explorer"]["loading"],0,32,65535)
+    tft.text(f16x32, l_get("apps.file_explorer.name_big"),0,0,1984)
+    tft.text(f8x8, l_get("apps.file_explorer.loading"),0,32,65535)
     work = True
     detect()
     if fileselectmode == True:
@@ -212,14 +212,14 @@ def run(fileselectmode=False, startingselectpath="/"):
         return explorerLoop(startingselectpath, True)
     while work == True:
         if sd_present == True:
-            render = menus.menu(lang["apps"]["file_explorer"]["name"], 
-                                [(lang["apps"]["file_explorer"]["built-in_flash"] + " (/)", 1),
-                                 (lang["apps"]["file_explorer"]["sd_card"] + " (/sd)", 2),
-                                 (lang["menus"]["menu_exit"], 13)])
+            render = menus.menu(l_get("apps.file_explorer.name"), 
+                                [(l_get("apps.file_explorer.built-in_flash") + " (/)", 1),
+                                 (l_get("apps.file_explorer.sd_card") + " (/sd)", 2),
+                                 (l_get("menus.menu_exit"), 13)])
         else:
-            render = menus.menu(lang["apps"]["file_explorer"]["name"], 
-                                [(lang["apps"]["file_explorer"]["built-in_flash"] + " (/)", 1),
-                                 (lang["menus"]["menu_exit"], 13)])
+            render = menus.menu(l_get("apps.file_explorer.name"), 
+                                [(l_get("apps.file_explorer.built-in_flash") + " (/)", 1),
+                                 (l_get("menus.menu_exit"), 13)])
         if render == 13:
             work = False
         elif render == 2:

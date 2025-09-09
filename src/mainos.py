@@ -276,7 +276,6 @@ if osc.HAS_SD_SLOT or nvs.get_int(n_settings, "sd_overwrite") == 1:
 
 # Load clock
 render_bar(l_get("mainos_load.load_clock"), True) # Loading clock...
-del translate.language["mainos_load"]
 import apps.clock as app_clock
 
 # Wake up function
