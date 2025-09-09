@@ -1,8 +1,21 @@
 print("Stick Boot")
 
 import machine
-import os
+
 import modules.os_constants as osc
+
+# Hold power
+if osc.HAS_HOLD_PIN:
+    power_hold = machine.Pin(osc.HOLD_PIN, machine.Pin.OUT)
+    power_hold.value(1)
+    
+import modules.buzzer as buzz
+if osc.HAS_BUZZER:
+    buzzer = machine.PWM(machine.Pin(osc.BUZZER_PIN), duty_u16=0)
+    buzz.set_volume(0.3)
+    buzz.play_sound(buzzer, 1000, 0.05)
+
+import os
 import modules.printer as printer
 import modules.powersaving as ps
 import modules.cache as cache
