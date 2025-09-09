@@ -246,7 +246,7 @@ current_rotation = osc.LCD_ROTATIONS["BUTTON_LEFT"]
 # Force landscape function
 def allow_only_landscape():
     if stable_orientation == osc.LCD_ROTATIONS["BUTTON_UPPER"] or stable_orientation == osc.LCD_ROTATIONS["BUTTON_BOTTOM"]:
-        osc.LCD_ROTATIONS["BUTTON_LEFT"]
+        tft.rotation(osc.LCD_ROTATIONS["BUTTON_LEFT"])
     else:
         tft.rotation(int(stable_orientation))
         
