@@ -130,7 +130,7 @@ render_bar("Load translations...", True)
 debug.log("Load translations")
 
 import modules.translate as translate
-translate.load(cache.get_and_remove('n_cache_lang'))
+translate.load(cache.get('n_cache_lang'))
 from modules.translate import get as l_get
 render_bar(l_get("mainos_load.first_boot_check"), True) # Checking first boot...
 
@@ -308,7 +308,7 @@ debug.log(str(sys.modules))
 # Show quick start guide if not shown yet
 if nvs.get_int(n_guides, 'quick_start') == None:
     import helpers.run_in_reader as rir
-    rir.open_file('/guides/quick_start.txt')
+    rir.open_file(f'/guides/quick_start_{cache.get('n_cache_lang')}.txt')
     nvs.set_int(n_guides, 'quick_start', 1)
     
 # Show account popup if not shown yet and account is not logged in
