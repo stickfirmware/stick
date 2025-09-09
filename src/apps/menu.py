@@ -30,8 +30,7 @@ def run():
                     (l_get("apps.file_explorer.name"), 7),
                     (l_get("apps.flashlight.name"), 8),
                     (l_get("apps.games.name"), 5),
-                    (l_get("apps.others.name"), 4),
-                    (l_get("apps.custom_apps.name"), 10),
+                    (l_get("apps.others.name"), 4),
                     (l_get("apps.settings.name"), 3)])
     if dev_settings == 1:
         menu_apps.append(("Developer apps", 99))
