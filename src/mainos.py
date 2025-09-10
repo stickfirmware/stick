@@ -561,14 +561,24 @@ while True:
         if button_a.value() == 0 or button_b.value() == 0:
             continue
         
-        try:
-            # Open power menu
-            import apps.power_menu as app_powermen
-            allow_only_landscape()
-            if nvs.get_int(n_locks, 'dummy') != 0:
-                app_powermen.power_menu()
-            else:
-                app_powermen.run()
+        try:                
+            try:
+                # Open power menu
+                import apps.power_menu as app_powermen
+                allow_only_landscape()
+                if nvs.get_int(n_locks, 'dummy') != 0:
+                    app_powermen.power_menu()
+                else:
+                    app_powermen.run()
+            except Exception as e:
+                tft.fill(0)
+                gc.collect()
+                tft.text(f16x32, l_get("crashes.app_crashed_oops"),0,0,17608) # Oops!
+                tft.text(f8x8, l_get("crashes.app_crashed_info"),0,32,65535) # One of your apps has crashed!
+                tft.text(f8x8, l_get("crashes.app_crashed_try_again"),0,40,65535) # Please try again!
+                print(str(e))
+                time.sleep(3)
+                
             # De-cache
             decache("apps.power_menu")
             del app_powermen
