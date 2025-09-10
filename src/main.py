@@ -11,9 +11,9 @@ if osc.HAS_HOLD_PIN:
     
 import modules.buzzer as buzz
 if osc.HAS_BUZZER:
-    buzzer = machine.PWM(machine.Pin(osc.BUZZER_PIN), duty_u16=0)
-    buzz.set_volume(0.3)
-    buzz.play_sound(buzzer, 1000, 0.05)
+    buzzer = machine.PWM(machine.Pin(osc.BUZZER_PIN), duty=0, freq=500)
+    buzz.set_volume(0.5)
+    buzz.play_sound(buzzer, 400, 0.1)
 
 import os
 import modules.printer as printer
