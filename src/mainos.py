@@ -130,7 +130,7 @@ render_bar("Load translations...", True)
 debug.log("Load translations")
 
 import modules.translate as translate
-translate.load(cache.get_and_remove('n_cache_lang'))
+translate.load(cache.get('n_cache_lang'))
 from modules.translate import get as l_get
 render_bar(l_get("mainos_load.first_boot_check"), True) # Checking first boot...
 
@@ -140,10 +140,6 @@ import modules.first_boot_check as first_boot_check
 first_boot_check.check()
 decache("modules.first_boot_check")
 del first_boot_check
-
-# Sync apps
-import apps.oobe as oobe
-oobe.sync_apps()
     
 gc.collect()
 
@@ -182,7 +178,7 @@ if osc.HAS_NEOPIXEL == True:
     neopixels.make(osc.NEOPIXEL_PIN, osc.NEOPIXEL_LED_COUNT)
 
 # Init IO manager (Set buttons, tft, etc.)
-render_bar(l_get("mainos_load.first_init_io_man"), True)
+render_bar(l_get("mainos_load.init_io_man"), True)
 debug.log("Init IO manager")
 io_man.set('button_a', button_a)
 io_man.set('button_b', button_b)
@@ -250,7 +246,7 @@ current_rotation = osc.LCD_ROTATIONS["BUTTON_LEFT"]
 # Force landscape function
 def allow_only_landscape():
     if stable_orientation == osc.LCD_ROTATIONS["BUTTON_UPPER"] or stable_orientation == osc.LCD_ROTATIONS["BUTTON_BOTTOM"]:
-        osc.LCD_ROTATIONS["BUTTON_LEFT"]
+        tft.rotation(osc.LCD_ROTATIONS["BUTTON_LEFT"])
     else:
         tft.rotation(int(stable_orientation))
         
@@ -280,7 +276,6 @@ if osc.HAS_SD_SLOT or nvs.get_int(n_settings, "sd_overwrite") == 1:
 
 # Load clock
 render_bar(l_get("mainos_load.load_clock"), True) # Loading clock...
-del translate.language["mainos_load"]
 import apps.clock as app_clock
 
 # Wake up function
@@ -313,7 +308,7 @@ debug.log(str(sys.modules))
 # Show quick start guide if not shown yet
 if nvs.get_int(n_guides, 'quick_start') == None:
     import helpers.run_in_reader as rir
-    rir.open_file('/guides/quick_start.txt')
+    rir.open_file(f'/guides/quick_start_{cache.get('n_cache_lang')}.txt')
     nvs.set_int(n_guides, 'quick_start', 1)
     
 # Show account popup if not shown yet and account is not logged in
@@ -566,14 +561,24 @@ while True:
         if button_a.value() == 0 or button_b.value() == 0:
             continue
         
-        try:
-            # Open power menu
-            import apps.power_menu as app_powermen
-            allow_only_landscape()
-            if nvs.get_int(n_locks, 'dummy') != 0:
-                app_powermen.power_menu()
-            else:
-                app_powermen.run()
+        try:                
+            try:
+                # Open power menu
+                import apps.power_menu as app_powermen
+                allow_only_landscape()
+                if nvs.get_int(n_locks, 'dummy') != 0:
+                    app_powermen.power_menu()
+                else:
+                    app_powermen.run()
+            except Exception as e:
+                tft.fill(0)
+                gc.collect()
+                tft.text(f16x32, l_get("crashes.app_crashed_oops"),0,0,17608) # Oops!
+                tft.text(f8x8, l_get("crashes.app_crashed_info"),0,32,65535) # One of your apps has crashed!
+                tft.text(f8x8, l_get("crashes.app_crashed_try_again"),0,40,65535) # Please try again!
+                print(str(e))
+                time.sleep(3)
+                
             # De-cache
             decache("apps.power_menu")
             del app_powermen

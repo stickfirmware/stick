@@ -1,31 +1,26 @@
 print("Stick Boot")
 
-class FakeST:
-    def text(self, font, text, x, y, tc, bc):
-        return print(text + f" (x:{x}, y:{y}, text color: {tc}, bg col: {bc})")
-    def fill(self, col):
-        return print(f"Fill screen with color {col}")
-
 import machine
-import os
+
 import modules.os_constants as osc
+
+# Hold power
+if osc.HAS_HOLD_PIN:
+    power_hold = machine.Pin(osc.HOLD_PIN, machine.Pin.OUT)
+    power_hold.value(1)
+    
+import modules.buzzer as buzz
+if osc.HAS_BUZZER:
+    buzzer = machine.PWM(machine.Pin(osc.BUZZER_PIN), duty=0, freq=500)
+    buzz.set_volume(0.5)
+    buzz.play_sound(buzzer, 400, 0.1)
+
+import os
 import modules.printer as printer
 import modules.powersaving as ps
 import modules.cache as cache
 
 ps.set_freq(osc.ULTRA_FREQ)
-
-# Hold power
-if osc.HAS_HOLD_PIN:
-    printer.log("\nEnable hold pin")
-    power_hold = machine.Pin(osc.HOLD_PIN, machine.Pin.OUT)
-    power_hold.value(1)
-
-import modules.buzzer as buzz
-if osc.HAS_BUZZER:
-    buzzer = machine.PWM(machine.Pin(osc.BUZZER_PIN), duty_u16=0, freq=500)
-    buzz.set_volume(0.1)
-    buzz.play_sound(buzzer, 2000, 0.0125)
 
 printer.log("Checking boot options...")
 
@@ -59,15 +54,15 @@ def set_f_boot(var):
     except:
         print("Failed to set fastboot vars")
     
-if tft == None:
-    tft = FakeST()
-    set_f_boot(None)
-else: 
-    set_f_boot(tft)
-
 
 def recoveryf():
     import recovery.recovery
+    
+if tft == None:
+    set_f_boot(None)
+    recoveryf()
+else: 
+    set_f_boot(tft)
 
 # Recovery button
 RECOVERY_BTN_PIN = osc.BOOT_RECOVERY_PIN

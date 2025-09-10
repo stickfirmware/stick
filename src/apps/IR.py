@@ -23,7 +23,7 @@ import fonts.def_8x8 as f8x8
 import modules.nvs as nvs
 import modules.powersaving as ps
 import modules.cache as cache
-from modules.translate import language as lang
+from modules.translate import get as l_get
 
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')
@@ -40,8 +40,8 @@ ir_pin = machine.PWM(machine.Pin(pin_nvs, machine.Pin.OUT), duty=0)
 io_man.set('IR', ir_pin)
 
 def send(necc, sonyc, panac, samsac, gcc):
-    ps.boost_freq()
-    sending_text = lang["apps"]["ir_remote"]["sending"]
+    ps.boost_clock()
+    sending_text = l_get("apps.ir_remote.sending")
     tft.text(f8x8, f"{sending_text} nec...",0,0,65535)
     nec.send_array(necc)
     time.sleep(osc.IR_SENDING_WAIT_TIME)
@@ -56,7 +56,7 @@ def send(necc, sonyc, panac, samsac, gcc):
     time.sleep(osc.IR_SENDING_WAIT_TIME)
     tft.text(f8x8, f"{sending_text} GC...",0,32,65535)
     gc_send.send_array(gcc)
-    render = menus.menu(lang["apps"]["ir_remote"]["menu"]["repeat"], [(lang["menus"]["yes"], 1), (lang["menus"]["no"], 2)])
+    render = menus.menu(l_get("apps.ir_remote.menu.repeat"), [(l_get("menus.yes"), 1), (l_get("menus.no"), 2)])
     ps.set_freq(osc.BASE_FREQ)
     if render == 1:
         send(necc, sonyc, panac, samsac, gcc)
@@ -73,17 +73,17 @@ def run():
     global ir_pin
     work = True
     while work == True:
-        render = menus.menu(lang["apps"]["ir_remote"]["name"], 
-                            [(lang["apps"]["ir_remote"]["buttons"]["power"], 1),
-                             (lang["apps"]["ir_remote"]["buttons"]["vol_up"], 2),
-                             (lang["apps"]["ir_remote"]["buttons"]["vol_down"], 3),
-                             (lang["apps"]["ir_remote"]["buttons"]["mute"], 4),
-                             (lang["apps"]["ir_remote"]["buttons"]["chan_next"], 5),
-                             (lang["apps"]["ir_remote"]["buttons"]["chan_prev"], 6),
-                             (lang["apps"]["ir_remote"]["buttons"]["freeze"], 7),
-                             (lang["apps"]["ir_remote"]["menu"]["change_pin"], 8),
-                             (lang["apps"]["ir_remote"]["menu"]["receive"], 9),
-                             (lang["menus"]["menu_close"], 10)])
+        render = menus.menu(l_get("apps.ir_remote.name"), 
+                            [(l_get("apps.ir_remote.buttons.power"), 1),
+                             (l_get("apps.ir_remote.buttons.vol_up"), 2),
+                             (l_get("apps.ir_remote.buttons.vol_down"), 3),
+                             (l_get("apps.ir_remote.buttons.mute"), 4),
+                             (l_get("apps.ir_remote.buttons.chan_next"), 5),
+                             (l_get("apps.ir_remote.buttons.chan_prev"), 6),
+                             (l_get("apps.ir_remote.buttons.freeze"), 7),
+                             (l_get("apps.ir_remote.menu.change_pin"), 8),
+                             (l_get("apps.ir_remote.menu.receive"), 9),
+                             (l_get("menus.menu_close"), 10)])
         if render == 1:
             send(db_nec.power, db_sony.power, db_pana.power, db_samsa.power, db_gc.power)
         elif render == 2:
@@ -103,14 +103,14 @@ def run():
             render_pins = []
             for pin in osc.IR_ALLOWED_PINS:
                 render_pins.append(("GPIO"+str(pin), pin))
-            render = menus.menu(lang["apps"]["ir_remote"]["menu"]["change_pin"], render_pins)
+            render = menus.menu(l_get("apps.ir_remote.menu.change_pin"), render_pins)
             if render != 99 and render != None:
                 nvs.set_int(n_settings, "irPin", render)
             ir_pin = machine.PWM(machine.Pin(nvs.get_int(n_settings, "irPin"), machine.Pin.OUT), duty = 0)
             io_man.set('IR', ir_pin)
         elif render == 9:
             if osc.ALLOW_IR_RECORD == False:
-                menus.menu(lang["apps"]["ir_remote"]["menu"]["receive_no_support"], [(lang["menus"]["menu_close"], 1)])
+                menus.menu(l_get("apps.ir_remote.menu.receive_no_support"), [(l_get("menus.menu_close"), 1)])
                 continue
             works = True
             updat = True
@@ -123,14 +123,14 @@ def run():
                 if updat == True:
                     tft.fill(0)
                     # Show receiver mode pinout
-                    tft.text(f8x8, lang["apps"]["ir_remote"]["receiver_mode"]["title"],0,0,65535)
-                    tft.text(f8x8, lang["apps"]["ir_remote"]["receiver_mode"]["pinout"],0,10,65535)
+                    tft.text(f8x8, l_get("apps.ir_remote.receiver_mode.title"),0,0,65535)
+                    tft.text(f8x8, l_get("apps.ir_remote.receiver_mode.pinout"),0,10,65535)
                     tft.text(f8x8, "GND - Recv GND / -",0,18,54937)
-                    tft.text(f8x8, "3v3 (" + lang["apps"]["ir_remote"]["receiver_mode"]["pinout_5v"] + ") - VCC",0,26,63648)
+                    tft.text(f8x8, "3v3 (" + l_get("apps.ir_remote.receiver_mode.pinout_5v") + ") - VCC",0,26,63648)
                     tft.text(f8x8, "G26 - OUT / S",0,34,65535)
-                    tft.text(f8x8, lang["apps"]["ir_remote"]["receiver_mode"]["save_info"],0,48,65535)
-                    tft.text(f8x8, lang["apps"]["ir_remote"]["receiver_mode"]["a_to_continue"],0,56,65535)
-                    tft.text(f8x8, lang["apps"]["ir_remote"]["receiver_mode"]["c_to_exit"],0,64,65535)
+                    tft.text(f8x8, l_get("apps.ir_remote.receiver_mode.save_info"),0,48,65535)
+                    tft.text(f8x8, l_get("apps.ir_remote.receiver_mode.a_to_continue"),0,56,65535)
+                    tft.text(f8x8, l_get("apps.ir_remote.receiver_mode.c_to_exit"),0,64,65535)
                     updat = False
                 if button_c.value() == 0:
                     works = False
@@ -138,18 +138,18 @@ def run():
                 if button_a.value() == 1:
                     continue
                 tft.fill(0)
-                tft.text(f8x8, lang["apps"]["ir_remote"]["receiver_mode"]["scan_to_copy"],0,0,65535)
-                tft.text(f8x8, lang["apps"]["ir_remote"]["receiver_mode"]["timeout"],0,8,65535)
+                tft.text(f8x8, l_get("apps.ir_remote.receiver_mode.scan_to_copy"),0,0,65535)
+                tft.text(f8x8, l_get("apps.ir_remote.receiver_mode.timeout"),0,8,65535)
                 ir_data = recv.record_ir(15000)
                 if ir_data is not None and ir_data != []:
                     date = str(time.time())
                     filename = f"/usr/ir/{date}.ir"
                     with open(filename, 'w') as f:
                         json.dump(ir_data, f)
-                    tft.text(f8x8, lang["apps"]["ir_remote"]["receiver_mode"]["saved_as"] + filename,0,16,65535)
+                    tft.text(f8x8, l_get("apps.ir_remote.receiver_mode.saved_as") + filename,0,16,65535)
                 else:
                     tft.fill(0)
-                    tft.text(f8x8, lang["apps"]["ir_remote"]["receiver_mode"]["timeout_no_signal"], 0, 16, 63488)
+                    tft.text(f8x8, l_get("apps.ir_remote.receiver_mode.timeout_no_signal"), 0, 16, 63488)
                 time.sleep(2)
                 updat = True
             

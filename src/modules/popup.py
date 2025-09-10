@@ -10,7 +10,7 @@ import fonts.def_16x16 as f16x16
 import modules.io_manager as io_man
 import modules.powersaving as ps
 import modules.os_constants as osc
-from modules.translate import language as lang
+from modules.translate import get as l_get
 
 # Split text into array
 def split_text(text: str, max_len: int = 29, max_lines: int = 13) -> list[str]:
@@ -100,9 +100,9 @@ def show(message: str, title: str = "Info", timeout: int = 3600):
         
     tft.fill_rect(0, any_button_line_y, osc.LCD_WIDTH, 3, 65535) # Separator
     
-    try:
-        tft.text(f8x8, lang["menus"]["popup_any_btn"], 0, any_button_y, 65535)
-    except:
+    if l_get("menus.popup_any_btn") != "Translate error":
+        tft.text(f8x8, l_get("menus.popup_any_btn"), 0, any_button_y, 65535)
+    else:
         tft.text(f8x8, "Press any button to continue!", 0, any_button_y, 65535)
     
     if timeout > 3600:

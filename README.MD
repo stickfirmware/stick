@@ -7,6 +7,7 @@ Small stick but powerful beast.
 ![GitHub Repo stars](https://img.shields.io/github/stars/stickfirmware/stick?style=flat&label=Stars)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/stickfirmware/stick/build.yml?style=flat&label=Build)
 ![GitHub Release](https://img.shields.io/github/v/release/stickfirmware/stick?label=Release)
+[![Crowdin](https://badges.crowdin.net/stick-firmware/localized.svg)](https://crowdin.com/project/stick-firmware)
 
 ## Features
 - Clock with i2c RTC sync
@@ -28,6 +29,19 @@ Small stick but powerful beast.
 - [ ] Bluethooth support
 - [ ] Autoupdate
 - [X] Better SD card support
+- [ ] More translations
+
+## Translations
+Please help us translate Stick firmware in [Crowdin](https://crowdin.com/project/stick-firmware)
+If your language is not here, please open a github issue.
+
+Currently supported languages:
+- English (Source language, 100%)
+- Polish (@Kitki30, 100%)
+
+### Known issues with translations
+Currently there are some issues with translations that you must know before translating anything:
+- Our font only supports english characters (Won't fix, please try swaping some letters to work with font (ex. "ł" to "l"), but try to make it human readable. We are aware that some languages may not be possible to display using only english characters, but there is no way to fix it staying on the same font)
 
 ## Instalation
 We need to add an installer later

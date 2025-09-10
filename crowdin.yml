@@ -1,0 +1,5 @@
+files:
+  - source: /translate_sources/main_lang.json
+    translation: /src/language/lang_%two_letters_code%.json
+  - source: /translate_sources/guides/*.txt
+    translation: /src/guides/%file_name%_%two_letters_code%.%file_extension%

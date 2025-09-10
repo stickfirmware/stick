@@ -1,0 +1,427 @@
+{
+    "lang_info": {
+        "name": "English",
+        "code": "en",
+        "version": [
+            1,
+            3
+        ],
+        "authors": [
+            "@Kitki30"
+        ]
+    },
+    "mainos_load": {
+        "loading": "Loading...",
+        "first_boot_check": "Checking first boot...",
+        "shared_iic_init": "Init shared I2C...",
+        "init_btns": "Init buttons...",
+        "init_neopixel": "Init neopixel...",
+        "init_io_man": "Init io manager..",
+        "check_time": "Checking time...",
+        "init_wifi": "Init Wi-Fi...",
+        "sync_apps": "Sync config...",
+        "load_libs": "Loading other libraries...",
+        "cleaning_up": "Cleaning up...",
+        "sd_init": "SD Init",
+        "load_clock": "Loading clock..."
+    },
+    "mainos_diagnostics": {
+        "battery": "Battery"
+    },
+    "crashes": {
+        "error": "Error",
+        "app_crashed_oops": "Oops!",
+        "app_crashed_info": "One of your apps has crashed!",
+        "app_crashed_try_again": "Please try again!"
+    },
+    "apps": {
+        "clock": {
+            "name": "Clock",
+            "stopwatch": {
+                "name": "Stopwatch",
+                "start_pause": "Press A to start/pause",
+                "reset": "Press B to reset",
+                "exit": "Press C to exit",
+                "paused_text": "[PAUSED]",
+                "release": "Release to reset!"
+            },
+            "ntp_sync": "Sync time"
+        },
+        "ir_remote": {
+            "name": "IR Remote",
+            "sending": "Sending",
+            "buttons": {
+                "power": "ON/OFF",
+                "vol_up": "VOL+",
+                "vol_down": "VOL-",
+                "mute": "Mute",
+                "chan_next": "CHANNEL+ / NEXT",
+                "chan_prev": "CHANNEL- / PREV",
+                "freeze": "FREEZE"
+            },
+            "menu": {
+                "repeat": "Repeat?",
+                "change_pin": "Change IR pin",
+                "receive": "Receive",
+                "receive_no_support": "IR receiving not supported!"
+            },
+            "receiver_mode": {
+                "title": "Receiver mode!",
+                "pinout": "Receiver pinout:",
+                "pinout_5v": "Or 5V if supported",
+                "save_info": "Everything is saved to /usr/ir",
+                "a_to_continue": "Press button A to continue,",
+                "c_to_exit": "button C to exit!",
+                "scan_to_copy": "Scan IR to copy!",
+                "timeout": "Timeout: 15s",
+                "saved_as": "Saved as: ",
+                "timeout_no_signal": "Timeout. No signal."
+            }
+        },
+        "file_explorer": {
+            "name": "File explorer",
+            "name_big": "File explorer",
+            "modify_may_harm": "Modifying may harm system!",
+            "dont_open": "Don't open",
+            "open_anyway": "Open anyway",
+            "open_in": "Open in...",
+            "delete": "Delete",
+            "properties": "Properties",
+            "file_size": "File size:",
+            "last_modified": "Last modified:",
+            "loading": "Loading...",
+            "months_of_the_year": [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December"
+            ],
+            "delete_confirmation": "Delete?",
+            "error_deleting": "Error deleting file!",
+            "folder_menu": "Folder menu",
+            "create_folder": "Create folder",
+            "enter_folder_name": "Enter folder name",
+            "could_not_make_folder": "Could not make folder.",
+            "invalid_name": "Invalid file name was provided.",
+            "change_dir": "Change dir",
+            "built-in_flash": "Built-in flash",
+            "sd_card": "SD Card"
+        },
+        "file_reader": {
+            "load_preview": "Loading file preview...",
+            "context_menu_text": "Run in file reader",
+            "nothing_to_display": "No content to display",
+            "decode_err": "Decode error"
+        },
+        "flashlight": {
+            "name": "Flashlight"
+        },
+        "games": {
+            "name": "Games"
+        },
+        "others": {
+            "name": "Others",
+            "title": "Menu/Others",
+            "buzzer_info_metronome": "Buzzer was not detected in your device, metronome is not supported.",
+            "rand_extra_func": "No extra fuctions detected!"
+        },
+        "settings": {
+            "name": "Settings",
+            "menu1": {
+                "title": "Settings",
+                "lcd": "Display",
+                "sound": "Buzzer",
+                "wifi": "Wi-Fi",
+                "sdcard": "SD Card",
+                "language": "Language",
+                "about": "About",
+                "factory": "Factory reset",
+                "account": "Account",
+                "neopixel": "Neopixel"
+            },
+            "acc_menu": {
+                "title": "Settings/Account",
+                "link": "Link account"
+            },
+            "lang_menu": {
+                "title": "Language",
+                "reboot": "Reboot now?"
+            },
+            "lcd_menu": {
+                "title": "Settings/lcd",
+                "backlight": "Backlight",
+                "autorotate": "Autorotate",
+                "pwr_save": "Power saving",
+                "backlight_title": "Settings/lcd/Backlight",
+                "imu_error_popup": "IMU/MPU was not detected in your device!!!",
+                "autorotate_title": "Settings/lcd/Autorotate",
+                "power_saver_title": "Settings/lcd/Power saving"
+            },
+            "buzzer_menu": {
+                "buzzer_title": "Settings/Buzzer",
+                "volume": "Volume",
+                "volume_title": "Settings/Buzzer/Volume"
+            },
+            "about": {
+                "version": "version",
+                "by_kitki30": "by",
+                "apache_license": "Apache 2.0 License",
+                "more_details_scan_qr": "For more details, scan the QR",
+                "a_exit": "Press button A to exit,",
+                "b_credits": "button B for credits",
+                "c_license": "and button C for license"
+            },
+            "factory": {
+                "reset_all": "Reset all settings?",
+                "it_removes_all": "It removes all files",
+                "confirm": "Confirm"
+            },
+            "sd": {
+                "no_slot_detected_popup": "No SD card slot detected in your device!",
+                "title": "Settings/SD Card",
+                "init": "Init",
+                "init_load": "Init SD...",
+                "done": "Done!",
+                "failed": "Failed!",
+                "unmount": "Unmount",
+                "unmount_load": "Unmount SD..."
+            },
+            "wifi": {
+                "title": "Settings/Wi-Fi",
+                "connect_with": "Connect with ",
+                "connected_disconnect": "Wi-Fi connected, disconnect?",
+                "not_setup": "Wi-Fi was not setup yet!",
+                "setup_ap": "Setup AP",
+                "connection": "Connection",
+                "status": "Wi-Fi Status",
+                "timezone": "Timezone",
+                "scanning": "Scanning...",
+                "no_ap_error_popup": "No AP found!\nTry hard resetting your device, as ESP's Wi-Fi stack may be broken.",
+                "select_ssid": "Select SSID",
+                "enter_passwd": "Enter password",
+                "auto_connect_ask": "Auto connect?",
+                "connecting": "Connecting...",
+                "connected_to": "Connected to",
+                "wrong_passwd": "Wrong password.",
+                "ap_not_found": "Access Point was not found.\nMake sure you are in your access points signal",
+                "could_not_conn_popup": "Could not connect!\nTry hard resetting your device, as ESP's Wi-Fi stack may be broken.",
+                "hostname": "Hostname: ",
+                "channel": "Channel: ",
+                "ssid": "SSID: ",
+                "dns": "DNS Server: ",
+                "gateway": "Gateway: ",
+                "subnet": "Subnet mask: ",
+                "local_ip": "Local IP: ",
+                "connected": "Connected?: ",
+                "wlan_active": "WLAN Active?: "
+            },
+            "neopixel": {
+                "title": "Settings/Neopixel",
+                "enable": "Enable/Disable",
+                "enable_ask": "Enable neopixel?",
+                "notice_menu": "Info",
+                "notice": "Info\nIf your device has led type 1 (Cardputer) - neopixel with power source shared with backlight, please make sure that your backlight is set to %backlight or more, or else led will not work.\nCurrent led type %ledtype.",
+                "anim_style": "Animation style",
+                "static": "Static color",
+                "rainbow": "Rainbow effect",
+                "also_change_colors": "Do you want to change color?",
+                "no_neo_popup": "No neopixel was detected in your device!"
+            },
+            "current": "Current"
+        },
+        "minesweeper": {
+            "name": "Minesweeper",
+            "popups": {
+                "time": "Time:",
+                "map": "Map:",
+                "bombs": "Bombs:",
+                "win": "You win!",
+                "lose": "You lose!",
+                "cannot_more_flags": "Cannot place more flags"
+            },
+            "action_menu": {
+                "tile": "tile",
+                "dig": "Dig",
+                "flag": "Flag"
+            },
+            "debug_enabled": "Debugging enabled, can cheat",
+            "flags": "Flags:",
+            "controls": "Controls",
+            "select_mode": "Select game mode",
+            "modes": {
+                "mode1": "Beginner",
+                "mode2": "Easy",
+                "mode3": "Medium",
+                "mode4": "Hard",
+                "custom": "Custom"
+            },
+            "custom_mode": {
+                "map_size": "Enter map size max. 16",
+                "bombs": "Enter bombs",
+                "map_size_error": "Map size must be between 1 and 16",
+                "bombs_error": "Bombs must be between 1 and "
+            },
+            "input": {
+                "method1": "Use A to dig/flag tiles.\nUse B to move right.\nUse C to move down.\n",
+                "method2": "Use Enter for action menu.\nUse arrows to move.\nUse D to Dig.\nUse F to flag.\n",
+                "unknown": "Unknown input method"
+            }
+        },
+        "qr_gen": {
+            "name": "QR Codes",
+            "qr_menu": "QR Menu",
+            "size": "Size",
+            "change_text": "Change text",
+            "text": "Text"
+        },
+        "pimarkx": {
+            "preparing": "Preparing...",
+            "test_on": "Testing on",
+            "benchmark_finish": "Benchmark finished",
+            "do_you_want_to_run": "Do you want to run it?",
+            "settings": "Settings:",
+            "test_time": "Testing time (Per freq):",
+            "seconds_shortened": "s",
+            "frequencies": "Frequencies:",
+            "tip": "Tip:",
+            "different": "Results may be different when running in Stick firmware or standalone, when comparing platforms it is recomended to run PiMarkX in the same way or it can be inaccurate.",
+            "frequency": "Frequency:",
+            "iterations": "Iterations:",
+            "it_per_mhz": "it per MHz:",
+            "pi": "Pi"
+        },
+        "dice": {
+            "name": "Dice",
+            "roll_again": "Roll again? Press btn A"
+        },
+        "scorekeeper": {
+            "name": "Skorekeeper",
+            "team": "Team"
+        },
+        "resistors": {
+            "name": "Resistor decoder",
+            "four_color_mode": "Four color mode!",
+            "five_color_mode": "Five color mode!",
+            "c_exit": "Press button C to exit",
+            "a_change": "A to change color",
+            "b_line": "B to change choice",
+            "resistance": "Resistance",
+            "tolerance": "Tolerance",
+            "select_type": "Select resistor type",
+            "four_colors": "4 colors",
+            "five_colors": "5 colors",
+            "wait": "Please wait!"
+        },
+        "metronome": {
+            "name": "Metronome",
+            "play": "Play",
+            "press_a_to_exit": "Press button A to exit!"
+        },
+        "music_player": {
+            "name": "Music Player",
+            "context_menu_text": "Play music",
+            "loading": "Loading player...",
+            "file_not_found": "Error: File not found.",
+            "paused": "[PAUSED]",
+            "vol": "Vol",
+            "playback_err": "Playback Error!",
+            "no_speaker_popup": "Speaker was not detected in your device, music player is not supported."
+        },
+        "custom_apps": {
+            "name": "User apps"
+        },
+        "app_installer": {
+            "name": "App installer",
+            "context_menu_text": "Install app package",
+            "app_installer_short": "Installer",
+            "installing": "Installing...",
+            "delete_after_install": "Delete package after install?",
+            "popups": {
+                "success": "App package installed successfully!",
+                "memory_error": "RAM Memory too low, try restarting your device and try again.",
+                "unknown_manifest_ver": "Installer was given a manifest version that it doesn't recognize, maybe your file is corrupt, or firmware outdated?",
+                "package_size_too_high": "Package size too high, cannot install!",
+                "package_read_failed": "Could not read package, maybe its corrupt?",
+                "not_enough_flash": "Not enough free space, please free up your disk space and try again!",
+                "manifest_parse_error": "Manifest parsing error, is your manifest setup properly?"
+            }
+        },
+        "python_executor": {
+            "name": "Python executor",
+            "file": "File: ",
+            "in_progress": "Script execution in progress",
+            "context_menu_text": "Run in Python executor"
+        }
+    },
+    "menus": {
+        "menu_start": "Start",
+        "menu_reset": "Reset",
+        "menu_go_back": "Go back",
+        "menu_close": "Close",
+        "menu_exit": "Exit",
+        "app_menu_title": "Apps menu",
+        "popup_any_btn": "Press any button to close",
+        "yes": "Yes",
+        "no": "No",
+        "ok": "OK",
+        "enable": "Enable",
+        "disable": "Disable"
+    },
+    "popups": {
+        "info": "Info"
+    },
+    "q_actions": {
+        "quick_actions": "Quick actions",
+        "pwr_menu": "Power menu",
+        "power": "Power",
+        "sleep": "Sleep",
+        "pwr_off": "Power off",
+        "reboot": "Reboot",
+        "powering_off": "Powering off...",
+        "rebooting": "Rebooting...",
+        "you_can_now_switch": "You can now switch the power switch to OFF position."
+    },
+    "lock_menu": {
+        "name": "Lock menu",
+        "dummy_mode": "Dummy mode",
+        "dummy_with_pin": "Dummy mode with PIN",
+        "set_pin_first": "Set PIN first",
+        "pin_too_short": "PIN too short",
+        "disable_dummy": "Disable dummy mode",
+        "disabled": "Disabled dummy mode!",
+        "enter_pin": "Enter PIN",
+        "invalid_pin": "Invalid PIN!",
+        "making_sure_1": "Making sure your PIN is secure",
+        "making_sure_2": "Device might seem unresponsive",
+        "making_sure_3": "this will take up to 20s",
+        "verify_hash_1": "Verifying pin,",
+        "verify_hash_2": "can take up to 15 seconds",
+        "dummy_info_1": "Dummy mode",
+        "dummy_info_2": "Locks your device to clock!",
+        "dummy_info_3": "To unlock press button A+B",
+        "dummy_info_4": "at once for around 1 second.",
+        "dummy_info_5": "This will stay even after",
+        "dummy_info_6": "reboots! You need to unlock",
+        "dummy_info_7": "it first with button combo!"
+    },
+    "ntp": {
+        "retry": "Retry?",
+        "fail_popup": "NTP Sync failed :(",
+        "success_popup": "NTP Sync successful!",
+        "no_wifi_popup": "No Wi-Fi connection, please connect.",
+        "time_incorrect_popup": "Time set in your device is incorrect but external RTC was detected! Please sync through settings!"
+    },
+    "keypad": {
+        "menu": "Menu",
+        "confirm": "Confirm",
+        "symbols": "Symbols"
+    }
+}

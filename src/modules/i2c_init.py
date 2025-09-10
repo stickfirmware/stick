@@ -10,8 +10,6 @@ import modules.cache as cache
 n_settings = cache.get_nvs("settings")
 tft = io_man.get('tft')
 
-auto_rotate = cache.get('n_cache_arotate')
-
 def init():
     auto_rotate = nvs.get_int(n_settings, "autorotate")
 
