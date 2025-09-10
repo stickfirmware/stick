@@ -40,7 +40,7 @@ ir_pin = machine.PWM(machine.Pin(pin_nvs, machine.Pin.OUT), duty=0)
 io_man.set('IR', ir_pin)
 
 def send(necc, sonyc, panac, samsac, gcc):
-    ps.boost_freq()
+    ps.boost_clock()
     sending_text = l_get("apps.ir_remote.sending")
     tft.text(f8x8, f"{sending_text} nec...",0,0,65535)
     nec.send_array(necc)
