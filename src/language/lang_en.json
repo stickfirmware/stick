@@ -145,7 +145,11 @@
                 "about": "About",
                 "factory": "Factory reset",
                 "account": "Account",
-                "neopixel": "Neopixel"
+                "neopixel": "Neopixel",
+                "show_guides_again": "Show guides"
+            },
+            "guides": {
+                "reboot_notify": "Reboot to see all guides!"
             },
             "acc_menu": {
                 "title": "Settings/Account",
