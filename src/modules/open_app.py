@@ -22,7 +22,7 @@ def app_exists(appsConfig: dict, pack_id: str) -> str | None:
     return None
 
 
-async def run(pack_id: str):
+def run(pack_id: str):
     """
     Run app with package id you provided
 
