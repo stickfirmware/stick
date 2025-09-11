@@ -50,7 +50,17 @@ def app_config_translated():
                     "dependency": False,
                     "hidden": True,
                     "handleExtensions": ["*.py"]
-                    }
+                    },
+                {
+                    "name": l_get("apps.ir_remote.name"),
+                    "id": "com.kitki30.ir_remote",
+                    "file": "apps.com_kitki30_ir_remote.IR",
+                    "main_folder": "/apps/com_kitki30_ir_remote",
+                    "is_system_app": True,
+                    "dependency": False,
+                    "hidden": False,
+                    "handleExtensions": [""]
+                    },
                 ]
         }
     return appsConfig

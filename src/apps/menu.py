@@ -26,8 +26,7 @@ def search_apps():
 
 def run():    
     menu_apps = search_apps()
-    menu_apps.extend([(l_get("apps.ir_remote.name"), 1),
-                    (l_get("apps.file_explorer.name"), 7),
+    menu_apps.extend([(l_get("apps.file_explorer.name"), 7),
                     (l_get("apps.flashlight.name"), 8),
                     (l_get("apps.games.name"), 5),
                     (l_get("apps.others.name"), 4),
@@ -47,11 +46,6 @@ def run():
         a_ot.run()
         del a_ot
         decache('apps.others')
-    elif menu1 == 1:
-        import apps.IR as a_ir
-        a_ir.run()
-        del a_ir
-        decache('apps.IR')
     elif menu1 == 7:
         import modules.file_explorer as a_fe
         a_fe.run()
