@@ -145,7 +145,11 @@
                 "about": "O oprogramowaniu",
                 "factory": "Reset ustawien fabrycznych",
                 "account": "Konto",
-                "neopixel": "Neopixel"
+                "neopixel": "Neopixel",
+                "show_guides_again": "Show guides"
+            },
+            "guides": {
+                "reboot_notify": "Reboot to see all guides!"
             },
             "acc_menu": {
                 "title": "Ustawienia/Konto",
