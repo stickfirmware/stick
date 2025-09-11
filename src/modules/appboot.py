@@ -10,20 +10,11 @@ import modules.text_utils as text_utils
 
 import fonts.def_16x16 as f16x16
 
-async def run(fill_tft=True):
+async def app_boot_make_anim(tft):
     """
-    Run app boot intro
+    Make app boot brightness disappear anim
     """
     
-    tft = io_man.get("tft")
-    if fill_tft:
-        tft.fill(65535)
-
-    text = "Stick firmware"
-    x = text_utils.center_x(text, 16)
-    y = text_utils.center_y(16)
-    tft.text(f16x16, text, x, y, 0, 65535)
-
     bright = tft.get_backlight()
     tft.set_backlight(1)
     
@@ -47,3 +38,26 @@ async def run(fill_tft=True):
     
     if osc.HAS_NEOPIXEL:
         np.automatic()
+        
+async def make_text(tft):
+    """
+    Show Stick firmware text
+    """
+    
+    text = "Stick firmware"
+    x = text_utils.center_x(text, 16)
+    y = text_utils.center_y(16)
+    tft.text(f16x16, text, x, y, 0, 65535)
+
+async def run(fill_tft=True):
+    """
+    Run app boot intro
+    """
+    
+    tft = io_man.get("tft")
+    if fill_tft:
+        tft.fill(65535)
+
+    await make_text()
+
+    await app_boot_make_anim(tft)

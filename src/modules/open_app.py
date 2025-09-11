@@ -45,13 +45,13 @@ async def run(pack_id: str):
         modpath = file
         parts = modpath.split(".")
         
-        gameboot = asyncio.create_task(appboot.run(False))
+        await appboot.make_text(tft)
         
         comd = __import__(modpath)
         for part in parts[1:]:
             comd = getattr(comd, part)
 
-        await gameboot
+        await appboot.app_boot_make_anim(tft)
         
         if hasattr(comd, "run"):
             comd.run()
