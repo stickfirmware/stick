@@ -2,7 +2,7 @@
 App boot intro, async
 """
 
-import asyncio
+import time
 
 import modules.io_manager as io_man
 import modules.os_constants as osc
@@ -10,7 +10,7 @@ import modules.text_utils as text_utils
 
 import fonts.def_16x16 as f16x16
 
-async def app_boot_make_anim(tft):
+def app_boot_make_anim(tft):
     """
     Make app boot brightness disappear anim
     """
@@ -22,24 +22,24 @@ async def app_boot_make_anim(tft):
         import modules.neopixel_anims as np
         np.disabled()
 
-    await asyncio.sleep(1.5)
+    time.sleep(1.5)
 
     steps = 20
     delay = 0.5 / steps
     for i in range(steps, -1, -1):
         b = (i / steps) * bright
         tft.set_backlight(b)
-        await asyncio.sleep(delay)
+        time.sleep(delay)
         
     tft.fill(0) 
-    await asyncio.sleep(0.5)
+    time.sleep(0.5)
 
     tft.set_backlight(bright)
     
     if osc.HAS_NEOPIXEL:
         np.automatic()
         
-async def make_text(tft):
+def make_text(tft):
     """
     Show Stick firmware text
     """

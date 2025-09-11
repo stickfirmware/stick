@@ -2,8 +2,6 @@
 App open helper for Stick firmware
 """
 
-import asyncio
-
 class AppNotFound(Exception):
     pass
 
@@ -45,13 +43,13 @@ async def run(pack_id: str):
         modpath = file
         parts = modpath.split(".")
         
-        await appboot.make_text(tft)
+        appboot.make_text(tft)
         
         comd = __import__(modpath)
         for part in parts[1:]:
             comd = getattr(comd, part)
 
-        await appboot.app_boot_make_anim(tft)
+        appboot.app_boot_make_anim(tft)
         
         if hasattr(comd, "run"):
             comd.run()

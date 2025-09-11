@@ -18,6 +18,7 @@ _WHITELIST = {
         'scripts.checkbattery',
         'modules',
         'modules.battery_check',
+        'modules.appboot',
         'modules.neopixels',
         'modules.neopixel_anims',
         'modules.cache',
