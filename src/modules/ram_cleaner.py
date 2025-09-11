@@ -14,6 +14,7 @@ _WHITELIST = {
         'neopixel',
         'bitmaps',
         'scripts',
+        'asyncio',
         'scripts.checkbattery',
         'modules',
         'modules.battery_check',
