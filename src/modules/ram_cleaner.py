@@ -50,7 +50,7 @@ _WHITELIST = {
         'fonts.def_16x32',
         'fonts',
         'apps.clock',
-        'apps.oobe',
+        'modules.oobe',
         'apps',
         'mainos',
         'flashbdev',
