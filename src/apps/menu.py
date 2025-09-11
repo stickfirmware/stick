@@ -15,7 +15,7 @@ if dev_settings == None:
     dev_settings = 0
     
 def search_apps():
-    import apps.oobe as oobe
+    import modules.oobe as oobe
     appsConfig = oobe.read_config()
     
     results = []

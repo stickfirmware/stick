@@ -324,7 +324,7 @@ def install(zip_package, delete_app_package=True):
         # Registry
         log("Add to registry")
         gc.collect()
-        import apps.oobe as oobe
+        import modules.oobe as oobe
         
         oobe.edit_app(
             pack_id,

@@ -31,7 +31,7 @@ async def run(pack_id: str):
     Args:
         pack_id (str): Package ID to run
     """
-    import apps.oobe as oobe
+    import modules.oobe as oobe
     import modules.io_manager as io_man
     appsConfig = oobe.read_config()
     

@@ -60,7 +60,7 @@ def openMenu(file: str):
     Args:
         filename (str): Filename to open
     """
-    import apps.oobe as oobe
+    import modules.oobe as oobe
     appsConfig = oobe.read_config()
     supportedAppsMenu = get_supported_apps(appsConfig, file)
     selected_index = menus.menu(l_get("apps.file_explorer.open_in"), supportedAppsMenu)

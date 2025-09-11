@@ -18,6 +18,6 @@ def check():
         nvs.set_int(n_boot, "firstBoot", 1)
         printer.log("boot:firstBoot:1")
         
-        import apps.oobe as oobe
+        import modules.oobe as oobe
         oobe.createUserFolder()
         oobe.createConfig()

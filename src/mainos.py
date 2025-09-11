@@ -199,7 +199,7 @@ conn_time = time.ticks_ms()
         
 # Sync apps
 render_bar(l_get("mainos_load.sync_apps"), True)
-import apps.oobe as oobe
+import modules.oobe as oobe
 oobe.sync_apps()
         
 render_bar(l_get("mainos_load.load_libs"), True) # Loading other libraries...
