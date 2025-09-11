@@ -47,8 +47,6 @@ if osc.HAS_BUZZER:
     io_man.set("buzzer", buzzer)
     buzz.startup_sound(buzzer)
 
-files.rmdir_recursive("/temp")
-
 if "temp" not in os.listdir():
         os.mkdir("temp")
 
@@ -87,7 +85,7 @@ except Exception as e:
 io_man.set('tft', tft)
 
 loading_count = 0 # Increased with every task
-loading_max = 11 # Max loading_count will reach
+loading_max = 12 # Max loading_count will reach
 bar_color = 2016 # Color of progress bar
 
 def render_bar(text, increase_count=False):
