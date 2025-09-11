@@ -32,17 +32,20 @@ async def run(pack_id: str):
         pack_id (str): Package ID to run
     """
     import apps.oobe as oobe
+    import modules.io_manager as io_man
     appsConfig = oobe.read_config()
     
     # Check if exists
     file = app_exists(appsConfig, pack_id)
     if file != None:
+        tft = io_man.get("tft")
+        tft.fill(65535)
         import modules.appboot as appboot
         
         modpath = file
         parts = modpath.split(".")
         
-        gameboot = asyncio.create_task(appboot.run())
+        gameboot = asyncio.create_task(appboot.run(False))
         
         comd = __import__(modpath)
         for part in parts[1:]:

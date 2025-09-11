@@ -10,13 +10,14 @@ import modules.text_utils as text_utils
 
 import fonts.def_16x16 as f16x16
 
-async def run():
+async def run(fill_tft=True):
     """
     Run app boot intro
     """
     
     tft = io_man.get("tft")
-    tft.fill(65535)
+    if fill_tft:
+        tft.fill(65535)
 
     text = "Stick firmware"
     x = text_utils.center_x(text, 16)
