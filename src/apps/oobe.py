@@ -61,6 +61,26 @@ def app_config_translated():
                     "hidden": False,
                     "handleExtensions": [""]
                     },
+                {
+                    "name": l_get("apps.file_explorer.name"),
+                    "id": "com.kitki30.file_explorer",
+                    "file": "apps.com_kitki30_file_explorer.explorer",
+                    "main_folder": "/apps/com_kitki30_file_explorer",
+                    "is_system_app": True,
+                    "dependency": False,
+                    "hidden": False,
+                    "handleExtensions": [""]
+                    },
+                {
+                    "name": l_get("apps.flashlight.name"),
+                    "id": "com.kitki30.flashlight",
+                    "file": "apps.com_kitki30_flashlight.flashlight",
+                    "main_folder": "/apps/com_kitki30_flashlight",
+                    "is_system_app": True,
+                    "dependency": False,
+                    "hidden": False,
+                    "handleExtensions": [""]
+                    },
                 ]
         }
     return appsConfig

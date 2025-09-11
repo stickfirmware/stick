@@ -26,14 +26,12 @@ def search_apps():
 
 def run():    
     menu_apps = search_apps()
-    menu_apps.extend([(l_get("apps.file_explorer.name"), 7),
-                    (l_get("apps.flashlight.name"), 8),
-                    (l_get("apps.games.name"), 5),
-                    (l_get("apps.others.name"), 4),
+    menu_apps.extend([(l_get("apps.games.name"), 1),
+                    (l_get("apps.others.name"), 2),
                     (l_get("apps.settings.name"), 3)])
     if dev_settings == 1:
         menu_apps.append(("Developer apps", 99))
-    menu_apps.append((l_get("menus.menu_close"), 13))
+    menu_apps.append((l_get("menus.menu_close"), None))
 
     menu1 = menus.menu(l_get("menus.app_menu_title"), menu_apps)
     if menu1 == 3:
@@ -41,22 +39,12 @@ def run():
         a_se.run()
         del a_se
         decache('apps.settings')
-    elif menu1 == 4:
+    elif menu1 == 2:
         import apps.others as a_ot
         a_ot.run()
         del a_ot
         decache('apps.others')
-    elif menu1 == 7:
-        import modules.file_explorer as a_fe
-        a_fe.run()
-        del a_fe
-        decache('modules.file_explorer')
-    elif menu1 == 8:
-        import apps.flashlight as a_fl
-        a_fl.run()
-        del a_fl
-        decache('apps.flashlight')
-    elif menu1 == 5:
+    elif menu1 == 1:
         import apps.games as a_g
         a_g.run()
         del a_g
