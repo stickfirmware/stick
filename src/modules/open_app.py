@@ -2,6 +2,8 @@
 App open helper for Stick firmware
 """
 
+import asyncio
+
 class AppNotFound(Exception):
     pass
 
@@ -22,7 +24,7 @@ def app_exists(appsConfig: dict, pack_id: str) -> str | None:
     return None
 
 
-def run(pack_id: str):
+async def run(pack_id: str):
     """
     Run app with package id you provided
 
@@ -35,14 +37,22 @@ def run(pack_id: str):
     # Check if exists
     file = app_exists(appsConfig, pack_id)
     if file != None:
+        import modules.appboot as appboot
+        
         modpath = file
         parts = modpath.split(".")
+        
+        gameboot = asyncio.create_task(appboot.run())
+        
         comd = __import__(modpath)
         for part in parts[1:]:
             comd = getattr(comd, part)
+
+        await gameboot
+        
         if hasattr(comd, "run"):
             comd.run()
-
+        
         import modules.ram_cleaner as rclean
         rclean.deep_clean_module(modpath)
     else:

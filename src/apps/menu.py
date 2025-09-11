@@ -73,7 +73,10 @@ def run():
         del d_dev
         decache('apps.dev_apps.dev_menu')
     elif menu1 != None:
+        import asyncio
+        
         import modules.open_app as open_app
-        open_app.run(menu1)
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(open_app.run(menu1))
     gc.collect()
     ps.set_freq(osc.BASE_FREQ)
