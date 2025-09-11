@@ -65,7 +65,7 @@ def run():
                 account_manager.link()
                 
         # Show guides again
-        elif menu1 == 2:
+        elif menu1 == 12:
             n_guides = cache.get_nvs("guides")
             nvs.set_int(n_guides, 'quick_start', 1)
             nvs.set_int(n_guides, 'account_popup', 1)
