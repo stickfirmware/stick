@@ -50,7 +50,7 @@ def get_supported_apps(apps_config: dict, filename: str) -> list[tuple]:
             if matches_pattern(filename, pattern):
                 menu.append((app["name"], i))
                 break
-    menu.append(("Exit", None))
+    menu.append((l_get("menus.menu_exit"), None))
     return menu
     
 def openMenu(file: str):
