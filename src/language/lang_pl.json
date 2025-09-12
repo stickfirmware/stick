@@ -50,7 +50,7 @@
         "ir_remote": {
             "name": "Pilot IR",
             "sending": "Wysylanie",
-            "context_menu": "Send IR code",
+            "context_menu": "Wyslij kod IR",
             "buttons": {
                 "power": "WL/WYL",
                 "vol_up": "GLOS+",
@@ -147,10 +147,10 @@
                 "factory": "Reset ustawien fabrycznych",
                 "account": "Konto",
                 "neopixel": "Neopixel",
-                "show_guides_again": "Show guides"
+                "show_guides_again": "Pokaz poradniki"
             },
             "guides": {
-                "reboot_notify": "Reboot to see all guides!"
+                "reboot_notify": "Zrestartuj aby zobaczyc wszystkie poradniki!"
             },
             "acc_menu": {
                 "title": "Ustawienia/Konto",
