@@ -50,6 +50,7 @@
         "ir_remote": {
             "name": "IR Remote",
             "sending": "Sending",
+            "context_menu": "Send IR code",
             "buttons": {
                 "power": "ON/OFF",
                 "vol_up": "VOL+",

@@ -81,6 +81,16 @@ def app_config_translated():
                     "hidden": False,
                     "handleExtensions": [""]
                     },
+                {
+                    "name": l_get("apps.ir_remote.context_menu"),
+                    "id": "com.kitki30.ir_helper",
+                    "file": "helpers.ir_sender",
+                    "main_folder": "",
+                    "is_system_app": True,
+                    "dependency": False,
+                    "hidden": True,
+                    "handleExtensions": ["*.ir"]
+                }
                 ]
         }
     return appsConfig

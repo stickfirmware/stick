@@ -50,6 +50,7 @@
         "ir_remote": {
             "name": "Pilot IR",
             "sending": "Wysylanie",
+            "context_menu": "Wyslij kod IR",
             "buttons": {
                 "power": "WL/WYL",
                 "vol_up": "GLOS+",
