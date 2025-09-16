@@ -112,14 +112,7 @@ render_bar("Loading data...", True)
 # Set default vars, load backlight, volume, autorotate and powersaving
 import modules.nvs_set_def as nsd
 nsd.run()
-    
-s_bl = cache.get_and_remove('n_cache_backlight')
-debug.log("Backlight: " + str(s_bl))
-tft.set_backlight(s_bl)
-
-s_vl = cache.get_and_remove('n_cache_volume')
-debug.log("Buzzer volume: " + str(s_vl))
-buzz.set_volume(s_vl)
+nsd.set_hardware()
 
 auto_rotate = cache.get('n_cache_arotate')
 allow_saving = cache.get_and_remove('n_cache_pwrsave')
