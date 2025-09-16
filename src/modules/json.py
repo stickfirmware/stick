@@ -72,3 +72,18 @@ def read_from_string(data: str) -> dict | None:
         return json.loads(data)
     except:
         return None
+
+def to_string(data: dict) -> str | None:
+    """
+    Convert dictionary to json string
+
+    Args:
+        data (dict): Data to convert
+
+    Returns:
+        str | None: Json string or None if failed
+    """
+    try:
+        return json.dumps(data)
+    except:
+        return None
