@@ -129,3 +129,24 @@ def cleanup_path(path: str) -> str:
         clean = re.sub(r'[^A-Za-z0-9 ._-]', '_', p)
         clean_parts.append(clean)
     return '/'.join(clean_parts)
+
+def copy_file(src_path: str, dst_path: str, chunk_size: int = 1024) -> bool:
+    """
+    Copy file from src_path to dst_path in chunks
+
+    Args:
+        src_path (str): Source file path
+        dst_path (str): Destination file path
+        chunk_size (int, optional): Size of chunks (Default: 1024 bytes)
+    """
+    try:
+        with open(src_path, "rb") as src, open(dst_path, "wb") as dst:
+            while True:
+                chunk = src.read(chunk_size)
+                if not chunk:
+                    break
+                dst.write(chunk)
+        return True
+    except Exception as e:
+        print("Error copying:", e)
+        return False
