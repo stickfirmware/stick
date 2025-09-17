@@ -11,8 +11,8 @@ jobs:
       fail-fast: false
       matrix:
         board:
-          - { env: "cardputerv1_1", family: "ESP32-S3", target: "esp32s3" }
-          - { env: "stickcplus2",   family: "ESP32",   target: "esp32" }
+          - { env: "cardputerv1_1", family: "ESP32-S3", target: "ESP32_GENERIC_S3" }
+          - { env: "stickcplus2",   family: "ESP32",   target: "ESP32_GENERIC" }
 
     steps:
       - name: Checkout repo
