@@ -11,8 +11,8 @@ jobs:
       fail-fast: false
       matrix:
         board:
-          - { env: "cardputerv1_1", family: "ESP32-S3", target: "ESP32_GENERIC_S3" }
-          - { env: "stickcplus2",   family: "ESP32",   target: "ESP32_GENERIC" }
+          - { env: "cardputerv1_1", family: "ESP32-S3", target: "esp32s3" }
+          - { env: "stickcplus2",   family: "ESP32",   target: "esp32" }
 
     steps:
       - name: Checkout repo
@@ -41,7 +41,7 @@ jobs:
         run: |
           git clone --recursive https://github.com/espressif/esp-idf.git
           cd esp-idf
-          git checkout v5.0.4
+          git checkout v5.1.1
           ./install.sh
 
       - name: Cache MicroPython
