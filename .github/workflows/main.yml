@@ -49,9 +49,12 @@ jobs:
         id: cache-micropython
         uses: actions/cache@v4
         with:
-          path: micropython
+          path: |
+            micropython
+            !micropython/.git/objects/pack/tmp_*
           key: micropython-${{ github.sha }}
           restore-keys: micropython-
+
 
       - name: Get MicroPython
         if: steps.cache-micropython.outputs.cache-hit != 'true'
