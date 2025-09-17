@@ -58,6 +58,7 @@ jobs:
         run: |
           git clone https://github.com/micropython/micropython.git
           cd micropython
+          git checkout v1.26.1
           git submodule update --init --recursive
 
       - name: Replace os_constants.py
@@ -66,17 +67,10 @@ jobs:
           
       - name: Freeze modules
         run: |
-          BASE=micropython/ports/${{ matrix.board.target }}/modules
+          BASE=micropython/ports/esp32/modules
           mkdir -p "$BASE"
-      
           find src -type f -name "*.py" | while read f; do
-            mkdir -p "$BASE/$(dirname "$f")"
-            cp "$f" "$BASE/$f"
-          done
-      
-          find src -type f ! -name "*.py" | while read f; do
-            mkdir -p "$BASE/$(dirname "$f")"
-            cp "$f" "$BASE/$f"
+            cp "$f" "$BASE/$(basename "$f")"
           done
 
       - name: Build mpy-cross
@@ -93,11 +87,8 @@ jobs:
 
       - name: Package firmware
         run: |
-          fw="firmware-${{ matrix.board.env }}.bin"
+          fw="stickfirmware-${{ matrix.board.env }}.bin"
           cp micropython/ports/esp32/build-${{ matrix.board.target }}/firmware.bin "$fw"
-          js_content="{\"name\":\"${{ matrix.board.env }}\",\"new_install_prompt_erase\": true,\"builds\":[{\"chipFamily\":\"${{ matrix.board.family }}\",\"improv\":false,\"parts\":[{\"path\":\"$fw\",\"offset\":0}]}]}"
-          echo "$js_content" > "${fw%.bin}.json"
-
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
