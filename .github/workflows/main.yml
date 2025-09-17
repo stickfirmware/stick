@@ -42,7 +42,7 @@ jobs:
           git clone https://github.com/espressif/esp-idf.git
           git submodule update --init --recursive
           cd esp-idf
-          git checkout v5.2.0
+          git checkout v5.2.1
           ./install.sh
 
       - name: Cache MicroPython
