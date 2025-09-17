@@ -42,7 +42,7 @@ jobs:
           git clone --recursive https://github.com/espressif/esp-idf.git
           cd esp-idf
           git checkout v5.1.1
-          ./install.sh ${{ matrix.board.target }}
+          ./install.sh
 
       - name: Cache MicroPython
         uses: actions/cache@v4
@@ -77,13 +77,16 @@ jobs:
             cp "$f" "$BASE/$f"
           done
 
+      - name: Build mpy-cross
+        run: |
+          make -C mpy-cross
 
       - name: Build firmware
         run: |
           source esp-idf/export.sh
           cd micropython/ports/esp32
-          idf.py set-target ${{ matrix.board.target }}
-          idf.py build -DCMAKE_C_FLAGS="-Wno-error=implicit-function-declaration"
+          make submodules
+          make BOARD=${{ matrix.board.target }}
 
       - name: Package firmware
         run: |
