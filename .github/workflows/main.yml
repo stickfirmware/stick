@@ -1,11 +1,6 @@
 name: Build and Push Releases
 
 on:
-  push:
-    branches:
-      - master
-    tags:
-      - "*"
   workflow_dispatch:
 
 jobs:
@@ -65,7 +60,7 @@ jobs:
 
       - name: Replace os_constants.py
         run: |
-          cp config/${{ matrix.board.env }}.py src/modules/os_constants.py
+          cp configs/${{ matrix.board.env }}.py src/modules/os_constants.py
           
       - name: Freeze modules
         run: |
