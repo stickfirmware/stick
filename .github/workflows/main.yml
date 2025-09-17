@@ -45,6 +45,7 @@ jobs:
           ./install.sh
 
       - name: Cache MicroPython
+        id: cache-micropython
         uses: actions/cache@v4
         with:
           path: micropython
@@ -52,7 +53,7 @@ jobs:
           restore-keys: micropython-
 
       - name: Get MicroPython
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache-micropython.outputs.cache-hit != 'true'
         run: |
           git clone https://github.com/micropython/micropython.git
           cd micropython
@@ -79,6 +80,7 @@ jobs:
 
       - name: Build mpy-cross
         run: |
+          cd micropython
           make -C mpy-cross
 
       - name: Build firmware
