@@ -39,7 +39,8 @@ jobs:
 
       - name: Get ESP-IDF
         run: |
-          git clone --recursive https://github.com/espressif/esp-idf.git
+          git clone https://github.com/espressif/esp-idf.git
+          git submodule update --init --recursive
           cd esp-idf
           git checkout v5.0.4
           ./install.sh
