@@ -65,7 +65,7 @@ jobs:
 
       - name: Replace os_constants.py
         run: |
-          cp config/${{ matrix.board }}.py src/modules/os_constants.py
+          cp config/${{ matrix.board.env }}.py src/modules/os_constants.py
           
       - name: Freeze modules
         run: |
