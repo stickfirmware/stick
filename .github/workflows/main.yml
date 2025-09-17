@@ -83,7 +83,7 @@ jobs:
           source esp-idf/export.sh
           cd micropython/ports/esp32
           idf.py set-target ${{ matrix.board.target }}
-          idf.py build
+          idf.py build -DCMAKE_C_FLAGS="-Wno-error=implicit-function-declaration"
 
       - name: Package firmware
         run: |
