@@ -26,6 +26,8 @@ button_b = io_man.get('button_b')
 button_c = io_man.get('button_c')
 tft = io_man.get('tft')
 
+# TODO: Add app manager
+
 # Refresh io
 def _LOAD_IO():
     global button_c, button_a, button_b, tft
