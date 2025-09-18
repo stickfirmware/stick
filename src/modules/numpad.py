@@ -2,11 +2,12 @@
 On-screen keyboard prompts for Stick firmware
 """
 
+import time
+
 import fonts.def_8x8 as f8x8
 import fonts.def_8x16 as f8x16
 import fonts.def_16x16 as f16x16
 
-import modules.printer as debug
 import modules.cardputer_kb as ckb
 import modules.os_constants as osc
 import modules.menus as menus
@@ -118,7 +119,6 @@ def numpad(title: str, maxlen: int = 0, hideInput: bool = False) -> str | None:
         str | None: Input string, or None if cancelled.
     """
     _LOAD_IO()
-    import time
     
     if osc.INPUT_METHOD == 2:
         return _KEYBOARD_CARDKB(title, maxlen, hideInput, True)
@@ -200,8 +200,6 @@ def numpad(title: str, maxlen: int = 0, hideInput: bool = False) -> str | None:
 
 
 def _KEYBOARD_CARDKB(title: str, maxlen: int = 0, hideInput: bool = False, numbers_only: bool = False) -> str | None:
-    import time
-
     inp = ""
     prev_letter = None
     last_press_time = 0
@@ -290,7 +288,6 @@ def keyboard(title: str, maxlen:int = 0, hideInput: bool = False) -> str | None:
         str | None: Input string, or None if cancelled.
     """
     _LOAD_IO()
-    import time
     
     if osc.INPUT_METHOD == 2:
         return _KEYBOARD_CARDKB(title, maxlen, hideInput, False)
