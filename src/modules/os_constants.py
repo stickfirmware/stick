@@ -99,7 +99,7 @@ LCD_ROTATIONS = {
     "BUTTON_BOTTOM": 2 # Stick button down, cardputer kb right
     }
 IMU_ROTATE_THRESHOLD = const(0.9) # IMU Sensitivity
-LCD_POWER_SAVE_BL = const(0.3) # Backlight brightness on power saving
+LCD_POWER_SAVE_BL = const(0.4) # Backlight brightness on power saving
 
 # MCU Frequencies
 ULTRA_FREQ = const(240_000_000) # Ultra fast, used for renders

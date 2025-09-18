@@ -116,7 +116,7 @@ def run():
                         if round(nvs.get_float(n_settings, "backlight"), 1) != 1.0:
                             nvs.set_float(n_settings, "backlight", (nvs.get_float(n_settings, "backlight") + 0.1))
                     elif menu3 == 3:
-                        if round(nvs.get_float(n_settings, "backlight"), 1) >= 0.4:
+                        if round(nvs.get_float(n_settings, "backlight"), 1) >= 0.5:
                             nvs.set_float(n_settings, "backlight", (nvs.get_float(n_settings, "backlight") - 0.1))
                     else:
                         work1 = False
