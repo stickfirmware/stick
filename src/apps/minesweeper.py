@@ -353,6 +353,10 @@ def game():
     
     upd = True
     upd_full = True
+    
+    # Import neo
+    if osc.HAS_NEOPIXEL: import modules.neopixel_anims as np_anims
+    
     while True:
         if upd:
             if upd_full:
@@ -462,6 +466,9 @@ def game():
                 while arrow_left.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
                 upd = True  
+                
+            if osc.HAS_NEOPIXEL:
+                np_anims.automatic()
                 
         time.sleep(osc.LOOP_WAIT_TIME)
 
