@@ -92,6 +92,7 @@ LCD_BL = const(27) # Backlight pin
 LCD_BL_FREQ = const(1000) # Backlight frequency, higher values may not work
 LCD_HEIGHT = const(135) # LCD Height in pixels
 LCD_WIDTH = const(240) # LCD Width in pixels
+LCD_MIN_BL = const(0.4) # Minimum backlight brightness
 LCD_ROTATIONS = {
     "BUTTON_LEFT": 3, # M5Stick button on the left, Cardputer keyboard on bottom
     "BUTTON_RIGHT": 1, # Stick button right, Cardputer kb top

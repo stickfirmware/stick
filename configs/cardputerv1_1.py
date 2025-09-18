@@ -92,6 +92,7 @@ LCD_BL = const(38) # Backlight pin
 LCD_BL_FREQ = const(1000) # Backlight frequency, higher values may not work
 LCD_HEIGHT = const(135) # LCD Height in pixels
 LCD_WIDTH = const(240) # LCD Width in pixels
+LCD_MIN_BL = const(0.5) # Minimum backlight brightness
 LCD_ROTATIONS = {
     "BUTTON_LEFT": 1, # M5Stick button on the left, Cardputer keyboard on bottom
     "BUTTON_RIGHT": 3, # Stick button right, Cardputer kb top
@@ -99,7 +100,7 @@ LCD_ROTATIONS = {
     "BUTTON_BOTTOM": 2 # Stick button down, cardputer kb right
     }
 IMU_ROTATE_THRESHOLD = const(0.9) # IMU Sensitivity
-LCD_POWER_SAVE_BL = const(0.4) # Backlight brightness on power saving
+LCD_POWER_SAVE_BL = const(0.5) # Backlight brightness on power saving
 
 # MCU Frequencies
 ULTRA_FREQ = const(240_000_000) # Ultra fast, used for renders
