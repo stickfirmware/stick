@@ -156,7 +156,7 @@ def menu(name, choices):
         nonlocal now_time, bl_now, sleep_on
         sleep_on = on
         if on:
-            if time.ticks_diff(time.ticks_ms(), now_time) > osc.SLEEP_TIME_MS and osc.SLEEP_TIME_MS != 0:
+            if time.ticks_diff(time.ticks_ms(), now_time) > osc.POWER_SAVE_TIMEOUT:
                 if osc.HAS_NEOPIXEL:
                     import modules.neopixel_anims as np_anims
                     np_anims.automatic()
