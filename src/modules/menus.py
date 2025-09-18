@@ -259,7 +259,7 @@ def menu(name, choices):
                 ar_lt_d = 1
         
         # Sleep timer
-        if time.ticks_diff(time.ticks_ms(), now_time) > osc.POWER_SAVE_TIMEOUT and sleep_on == True and allow_saving == 1:
+        if time.ticks_diff(time.ticks_ms(), now_time) > osc.POWER_SAVE_TIMEOUT and sleep_on == False and allow_saving == 1:
             sleep(True)
         
         # Refresh neopixel
