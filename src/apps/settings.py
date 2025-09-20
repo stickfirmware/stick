@@ -69,8 +69,8 @@ def run():
         # Show guides again
         elif menu1 == 12:
             n_guides = cache.get_nvs("guides")
-            nvs.set_int(n_guides, 'quick_start', 1)
-            nvs.set_int(n_guides, 'account_popup', 1)
+            nvs.set_int(n_guides, 'quick_start', 0)
+            nvs.set_int(n_guides, 'account_popup', 0)
             popup.show(l_get("apps.settings.guides.reboot_notify"), l_get("popups.info"))
                 
         # Langs
