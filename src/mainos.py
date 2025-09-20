@@ -222,7 +222,7 @@ is_in_saving = False
 eeg_click_entry = 0
 
 # Check app packs
-if "/usr/app-pack.installed" not in os.listdir("/usr") and "/app-packs" in os.listdir("/"):
+if "app-pack.installed" not in os.listdir("/usr") and "app-packs" in os.listdir("/"):
     import modules.pack_install as pinstall
     pinstall.run()
 
