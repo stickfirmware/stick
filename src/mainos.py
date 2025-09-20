@@ -179,6 +179,7 @@ io_man.set('rtc', rtc)
 io_man.set('mpu', mpu)
 io_man.set('power_hold', power_hold)
 
+
 render_bar(l_get("mainos_load.check_time"), True)
 
 import modules.ntp as ntp
@@ -219,6 +220,11 @@ is_in_saving = False
 
 # Secret variables
 eeg_click_entry = 0
+
+# Check app packs
+if "/usr/app-pack.installed" not in os.listdir("/usr") and "/app-packs" in os.listdir("/"):
+    import modules.pack_install as pinstall
+    pinstall.run()
 
 # IMU Rotations cheat sheet
 # 0 - button side down
