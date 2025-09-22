@@ -261,7 +261,7 @@ def run_requirements(zip_package: str) -> bool:
                 comd = getattr(comd, part)
                 
             if hasattr(comd, "check"):
-                return comd.run()
+                return comd.check()
 
     return True
     
