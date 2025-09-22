@@ -356,7 +356,8 @@
                 "package_size_too_high": "Package size too high, cannot install!",
                 "package_read_failed": "Could not read package, maybe its corrupt?",
                 "not_enough_flash": "Not enough free space, please free up your disk space and try again!",
-                "manifest_parse_error": "Manifest parsing error, is your manifest setup properly?"
+                "manifest_parse_error": "Manifest parsing error, is your manifest setup properly?",
+                "requirements_not_met": "App requirements are not met, cannot install app."
             }
         },
         "python_executor": {
