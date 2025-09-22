@@ -15,6 +15,7 @@ _WHITELIST = {
         'bitmaps',
         'scripts',
         'asyncio',
+        'machine',
         'scripts.checkbattery',
         'modules',
         'modules.battery_check',
