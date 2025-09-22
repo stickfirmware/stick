@@ -4,7 +4,7 @@
         "code": "en",
         "version": [
             1,
-            4
+            5
         ],
         "authors": [
             "@Kitki30"
@@ -360,6 +360,13 @@
                 "requirements_not_met": "App requirements are not met, cannot install app."
             }
         },
+        "pack_installer": {
+            "optional_prompt": "Install optional app-pack?",
+            "yes_recommend": "Yes (Recomended)",
+            "see_list": "See app list",
+            "success_popup": "Pack install successful!\nTotal apps: %total%\nFailed: %failed%",
+            "app_list": "Apps in app-pack:\n%apps%\n\nEstimated size: %size%"
+        },
         "python_executor": {
             "name": "Python executor",
             "file": "File: ",
@@ -379,7 +386,8 @@
         "no": "No",
         "ok": "OK",
         "enable": "Enable",
-        "disable": "Disable"
+        "disable": "Disable",
+        "are_sure": "Are you sure?"
     },
     "popups": {
         "info": "Info"
