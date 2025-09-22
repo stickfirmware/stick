@@ -50,3 +50,24 @@ def unpack_safe(zip_path: str, folder: str, chunk_size: int = 1024):
                         break
                     dst.write(chunk)
                     gc.collect()
+                    
+def unpack_file(zip_path: str, filename: str, out_path: str, chunk_size: int = 1024):
+    """
+    Unpacks single file from zip archive
+
+    Args:
+        zip_path (str): Full path to zip zip (ex. /usr/zip.stk)
+        filename (str): Path of file inside zip (ex. file.txt)
+        out_path (str): Full path to output file
+        chunk_size (int, optional): Unpacking chunk size in bytes, default 1024
+    """
+    files.mkdir_recursive(files.parent_path(out_path))
+
+    with zipfile.ZipFile(zip_path, "r") as z:
+        with z.open(filename, "r") as src, open(out_path, "wb") as dst:
+            while True:
+                chunk = src.read(chunk_size)
+                if not chunk:
+                    break
+                dst.write(chunk)
+                gc.collect()
