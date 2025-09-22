@@ -22,7 +22,7 @@ def app_exists(appsConfig: dict, pack_id: str) -> str | None:
     return None
 
 
-def run(pack_id: str):
+def run(pack_id: str, skip_intro = False):
     """
     Run app with package id you provided
 
@@ -38,18 +38,22 @@ def run(pack_id: str):
     if file != None:
         tft = io_man.get("tft")
         tft.fill(65535)
-        import modules.appboot as appboot
+        
+        if skip_intro == False:
+            import modules.appboot as appboot
         
         modpath = file
         parts = modpath.split(".")
         
-        appboot.make_text(tft)
+        if skip_intro == False:
+            appboot.make_text(tft)
         
         comd = __import__(modpath)
         for part in parts[1:]:
             comd = getattr(comd, part)
 
-        appboot.app_boot_make_anim(tft)
+        if skip_intro == False:
+            appboot.app_boot_make_anim(tft)
         
         if hasattr(comd, "run"):
             comd.run()
