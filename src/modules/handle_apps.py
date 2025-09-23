@@ -248,11 +248,11 @@ def run_requirements(zip_package: str) -> bool:
     with zipfile.ZipFile(zip_package, "r") as z:
         if "requirements.py" in z.namelist():
             log("Found requirements.py, running...")
-            files.mkdir_recursive(f"/tmp/app_installer")
+            files.mkdir_recursive(f"/temp/app_installer")
             curr_time = time.time()
-            zip.unpack_file(zip_package, "requirements.py", f"/tmp/app_installer/{curr_time}.py")
+            zip.unpack_file(zip_package, "requirements.py", f"/temp/app_installer/{curr_time}.py")
             
-            modpath = "tmp.app_installer." + str(curr_time)
+            modpath = "temp.app_installer." + str(curr_time)
             
             parts = modpath.split(".")       
             comd = __import__(modpath)
