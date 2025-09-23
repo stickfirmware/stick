@@ -357,15 +357,15 @@
                 "package_read_failed": "Nie mozna przeczytac paczki, moze jest zepsuta?",
                 "not_enough_flash": "Za malo miejsca na dysku, zwolnij miejsce i sproboj ponownie!",
                 "manifest_parse_error": "Blad parsowania manifest, czy manifest jest poprawny?",
-                "requirements_not_met": "App requirements are not met, cannot install app."
+                "requirements_not_met": "Wymagania aplikacji nie zostaly spelnione, nie mozna zainstalowac."
             }
         },
         "pack_installer": {
-            "optional_prompt": "Install optional app-pack?",
-            "yes_recommend": "Yes (Recomended)",
-            "see_list": "See app list",
-            "success_popup": "Pack install successful!\nTotal apps: %total%\nFailed: %failed%",
-            "app_list": "Apps in app-pack:\n%apps%\n\nEstimated size: %size%"
+            "optional_prompt": "Instalowac opcjonalne app?",
+            "yes_recommend": "Tak (Zalecane)",
+            "see_list": "Pokaz liste aplikacji",
+            "success_popup": "Instalacja paczki pomyslna!\nLaczna liczba: %total%\nBledy: %failed%",
+            "app_list": "Applikacje w paczce:\n%apps%\n\nSzacowany rozmiar: %size%"
         },
         "python_executor": {
             "name": "Executor pythona",
@@ -387,7 +387,7 @@
         "ok": "OK",
         "enable": "Wlacz",
         "disable": "Wylacz",
-        "are_sure": "Are you sure?"
+        "are_sure": "Na pewno?"
     },
     "popups": {
         "info": "Informacja"
