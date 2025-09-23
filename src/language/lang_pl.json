@@ -19,14 +19,14 @@
         "init_io_man": "Inicjalizacja io_mana..",
         "check_time": "Sprawdzanie czasu...",
         "init_wifi": "Inicjalizacja Wi-Fi...",
-        "seed_random": "Seeding random...",
+        "seed_random": "Seeduje random...",
         "sync_apps": "Synchronizacja konfiguracji",
         "load_libs": "Ladowanie innych bibliotek...",
-        "check_app_packs": "Checking app-packs...",
+        "check_app_packs": "Sprawdzam paczki...",
         "cleaning_up": "Czyszczenie RAMu...",
         "sd_init": "Montowanie karty SD",
         "load_clock": "Ladowanie zegara...",
-        "guides": "Loading guides..."
+        "guides": "Laduje pomocniki..."
     },
     "mainos_diagnostics": {
         "battery": "Bateria"
