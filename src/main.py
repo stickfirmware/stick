@@ -107,6 +107,8 @@ while True:
         try:
             printer.log("Booting mainos")
             import mainos
+            # Once main loop breaks, go to recovery
+            recoveryf()
         except Exception as e:
             print(e)
             print("Critical error, showing bsod")

@@ -160,7 +160,7 @@ render_bar(l_get("mainos_load.init_btns"), True) # Init buttons...
 # Init buttons
 debug.log("Init buttons")
 import modules.button_init as btn_init
-button_a, button_b, button_c, clicker = btn_init.init_buttons()
+button_a, button_b, button_c, clicker, debug_console = btn_init.init_buttons()
 
 # Init neopixel
 render_bar(l_get("mainos_load.init_neopixel"), True)
@@ -176,6 +176,7 @@ io_man.set('button_a', button_a)
 io_man.set('button_b', button_b)
 io_man.set('button_c', button_c)
 io_man.set('clicker_btn', clicker)
+io_man.set('debug_console', debug_console)
 io_man.set('rtc', rtc)
 io_man.set('mpu', mpu)
 io_man.set('power_hold', power_hold)
@@ -228,6 +229,7 @@ is_in_saving = False
 
 # Secret variables
 eeg_click_entry = 0
+debug_entry = 0
 
 # Check app packs
 render_bar(l_get("mainos_load.check_app_packs"), True)
@@ -707,6 +709,28 @@ while True:
                 if menu == 0:
                     tft.text(f8x8, "NTP",4,124,703)
                     
+    # Console
+    if debug_console != None:
+        if debug_console.value() == 0:
+            while debug_console.value() == 0:
+                time.sleep(osc.DEBOUNCE_TIME)
+            debug_entry += 1
+            if debug_entry >= 4:
+                menu_change = True
+                debug_entry = 0
+                import modules.numpad as numpad
+                
+                debug_input = numpad.keyboard("Debug console")
+                
+                if debug_input == "fastrecovery":
+                    break
+                else:
+                    import modules.debug_console as d_console
+                    d_console.run_code(debug_input)
+                    
+                while button_a.value() == 0:
+                    time.sleep(osc.DEBOUNCE_TIME)
+                     
     # RGB Handler
     if osc.HAS_NEOPIXEL:
         np_anims.automatic()
