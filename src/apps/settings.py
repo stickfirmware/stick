@@ -26,6 +26,8 @@ button_b = io_man.get('button_b')
 button_c = io_man.get('button_c')
 tft = io_man.get('tft')
 
+# TODO: Add app manager
+
 # Refresh io
 def _LOAD_IO():
     global button_c, button_a, button_b, tft
@@ -52,6 +54,7 @@ def run():
                             (l_get("apps.settings.menu1.language"), 11),
                             (l_get("apps.settings.menu1.about"), 8),
                             (l_get("apps.settings.menu1.factory"), 9),
+                            (l_get("apps.settings.menu1.show_guides_again"), 12),
                             (l_get("menus.menu_close"), None)]) # ("Account", 10),
         
         # Account settings
@@ -62,6 +65,13 @@ def run():
                                 (l_get("menus.menu_close"), None)])
             if menu2 == 1:
                 account_manager.link()
+                
+        # Show guides again
+        elif menu1 == 12:
+            n_guides = cache.get_nvs("guides")
+            nvs.set_int(n_guides, 'quick_start', 0)
+            nvs.set_int(n_guides, 'account_popup', 0)
+            popup.show(l_get("apps.settings.guides.reboot_notify"), l_get("popups.info"))
                 
         # Langs
         elif menu1 == 11:
@@ -108,7 +118,7 @@ def run():
                         if round(nvs.get_float(n_settings, "backlight"), 1) != 1.0:
                             nvs.set_float(n_settings, "backlight", (nvs.get_float(n_settings, "backlight") + 0.1))
                     elif menu3 == 3:
-                        if round(nvs.get_float(n_settings, "backlight"), 1) >= 0.4:
+                        if round(nvs.get_float(n_settings, "backlight"), 1) > osc.LCD_MIN_BL:
                             nvs.set_float(n_settings, "backlight", (nvs.get_float(n_settings, "backlight") - 0.1))
                     else:
                         work1 = False

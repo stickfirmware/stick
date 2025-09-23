@@ -353,6 +353,10 @@ def game():
     
     upd = True
     upd_full = True
+    
+    # Import neo
+    if osc.HAS_NEOPIXEL: import modules.neopixel_anims as np_anims
+    
     while True:
         if upd:
             if upd_full:
@@ -463,6 +467,9 @@ def game():
                     time.sleep(osc.DEBOUNCE_TIME)
                 upd = True  
                 
+            if osc.HAS_NEOPIXEL:
+                np_anims.automatic()
+                
         time.sleep(osc.LOOP_WAIT_TIME)
 
 def run():
@@ -489,10 +496,21 @@ def run():
                 if mode == 99:
                     import modules.numpad as kb
                     tiles = kb.numpad(l_get("apps.minesweeper.custom_mode.map_size"))
+                    
+                    if tiles is None:
+                        continue
+                    tiles = int(tiles)
+                    
                     if tiles < 1 or tiles > 16:
                         popup.show(l_get("apps.minesweeper.custom_mode.map_size_error"), l_get("crashes.error"), 15)
                         continue
+                    
                     bombs_max = kb.numpad(l_get("apps.minesweeper.custom_mode.bombs"))
+                    
+                    if bombs_max is None:
+                        continue
+                    bombs_max = int(bombs_max)
+                    
                     # Check if bombs are more than 1 and less than half of tiles
                     if bombs_max < 1 or bombs_max > (tiles*tiles//2):
                         popup.show(l_get("apps.minesweeper.custom_mode.bombs_error") + str((tiles*tiles//2)),

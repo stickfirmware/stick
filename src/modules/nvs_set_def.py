@@ -62,3 +62,17 @@ def run():
     ints(n_settings, 'neo_R', 64, 'neo_R') # Neopixel R led color
     ints(n_settings, 'neo_G', 64, 'neo_G') # Neopixel G led color
     ints(n_settings, 'neo_B', 64, 'neo_B') # Neopixel B led color
+    
+def set_hardware():
+    import modules.io_manager as io_man
+    import modules.buzzer as buzz
+    import modules.printer as debug
+    
+    tft = io_man.get('tft')
+    s_bl = cache.get_and_remove('n_cache_backlight')
+    debug.log("Backlight: " + str(s_bl))
+    tft.set_backlight(s_bl)
+
+    s_vl = cache.get_and_remove('n_cache_volume')
+    debug.log("Buzzer volume: " + str(s_vl))
+    buzz.set_volume(s_vl)

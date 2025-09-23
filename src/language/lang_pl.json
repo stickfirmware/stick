@@ -4,7 +4,7 @@
         "code": "pl",
         "version": [
             1,
-            3
+            5
         ],
         "authors": [
             "@Kitki30"
@@ -19,11 +19,14 @@
         "init_io_man": "Inicjalizacja io_mana..",
         "check_time": "Sprawdzanie czasu...",
         "init_wifi": "Inicjalizacja Wi-Fi...",
+        "seed_random": "Seeduje random...",
         "sync_apps": "Synchronizacja konfiguracji",
         "load_libs": "Ladowanie innych bibliotek...",
+        "check_app_packs": "Sprawdzam paczki...",
         "cleaning_up": "Czyszczenie RAMu...",
         "sd_init": "Montowanie karty SD",
-        "load_clock": "Ladowanie zegara..."
+        "load_clock": "Ladowanie zegara...",
+        "guides": "Laduje pomocniki..."
     },
     "mainos_diagnostics": {
         "battery": "Bateria"
@@ -50,6 +53,7 @@
         "ir_remote": {
             "name": "Pilot IR",
             "sending": "Wysylanie",
+            "context_menu": "Wyslij kod IR",
             "buttons": {
                 "power": "WL/WYL",
                 "vol_up": "GLOS+",
@@ -145,7 +149,11 @@
                 "about": "O oprogramowaniu",
                 "factory": "Reset ustawien fabrycznych",
                 "account": "Konto",
-                "neopixel": "Neopixel"
+                "neopixel": "Neopixel",
+                "show_guides_again": "Pokaz poradniki"
+            },
+            "guides": {
+                "reboot_notify": "Zrestartuj aby zobaczyc wszystkie poradniki!"
             },
             "acc_menu": {
                 "title": "Ustawienia/Konto",
@@ -351,8 +359,16 @@
                 "package_size_too_high": "Rozmiar paczki za duzy, nie mozna zainstalowac!",
                 "package_read_failed": "Nie mozna przeczytac paczki, moze jest zepsuta?",
                 "not_enough_flash": "Za malo miejsca na dysku, zwolnij miejsce i sproboj ponownie!",
-                "manifest_parse_error": "Blad parsowania manifest, czy manifest jest poprawny?"
+                "manifest_parse_error": "Blad parsowania manifest, czy manifest jest poprawny?",
+                "requirements_not_met": "Wymagania aplikacji nie zostaly spelnione, nie mozna zainstalowac."
             }
+        },
+        "pack_installer": {
+            "optional_prompt": "Instalowac opcjonalne app?",
+            "yes_recommend": "Tak (Zalecane)",
+            "see_list": "Pokaz liste aplikacji",
+            "success_popup": "Instalacja paczki pomyslna!\nLaczna liczba: %total%\nBledy: %failed%",
+            "app_list": "Applikacje w paczce:\n%apps%\n\nSzacowany rozmiar: %size%"
         },
         "python_executor": {
             "name": "Executor pythona",
@@ -373,7 +389,8 @@
         "no": "Nie",
         "ok": "OK",
         "enable": "Wlacz",
-        "disable": "Wylacz"
+        "disable": "Wylacz",
+        "are_sure": "Na pewno?"
     },
     "popups": {
         "info": "Informacja"

@@ -19,6 +19,7 @@ import gc
 import network
 import os
 import time
+import random
 
 # System modules
 from modules.decache import decache
@@ -46,8 +47,6 @@ if osc.HAS_BUZZER:
     buzzer = PWM(Pin(osc.BUZZER_PIN), duty_u16=0, freq=500)
     io_man.set("buzzer", buzzer)
     buzz.startup_sound(buzzer)
-
-files.rmdir_recursive("/temp")
 
 if "temp" not in os.listdir():
         os.mkdir("temp")
@@ -87,7 +86,7 @@ except Exception as e:
 io_man.set('tft', tft)
 
 loading_count = 0 # Increased with every task
-loading_max = 11 # Max loading_count will reach
+loading_max = 16 # Max loading_count will reach
 bar_color = 2016 # Color of progress bar
 
 def render_bar(text, increase_count=False):
@@ -114,14 +113,7 @@ render_bar("Loading data...", True)
 # Set default vars, load backlight, volume, autorotate and powersaving
 import modules.nvs_set_def as nsd
 nsd.run()
-    
-s_bl = cache.get_and_remove('n_cache_backlight')
-debug.log("Backlight: " + str(s_bl))
-tft.set_backlight(s_bl)
-
-s_vl = cache.get_and_remove('n_cache_volume')
-debug.log("Buzzer volume: " + str(s_vl))
-buzz.set_volume(s_vl)
+nsd.set_hardware()
 
 auto_rotate = cache.get('n_cache_arotate')
 allow_saving = cache.get_and_remove('n_cache_pwrsave')
@@ -168,7 +160,7 @@ render_bar(l_get("mainos_load.init_btns"), True) # Init buttons...
 # Init buttons
 debug.log("Init buttons")
 import modules.button_init as btn_init
-button_a, button_b, button_c, clicker = btn_init.init_buttons()
+button_a, button_b, button_c, clicker, debug_console = btn_init.init_buttons()
 
 # Init neopixel
 render_bar(l_get("mainos_load.init_neopixel"), True)
@@ -184,9 +176,11 @@ io_man.set('button_a', button_a)
 io_man.set('button_b', button_b)
 io_man.set('button_c', button_c)
 io_man.set('clicker_btn', clicker)
+io_man.set('debug_console', debug_console)
 io_man.set('rtc', rtc)
 io_man.set('mpu', mpu)
 io_man.set('power_hold', power_hold)
+
 
 render_bar(l_get("mainos_load.check_time"), True)
 
@@ -198,10 +192,17 @@ import modules.wifi_master as wifi_master
 wifi_master.connect_main_loop()
 nic = network.WLAN(network.STA_IF)
 conn_time = time.ticks_ms()
+
+# Seed randomizer
+render_bar(l_get("mainos_load.seed_random"), True)
+
+debug.log("Seed random")
+import modules.seed_random as seed_random
+seed_random.seed()
         
 # Sync apps
 render_bar(l_get("mainos_load.sync_apps"), True)
-import apps.oobe as oobe
+import modules.oobe as oobe
 oobe.sync_apps()
         
 render_bar(l_get("mainos_load.load_libs"), True) # Loading other libraries...
@@ -228,6 +229,15 @@ is_in_saving = False
 
 # Secret variables
 eeg_click_entry = 0
+debug_entry = 0
+
+# Check app packs
+render_bar(l_get("mainos_load.check_app_packs"), True)
+debug.log("Check app packs")
+
+if "app-pack.installed" not in os.listdir("/usr") and "app-packs" in os.listdir("/"):
+    import modules.pack_install as pinstall
+    pinstall.run()
 
 # IMU Rotations cheat sheet
 # 0 - button side down
@@ -303,7 +313,9 @@ ps.set_freq(osc.BASE_FREQ)
 
 # Print sys.modules
 import sys
-debug.log(str(sys.modules))
+debug.log(str(sys.modules)) # Helpful for debug of RAM cleaner
+
+render_bar(l_get("mainos_load.guides"), True)
 
 # Show quick start guide if not shown yet
 if nvs.get_int(n_guides, 'quick_start') == None:
@@ -697,6 +709,28 @@ while True:
                 if menu == 0:
                     tft.text(f8x8, "NTP",4,124,703)
                     
+    # Console
+    if debug_console != None:
+        if debug_console.value() == 0:
+            while debug_console.value() == 0:
+                time.sleep(osc.DEBOUNCE_TIME)
+            debug_entry += 1
+            if debug_entry >= 4:
+                menu_change = True
+                debug_entry = 0
+                import modules.numpad as numpad
+                
+                debug_input = numpad.keyboard("Debug console")
+                
+                if debug_input == "fastrecovery":
+                    break
+                else:
+                    import modules.debug_console as d_console
+                    d_console.run_code(debug_input)
+                    
+                while button_a.value() == 0:
+                    time.sleep(osc.DEBOUNCE_TIME)
+                     
     # RGB Handler
     if osc.HAS_NEOPIXEL:
         np_anims.automatic()

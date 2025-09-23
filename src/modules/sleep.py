@@ -12,6 +12,8 @@ import modules.os_constants as osc
 import modules.io_manager as io_man
 import modules.cache as cache
 
+# TODO: Refactor this thing
+# TODO: Add deep sleep (For devices with no powerhold)?
 def sleep():
     """
     Puts device to lightsleep,
@@ -21,7 +23,7 @@ def sleep():
     tft = io_man.get('tft')
     n_settings = cache.get_nvs('settings')
     log("Sleeping")
-    log("Set wake on ext0")
+    log("Set wake on ext")
     if osc.INPUT_METHOD == 1:
         esp32.wake_on_ext0(pin = button_c, level = esp32.WAKEUP_ALL_LOW)
     elif osc.INPUT_METHOD == 2:

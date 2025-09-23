@@ -50,7 +50,47 @@ def app_config_translated():
                     "dependency": False,
                     "hidden": True,
                     "handleExtensions": ["*.py"]
-                    }
+                    },
+                {
+                    "name": l_get("apps.ir_remote.name"),
+                    "id": "com.kitki30.ir_remote",
+                    "file": "apps.com_kitki30_ir_remote.IR",
+                    "main_folder": "/apps/com_kitki30_ir_remote",
+                    "is_system_app": True,
+                    "dependency": False,
+                    "hidden": False,
+                    "handleExtensions": [""]
+                    },
+                {
+                    "name": l_get("apps.file_explorer.name"),
+                    "id": "com.kitki30.file_explorer",
+                    "file": "apps.com_kitki30_file_explorer.explorer",
+                    "main_folder": "/apps/com_kitki30_file_explorer",
+                    "is_system_app": True,
+                    "dependency": False,
+                    "hidden": False,
+                    "handleExtensions": [""]
+                    },
+                {
+                    "name": l_get("apps.flashlight.name"),
+                    "id": "com.kitki30.flashlight",
+                    "file": "apps.com_kitki30_flashlight.flashlight",
+                    "main_folder": "/apps/com_kitki30_flashlight",
+                    "is_system_app": True,
+                    "dependency": False,
+                    "hidden": False,
+                    "handleExtensions": [""]
+                    },
+                {
+                    "name": l_get("apps.ir_remote.context_menu"),
+                    "id": "com.kitki30.ir_helper",
+                    "file": "helpers.ir_sender",
+                    "main_folder": "",
+                    "is_system_app": True,
+                    "dependency": False,
+                    "hidden": True,
+                    "handleExtensions": ["*.ir"]
+                }
                 ]
         }
     return appsConfig

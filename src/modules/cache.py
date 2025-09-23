@@ -40,7 +40,7 @@ def update_last_mod():
 def reload_apps():
     import time
     
-    import apps.oobe as oobe
+    import modules.oobe as oobe
     
     set("app_config", oobe.read_config(True))
     set("app_config_last_modify", time.ticks_ms())

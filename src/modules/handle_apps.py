@@ -4,6 +4,7 @@ Stick firmware package handler
 
 import os
 import gc
+import time
 
 import modules.json as json
 from modules.printer import log
@@ -26,6 +27,9 @@ class NotEnoughFlash(Exception):
     pass
 
 class PackageSizeTooHigh(Exception):
+    pass
+
+class RequirementsNotMet(Exception):
     pass
 
 # Manifests classes
@@ -224,6 +228,43 @@ def get_manifest(zip_package: str) -> any:
     else:
         raise UnknownManifestVersion(f"This manifest version ({manifest_ver}) is not currently supported, is your app setup properly?")
     
+# Run requirements
+def run_requirements(zip_package: str) -> bool:
+    """
+    Run requirements from app package
+    
+    Args:
+        zip_package (str): Path to app package
+        
+    Return:
+        bool: True if requirements are met, False if not
+    """
+    import modules.zipfile as zipfile
+    import modules.zip as zip
+    import modules.files as files
+    
+    log("Check requirements...")
+    
+    with zipfile.ZipFile(zip_package, "r") as z:
+        if "requirements.py" in z.namelist():
+            log("Found requirements.py, running...")
+            files.mkdir_recursive(f"/temp/app_installer")
+            curr_time = time.time()
+            zip.unpack_file(zip_package, "requirements.py", f"/temp/app_installer/{curr_time}.py")
+            
+            modpath = "temp.app_installer." + str(curr_time)
+            
+            parts = modpath.split(".")       
+            comd = __import__(modpath)
+            
+            for part in parts[1:]:
+                comd = getattr(comd, part)
+                
+            if hasattr(comd, "check"):
+                return comd.check()
+
+    return True
+    
 # Get version (int) from class (ex. ManifestV1App)
 def check_version_from_class(obj) -> int:
     """
@@ -305,6 +346,9 @@ def install(zip_package, delete_app_package=True):
             Install dependencies: {str(dependencies)}
             """)
         
+        if run_requirements(zip_package) == False:
+            raise RequirementsNotMet("App requirements are not met, cannot install app")
+        
         # Unpack app
         log("Unpacking app")
         gc.collect()
@@ -324,7 +368,7 @@ def install(zip_package, delete_app_package=True):
         # Registry
         log("Add to registry")
         gc.collect()
-        import apps.oobe as oobe
+        import modules.oobe as oobe
         
         oobe.edit_app(
             pack_id,
@@ -399,3 +443,5 @@ def open_file(path):
         popup(l_get("apps.app_installer.popups.not_enough_flash"), l_get("crashes.error"))
     except ManifestParseError:
         popup(l_get("apps.app_installer.popups.manifest_parse_error"), l_get("crashes.error"))
+    except RequirementsNotMet:
+        popup(l_get("apps.app_installer.popups.requirements_not_met"), l_get("crashes.error"))

@@ -26,7 +26,7 @@ io_man.set('button_c', button_c)
 io_man.set('tft', tft)
 
 while True:
-    render = menus.menu("Recovery menu", [("Factory reset", 1), ("File explorer", 2), ("Toggle dev apps", 3), ("Disable custom SD", 4), ("Mount sd card", 5), ("Reboot", None)])
+    render = menus.menu("Recovery menu", [("Factory reset", 1), ("File explorer", 2), ("Toggle dev apps", 3), ("Disable custom SD", 4), ("Mount sd card", 5), ("Reboot", 13)])
     if render == 1:
         confirm_reset = menus.menu("Reset all settings?", [("No", None), ("Yes", 1)])
         if confirm_reset == 1:

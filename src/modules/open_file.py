@@ -6,6 +6,7 @@ import sys as nisysa
 
 import modules.menus as menus
 import modules.io_manager as io_man
+from modules.translate import get as l_get
 
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')
@@ -49,7 +50,7 @@ def get_supported_apps(apps_config: dict, filename: str) -> list[tuple]:
             if matches_pattern(filename, pattern):
                 menu.append((app["name"], i))
                 break
-    menu.append(("Exit", None))
+    menu.append((l_get("menus.menu_exit"), None))
     return menu
     
 def openMenu(file: str):
@@ -59,10 +60,10 @@ def openMenu(file: str):
     Args:
         filename (str): Filename to open
     """
-    import apps.oobe as oobe
+    import modules.oobe as oobe
     appsConfig = oobe.read_config()
     supportedAppsMenu = get_supported_apps(appsConfig, file)
-    selected_index = menus.menu("Open in", supportedAppsMenu)
+    selected_index = menus.menu(l_get("apps.file_explorer.open_in"), supportedAppsMenu)
     if selected_index is not None:
         app_index = selected_index
         app = appsConfig["apps"][app_index]
