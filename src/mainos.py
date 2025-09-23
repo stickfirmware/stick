@@ -19,6 +19,7 @@ import gc
 import network
 import os
 import time
+import random
 
 # System modules
 from modules.decache import decache
@@ -85,7 +86,7 @@ except Exception as e:
 io_man.set('tft', tft)
 
 loading_count = 0 # Increased with every task
-loading_max = 12 # Max loading_count will reach
+loading_max = 16 # Max loading_count will reach
 bar_color = 2016 # Color of progress bar
 
 def render_bar(text, increase_count=False):
@@ -190,6 +191,13 @@ import modules.wifi_master as wifi_master
 wifi_master.connect_main_loop()
 nic = network.WLAN(network.STA_IF)
 conn_time = time.ticks_ms()
+
+# Seed randomizer
+render_bar(l_get("mainos_load.seed_random"), True)
+
+debug.log("Seed random")
+import modules.seed_random as seed_random
+seed_random.seed()
         
 # Sync apps
 render_bar(l_get("mainos_load.sync_apps"), True)
@@ -222,6 +230,9 @@ is_in_saving = False
 eeg_click_entry = 0
 
 # Check app packs
+render_bar(l_get("mainos_load.check_app_packs"), True)
+debug.log("Check app packs")
+
 if "app-pack.installed" not in os.listdir("/usr") and "app-packs" in os.listdir("/"):
     import modules.pack_install as pinstall
     pinstall.run()
@@ -300,7 +311,9 @@ ps.set_freq(osc.BASE_FREQ)
 
 # Print sys.modules
 import sys
-debug.log(str(sys.modules))
+debug.log(str(sys.modules)) # Helpful for debug of RAM cleaner
+
+render_bar(l_get("mainos_load.guides"), True)
 
 # Show quick start guide if not shown yet
 if nvs.get_int(n_guides, 'quick_start') == None:
