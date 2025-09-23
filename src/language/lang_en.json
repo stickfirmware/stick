@@ -19,11 +19,14 @@
         "init_io_man": "Init io manager..",
         "check_time": "Checking time...",
         "init_wifi": "Init Wi-Fi...",
+        "seed_random": "Seeding random...",
         "sync_apps": "Sync config...",
         "load_libs": "Loading other libraries...",
+        "check_app_packs": "Checking app-packs...",
         "cleaning_up": "Cleaning up...",
         "sd_init": "SD Init",
-        "load_clock": "Loading clock..."
+        "load_clock": "Loading clock...",
+        "guides": "Loading guides..."
     },
     "mainos_diagnostics": {
         "battery": "Battery"
