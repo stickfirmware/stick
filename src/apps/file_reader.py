@@ -13,8 +13,8 @@ def splittext_stream(fileobj, charlimit=27, linelimit=16):
     for raw in fileobj:
         try:
             raw = raw.decode("utf-8")
-        except UnicodeDecodeError:
-            yield [[[l_get("apps.file_reader.decode_err")]]]
+        except Exception as e:
+            yield [[[""]]]
             return
 
         raw = raw.replace('\t', '    ').rstrip("\r\n")
