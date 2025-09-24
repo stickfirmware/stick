@@ -1,0 +1,102 @@
+name: Build and Push Releases
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_firmware:
+    name: Build ${{ matrix.board.env }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        board:
+          - { env: "cardputerv1_1", family: "ESP32-S3", target: "ESP32_GENERIC_S3" }
+          - { env: "stickcplus2",   family: "ESP32",   target: "ESP32_GENERIC" }
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.local/lib/python*/site-packages
+          key: pip-${{ runner.os }}-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: pip-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git wget make flex bison gperf python3 python3-pip python3-venv cmake ninja-build ccache libffi-dev libssl-dev dfu-util
+
+      - name: Get ESP-IDF
+        run: |
+          git clone https://github.com/espressif/esp-idf.git
+          cd esp-idf
+          git checkout v5.4.2
+          git submodule update --init --recursive
+          ./install.sh
+
+      - name: Cache MicroPython
+        id: cache-micropython
+        uses: actions/cache@v4
+        with:
+          path: |
+            micropython
+            !micropython/.git/objects/pack/tmp_*
+          key: micropython-${{ github.sha }}
+          restore-keys: micropython-
+
+
+      - name: Get MicroPython
+        if: steps.cache-micropython.outputs.cache-hit != 'true'
+        run: |
+          git clone https://github.com/micropython/micropython.git
+          cd micropython
+          git checkout v1.26.1
+          git submodule update --init --recursive
+
+      - name: Replace os_constants.py
+        run: |
+          cp configs/${{ matrix.board.env }}.py src/modules/os_constants.py
+          
+      - name: Freeze modules
+        run: |
+          BASE=micropython/ports/esp32/modules
+          mkdir -p "$BASE"
+          find src -type f -name "*.py" | while read f; do
+            cp "$f" "$BASE/$(basename "$f")"
+          done
+
+      - name: Build mpy-cross
+        run: |
+          cd micropython
+          make -C mpy-cross
+
+      - name: Build firmware
+        run: |
+          source esp-idf/export.sh
+          cd micropython/ports/esp32
+          make submodules
+          make BOARD=${{ matrix.board.target }}
+
+      - name: Package firmware
+        run: |
+          fw="stickfirmware-${{ matrix.board.env }}.bin"
+          cp micropython/ports/esp32/build-${{ matrix.board.target }}/firmware.bin "$fw"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: stickfirmware-${{ matrix.board.env }}
+          path: stickfirmware-*.*
+          retention-days: 14
+          if-no-files-found: error

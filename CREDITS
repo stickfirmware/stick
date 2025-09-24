@@ -28,6 +28,10 @@ SOFTWARE.
 
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
+Thanks to bruce software for base of building action
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
 micropython-mpu6886
 https://github.com/tuupola/micropython-mpu6886
 
