@@ -2,10 +2,10 @@
 
 MAJOR = 2
 MINOR = 2
-PATCH = 0
+PATCH = 1
 
 LANG_VER = [1, 5]
 
-is_beta = False
+is_beta = True
 
 # https://github.com/stickfirmware/stick
