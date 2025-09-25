@@ -3,6 +3,7 @@ import modules.popup as popup
 import modules.oobe as oobe
 from modules.oobe import get_entry
 from modules.printer import log
+from modules.translate import get as l_get
 
 appsConfig = oobe.read_config()
 
@@ -15,8 +16,8 @@ def get_all_apps():
 def app_menu(id):
     while True:
         menu = menus.menu(get_entry(id, "name"), [
-            ("Uninstall", 1),
-            ("Close", None)
+            (l_get("apps.package_manager.uninstall"), 1),
+            (l_get("menus.menu_close"), None)
         ])
         
         if menu == None:
@@ -25,27 +26,28 @@ def app_menu(id):
             import modules.handle_apps as happs
             try:
                 happs.uninstall(id)
-                popup.show("App uninstalled successfully!", "Info")
+                popup.show(l_get("apps.package_manager.success"), l_get("popups.info"))
                 break
             except happs.CannotUninstallSystemApp:
-                popup.show("Cannot uninstall system apps!", "Error")
+                popup.show(l_get("apps.package_manager.sys_app_error"), l_get("crashes.error"))
             except happs.NoAppFolderFound:
-                popup.show("App doesn't have a folder, maybe it's a helper for some other app?", "Error")
+                popup.show(l_get("apps.package_manager.folder_error"), l_get("crashes.error"))
             except Exception as e:
                 log(f"An unknown error happened in Package manager!!!\nFeature: Uninstall\nApp ID: {id}\nError:\n{e}")
+                raise Exception
 
 def show_info(id):
-    text = f"Name: {get_entry(id, 'name')}\nID: {get_entry(id, 'id')}\nFolder: {get_entry(id, 'main_folder')}\nSystem app?: {get_entry(id, 'is_system_app')}\nDependency?: {get_entry(id, 'dependency')}"
+    text = f"{l_get("apps.package_manager.popup_name")} {get_entry(id, 'name')}\n{l_get("apps.package_manager.popup_id")} {get_entry(id, 'id')}\n{l_get("apps.package_manager.popup_folder")} {get_entry(id, 'main_folder')}\n{l_get("apps.package_manager.popup_system")} {get_entry(id, 'is_system_app')}\n{l_get("apps.package_manager.popup_dependency")} {get_entry(id, 'dependency')}"
     
-    popup.show(text, "Package info")
+    popup.show(text, l_get("popups.info"))
     
     app_menu(id)
 
 def run():
     while True:
         apps = get_all_apps()
-        apps.append(("Exit", None))
-        app_select_dialog = menus.menu("Package manager", apps)
+        apps.append((l_get("menus.menu_exit"), None))
+        app_select_dialog = menus.menu(l_get("apps.package_manager.name"), apps)
         
         if app_select_dialog == None:
             break

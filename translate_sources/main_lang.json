@@ -370,6 +370,18 @@
             "success_popup": "Pack install successful!\nTotal apps: %total%\nFailed: %failed%",
             "app_list": "Apps in app-pack:\n%apps%\n\nEstimated size: %size%"
         },
+        "package_manager": {
+            "name": "Package manager",
+            "popup_name": "Name:",
+            "popup_id": "ID:",
+            "popup_folder": "Folder:",
+            "popup_system": "System app?:",
+            "popup_dependency": "Dependency?:",
+            "uninstall": "Uninstall",
+            "success": "App uninstalled successfully!",
+            "sys_app_error": "Cannot uninstall system apps!",
+            "folder_error":
+        },
         "python_executor": {
             "name": "Python executor",
             "file": "File: ",

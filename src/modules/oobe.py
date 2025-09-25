@@ -92,7 +92,7 @@ def app_config_translated():
                     "handleExtensions": ["*.ir"]
                     },
                 {
-                    "name": "Package manager",
+                    "name": l_get("apps.package_manager.name"),
                     "id": "com.kitki30.pacman",
                     "file": "apps.com_kitki30_pacman.package_manager",
                     "main_folder": "/apps/com_kitki30_pacman",
