@@ -4,7 +4,7 @@
         "code": "pl",
         "version": [
             1,
-            5
+            6
         ],
         "authors": [
             "@Kitki30"
@@ -369,6 +369,18 @@
             "see_list": "Pokaz liste aplikacji",
             "success_popup": "Instalacja paczki pomyslna!\nLaczna liczba: %total%\nBledy: %failed%",
             "app_list": "Applikacje w paczce:\n%apps%\n\nSzacowany rozmiar: %size%"
+        },
+        "package_manager": {
+            "name": "Package manager",
+            "popup_name": "Name:",
+            "popup_id": "ID:",
+            "popup_folder": "Folder:",
+            "popup_system": "System app?:",
+            "popup_dependency": "Dependency?:",
+            "uninstall": "Uninstall",
+            "success": "App uninstalled successfully!",
+            "sys_app_error": "Cannot uninstall system apps!",
+            "folder_error": "App doesn't have a folder, maybe it's a helper for some other app?"
         },
         "python_executor": {
             "name": "Executor pythona",
