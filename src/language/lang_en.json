@@ -4,7 +4,7 @@
         "code": "en",
         "version": [
             1,
-            5
+            6
         ],
         "authors": [
             "@Kitki30"
@@ -380,7 +380,7 @@
             "uninstall": "Uninstall",
             "success": "App uninstalled successfully!",
             "sys_app_error": "Cannot uninstall system apps!",
-            "folder_error": 
+            "folder_error": "App doesn't have a folder, maybe it's a helper for some other app?"
         },
         "python_executor": {
             "name": "Python executor",
