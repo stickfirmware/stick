@@ -8,5 +8,15 @@
         1,
         6
     ],
-    "app_handler_features": "requirements;uninstall;"
+    "app_handler": {
+        "app_handler_features": "requirements;uninstall;",
+        "version": [
+            1,
+            0
+        ]
+    },
+    "random": [
+        1,
+        0
+    ]
 }
