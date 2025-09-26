@@ -371,16 +371,16 @@
             "app_list": "Applikacje w paczce:\n%apps%\n\nSzacowany rozmiar: %size%"
         },
         "package_manager": {
-            "name": "Package manager",
-            "popup_name": "Name:",
+            "name": "Menedzer pakietow",
+            "popup_name": "Nazwa:",
             "popup_id": "ID:",
             "popup_folder": "Folder:",
-            "popup_system": "System app?:",
-            "popup_dependency": "Dependency?:",
-            "uninstall": "Uninstall",
-            "success": "App uninstalled successfully!",
-            "sys_app_error": "Cannot uninstall system apps!",
-            "folder_error": "App doesn't have a folder, maybe it's a helper for some other app?"
+            "popup_system": "Systemowa?:",
+            "popup_dependency": "Bitblioteka?:",
+            "uninstall": "Odinstaluj",
+            "success": "Aplikacja odinstalowana pomyslnie!",
+            "sys_app_error": "Nie mozna odinstalowac aplikacji systemowych!",
+            "folder_error": "Aplikacja nie ma ustawionego folderu w konfiguracji, moze to pomocnik innej aplikacji?"
         },
         "python_executor": {
             "name": "Executor pythona",
