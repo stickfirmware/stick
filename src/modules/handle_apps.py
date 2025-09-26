@@ -410,6 +410,22 @@ def uninstall(id):
         raise CannotUninstallSystemApp("Cannot uninstall system app")
     if get_entry(id, "main_folder") == "":
         raise NoAppFolderFound("App folder was not set in config, probably system app or other apps helper.")
+    
+    # Uninstaller script
+    try:
+        modpath =f"{clean_pack_file(get_entry(id, "main_folder"))}/uninstall".replace("/", ".")
+            
+        parts = modpath.split(".")       
+        comd = __import__(modpath)
+        
+        for part in parts[1:]:
+            comd = getattr(comd, part)
+            
+        if hasattr(comd, "uninstall"):
+            return comd.check()
+    except:
+        pass
+    
     try:
         files.rmdir_recursive(get_entry(id, "main_folder"))
     except OSError:
