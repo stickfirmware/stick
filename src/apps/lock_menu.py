@@ -59,7 +59,7 @@ def run():
                 tft.text(f8x8, l_get("lock_menu.making_sure_1"),0,0,65535)
                 tft.text(f8x8, l_get("lock_menu.making_sure_2"),0,8,65535)
                 tft.text(f8x8, l_get("lock_menu.making_sure_3"),0,16,65535)
-                pin_hash, salt = hashing.hash_pin(pin, 50000)
+                pin_hash, salt = hashing.hash_pin(pin, 5000)
                 nvs.set_string(n_locks, "pin", str(pin_hash))
                 nvs.set_string(n_locks, "salt", salt)
                 dummyMsg()
@@ -90,8 +90,8 @@ def run():
             pin = npad.numpad(l_get("lock_menu.enter_pin"), 6, True)
             tft.fill(0)
             tft.text(f8x8, l_get("lock_menu.verify_hash_1"),0,0,65535)
-            tft.text(f8x8, l_get("lock_menu.verify_hash_2"),0,0,65535)
-            if hashing.verify_pin(pin, nvs.get_string(n_locks, "salt"), nvs.get_string(n_locks, "pin"), 50000):
+            tft.text(f8x8, l_get("lock_menu.verify_hash_2"),0,8,65535)
+            if hashing.verify_pin(pin, nvs.get_string(n_locks, "salt"), nvs.get_string(n_locks, "pin"), 5000):
                 nvs.set_int(n_locks, "dummy", 1)
             else:
                 tft.fill(0)
