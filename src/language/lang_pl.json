@@ -4,7 +4,7 @@
         "code": "pl",
         "version": [
             1,
-            5
+            6
         ],
         "authors": [
             "@Kitki30"
@@ -369,6 +369,18 @@
             "see_list": "Pokaz liste aplikacji",
             "success_popup": "Instalacja paczki pomyslna!\nLaczna liczba: %total%\nBledy: %failed%",
             "app_list": "Applikacje w paczce:\n%apps%\n\nSzacowany rozmiar: %size%"
+        },
+        "package_manager": {
+            "name": "Menedzer pakietow",
+            "popup_name": "Nazwa:",
+            "popup_id": "ID:",
+            "popup_folder": "Folder:",
+            "popup_system": "Systemowa?:",
+            "popup_dependency": "Bitblioteka?:",
+            "uninstall": "Odinstaluj",
+            "success": "Aplikacja odinstalowana pomyslnie!",
+            "sys_app_error": "Nie mozna odinstalowac aplikacji systemowych!",
+            "folder_error": "Aplikacja nie ma ustawionego folderu w konfiguracji, moze to pomocnik innej aplikacji?"
         },
         "python_executor": {
             "name": "Executor pythona",
