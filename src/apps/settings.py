@@ -508,9 +508,10 @@ def run():
                     tft.fill(0)
                     tft.text(f8x8, "HW Info", 0, 0, 65535)
                     serial = machine.unique_id().hex().upper()
-                    tft.text(f8x8, osc.DEVICE_NAME, 0, 8, 65535)
+                    tft.text(f8x8, osc.DEVICE_NAME, 0, 8, 64288)
                     tft.text(f8x8, "ESP32 Serial:", 0, 16, 65535)
-                    tft.text(f8x8, serial, 0, 24, 65535)
+                    tft.text(f8x8, serial, 0, 24, 64288)
+                    tft.text(f8x8, "Press any button to exit",0,127,65535)
                     while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
                         time.sleep(osc.DEBOUNCE_TIME)
                         
