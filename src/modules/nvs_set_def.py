@@ -63,6 +63,9 @@ def run():
     ints(n_settings, 'neo_G', 64, 'neo_G') # Neopixel G led color
     ints(n_settings, 'neo_B', 64, 'neo_B') # Neopixel B led color
     
+    # XP
+    ints(n_settings, 'xp', 0, 'xp')
+    
 def set_hardware():
     import modules.io_manager as io_man
     import modules.buzzer as buzz

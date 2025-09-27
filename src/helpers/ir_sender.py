@@ -19,6 +19,10 @@ def parse_array(path):
     return data
     
 def open_file(path):
+    # Grant xp
+    import modules.xp_leveling as xp_levels
+    xp_levels.add_xp(3)
+    
     n_settings = cache.get_nvs('settings')
     pin_nvs = nvs.get_int(n_settings, "irPin")
     if pin_nvs is None or pin_nvs not in osc.IR_ALLOWED_PINS:

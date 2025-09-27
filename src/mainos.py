@@ -132,6 +132,9 @@ import modules.first_boot_check as first_boot_check
 first_boot_check.check()
 decache("modules.first_boot_check")
 del first_boot_check
+
+import modules.xp_leveling as xp_levels
+xp_levels.add_xp(2)
     
 gc.collect()
 
