@@ -42,13 +42,18 @@ def run():
         del a_se
         decache('apps.settings')
 
-def power_menu():
+def power_menu(fast_sleep = False):
     nic = network.WLAN(network.STA_IF)
-    powermenu = menus.menu(l_get("q_actions.power"), 
-                           [(l_get("q_actions.sleep"), 1),
-                            (l_get("q_actions.pwr_off"), 2),
-                            (l_get("q_actions.reboot"), 3),
-                            (l_get("menus.menu_close"), 4)])
+    
+    if fast_sleep == False:
+        powermenu = menus.menu(l_get("q_actions.power"), 
+                            [(l_get("q_actions.sleep"), 1),
+                                (l_get("q_actions.pwr_off"), 2),
+                                (l_get("q_actions.reboot"), 3),
+                                (l_get("menus.menu_close"), 4)])
+    else:
+        powermenu = 1
+        
     n_wifi = cache.get_nvs('wifi')
     if powermenu == 1:
         ps.set_freq(osc.BASE_FREQ)

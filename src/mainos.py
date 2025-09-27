@@ -160,7 +160,7 @@ render_bar(l_get("mainos_load.init_btns"), True) # Init buttons...
 # Init buttons
 debug.log("Init buttons")
 import modules.button_init as btn_init
-button_a, button_b, button_c, clicker, debug_console = btn_init.init_buttons()
+button_a, button_b, button_c, clicker, debug_console, sleep_button = btn_init.init_buttons()
 
 # Init neopixel
 render_bar(l_get("mainos_load.init_neopixel"), True)
@@ -177,6 +177,7 @@ io_man.set('button_b', button_b)
 io_man.set('button_c', button_c)
 io_man.set('clicker_btn', clicker)
 io_man.set('debug_console', debug_console)
+io_man.set('sleep_button', sleep_button)
 io_man.set('rtc', rtc)
 io_man.set('mpu', mpu)
 io_man.set('power_hold', power_hold)
@@ -726,6 +727,13 @@ while True:
                     
                 while button_a.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
+                    
+    # Sleep button
+    if sleep_button != None:
+        if sleep_button.value() == 0:
+            while sleep_button.value() == 0:
+                time.sleep(osc.DEBOUNCE_TIME)
+            
                      
     # RGB Handler
     if osc.HAS_NEOPIXEL:
