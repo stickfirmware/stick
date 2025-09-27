@@ -477,6 +477,7 @@ def run():
         elif menu1 == 8:
             while True:
                 
+                # TODO: TRANSLATE
                 about_menu = menus.menu("About", [
                     ("About Firmware", 1),
                     ("About Hardware", 2),
@@ -510,6 +511,8 @@ def run():
                     tft.text(f8x8, osc.DEVICE_NAME, 0, 8, 65535)
                     tft.text(f8x8, "ESP32 Serial:", 0, 16, 65535)
                     tft.text(f8x8, serial, 0, 24, 65535)
+                    while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
+                        time.sleep(osc.DEBOUNCE_TIME)
                 
         # Factory
         elif menu1 == 9:
