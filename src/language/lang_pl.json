@@ -182,7 +182,6 @@
                 "version": "wersja",
                 "by_kitki30": "od",
                 "apache_license": "Licencja Apache 2.0",
-                "more_details_scan_qr": "Po wiecej info, zeskanuj QR",
                 "a_exit": "Nacisnij przyc. A aby wyjsc,",
                 "b_credits": "B dla kredytow",
                 "c_license": "i C pelnej dla licencji."
@@ -282,13 +281,6 @@
                 "method2": "Uzyj Enter dla menu akcji.\nUzyj strzalek do ruchu.\nUzyj D do kopania.\nUzyj F do flag.\n",
                 "unknown": "Nieznana metoda wejscia"
             }
-        },
-        "qr_gen": {
-            "name": "Kody QR",
-            "qr_menu": "Menu kodow QR",
-            "size": "Rozmiar",
-            "change_text": "Zmien tekst",
-            "text": "Tekst"
         },
         "pimarkx": {
             "preparing": "Przygotowywanie...",
