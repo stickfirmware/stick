@@ -182,7 +182,6 @@
                 "version": "version",
                 "by_kitki30": "by",
                 "apache_license": "Apache 2.0 License",
-                "more_details_scan_qr": "For more details, scan the QR",
                 "a_exit": "Press button A to exit,",
                 "b_credits": "button B for credits",
                 "c_license": "and button C for license"
@@ -282,13 +281,6 @@
                 "method2": "Use Enter for action menu.\nUse arrows to move.\nUse D to Dig.\nUse F to flag.\n",
                 "unknown": "Unknown input method"
             }
-        },
-        "qr_gen": {
-            "name": "QR Codes",
-            "qr_menu": "QR Menu",
-            "size": "Size",
-            "change_text": "Change text",
-            "text": "Text"
         },
         "pimarkx": {
             "preparing": "Preparing...",
