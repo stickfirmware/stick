@@ -681,10 +681,6 @@ while True:
         if menu == 0:
             # Clear old info
             tft.fill_rect(4, 116, 190, 16, 0)
-            
-            # Render CPU info if not in dummy
-            if locks == 0:
-                tft.text(f8x8, "CPU: " + str(machine.freq() / 1000000) + "MHz",4,116,703)
                 
             # Check percentage
             pr = b_check.percentage(volts)
