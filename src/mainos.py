@@ -733,7 +733,8 @@ while True:
         if sleep_button.value() == 0:
             while sleep_button.value() == 0:
                 time.sleep(osc.DEBOUNCE_TIME)
-            
+            import apps.power_menu as pwr_men
+            pwr_men.power_menu(True)
                      
     # RGB Handler
     if osc.HAS_NEOPIXEL:
