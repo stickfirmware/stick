@@ -16,5 +16,6 @@ Clock menu - Button B (Tab)
 Lock menu - Hold Button B (Tab) for 1 second
 Lock menu (While in dummy mode) - Hold Button A and B (Enter and Tab) for 1 second
 Quick actions - Button C (ESC)
+Fast sleep (Cardputer exclusive) - G0
 
 When in dummy mode everything except power menu is locked!!!
