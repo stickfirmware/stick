@@ -22,8 +22,7 @@ def run():
     tft = io_man.get('tft')
     
     render = menus.menu(l_get("apps.others.title"),
-                        [(l_get("apps.qr_gen.name"), 6),
-                         ("PiMarkX", 5),
+                        [("PiMarkX", 5),
                          (l_get("apps.dice.name"), 7),
                          (l_get("apps.scorekeeper.name"), 1),
                          (l_get("apps.resistors.name"), 2),
@@ -52,11 +51,6 @@ def run():
         a_pimark.run()
         del a_pimark
         decache('apps.pimarkx')
-    elif render == 6:
-        import apps.qr_gen as a_qr
-        a_qr.run()
-        del a_qr
-        decache('apps.qr_gen')
     elif render == 7:
         if cache.get("rand_extra_func") == True:
             import apps.dice as a_dc

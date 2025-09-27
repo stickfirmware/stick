@@ -477,14 +477,6 @@ def run():
             tft.text(f8x8, l_get("apps.settings.about.by_kitki30") + " @Kitki30",0,8,ver_color)
             tft.text(f8x8, l_get("apps.settings.about.apache_license"),0,16,65535)
             
-            # Render QR, depending on metrics, include utm info
-            import modules.qr_codes as qr
-            tft.text(f8x8, l_get("apps.settings.about.more_details_scan_qr"),0,30,2016)
-            tracking = ""
-            if nvs.get_int(n_settings, "allow_metrics") == 1:
-                tracking += f"?utm_source={osc.DEVICE_NAME}&utm_medium=qrcode"
-            qr.make_qr(tft, "https://github.com/stickfirmware/stick", 0, 38, size=2)
-            
             tft.text(f8x8, l_get("apps.settings.about.a_exit"),0,111,65535)
             tft.text(f8x8, l_get("apps.settings.about.b_credits"),0,119,65535)
             tft.text(f8x8, l_get("apps.settings.about.c_license"),0,127,65535)
