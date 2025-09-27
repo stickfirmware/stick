@@ -6,6 +6,6 @@ PATCH = 1
 
 LANG_VER = [1, 6]
 
-is_beta = True
+is_beta = False
 
 # https://github.com/stickfirmware/stick
