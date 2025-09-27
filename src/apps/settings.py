@@ -513,6 +513,9 @@ def run():
                     tft.text(f8x8, serial, 0, 24, 65535)
                     while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
                         time.sleep(osc.DEBOUNCE_TIME)
+                        
+                elif about_menu == None:
+                    break
                 
         # Factory
         elif menu1 == 9:
