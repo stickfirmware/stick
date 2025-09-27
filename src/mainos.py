@@ -735,7 +735,9 @@ while True:
                 time.sleep(osc.DEBOUNCE_TIME)
             import apps.power_menu as pwr_men
             pwr_men.power_menu(True)
-                     
+            menu_change = True
+            menu = 0
+            
     # RGB Handler
     if osc.HAS_NEOPIXEL:
         np_anims.automatic()
