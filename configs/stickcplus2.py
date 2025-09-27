@@ -100,7 +100,7 @@ LCD_ROTATIONS = {
     "BUTTON_BOTTOM": 0 # Stick button down, cardputer kb right
     }
 IMU_ROTATE_THRESHOLD = const(0.9) # IMU Sensitivity
-LCD_POWER_SAVE_BL = const(0.4) # Backlight brightness on power saving
+LCD_POWER_SAVE_BL = const(0) # Backlight brightness on power saving
 
 # MCU Frequencies
 ULTRA_FREQ = const(240_000_000) # Ultra fast, used for renders
@@ -116,7 +116,7 @@ REQUESTS_USERAGENT = const("Stick firmware/M5Stick") # User agent for requests m
 # Loop timings
 WIFI_PWR_SAVER_TIME = const(15000) # Wifi power saver trigger time (ms)
 RAM_CLEANER_TIME = const(7500) # RAM Cleaner trigger time (ms)
-WIFI_DISABLE_TIMEOUT = const(15000) # Timeout for disabling wifi if not connected (ms)
+WIFI_DISABLE_TIMEOUT = const(30000) # Timeout for disabling wifi if not connected (ms)
 POWER_SAVE_TIMEOUT = const(15000) # Time to enter power saving after no activity (ms)
 POWER_SAVER_TIME = const(1000) # Time to trigger ps loop (modules.powersaving)
 IMU_CHECK_TIME = const(200) # IMU update time, in ms

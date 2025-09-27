@@ -422,15 +422,16 @@ def uninstall(id):
             comd = getattr(comd, part)
             
         if hasattr(comd, "uninstall"):
-            return comd.check()
-    except:
-        pass
+            return comd.uninstall()
+    except Exception as e:
+        print(e)
+        
+    oobe.remove_app(id)
     
     try:
         files.rmdir_recursive(get_entry(id, "main_folder"))
     except OSError:
         pass
-    oobe.remove_app(id)
 
 # Gui installer context menu (File explorer)
 def open_file(path):
