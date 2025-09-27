@@ -16,5 +16,6 @@ Menu zegara - Przycisk B (Tab)
 Menu blokad - Przytrzymaj przycisk B (Tab) przez 1 sekunde
 Menu blokad (W trybie atrapy) - Trzymaj Przycisk A i B (Enter i Tab) przez 1 sekunde
 Szybkie akcje - Przycisk C (ESC)
+Fast sleep (Cardputer exclusive) - G0
 
 W trybie atrapy wszystko oprocz menu zasilania jest zablokowane!
