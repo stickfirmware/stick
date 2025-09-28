@@ -223,6 +223,7 @@ ntp_first = True
 ticks = time.ticks_ms()
 ntp_time = ticks
 pwr_save_time = ticks
+sleep_time = ticks
 diagnostic_time = ticks
 wifi_master_dynamic = ticks
 cleaner_time = ticks
@@ -307,6 +308,7 @@ def wake_up():
         else:
             auto_rotate = 0
     pwr_save_time = time.ticks_ms()
+    sleep_time = time.ticks_ms()
     tft.set_backlight(nvs.get_float(n_settings, "backlight"))
     ps.set_freq(osc.BASE_FREQ)
 
@@ -363,6 +365,7 @@ while True:
         render_battery = True
         is_in_saving = False
         pwr_save_time = time.ticks_ms()
+        sleep_time = time.ticks_ms()
         
         # Get values from NVS (To ensure that they are up to date)
         auto_rotate = nvs.get_int(n_settings, "autorotate")
@@ -433,6 +436,14 @@ while True:
             mpu.sleep_on()
         was_sleep_triggered = True
         ps.set_freq(osc.SLOW_FREQ)
+        
+    # Auto lightsleep
+    if time.ticks_diff(time.ticks_ms(), sleep_time) >= osc.LIGHTSLEEP_TIMEOUT and allow_saving == 1:
+        import modules.sleep as m_sleep
+        m_sleep.sleep()
+        menu_change = True
+        menu = 0
+        wake_up()
     
     # Auto rotation
     if auto_rotate == 1 and time.ticks_diff(time.ticks_ms(), imu_delay) >= osc.IMU_CHECK_TIME and osc.HAS_IMU:
@@ -731,8 +742,9 @@ while True:
         if sleep_button.value() == 0:
             while sleep_button.value() == 0:
                 time.sleep(osc.DEBOUNCE_TIME)
-            import apps.power_menu as pwr_men
-            pwr_men.power_menu(True)
+            import modules.sleep as m_sleep
+            m_sleep.sleep()
+            wake_up()
             menu_change = True
             menu = 0
             tft = io_man.get('tft')
