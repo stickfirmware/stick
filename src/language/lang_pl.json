@@ -179,19 +179,19 @@
                 "volume_title": "Ustawienia/Buzzer/Glos."
             },
             "about": {
-                "firmware_info": "About firmware",
-                "hardware_info": "About hardware",
+                "firmware_info": "O oprogramowaniu",
+                "hardware_info": "O sprzecie",
                 "fw": {
-                    "version": "version",
-                    "by_kitki30": "by",
-                    "apache_license": "Apache 2.0 License",
-                    "a_exit": "Press button A to exit,",
-                    "b_credits": "button B for credits",
-                    "c_license": "and button C for license"
+                    "version": "wersja",
+                    "by_kitki30": "od",
+                    "apache_license": "Licencja Apache 2.0",
+                    "a_exit": "Nacisnij A aby wyjsc,",
+                    "b_credits": "B dla kredytow,",
+                    "c_license": "i C dla licencji."
                 },
                 "hw": {
-                    "hwinfo": "Hardware info",
-                    "esp_serial": "ESP32 Serial:"
+                    "hwinfo": "Info o sprzecie",
+                    "esp_serial": "Numer seryjny ESP32:"
                 }
             },
             "factory": {
@@ -417,7 +417,7 @@
         "powering_off": "Wylaczanie...",
         "rebooting": "Restartowanie...",
         "you_can_now_switch": "Teraz mozesz odlaczyc zasilanie.",
-        "to_sleep": "Device will now go to sleep..."
+        "to_sleep": "Urzadzenie idzie do uspienia.."
     },
     "lock_menu": {
         "name": "Menu blokad",
