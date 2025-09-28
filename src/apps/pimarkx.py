@@ -21,7 +21,7 @@ import modules.io_manager as io_man
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')
 button_c = io_man.get('button_c')
-tft = io_man.get('tft')
+tft = None
 
 def format_duration(seconds):
     m = seconds // 60

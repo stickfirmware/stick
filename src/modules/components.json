@@ -1,0 +1,22 @@
+{
+    "core": [
+        2,
+        2,
+        1
+    ],
+    "lang_ver": [
+        1,
+        6
+    ],
+    "app_handler": {
+        "app_handler_features": "requirements;uninstall;",
+        "version": [
+            1,
+            0
+        ]
+    },
+    "random": [
+        1,
+        0
+    ]
+}

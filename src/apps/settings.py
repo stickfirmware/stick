@@ -24,9 +24,7 @@ printer.log("Getting buttons")
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')
 button_c = io_man.get('button_c')
-tft = io_man.get('tft')
-
-# TODO: Add app manager
+tft = None
 
 # Refresh io
 def _LOAD_IO():
@@ -46,7 +44,8 @@ def run():
     while work == True:
         # Main menu
         menu1 = menus.menu(l_get("apps.settings.name"),
-                           [(l_get("apps.settings.menu1.lcd"), 1),
+                           [(l_get("apps.clock.name"), 0),
+                            (l_get("apps.settings.menu1.lcd"), 1),
                             (l_get("apps.settings.menu1.neopixel"), 5),
                             (l_get("apps.settings.menu1.sound"), 2),
                             (l_get("apps.settings.menu1.wifi"), 3),
@@ -72,6 +71,44 @@ def run():
             nvs.set_int(n_guides, 'quick_start', 0)
             nvs.set_int(n_guides, 'account_popup', 0)
             popup.show(l_get("apps.settings.guides.reboot_notify"), l_get("popups.info"))
+            
+        # Clock
+        elif menu1 == 0:
+            # TODO: Add clock manual date setting
+            clock_menu = menus.menu(l_get("apps.clock.name"), [
+                (l_get("apps.clock.ntp_sync"), 0),
+                (l_get("apps.settings.wifi.timezone"), 1),
+                (l_get("menus.menu_close"), None)
+            ])
+            
+            # NTP Sync
+            if clock_menu == 0:
+                ntp.sync_interactive()
+                    
+            # NTP Timezone
+            elif clock_menu == 1:
+                tim = True
+                menu = 1
+                while tim:
+                    if menu == 1:
+                        timezone = menus.menu(l_get("apps.settings.wifi.timezone"), [
+                            ("UTC+00:00", 0), ("UTC+01:00", 1), ("UTC+02:00", 2), ("UTC+03:00", 3),
+                            ("UTC+03:30", 4), ("UTC+04:00", 5), ("UTC+04:30", 6), ("UTC+05:00", 7),
+                            ("UTC+05:30", 8), ("UTC+05:45", 9), ("UTC+06:00", 10), ("UTC+06:30", 11),
+                            ("UTC+07:00", 12), ("UTC+08:00", 13), ("UTC+08:45", 14),
+                            ("UTC+09:00", 15), ("UTC+09:30", 16), ("UTC+10:00", 17), ("UTC+10:30", 18),
+                            ("UTC+11:00", 19), ("UTC+12:00", 20), ("UTC+12:45", 21), ("UTC+13:00", 22),
+                            ("UTC+14:00", 23), ("UTC-01:00", 24), ("UTC-02:00", 25),
+                            ("UTC-03:00", 26), ("UTC-03:30", 27), ("UTC-04:00", 28), ("UTC-05:00", 29),
+                            ("UTC-06:00", 30), ("UTC-07:00", 31), ("UTC-08:00", 32), ("UTC-09:00", 33),
+                            ("UTC-10:00", 34), ("UTC-11:00", 35), ("UTC-12:00", 36)
+                        ])
+                        if timezone == None:
+                            tim = False
+                        else:
+                            nvs.set_int(n_settings, "timezoneIndex", timezone)
+                            tim = False
+                ntp.get_time_timezoned(True)
                 
         # Langs
         elif menu1 == 11:
@@ -249,8 +286,6 @@ def run():
                                 [(l_get("apps.settings.wifi.setup_ap"), 1),
                                  (l_get("apps.settings.wifi.connection"), 2),
                                  (l_get("apps.settings.wifi.status"), 5),
-                                 (l_get("apps.clock.ntp_sync"), 3),
-                                 (l_get("apps.settings.wifi.timezone"), 4),
                                  (l_get("menus.menu_close"), 13)])
             
             # Wi-Fi AP setup
@@ -386,35 +421,6 @@ def run():
                     tft.text(f8x8, l_get("apps.settings.wifi.hostname") + network.hostname(),0,64, 65535)
                 while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
                     time.sleep(osc.DEBOUNCE_TIME)
-                    
-            # NTP Sync
-            elif rendr == 3:
-                ntp.sync_interactive()
-                    
-            # NTP Timezone
-            elif rendr == 4:
-                tim = True
-                menu = 1
-                while tim:
-                    if menu == 1:
-                        timezone = menus.menu(l_get("apps.settings.wifi.timezone"), [
-                            ("UTC+00:00", 0), ("UTC+01:00", 1), ("UTC+02:00", 2), ("UTC+03:00", 3),
-                            ("UTC+03:30", 4), ("UTC+04:00", 5), ("UTC+04:30", 6), ("UTC+05:00", 7),
-                            ("UTC+05:30", 8), ("UTC+05:45", 9), ("UTC+06:00", 10), ("UTC+06:30", 11),
-                            ("UTC+07:00", 12), ("UTC+08:00", 13), ("UTC+08:45", 14),
-                            ("UTC+09:00", 15), ("UTC+09:30", 16), ("UTC+10:00", 17), ("UTC+10:30", 18),
-                            ("UTC+11:00", 19), ("UTC+12:00", 20), ("UTC+12:45", 21), ("UTC+13:00", 22),
-                            ("UTC+14:00", 23), ("UTC-01:00", 24), ("UTC-02:00", 25),
-                            ("UTC-03:00", 26), ("UTC-03:30", 27), ("UTC-04:00", 28), ("UTC-05:00", 29),
-                            ("UTC-06:00", 30), ("UTC-07:00", 31), ("UTC-08:00", 32), ("UTC-09:00", 33),
-                            ("UTC-10:00", 34), ("UTC-11:00", 35), ("UTC-12:00", 36)
-                        ])
-                        if timezone == None:
-                            tim = False
-                        else:
-                            nvs.set_int(n_settings, "timezoneIndex", timezone)
-                            tim = False
-                ntp.get_time_timezoned(True)
                 
         # SD Card settings
         elif menu1 == 7:
@@ -469,33 +475,46 @@ def run():
         
         # About screen
         elif menu1 == 8:
-            tft.fill(0)
-            gc.collect()
-            if cache.get("ver_isbeta") == True:
-                ver_color = 65088
-            else:
-                ver_color = 65535
-            tft.text(f8x8, f"Stick firmware {l_get("apps.settings.about.version")} {cache.get("ver_displayname")}" ,0,0,ver_color)
-            tft.text(f8x8, l_get("apps.settings.about.by_kitki30") + " @Kitki30",0,8,ver_color)
-            tft.text(f8x8, l_get("apps.settings.about.apache_license"),0,16,65535)
-            
-            # Render QR, depending on metrics, include utm info
-            import modules.qr_codes as qr
-            tft.text(f8x8, l_get("apps.settings.about.more_details_scan_qr"),0,30,2016)
-            tracking = ""
-            if nvs.get_int(n_settings, "allow_metrics") == 1:
-                tracking += f"?utm_source={osc.DEVICE_NAME}&utm_medium=qrcode"
-            qr.make_qr(tft, "https://github.com/stickfirmware/stick", 0, 38, size=2)
-            
-            tft.text(f8x8, l_get("apps.settings.about.a_exit"),0,111,65535)
-            tft.text(f8x8, l_get("apps.settings.about.b_credits"),0,119,65535)
-            tft.text(f8x8, l_get("apps.settings.about.c_license"),0,127,65535)
-            while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
-                time.sleep(osc.DEBOUNCE_TIME)
-            if button_b.value() == 0:
-                open_file.openMenu("/CREDITS")
-            if button_c.value() == 0:
-                open_file.openMenu("/LICENSE")
+            while True:
+                about_menu = menus.menu(l_get("apps.settings.menu1.about"), [
+                    (l_get("apps.settings.about.firmware_info"), 1),
+                    (l_get("apps.settings.about.hardware_info"), 2),
+                    (l_get("menus.menu_exit"), None)
+                ])
+                
+                if about_menu == 1:
+                    tft.fill(0)
+                    gc.collect()
+                    if cache.get("ver_isbeta") == True:
+                        ver_color = 65088
+                    else:
+                        ver_color = 65535
+                    tft.text(f8x8, f"Stick firmware {l_get("apps.settings.about.fw.version")} {cache.get("ver_displayname")}" ,0,0,ver_color)
+                    tft.text(f8x8, l_get("apps.settings.about.fw.by_kitki30") + " @Kitki30",0,8,ver_color)
+                    tft.text(f8x8, l_get("apps.settings.about.fw.apache_license"),0,16,65535)
+                    tft.text(f8x8, l_get("apps.settings.about.fw.a_exit"),0,111,65535)
+                    tft.text(f8x8, l_get("apps.settings.about.fw.b_credits"),0,119,65535)
+                    tft.text(f8x8, l_get("apps.settings.about.fw.c_license"),0,127,65535)
+                    while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
+                        time.sleep(osc.DEBOUNCE_TIME)
+                    if button_b.value() == 0:
+                        open_file.openMenu("/CREDITS")
+                    if button_c.value() == 0:
+                        open_file.openMenu("/LICENSE")
+                        
+                elif about_menu == 2:
+                    tft.fill(0)
+                    tft.text(f8x8, l_get("apps.settings.about.hw.hwinfo"), 0, 0, 65535)
+                    serial = machine.unique_id().hex().upper()
+                    tft.text(f8x8, osc.DEVICE_NAME, 0, 8, 64288)
+                    tft.text(f8x8, l_get("apps.settings.about.hw.esp_serial"), 0, 16, 65535)
+                    tft.text(f8x8, serial, 0, 24, 64288)
+                    tft.text(f8x8, l_get("menus.popup_any_btn"),0,127,65535)
+                    while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
+                        time.sleep(osc.DEBOUNCE_TIME)
+                        
+                elif about_menu == None:
+                    break
                 
         # Factory
         elif menu1 == 9:

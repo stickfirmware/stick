@@ -15,8 +15,6 @@ import modules.powersaving as ps
 import modules.ntp as ntp
 from modules.translate import get as l_get
 
-tft = io_man.get('tft')
-
 allow_drawing_battery = True
 
 last_clock_text = ""
@@ -25,9 +23,16 @@ last_mode = 0
 
 nic = network.WLAN(network.STA_IF)
 
+tft = None
+
+def reinit_tft():
+    global tft
+    tft = io_man.get('tft')
+    
 def run_clock():
     global last_clock_text, last_date_text, last_mode
     printer.log("Rendering clock base")
+    reinit_tft()
     tft.fill_rect(0, 0, 240, 3, 65535)
     tft.fill_rect(0, 16, 240, 3, 65535)
     tft.fill_rect(0, 132, 240, 3, 65535)
@@ -43,6 +48,7 @@ def run_clock():
 def run_clock_vert():
     global last_clock_text, last_date_text, last_mode
     printer.log("Rendering clock base")
+    reinit_tft()
     tft.fill_rect(0, 0, 3, 240, 65535)
     tft.fill_rect(132, 0, 3, 240, 65535)
     tft.fill_rect(0, 0, 135, 3, 65535)

@@ -14,7 +14,7 @@ import modules.powersaving as ps
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')
 button_c = io_man.get('button_c')
-tft = io_man.get('tft')
+tft = None
 
 arrow_up = None
 arrow_down = None

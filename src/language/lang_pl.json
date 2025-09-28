@@ -4,7 +4,7 @@
         "code": "pl",
         "version": [
             1,
-            5
+            6
         ],
         "authors": [
             "@Kitki30"
@@ -179,13 +179,20 @@
                 "volume_title": "Ustawienia/Buzzer/Glos."
             },
             "about": {
-                "version": "wersja",
-                "by_kitki30": "od",
-                "apache_license": "Licencja Apache 2.0",
-                "more_details_scan_qr": "Po wiecej info, zeskanuj QR",
-                "a_exit": "Nacisnij przyc. A aby wyjsc,",
-                "b_credits": "B dla kredytow",
-                "c_license": "i C pelnej dla licencji."
+                "firmware_info": "O oprogramowaniu",
+                "hardware_info": "O sprzecie",
+                "fw": {
+                    "version": "wersja",
+                    "by_kitki30": "od",
+                    "apache_license": "Licencja Apache 2.0",
+                    "a_exit": "Nacisnij A aby wyjsc,",
+                    "b_credits": "B dla kredytow,",
+                    "c_license": "i C dla licencji."
+                },
+                "hw": {
+                    "hwinfo": "Info o sprzecie",
+                    "esp_serial": "Numer seryjny ESP32:"
+                }
             },
             "factory": {
                 "reset_all": "Resetowac ustawienia?",
@@ -283,13 +290,6 @@
                 "unknown": "Nieznana metoda wejscia"
             }
         },
-        "qr_gen": {
-            "name": "Kody QR",
-            "qr_menu": "Menu kodow QR",
-            "size": "Rozmiar",
-            "change_text": "Zmien tekst",
-            "text": "Tekst"
-        },
         "pimarkx": {
             "preparing": "Przygotowywanie...",
             "test_on": "Test na",
@@ -370,6 +370,18 @@
             "success_popup": "Instalacja paczki pomyslna!\nLaczna liczba: %total%\nBledy: %failed%",
             "app_list": "Applikacje w paczce:\n%apps%\n\nSzacowany rozmiar: %size%"
         },
+        "package_manager": {
+            "name": "Menedzer pakietow",
+            "popup_name": "Nazwa:",
+            "popup_id": "ID:",
+            "popup_folder": "Folder:",
+            "popup_system": "Systemowa?:",
+            "popup_dependency": "Bitblioteka?:",
+            "uninstall": "Odinstaluj",
+            "success": "Aplikacja odinstalowana pomyslnie!",
+            "sys_app_error": "Nie mozna odinstalowac aplikacji systemowych!",
+            "folder_error": "Aplikacja nie ma ustawionego folderu w konfiguracji, moze to pomocnik innej aplikacji?"
+        },
         "python_executor": {
             "name": "Executor pythona",
             "file": "Plik: ",
@@ -404,7 +416,8 @@
         "reboot": "Uruchom ponow.",
         "powering_off": "Wylaczanie...",
         "rebooting": "Restartowanie...",
-        "you_can_now_switch": "Teraz mozesz odlaczyc zasilanie."
+        "you_can_now_switch": "Teraz mozesz odlaczyc zasilanie.",
+        "to_sleep": "Urzadzenie idzie do uspienia.."
     },
     "lock_menu": {
         "name": "Menu blokad",

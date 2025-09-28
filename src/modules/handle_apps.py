@@ -9,6 +9,8 @@ import time
 import modules.json as json
 from modules.printer import log
 import modules.files as files
+import modules.oobe as oobe
+from modules.oobe import get_entry
 
 _MAX_PACKAGE_SIZE = 128 * 1024 # Allowed pack size, default is 128KB, install() will fail if bigger than this
 _FLASH_FREE_SPACE_MULTI = 2.5 # Free space requirement multiplier for formula (install() requires free space to be more than zip_size * multi)
@@ -30,6 +32,12 @@ class PackageSizeTooHigh(Exception):
     pass
 
 class RequirementsNotMet(Exception):
+    pass
+
+class CannotUninstallSystemApp(Exception):
+    pass
+
+class NoAppFolderFound(Exception):
     pass
 
 # Manifests classes
@@ -368,7 +376,6 @@ def install(zip_package, delete_app_package=True):
         # Registry
         log("Add to registry")
         gc.collect()
-        import modules.oobe as oobe
         
         oobe.edit_app(
             pack_id,
@@ -396,6 +403,35 @@ def install(zip_package, delete_app_package=True):
     
     log("App installer failed, code got to a point where it should not be!")
     return False
+
+# Uninstall
+def uninstall(id):
+    if get_entry(id, "is_system_app") == True:
+        raise CannotUninstallSystemApp("Cannot uninstall system app")
+    if get_entry(id, "main_folder") == "":
+        raise NoAppFolderFound("App folder was not set in config, probably system app or other apps helper.")
+    
+    # Uninstaller script
+    try:
+        modpath =f"{clean_pack_file(get_entry(id, "main_folder"))}/uninstall".replace("/", ".")
+            
+        parts = modpath.split(".")       
+        comd = __import__(modpath)
+        
+        for part in parts[1:]:
+            comd = getattr(comd, part)
+            
+        if hasattr(comd, "uninstall"):
+            return comd.uninstall()
+    except Exception as e:
+        print(e)
+        
+    oobe.remove_app(id)
+    
+    try:
+        files.rmdir_recursive(get_entry(id, "main_folder"))
+    except OSError:
+        pass
 
 # Gui installer context menu (File explorer)
 def open_file(path):

@@ -33,6 +33,10 @@ def run(pack_id: str, skip_intro = False):
     import modules.io_manager as io_man
     appsConfig = oobe.read_config()
     
+    # Grant xp
+    import modules.xp_leveling as xp_levels
+    xp_levels.add_xp(5)
+    
     # Check if exists
     file = app_exists(appsConfig, pack_id)
     if file != None:

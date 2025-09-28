@@ -16,7 +16,7 @@ from modules.translate import get as l_get
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')
 button_c = io_man.get('button_c')
-tft = io_man.get('tft')
+tft = None
 
 def play(bpm):
     buzzer = PWM(Pin(2), duty_u16=0, freq=500)

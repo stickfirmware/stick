@@ -8,6 +8,7 @@ RELEASE_NAME = const("cardputerv1_1") # Name in builder
 # Debug
 ENABLE_DEBUG_PRINTS = const(False)
 LESS_RAM_CLEANER_OUTPUT = const(True) # Don't show ram cleaner output
+ENABLE_SLEEP_REPORTS = const(False) # Sleep reports, logs how much battery has gone in sleep to json file, and how much time we have slept.
 
 # Default language
 DEFAULT_LANGUAGE = "en"
@@ -100,7 +101,7 @@ LCD_ROTATIONS = {
     "BUTTON_BOTTOM": 2 # Stick button down, cardputer kb right
     }
 IMU_ROTATE_THRESHOLD = const(0.9) # IMU Sensitivity
-LCD_POWER_SAVE_BL = const(0.5) # Backlight brightness on power saving
+LCD_POWER_SAVE_BL = const(0) # Backlight brightness on power saving
 
 # MCU Frequencies
 ULTRA_FREQ = const(240_000_000) # Ultra fast, used for renders
@@ -117,7 +118,8 @@ REQUESTS_USERAGENT = const("Stick firmware/Cardputer") # User agent for requests
 WIFI_PWR_SAVER_TIME = const(15000) # Wifi power saver trigger time (ms)
 RAM_CLEANER_TIME = const(7500) # RAM Cleaner trigger time (ms)
 WIFI_DISABLE_TIMEOUT = const(15000) # Timeout for disabling wifi if not connected
-POWER_SAVE_TIMEOUT = const(15000) # Time to enter power saving after no activity
+POWER_SAVE_TIMEOUT = const(30000) # Time to enter power saving after no activity
+LIGHTSLEEP_TIMEOUT = const(150000) # Time to automatically enter lightsleep if no activity
 POWER_SAVER_TIME = const(1000) # Time to trigger ps loop (modules.powersaving)
 IMU_CHECK_TIME = const(200) # IMU update time, in ms
 IMU_STAY_TIME = const(1000) # IMU stay time, in ms, device needs to be in same rotatation for X ms to accept rotation as stable

@@ -4,7 +4,7 @@
         "code": "en",
         "version": [
             1,
-            5
+            6
         ],
         "authors": [
             "@Kitki30"
@@ -179,13 +179,20 @@
                 "volume_title": "Settings/Buzzer/Volume"
             },
             "about": {
-                "version": "version",
-                "by_kitki30": "by",
-                "apache_license": "Apache 2.0 License",
-                "more_details_scan_qr": "For more details, scan the QR",
-                "a_exit": "Press button A to exit,",
-                "b_credits": "button B for credits",
-                "c_license": "and button C for license"
+                "firmware_info": "About firmware",
+                "hardware_info": "About hardware",
+                "fw": {
+                    "version": "version",
+                    "by_kitki30": "by",
+                    "apache_license": "Apache 2.0 License",
+                    "a_exit": "Press button A to exit,",
+                    "b_credits": "button B for credits",
+                    "c_license": "and button C for license"
+                },
+                "hw": {
+                    "hwinfo": "Hardware info",
+                    "esp_serial": "ESP32 Serial:"
+                }
             },
             "factory": {
                 "reset_all": "Reset all settings?",
@@ -283,13 +290,6 @@
                 "unknown": "Unknown input method"
             }
         },
-        "qr_gen": {
-            "name": "QR Codes",
-            "qr_menu": "QR Menu",
-            "size": "Size",
-            "change_text": "Change text",
-            "text": "Text"
-        },
         "pimarkx": {
             "preparing": "Preparing...",
             "test_on": "Testing on",
@@ -370,6 +370,18 @@
             "success_popup": "Pack install successful!\nTotal apps: %total%\nFailed: %failed%",
             "app_list": "Apps in app-pack:\n%apps%\n\nEstimated size: %size%"
         },
+        "package_manager": {
+            "name": "Package manager",
+            "popup_name": "Name:",
+            "popup_id": "ID:",
+            "popup_folder": "Folder:",
+            "popup_system": "System app?:",
+            "popup_dependency": "Dependency?:",
+            "uninstall": "Uninstall",
+            "success": "App uninstalled successfully!",
+            "sys_app_error": "Cannot uninstall system apps!",
+            "folder_error": "App doesn't have a folder, maybe it's a helper for some other app?"
+        },
         "python_executor": {
             "name": "Python executor",
             "file": "File: ",
@@ -404,7 +416,8 @@
         "reboot": "Reboot",
         "powering_off": "Powering off...",
         "rebooting": "Rebooting...",
-        "you_can_now_switch": "You can now switch the power switch to OFF position."
+        "you_can_now_switch": "You can now switch the power switch to OFF position.",
+        "to_sleep": "Device will now go to sleep..."
     },
     "lock_menu": {
         "name": "Lock menu",

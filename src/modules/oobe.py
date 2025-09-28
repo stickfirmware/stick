@@ -90,7 +90,17 @@ def app_config_translated():
                     "dependency": False,
                     "hidden": True,
                     "handleExtensions": ["*.ir"]
-                }
+                    },
+                {
+                    "name": l_get("apps.package_manager.name"),
+                    "id": "com.kitki30.pacman",
+                    "file": "apps.com_kitki30_pacman.package_manager",
+                    "main_folder": "/apps/com_kitki30_pacman",
+                    "is_system_app": True,
+                    "dependency": False,
+                    "hidden": False,
+                    "handleExtensions": [""]
+                    }
                 ]
         }
     return appsConfig
@@ -150,6 +160,26 @@ def edit_app(app_id, **changes):
     cache.reload_apps()
     return True
 
+def get_entry(id, key):
+    for app in read_config().get("apps", []):
+        if app.get("id") == id:
+            return app.get(str(key))
+    return None
+
+# Remove app from config by id
+def remove_app(id):
+    new_apps = []
+    conf = read_config()
+
+    # Filter out app id, leave apps that don't match
+    for app in conf["apps"]:
+        if app["id"] != id:
+            new_apps.append(app)
+
+    # Write new onfig
+    conf["apps"] = new_apps
+    jso.write(_APPS_JSON_PATH, conf)
+    cache.reload_apps()
     
 # Create user
 def createUserFolder():

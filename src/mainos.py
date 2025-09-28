@@ -32,7 +32,7 @@ import modules.os_constants as osc
 import modules.io_manager as io_man
 import modules.cache as cache
 import modules.powersaving as ps
-import modules.files as files
+import modules.button_combos as btn_combos
 
 # Scripts
 import scripts.checkbattery as battery_shutdown
@@ -132,6 +132,9 @@ import modules.first_boot_check as first_boot_check
 first_boot_check.check()
 decache("modules.first_boot_check")
 del first_boot_check
+
+import modules.xp_leveling as xp_levels
+xp_levels.add_xp(2)
     
 gc.collect()
 
@@ -160,7 +163,7 @@ render_bar(l_get("mainos_load.init_btns"), True) # Init buttons...
 # Init buttons
 debug.log("Init buttons")
 import modules.button_init as btn_init
-button_a, button_b, button_c, clicker, debug_console = btn_init.init_buttons()
+button_a, button_b, button_c, clicker, debug_console, sleep_button = btn_init.init_buttons()
 
 # Init neopixel
 render_bar(l_get("mainos_load.init_neopixel"), True)
@@ -177,6 +180,7 @@ io_man.set('button_b', button_b)
 io_man.set('button_c', button_c)
 io_man.set('clicker_btn', clicker)
 io_man.set('debug_console', debug_console)
+io_man.set('sleep_button', sleep_button)
 io_man.set('rtc', rtc)
 io_man.set('mpu', mpu)
 io_man.set('power_hold', power_hold)
@@ -219,6 +223,7 @@ ntp_first = True
 ticks = time.ticks_ms()
 ntp_time = ticks
 pwr_save_time = ticks
+sleep_time = ticks
 diagnostic_time = ticks
 wifi_master_dynamic = ticks
 cleaner_time = ticks
@@ -303,6 +308,7 @@ def wake_up():
         else:
             auto_rotate = 0
     pwr_save_time = time.ticks_ms()
+    sleep_time = time.ticks_ms()
     tft.set_backlight(nvs.get_float(n_settings, "backlight"))
     ps.set_freq(osc.BASE_FREQ)
 
@@ -322,13 +328,6 @@ if nvs.get_int(n_guides, 'quick_start') == None:
     import helpers.run_in_reader as rir
     rir.open_file(f'/guides/quick_start_{cache.get('n_cache_lang')}.txt')
     nvs.set_int(n_guides, 'quick_start', 1)
-    
-# Show account popup if not shown yet and account is not logged in
-allow_account_popup = False
-if nvs.get_int(n_guides, 'account_popup') == None and nvs.get_int(n_wifi, 'account_logged_in') != 1 and allow_account_popup:
-    import apps.popups.account_popup as account_popup
-    account_popup.run()
-    nvs.set_int(n_guides, 'account_popup', 1)
 
 # Main loop
 while True:
@@ -366,6 +365,7 @@ while True:
         render_battery = True
         is_in_saving = False
         pwr_save_time = time.ticks_ms()
+        sleep_time = time.ticks_ms()
         
         # Get values from NVS (To ensure that they are up to date)
         auto_rotate = nvs.get_int(n_settings, "autorotate")
@@ -408,11 +408,6 @@ while True:
     # Check if Wi-Fi is connected, if not, set connection time     
     if nic.active() and nic.isconnected() == False:
         conn_time = time.ticks_ms()
-    
-    # Wifi power saver
-    #if time.ticks_diff(time.ticks_ms(), wifi_master_dynamic) >= osc.WIFI_PWR_SAVER_TIME:
-    #    wifi_master.dynamic_pwr_save()
-    #    wifi_master_dynamic = time.ticks_ms()
 
     # Power saver loop
     if time.ticks_diff(time.ticks_ms(), ps_time) >= osc.POWER_SAVER_TIME:
@@ -436,6 +431,14 @@ while True:
             mpu.sleep_on()
         was_sleep_triggered = True
         ps.set_freq(osc.SLOW_FREQ)
+        
+    # Auto lightsleep
+    if time.ticks_diff(time.ticks_ms(), sleep_time) >= osc.LIGHTSLEEP_TIMEOUT and allow_saving == 1:
+        import modules.sleep as m_sleep
+        m_sleep.sleep()
+        menu_change = True
+        menu = 0
+        wake_up()
     
     # Auto rotation
     if auto_rotate == 1 and time.ticks_diff(time.ticks_ms(), imu_delay) >= osc.IMU_CHECK_TIME and osc.HAS_IMU:
@@ -474,12 +477,15 @@ while True:
     btn_b_state = button_b.value()
     btn_c_state = button_c.value()
             
+    if btn_combos.any_btn(["a", "b", "c"]):
+        # Wake up (If in power saving)
+        if is_in_saving:
+            wake_up()
+            continue
+            
     # Dummy mode unlocking
     if btn_a_state == 0 and btn_b_state == 0:
         hold_time = 0.00
-        
-        # Wake up (If in power saving)
-        wake_up()
         
         # Check how much time button b is held down
         while button_b.value() == 0:
@@ -599,6 +605,8 @@ while True:
             
             # Reset power saving time
             pwr_save_time = time.ticks_ms()
+            
+            tft = io_man.get('tft')
 
             # Clean ram
             ram_cleaner.clean()
@@ -681,10 +689,6 @@ while True:
         if menu == 0:
             # Clear old info
             tft.fill_rect(4, 116, 190, 16, 0)
-            
-            # Render CPU info if not in dummy
-            if locks == 0:
-                tft.text(f8x8, "CPU: " + str(machine.freq() / 1000000) + "MHz",4,116,703)
                 
             # Check percentage
             pr = b_check.percentage(volts)
@@ -730,7 +734,19 @@ while True:
                     
                 while button_a.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
-                     
+                    
+    # Sleep button
+    if sleep_button != None:
+        if sleep_button.value() == 0:
+            while sleep_button.value() == 0:
+                time.sleep(osc.DEBOUNCE_TIME)
+            import modules.sleep as m_sleep
+            m_sleep.sleep()
+            wake_up()
+            menu_change = True
+            menu = 0
+            tft = io_man.get('tft')
+            
     # RGB Handler
     if osc.HAS_NEOPIXEL:
         np_anims.automatic()

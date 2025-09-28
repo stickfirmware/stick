@@ -13,6 +13,7 @@ def init_buttons():
         button_c = Pin(osc.BUTTON_C_PIN, Pin.IN, Pin.PULL_UP)
         clicker = None
         debug_console = None
+        sleep_button = None
     elif osc.INPUT_METHOD == 2:
         debug.log("Input method 2 - Cardputer")
         # Cardputer inputs, fake machine.Pin using keyboard keys
@@ -23,7 +24,8 @@ def init_buttons():
         # Super secret clicker game!
         clicker = ckb.buttonemu([' '])
         debug_console = ckb.buttonemu(['*'])
-    return [button_a, button_b, button_c, clicker, debug_console]
+        sleep_button = Pin(osc.BOOT_RECOVERY_PIN, Pin.IN, Pin.PULL_UP)
+    return [button_a, button_b, button_c, clicker, debug_console, sleep_button]
 
 # Invert buttons
 def set_buttons(inverted=False):
