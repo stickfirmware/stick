@@ -8,12 +8,10 @@ import fonts.def_8x8 as f8x8
 
 from modules.decache import decache
 import modules.os_constants as osc
-import modules.nvs as nvs
 import modules.menus as menus
 import modules.io_manager as io_man
 import modules.sleep as m_sleep
 import modules.powersaving as ps
-import modules.cache as cache
 from modules.translate import get as l_get
 import modules.popup as popup
 
@@ -68,10 +66,9 @@ def power_menu(fast_sleep = False):
             power_hold.value(0)
         else:
             # If doesn't have power hold, ask for switching power off
-            popup.show(l_get("q_actions.you_can_now_switch"), l_get("popups.info"))
+            popup.show(l_get("q_actions.you_can_now_switch"), l_get("popups.info"), 15)
             tft.fill(0)
-            # TODO: Translate
-            tft.text(f8x8, "Device will now go to sleep...", 0,0, 65535)
+            tft.text(f8x8, l_get("q_actions.to_sleep"), 0,0, 65535)
             time.sleep(3)
             
         m_sleep.sleep(True) # Deepsleep so it doesn't draw power when something goes wrong

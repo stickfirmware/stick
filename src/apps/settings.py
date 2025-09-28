@@ -476,12 +476,10 @@ def run():
         # About screen
         elif menu1 == 8:
             while True:
-                
-                # TODO: TRANSLATE
-                about_menu = menus.menu("About", [
-                    ("About Firmware", 1),
-                    ("About Hardware", 2),
-                    ("Exit", None)
+                about_menu = menus.menu(l_get("apps.settings.menu1.about"), [
+                    (l_get("apps.settings.about.firmware_info"), 1),
+                    (l_get("apps.settings.about.hardware_info"), 2),
+                    (l_get("menus.menu_exit"), None)
                 ])
                 
                 if about_menu == 1:
@@ -491,12 +489,12 @@ def run():
                         ver_color = 65088
                     else:
                         ver_color = 65535
-                    tft.text(f8x8, f"Stick firmware {l_get("apps.settings.about.version")} {cache.get("ver_displayname")}" ,0,0,ver_color)
-                    tft.text(f8x8, l_get("apps.settings.about.by_kitki30") + " @Kitki30",0,8,ver_color)
-                    tft.text(f8x8, l_get("apps.settings.about.apache_license"),0,16,65535)
-                    tft.text(f8x8, l_get("apps.settings.about.a_exit"),0,111,65535)
-                    tft.text(f8x8, l_get("apps.settings.about.b_credits"),0,119,65535)
-                    tft.text(f8x8, l_get("apps.settings.about.c_license"),0,127,65535)
+                    tft.text(f8x8, f"Stick firmware {l_get("apps.settings.about.fw.version")} {cache.get("ver_displayname")}" ,0,0,ver_color)
+                    tft.text(f8x8, l_get("apps.settings.about.fw.by_kitki30") + " @Kitki30",0,8,ver_color)
+                    tft.text(f8x8, l_get("apps.settings.about.fw.apache_license"),0,16,65535)
+                    tft.text(f8x8, l_get("apps.settings.about.fw.a_exit"),0,111,65535)
+                    tft.text(f8x8, l_get("apps.settings.about.fw.b_credits"),0,119,65535)
+                    tft.text(f8x8, l_get("apps.settings.about.fw.c_license"),0,127,65535)
                     while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
                         time.sleep(osc.DEBOUNCE_TIME)
                     if button_b.value() == 0:
@@ -506,12 +504,12 @@ def run():
                         
                 elif about_menu == 2:
                     tft.fill(0)
-                    tft.text(f8x8, "HW Info", 0, 0, 65535)
+                    tft.text(f8x8, l_get("apps.settings.about.hw.hwinfo"), 0, 0, 65535)
                     serial = machine.unique_id().hex().upper()
                     tft.text(f8x8, osc.DEVICE_NAME, 0, 8, 64288)
-                    tft.text(f8x8, "ESP32 Serial:", 0, 16, 65535)
+                    tft.text(f8x8, l_get("apps.settings.about.hw.esp_serial"), 0, 16, 65535)
                     tft.text(f8x8, serial, 0, 24, 64288)
-                    tft.text(f8x8, "Press any button to exit",0,127,65535)
+                    tft.text(f8x8, l_get("menus.popup_any_btn"),0,127,65535)
                     while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
                         time.sleep(osc.DEBOUNCE_TIME)
                         
