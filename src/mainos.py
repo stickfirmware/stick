@@ -326,13 +326,6 @@ if nvs.get_int(n_guides, 'quick_start') == None:
     import helpers.run_in_reader as rir
     rir.open_file(f'/guides/quick_start_{cache.get('n_cache_lang')}.txt')
     nvs.set_int(n_guides, 'quick_start', 1)
-    
-# Show account popup if not shown yet and account is not logged in
-allow_account_popup = False
-if nvs.get_int(n_guides, 'account_popup') == None and nvs.get_int(n_wifi, 'account_logged_in') != 1 and allow_account_popup:
-    import apps.popups.account_popup as account_popup
-    account_popup.run()
-    nvs.set_int(n_guides, 'account_popup', 1)
 
 # Main loop
 while True:
