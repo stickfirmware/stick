@@ -1,4 +1,5 @@
 import os
+import time
 import machine
 import network
 import machine
@@ -19,9 +20,8 @@ import modules.popup as popup
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')
 button_c = io_man.get('button_c')
-tft = io_man.get('tft')
+tft = None
 power_hold = io_man.get('power_hold')
-mpu = io_man.get('imu')
 
 def run():
     global button_c, button_a, button_b, tft
@@ -54,26 +54,12 @@ def power_menu(fast_sleep = False):
     else:
         powermenu = 1
         
-    n_wifi = cache.get_nvs('wifi')
+    # Sleep
     if powermenu == 1:
-        ps.set_freq(osc.BASE_FREQ)
-        wasConnected = False
-        if nic.isconnected() == True:
-            nic.disconnect()
-            wasConnected = True
-        nic.active(False)
-        os.sync()
-        if mpu != None:
-            mpu.sleep_on()
         m_sleep.sleep()
-        if mpu != None:
-            mpu.sleep_off()
-        if wasConnected == True:
-            nic.active(True)
-            nic.connect(nvs.get_string(n_wifi, "ssid"), nvs.get_string(n_wifi, "passwd"))
+        
+    # Power off
     elif powermenu == 2:
-        ps.set_freq(osc.BASE_FREQ)
-        nic.active(False)
         tft.fill(0)
         if osc.HAS_HOLD_PIN:
             tft.text(f8x8, l_get("q_actions.powering_off"),0,0,65535,0)
@@ -82,15 +68,22 @@ def power_menu(fast_sleep = False):
             power_hold.value(0)
         else:
             # If doesn't have power hold, ask for switching power off
-            while True:
-                popup.show(l_get("q_actions.you_can_now_switch"), l_get("popups.info"))
-        m_sleep.sleep()
+            popup.show(l_get("q_actions.you_can_now_switch"), l_get("popups.info"))
+            tft.fill(0)
+            # TODO: Translate
+            tft.text(f8x8, "Device will now go to sleep...", 0,0, 65535)
+            time.sleep(3)
+            
+        m_sleep.sleep(True) # Deepsleep so it doesn't draw power when something goes wrong
+        
+    # Reboot
     elif powermenu == 3:
-        ps.set_freq(osc.BASE_FREQ)
         nic.active(False)
         tft.fill(0)
         tft.text(f8x8, l_get("q_actions.rebooting"),0,0,65535,0)
         os.sync()
         machine.reset()
+        
+    # Exit
     else:
         ps.set_freq(osc.BASE_FREQ)

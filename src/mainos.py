@@ -603,6 +603,8 @@ while True:
             
             # Reset power saving time
             pwr_save_time = time.ticks_ms()
+            
+            tft = io_man.get('tft')
 
             # Clean ram
             ram_cleaner.clean()
@@ -740,6 +742,7 @@ while True:
             pwr_men.power_menu(True)
             menu_change = True
             menu = 0
+            tft = io_man.get('tft')
             
     # RGB Handler
     if osc.HAS_NEOPIXEL:

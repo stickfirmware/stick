@@ -11,7 +11,7 @@ import modules.cache as cache
 import modules.hashing as hashing
 from modules.translate import get as l_get
 
-tft = io_man.get('tft')
+tft = None
 
 def dummyMsg():
     tft.fill(0)

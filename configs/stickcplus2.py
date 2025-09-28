@@ -8,6 +8,7 @@ RELEASE_NAME = const("stickcplus2") # Name in builder
 # Debug
 ENABLE_DEBUG_PRINTS = const(False)
 LESS_RAM_CLEANER_OUTPUT = const(True) # Don't show ram cleaner output
+ENABLE_SLEEP_REPORTS = const(False) # Sleep reports, logs how much battery has gone in sleep to json file, and how much time we have slept.
 
 # Default language
 DEFAULT_LANGUAGE = "en"
