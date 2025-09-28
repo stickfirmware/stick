@@ -179,12 +179,20 @@
                 "volume_title": "Ustawienia/Buzzer/Glos."
             },
             "about": {
-                "version": "wersja",
-                "by_kitki30": "od",
-                "apache_license": "Licencja Apache 2.0",
-                "a_exit": "Nacisnij przyc. A aby wyjsc,",
-                "b_credits": "B dla kredytow",
-                "c_license": "i C pelnej dla licencji."
+                "firmware_info": "About firmware",
+                "hardware_info": "About hardware",
+                "fw": {
+                    "version": "version",
+                    "by_kitki30": "by",
+                    "apache_license": "Apache 2.0 License",
+                    "a_exit": "Press button A to exit,",
+                    "b_credits": "button B for credits",
+                    "c_license": "and button C for license"
+                },
+                "hw": {
+                    "hwinfo": "Hardware info",
+                    "esp_serial": "ESP32 Serial:"
+                }
             },
             "factory": {
                 "reset_all": "Resetowac ustawienia?",
@@ -408,7 +416,8 @@
         "reboot": "Uruchom ponow.",
         "powering_off": "Wylaczanie...",
         "rebooting": "Restartowanie...",
-        "you_can_now_switch": "Teraz mozesz odlaczyc zasilanie."
+        "you_can_now_switch": "Teraz mozesz odlaczyc zasilanie.",
+        "to_sleep": "Device will now go to sleep..."
     },
     "lock_menu": {
         "name": "Menu blokad",
