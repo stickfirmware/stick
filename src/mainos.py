@@ -32,7 +32,7 @@ import modules.os_constants as osc
 import modules.io_manager as io_man
 import modules.cache as cache
 import modules.powersaving as ps
-import modules.files as files
+import modules.button_combos as btn_combos
 
 # Scripts
 import scripts.checkbattery as battery_shutdown
@@ -408,11 +408,6 @@ while True:
     # Check if Wi-Fi is connected, if not, set connection time     
     if nic.active() and nic.isconnected() == False:
         conn_time = time.ticks_ms()
-    
-    # Wifi power saver
-    #if time.ticks_diff(time.ticks_ms(), wifi_master_dynamic) >= osc.WIFI_PWR_SAVER_TIME:
-    #    wifi_master.dynamic_pwr_save()
-    #    wifi_master_dynamic = time.ticks_ms()
 
     # Power saver loop
     if time.ticks_diff(time.ticks_ms(), ps_time) >= osc.POWER_SAVER_TIME:
@@ -482,12 +477,15 @@ while True:
     btn_b_state = button_b.value()
     btn_c_state = button_c.value()
             
+    if btn_combos.any_btn(["a", "b", "c"]):
+        # Wake up (If in power saving)
+        if is_in_saving:
+            wake_up()
+            continue
+            
     # Dummy mode unlocking
     if btn_a_state == 0 and btn_b_state == 0:
         hold_time = 0.00
-        
-        # Wake up (If in power saving)
-        wake_up()
         
         # Check how much time button b is held down
         while button_b.value() == 0:

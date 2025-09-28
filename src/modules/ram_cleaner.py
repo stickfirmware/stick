@@ -19,6 +19,8 @@ _WHITELIST = {
         'scripts.checkbattery',
         'modules',
         'modules.battery_check',
+        'modules.xp_leveling',
+        'modules.button_combos',
         'modules.appboot',
         'modules.neopixels',
         'modules.neopixel_anims',
