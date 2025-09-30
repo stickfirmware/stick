@@ -31,6 +31,9 @@ Small stick but powerful beast.
 - [X] Better SD card support
 - [ ] More translations
 
+## Links
+- YouTube tutorials for Stick firmware - https://kitki30.tk/tutorials
+
 ## Translations
 Please help us translate Stick firmware in [Crowdin](https://crowdin.com/project/stick-firmware)
 If your language is not here, please open a github issue.
