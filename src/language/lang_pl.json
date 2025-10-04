@@ -1,7 +1,7 @@
 {
     "lang_info": {
-        "name": "Polski",
-        "code": "pl",
+        "name": "English",
+        "code": "en",
         "version": [
             1,
             7
@@ -11,457 +11,457 @@
         ]
     },
     "mainos_load": {
-        "loading": "Ladowanie...",
-        "first_boot_check": "Sprawdzanie pierwszego bootu.",
-        "shared_iic_init": "Inicjalizacja I2C...",
-        "init_btns": "Inicjalizacja przyciskow...",
-        "init_neopixel": "Inicjalizacja neopixela...",
-        "init_io_man": "Inicjalizacja io_mana..",
-        "check_time": "Sprawdzanie czasu...",
-        "init_wifi": "Inicjalizacja Wi-Fi...",
-        "seed_random": "Seeduje random...",
-        "sync_apps": "Synchronizacja konfiguracji",
-        "load_libs": "Ladowanie innych bibliotek...",
-        "check_app_packs": "Sprawdzam paczki...",
-        "cleaning_up": "Czyszczenie RAMu...",
-        "sd_init": "Montowanie karty SD",
-        "load_clock": "Ladowanie zegara...",
-        "guides": "Laduje pomocniki..."
+        "loading": "Loading...",
+        "first_boot_check": "Checking first boot...",
+        "shared_iic_init": "Init shared I2C...",
+        "init_btns": "Init buttons...",
+        "init_neopixel": "Init neopixel...",
+        "init_io_man": "Init io manager..",
+        "check_time": "Checking time...",
+        "init_wifi": "Init Wi-Fi...",
+        "seed_random": "Seeding random...",
+        "sync_apps": "Sync config...",
+        "load_libs": "Loading other libraries...",
+        "check_app_packs": "Checking app-packs...",
+        "cleaning_up": "Cleaning up...",
+        "sd_init": "SD Init",
+        "load_clock": "Loading clock...",
+        "guides": "Loading guides..."
     },
     "mainos_diagnostics": {
-        "battery": "Bateria"
+        "battery": "Battery"
     },
     "crashes": {
-        "error": "Blad",
-        "app_crashed_oops": "Ups!",
-        "app_crashed_info": "Aplikacja ulegla awarii!",
-        "app_crashed_try_again": "Sproboj ponownie!"
+        "error": "Error",
+        "app_crashed_oops": "Oops!",
+        "app_crashed_info": "One of your apps has crashed!",
+        "app_crashed_try_again": "Please try again!"
     },
     "apps": {
         "clock": {
-            "name": "Zegar",
+            "name": "Clock",
             "stopwatch": {
-                "name": "Stoper",
-                "start_pause": "Przycisk A - Start/Pauza",
-                "reset": "Przycisk B - Reset",
-                "exit": "Przycisk C - Wyjscie",
-                "paused_text": "[PAUZA]",
-                "release": "Pusc aby zresetowac!"
+                "name": "Stopwatch",
+                "start_pause": "Press A to start/pause",
+                "reset": "Press B to reset",
+                "exit": "Press C to exit",
+                "paused_text": "[PAUSED]",
+                "release": "Release to reset!"
             },
-            "ntp_sync": "Synchronizuj czas"
+            "ntp_sync": "Sync time"
         },
         "ir_remote": {
-            "name": "Pilot IR",
-            "sending": "Wysylanie",
-            "context_menu": "Wyslij kod IR",
+            "name": "IR Remote",
+            "sending": "Sending",
+            "context_menu": "Send IR code",
             "buttons": {
-                "power": "WL/WYL",
-                "vol_up": "GLOS+",
-                "vol_down": "GLOS-",
+                "power": "ON/OFF",
+                "vol_up": "VOL+",
+                "vol_down": "VOL-",
                 "mute": "Mute",
-                "chan_next": "KANAL+ / NAST",
-                "chan_prev": "KANAL- / POPRZ",
-                "freeze": "ZAMROZENIE"
+                "chan_next": "CHANNEL+ / NEXT",
+                "chan_prev": "CHANNEL- / PREV",
+                "freeze": "FREEZE"
             },
             "menu": {
-                "repeat": "Powtorzyc?",
-                "change_pin": "Zmien Pin diody IR",
-                "receive": "Odbieraj",
-                "receive_no_support": "Odbieranie IR nie wspierane!"
+                "repeat": "Repeat?",
+                "change_pin": "Change IR pin",
+                "receive": "Receive",
+                "receive_no_support": "IR receiving not supported!"
             },
             "receiver_mode": {
-                "title": "Tryb odbiornika!",
-                "pinout": "Pinout odbiornika:",
-                "pinout_5v": "Lub 5V jesli wspiera",
-                "save_info": "Wszystko zapisywane do /usr/ir",
-                "a_to_continue": "Nacisnij A aby kontynuowac,",
-                "c_to_exit": "C aby wyjsc!",
-                "scan_to_copy": "Skanuj IR aby skopiowac!",
-                "timeout": "Czas: 15s",
-                "saved_as": "Zapisano jako: ",
-                "timeout_no_signal": "Czas przekroczony. Brak sygnalu."
+                "title": "Receiver mode!",
+                "pinout": "Receiver pinout:",
+                "pinout_5v": "Or 5V if supported",
+                "save_info": "Everything is saved to /usr/ir",
+                "a_to_continue": "Press button A to continue,",
+                "c_to_exit": "button C to exit!",
+                "scan_to_copy": "Scan IR to copy!",
+                "timeout": "Timeout: 15s",
+                "saved_as": "Saved as: ",
+                "timeout_no_signal": "Timeout. No signal."
             }
         },
         "file_explorer": {
-            "name": "Eksplorator plikow",
-            "name_big": "Eksplorator",
-            "modify_may_harm": "Modyfikacja moze zepsuc system",
-            "dont_open": "Nie otwieraj",
-            "open_anyway": "Otworz mimo to",
-            "open_in": "Otworz w...",
-            "delete": "Usun",
-            "properties": "Wlasciwosci",
-            "file_size": "Rozmiar pliku:",
-            "last_modified": "Ostatnia modyfikacja:",
-            "loading": "Ladowanie...",
+            "name": "File explorer",
+            "name_big": "File explorer",
+            "modify_may_harm": "Modifying may harm system!",
+            "dont_open": "Don't open",
+            "open_anyway": "Open anyway",
+            "open_in": "Open in...",
+            "delete": "Delete",
+            "properties": "Properties",
+            "file_size": "File size:",
+            "last_modified": "Last modified:",
+            "loading": "Loading...",
             "months_of_the_year": [
-                "Styczen",
-                "Luty",
-                "Marzec",
-                "Kwiecien",
-                "Maj",
-                "Czerwiec",
-                "Lipiec",
-                "Sierpien",
-                "Wrzesien",
-                "Pazdziernik",
-                "Listopad",
-                "Grudzien"
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December"
             ],
-            "delete_confirmation": "Usunac?",
-            "error_deleting": "Blad usuwania plikow!",
-            "folder_menu": "Menu folderu",
-            "create_folder": "Utworz folder",
-            "enter_folder_name": "Podaj nazwe folderu",
-            "could_not_make_folder": "Nie mozna zrobic folderu.",
-            "invalid_name": "Zla nazwa pliku.",
-            "change_dir": "Zmien folder",
-            "built-in_flash": "Wbudowana pamiec",
-            "sd_card": "Karta pamieci"
+            "delete_confirmation": "Delete?",
+            "error_deleting": "Error deleting file!",
+            "folder_menu": "Folder menu",
+            "create_folder": "Create folder",
+            "enter_folder_name": "Enter folder name",
+            "could_not_make_folder": "Could not make folder.",
+            "invalid_name": "Invalid file name was provided.",
+            "change_dir": "Change dir",
+            "built-in_flash": "Built-in flash",
+            "sd_card": "SD Card"
         },
         "file_reader": {
-            "load_preview": "Ladowanie pliku...",
-            "context_menu_text": "Uruchom w notatniku",
-            "nothing_to_display": "Nic do wyswietlenia!",
-            "decode_err": "Blad dekodowania"
+            "load_preview": "Loading file preview...",
+            "context_menu_text": "Run in file reader",
+            "nothing_to_display": "No content to display",
+            "decode_err": "Decode error"
         },
         "flashlight": {
-            "name": "Latarka"
+            "name": "Flashlight"
         },
         "games": {
-            "name": "Gry"
+            "name": "Games"
         },
         "others": {
-            "name": "Inne",
-            "title": "Menu/Inne",
-            "buzzer_info_metronome": "Buzzer nie wykryty! Metronom nie wspierany.",
-            "rand_extra_func": "Brak dodatkowych funkcji!"
+            "name": "Others",
+            "title": "Menu/Others",
+            "buzzer_info_metronome": "Buzzer was not detected in your device, metronome is not supported.",
+            "rand_extra_func": "No extra fuctions detected!"
         },
         "settings": {
-            "name": "Ustawienia",
+            "name": "Settings",
             "menu1": {
-                "title": "Ustawienia",
-                "lcd": "Ekran",
+                "title": "Settings",
+                "lcd": "Display",
                 "sound": "Buzzer",
                 "wifi": "Wi-Fi",
-                "sdcard": "Karta SD",
-                "language": "Jezyk (Language)",
-                "about": "O oprogramowaniu",
-                "factory": "Reset ustawien fabrycznych",
-                "account": "Konto",
+                "sdcard": "SD Card",
+                "language": "Language",
+                "about": "About",
+                "factory": "Factory reset",
+                "account": "Account",
                 "neopixel": "Neopixel",
-                "show_guides_again": "Pokaz poradniki"
+                "show_guides_again": "Show guides"
             },
             "guides": {
-                "reboot_notify": "Zrestartuj aby zobaczyc wszystkie poradniki!"
+                "reboot_notify": "Reboot to see all guides!"
             },
             "acc_menu": {
-                "title": "Ustawienia/Konto",
-                "link": "Polacz konto"
+                "title": "Settings/Account",
+                "link": "Link account"
             },
             "lang_menu": {
-                "title": "Jezyk (Language)",
-                "reboot": "Restartowac teraz?"
+                "title": "Language",
+                "reboot": "Reboot now?"
             },
             "lcd_menu": {
-                "title": "Ustawienia/lcd",
-                "backlight": "Podswietlenie",
-                "autorotate": "Autoobrot",
-                "pwr_save": "Oszczedzanie energii",
-                "backlight_title": "Ustawienia/lcd/Podsw.",
-                "imu_error_popup": "IMU nie zostalo wykryte w twoim urzadzeniu!!!",
-                "autorotate_title": "Ustawienia/lcd/Autoobrot",
-                "power_saver_title": "Ustawienia/lcd/Oszcze."
+                "title": "Settings/lcd",
+                "backlight": "Backlight",
+                "autorotate": "Autorotate",
+                "pwr_save": "Power saving",
+                "backlight_title": "Settings/lcd/Backlight",
+                "imu_error_popup": "IMU/MPU was not detected in your device!!!",
+                "autorotate_title": "Settings/lcd/Autorotate",
+                "power_saver_title": "Settings/lcd/Power saving"
             },
             "buzzer_menu": {
-                "buzzer_title": "Ustawienia/Buzzer",
-                "volume": "Glosnosc",
-                "volume_title": "Ustawienia/Buzzer/Glos."
+                "buzzer_title": "Settings/Buzzer",
+                "volume": "Volume",
+                "volume_title": "Settings/Buzzer/Volume"
             },
             "about": {
-                "firmware_info": "O oprogramowaniu",
-                "hardware_info": "O sprzecie",
+                "firmware_info": "About firmware",
+                "hardware_info": "About hardware",
                 "fw": {
-                    "version": "wersja",
-                    "by_kitki30": "od",
-                    "apache_license": "Licencja Apache 2.0",
-                    "a_exit": "Nacisnij A aby wyjsc,",
-                    "b_credits": "B dla kredytow,",
-                    "c_license": "i C dla licencji."
+                    "version": "version",
+                    "by_kitki30": "by",
+                    "apache_license": "Apache 2.0 License",
+                    "a_exit": "Press button A to exit,",
+                    "b_credits": "button B for credits",
+                    "c_license": "and button C for license"
                 },
                 "hw": {
-                    "hwinfo": "Info o sprzecie",
-                    "esp_serial": "Numer seryjny ESP32:"
+                    "hwinfo": "Hardware info",
+                    "esp_serial": "ESP32 Serial:"
                 }
             },
             "factory": {
-                "reset_all": "Resetowac ustawienia?",
-                "it_removes_all": "To usuwa wszystkie pliki!",
-                "confirm": "Potwierdz"
+                "reset_all": "Reset all settings?",
+                "it_removes_all": "It removes all files",
+                "confirm": "Confirm"
             },
             "sd": {
-                "no_slot_detected_popup": "Czytnik kart pamieci nie zostal wykryty w twoim urzadzeniu!",
-                "title": "Ustawienia/Karta SD",
-                "init": "Inicjalizuj",
+                "no_slot_detected_popup": "No SD card slot detected in your device!",
+                "title": "Settings/SD Card",
+                "init": "Init",
                 "init_load": "Init SD...",
-                "done": "Sukces!",
-                "failed": "Blad!",
-                "unmount": "Odmontuj SD",
-                "unmount_load": "Odmontowuje SD..."
+                "done": "Done!",
+                "failed": "Failed!",
+                "unmount": "Unmount",
+                "unmount_load": "Unmount SD..."
             },
             "wifi": {
-                "title": "Ustawienia/Wi-Fi",
-                "connect_with": "Polaczyc z ",
-                "connected_disconnect": "Wi-Fi polaczone, rozlaczyc?",
-                "not_setup": "Wi-Fi nie ustawione!",
-                "setup_ap": "Ustaw AP",
-                "connection": "Polaczenie",
-                "status": "Status Wi-Fi",
-                "timezone": "Strefa czasowa",
-                "scanning": "Skanowanie...",
-                "no_ap_error_popup": "Zadne AP nie wykryte!\nSproboj zrestartowac swoje urzadzenie.",
-                "select_ssid": "Wybierz SSID",
-                "enter_passwd": "Wprowadz haslo",
-                "auto_connect_ask": "Wlaczyc auto laczenie?",
-                "connecting": "Laczenie...",
-                "connected_to": "Polaczono z",
-                "wrong_passwd": "Zle haslo.",
-                "ap_not_found": "AP nie wykryte.\nUpewnij sie ze jestes w sygnale swojego routera.",
-                "could_not_conn_popup": "Nie mozna polaczyc!\nSproboj zrestartowac swoje urzadzenie.",
-                "hostname": "Nazwa hosta: ",
-                "channel": "Kanal: ",
+                "title": "Settings/Wi-Fi",
+                "connect_with": "Connect with ",
+                "connected_disconnect": "Wi-Fi connected, disconnect?",
+                "not_setup": "Wi-Fi was not setup yet!",
+                "setup_ap": "Setup AP",
+                "connection": "Connection",
+                "status": "Wi-Fi Status",
+                "timezone": "Timezone",
+                "scanning": "Scanning...",
+                "no_ap_error_popup": "No AP found!\nTry hard resetting your device, as ESP's Wi-Fi stack may be broken.",
+                "select_ssid": "Select SSID",
+                "enter_passwd": "Enter password",
+                "auto_connect_ask": "Auto connect?",
+                "connecting": "Connecting...",
+                "connected_to": "Connected to",
+                "wrong_passwd": "Wrong password.",
+                "ap_not_found": "Access Point was not found.\nMake sure you are in your access points signal",
+                "could_not_conn_popup": "Could not connect!\nTry hard resetting your device, as ESP's Wi-Fi stack may be broken.",
+                "hostname": "Hostname: ",
+                "channel": "Channel: ",
                 "ssid": "SSID: ",
-                "dns": "Serwer DNS: ",
-                "gateway": "Brama: ",
-                "subnet": "Mask subnetu: ",
-                "local_ip": "IP Lokalne: ",
-                "connected": "Polaczono?: ",
-                "wlan_active": "WLAN Aktywne?: "
+                "dns": "DNS Server: ",
+                "gateway": "Gateway: ",
+                "subnet": "Subnet mask: ",
+                "local_ip": "Local IP: ",
+                "connected": "Connected?: ",
+                "wlan_active": "WLAN Active?: "
             },
             "neopixel": {
-                "title": "Ustawienia/Neopixel",
-                "enable": "Wlacz/Wylacz",
-                "enable_ask": "Wlaczyc neopixel?",
-                "notice_menu": "Informacja",
-                "notice": "Informacja\nJesli twoje urzadzenie ma led typu 1 (Cardputer) - zrodlo energii dzielone z podswietleniem ekranu, upewnij sie ze masz je ustawione na %backlight lub wiecej, albo led moze nie dzialac.\nTyp leda w tym urzadzeniu %ledtype.",
-                "anim_style": "Styl animacji",
-                "static": "Statyczny kolor",
-                "rainbow": "Efekt teczy",
-                "also_change_colors": "Zmienic kolor?",
-                "no_neo_popup": "Nie wykryto neopixela w tym urzadzeniu!"
+                "title": "Settings/Neopixel",
+                "enable": "Enable/Disable",
+                "enable_ask": "Enable neopixel?",
+                "notice_menu": "Info",
+                "notice": "Info\nIf your device has led type 1 (Cardputer) - neopixel with power source shared with backlight, please make sure that your backlight is set to %backlight or more, or else led will not work.\nCurrent led type %ledtype.",
+                "anim_style": "Animation style",
+                "static": "Static color",
+                "rainbow": "Rainbow effect",
+                "also_change_colors": "Do you want to change color?",
+                "no_neo_popup": "No neopixel was detected in your device!"
             },
-            "current": "Aktualny"
+            "current": "Current"
         },
         "minesweeper": {
-            "name": "Saper",
+            "name": "Minesweeper",
             "popups": {
-                "time": "Czas:",
-                "map": "Mapa:",
-                "bombs": "Bomby:",
-                "win": "Wygrales!",
-                "lose": "Przegrales!",
-                "cannot_more_flags": "Nie mozna postawic wiecej flag!"
+                "time": "Time:",
+                "map": "Map:",
+                "bombs": "Bombs:",
+                "win": "You win!",
+                "lose": "You lose!",
+                "cannot_more_flags": "Cannot place more flags"
             },
             "action_menu": {
-                "tile": "Plytka",
-                "dig": "Kop / Odkryj",
-                "flag": "Flaga"
+                "tile": "tile",
+                "dig": "Dig",
+                "flag": "Flag"
             },
-            "debug_enabled": "Debugowanie wl. Mozna oszukac",
-            "flags": "Flagi:",
-            "controls": "Sterowanie",
-            "select_mode": "Wybierz tryb gry",
+            "debug_enabled": "Debugging enabled, can cheat",
+            "flags": "Flags:",
+            "controls": "Controls",
+            "select_mode": "Select game mode",
             "modes": {
-                "mode1": "Poczatkujacy",
-                "mode2": "Latwy",
-                "mode3": "Sredni",
-                "mode4": "Trudny",
-                "custom": "Wlasne"
+                "mode1": "Beginner",
+                "mode2": "Easy",
+                "mode3": "Medium",
+                "mode4": "Hard",
+                "custom": "Custom"
             },
             "custom_mode": {
-                "map_size": "Podaj rozmiar mapy max. 16",
-                "bombs": "Podaj liczbe bomb",
-                "map_size_error": "Rozmiar mapy musi byc 1-16",
-                "bombs_error": "Bomby musza byc miedzy 1 a "
+                "map_size": "Enter map size max. 16",
+                "bombs": "Enter bombs",
+                "map_size_error": "Map size must be between 1 and 16",
+                "bombs_error": "Bombs must be between 1 and "
             },
             "input": {
-                "method1": "Uzyj A do menu akcji.\nUzyj B do ruchu w prawo.\nUzyj C do ruchu w dol.\n",
-                "method2": "Uzyj Enter dla menu akcji.\nUzyj strzalek do ruchu.\nUzyj D do kopania.\nUzyj F do flag.\n",
-                "unknown": "Nieznana metoda wejscia"
+                "method1": "Use A to dig/flag tiles.\nUse B to move right.\nUse C to move down.\n",
+                "method2": "Use Enter for action menu.\nUse arrows to move.\nUse D to Dig.\nUse F to flag.\n",
+                "unknown": "Unknown input method"
             }
         },
         "pimarkx": {
-            "preparing": "Przygotowywanie...",
-            "test_on": "Test na",
-            "benchmark_finish": "Benchmark zakonczony",
-            "do_you_want_to_run": "Uruchomic?",
-            "settings": "Ustawienia:",
-            "test_time": "Czas testu (Na czestotliwosc):",
+            "preparing": "Preparing...",
+            "test_on": "Testing on",
+            "benchmark_finish": "Benchmark finished",
+            "do_you_want_to_run": "Do you want to run it?",
+            "settings": "Settings:",
+            "test_time": "Testing time (Per freq):",
             "seconds_shortened": "s",
-            "frequencies": "Czestotliwosci:",
-            "tip": "Uwaga:",
-            "different": "Wyniki moga byc rozne przy uzyciu PiMarkX w Stick Firmware lub bez GUI. Przy porownaniach zawsze uruchamiaj PiMarkX w ten sam sposob aby test byl rzetelny.",
-            "frequency": "Czestotliwosc:",
-            "iterations": "Iteracje:",
-            "it_per_mhz": "iteracje na MHz:",
+            "frequencies": "Frequencies:",
+            "tip": "Tip:",
+            "different": "Results may be different when running in Stick firmware or standalone, when comparing platforms it is recomended to run PiMarkX in the same way or it can be inaccurate.",
+            "frequency": "Frequency:",
+            "iterations": "Iterations:",
+            "it_per_mhz": "it per MHz:",
             "pi": "Pi"
         },
         "dice": {
-            "name": "Kostka do gry",
-            "roll_again": "Jeszcze raz? Przycisk A"
+            "name": "Dice",
+            "roll_again": "Roll again? Press btn A"
         },
         "scorekeeper": {
-            "name": "Licznik punktow",
-            "team": "Druzyna"
+            "name": "Skorekeeper",
+            "team": "Team"
         },
         "resistors": {
-            "name": "Dekoder rezystorow",
-            "four_color_mode": "Tryb cztero kolorowy!",
-            "five_color_mode": "Tryb piecio kolorowy!",
-            "c_exit": "Nacisnij C aby wyjsc",
-            "a_change": "A aby zmienic kolor",
-            "b_line": "B aby zmienic wybor",
-            "resistance": "Rezystancja",
-            "tolerance": "Tolerancja",
-            "select_type": "Wybierz typ rezystora",
-            "four_colors": "4 kolory",
-            "five_colors": "5 kolorow",
-            "wait": "Prosze czekac!"
+            "name": "Resistor decoder",
+            "four_color_mode": "Four color mode!",
+            "five_color_mode": "Five color mode!",
+            "c_exit": "Press button C to exit",
+            "a_change": "A to change color",
+            "b_line": "B to change choice",
+            "resistance": "Resistance",
+            "tolerance": "Tolerance",
+            "select_type": "Select resistor type",
+            "four_colors": "4 colors",
+            "five_colors": "5 colors",
+            "wait": "Please wait!"
         },
         "metronome": {
-            "name": "Metronom",
-            "play": "Odtworz",
-            "press_a_to_exit": "Nacisnij A aby wyjsc!"
+            "name": "Metronome",
+            "play": "Play",
+            "press_a_to_exit": "Press button A to exit!"
         },
         "music_player": {
-            "name": "Odtwarzacz muzyki",
-            "context_menu_text": "Odtworz muzyke",
-            "loading": "Ladowanie...",
-            "file_not_found": "Blad, nie znaleziono pliku.",
-            "paused": "[PAUZA]",
+            "name": "Music Player",
+            "context_menu_text": "Play music",
+            "loading": "Loading player...",
+            "file_not_found": "Error: File not found.",
+            "paused": "[PAUSED]",
             "vol": "Vol",
-            "playback_err": "Blad odtwarzania!",
-            "no_speaker_popup": "Nie wykryto glosnika w twoim urzadzeniu, odtwarzacz muzyki nie jest wspierany!"
+            "playback_err": "Playback Error!",
+            "no_speaker_popup": "Speaker was not detected in your device, music player is not supported."
         },
         "custom_apps": {
-            "name": "Aplikacje uzytkownika"
+            "name": "User apps"
         },
         "app_installer": {
-            "name": "Instalator aplikacji",
-            "context_menu_text": "Zainstaluj aplikacje",
-            "app_installer_short": "Instalator",
-            "installing": "Instaluje...",
-            "delete_after_install": "Usunac plik po instalacji?",
+            "name": "App installer",
+            "context_menu_text": "Install app package",
+            "app_installer_short": "Installer",
+            "installing": "Installing...",
+            "delete_after_install": "Delete package after install?",
             "popups": {
-                "success": "Aplikacja zainstalowana pomyslnie!",
-                "memory_error": "Za malo pamieci ram, zrestartuj swoje urzadzenie i sproboj ponownie.",
-                "unknown_manifest_ver": "Instalator dostal wersje manifestu ktorej nie zna. System za stary?",
-                "package_size_too_high": "Rozmiar paczki za duzy, nie mozna zainstalowac!",
-                "package_read_failed": "Nie mozna przeczytac paczki, moze jest zepsuta?",
-                "not_enough_flash": "Za malo miejsca na dysku, zwolnij miejsce i sproboj ponownie!",
-                "manifest_parse_error": "Blad parsowania manifest, czy manifest jest poprawny?",
-                "requirements_not_met": "Wymagania aplikacji nie zostaly spelnione, nie mozna zainstalowac."
+                "success": "App package installed successfully!",
+                "memory_error": "RAM Memory too low, try restarting your device and try again.",
+                "unknown_manifest_ver": "Installer was given a manifest version that it doesn't recognize, maybe your file is corrupt, or firmware outdated?",
+                "package_size_too_high": "Package size too high, cannot install!",
+                "package_read_failed": "Could not read package, maybe its corrupt?",
+                "not_enough_flash": "Not enough free space, please free up your disk space and try again!",
+                "manifest_parse_error": "Manifest parsing error, is your manifest setup properly?",
+                "requirements_not_met": "App requirements are not met, cannot install app."
             }
         },
         "pack_installer": {
-            "optional_prompt": "Instalowac opcjonalne app?",
-            "yes_recommend": "Tak (Zalecane)",
-            "see_list": "Pokaz liste aplikacji",
-            "success_popup": "Instalacja paczki pomyslna!\nLaczna liczba: %total%\nBledy: %failed%",
-            "app_list": "Applikacje w paczce:\n%apps%\n\nSzacowany rozmiar: %size%"
+            "optional_prompt": "Install optional app-pack?",
+            "yes_recommend": "Yes (Recomended)",
+            "see_list": "See app list",
+            "success_popup": "Pack install successful!\nTotal apps: %total%\nFailed: %failed%",
+            "app_list": "Apps in app-pack:\n%apps%\n\nEstimated size: %size%"
         },
         "package_manager": {
-            "name": "Menedzer pakietow",
-            "popup_name": "Nazwa:",
+            "name": "Package manager",
+            "popup_name": "Name:",
             "popup_id": "ID:",
             "popup_folder": "Folder:",
-            "popup_system": "Systemowa?:",
-            "popup_dependency": "Bitblioteka?:",
-            "uninstall": "Odinstaluj",
-            "success": "Aplikacja odinstalowana pomyslnie!",
-            "sys_app_error": "Nie mozna odinstalowac aplikacji systemowych!",
-            "folder_error": "Aplikacja nie ma ustawionego folderu w konfiguracji, moze to pomocnik innej aplikacji?"
+            "popup_system": "System app?:",
+            "popup_dependency": "Dependency?:",
+            "uninstall": "Uninstall",
+            "success": "App uninstalled successfully!",
+            "sys_app_error": "Cannot uninstall system apps!",
+            "folder_error": "App doesn't have a folder, maybe it's a helper for some other app?"
         },
         "python_executor": {
-            "name": "Executor pythona",
-            "file": "Plik: ",
-            "in_progress": "Prosze czekac...",
-            "context_menu_text": "Uruchom w pythonie"
+            "name": "Python executor",
+            "file": "File: ",
+            "in_progress": "Script execution in progress",
+            "context_menu_text": "Run in Python executor"
         },
         "pet": {
-            "name": "Zwierzaki",
-            "configure_pet": "Konfiguruj zwierzaka",
-            "scan_pets": "Skanuje zwierzaki...",
-            "load_conf": "Laduje konfiguracje...",
-            "no_pets": "Nie znaleziono zwierzakow!\nSprawdz czy paczki zwierzakow sa zainstalowane.",
-            "current": "Obecnie:",
-            "pet_menu": "Menu zwiezakow",
-            "change_pet": "Zmien zwiezaka"
+            "name": "Pets",
+            "configure_pet": "Configure pet",
+            "scan_pets": "Scanning for pets...",
+            "load_conf": "Loading configuration...",
+            "no_pets": "No pets found!\nPlease check if pet packs are installed.",
+            "current": "Current:",
+            "pet_menu": "Pet menu",
+            "change_pet": "Change pet"
         }
     },
     "menus": {
         "menu_start": "Start",
         "menu_reset": "Reset",
-        "menu_go_back": "Wroc",
-        "menu_close": "Zamknij",
-        "menu_exit": "Wyjdz",
-        "app_menu_title": "Menu aplikacji",
-        "popup_any_btn": "Nacisnij A, B lub C by zamknac",
-        "yes": "Tak",
-        "no": "Nie",
+        "menu_go_back": "Go back",
+        "menu_close": "Close",
+        "menu_exit": "Exit",
+        "app_menu_title": "Apps menu",
+        "popup_any_btn": "Press any button to close",
+        "yes": "Yes",
+        "no": "No",
         "ok": "OK",
-        "enable": "Wlacz",
-        "disable": "Wylacz",
-        "are_sure": "Na pewno?"
+        "enable": "Enable",
+        "disable": "Disable",
+        "are_sure": "Are you sure?"
     },
     "popups": {
-        "info": "Informacja"
+        "info": "Info"
     },
     "q_actions": {
-        "quick_actions": "Szybkie akcje",
-        "pwr_menu": "Menu zasilania",
-        "power": "Zasilanie",
-        "sleep": "Uspij",
-        "pwr_off": "Wylacz",
-        "reboot": "Uruchom ponow.",
-        "powering_off": "Wylaczanie...",
-        "rebooting": "Restartowanie...",
-        "you_can_now_switch": "Teraz mozesz odlaczyc zasilanie.",
-        "to_sleep": "Urzadzenie idzie do uspienia.."
+        "quick_actions": "Quick actions",
+        "pwr_menu": "Power menu",
+        "power": "Power",
+        "sleep": "Sleep",
+        "pwr_off": "Power off",
+        "reboot": "Reboot",
+        "powering_off": "Powering off...",
+        "rebooting": "Rebooting...",
+        "you_can_now_switch": "You can now switch the power switch to OFF position.",
+        "to_sleep": "Device will now go to sleep..."
     },
     "lock_menu": {
-        "name": "Menu blokad",
-        "dummy_mode": "Tryb atrapy",
-        "dummy_with_pin": "Tryb atrapy z PINem",
-        "set_pin_first": "Najpierw wpisz pin",
-        "pin_too_short": "PIN za krotki",
-        "disable_dummy": "Wyl. tryb atrapy",
-        "disabled": "Wyl. tryb atrapy!",
-        "enter_pin": "Podaj PIN",
-        "invalid_pin": "Zly PIN!",
-        "making_sure_1": "Hashuje PIN",
-        "making_sure_2": "Moze sprawiac wrazenie zaw.",
-        "making_sure_3": "to zajmie ok. 15s",
-        "verify_hash_1": "Weryfikacja PINu,",
-        "verify_hash_2": "moze potrfac 15s",
-        "dummy_info_1": "Tryb atrapy",
-        "dummy_info_2": "Blokuje do zegara!",
-        "dummy_info_3": "Aby odblokowac nacisnij A+B",
-        "dummy_info_4": "jednoczesnie przez 1s.",
-        "dummy_info_5": "To pozostanie nawet po",
-        "dummy_info_6": "restarcie! Musisz najpierw",
-        "dummy_info_7": "je odblokowac!"
+        "name": "Lock menu",
+        "dummy_mode": "Dummy mode",
+        "dummy_with_pin": "Dummy mode with PIN",
+        "set_pin_first": "Set PIN first",
+        "pin_too_short": "PIN too short",
+        "disable_dummy": "Disable dummy mode",
+        "disabled": "Disabled dummy mode!",
+        "enter_pin": "Enter PIN",
+        "invalid_pin": "Invalid PIN!",
+        "making_sure_1": "Making sure your PIN is secure",
+        "making_sure_2": "Device might seem unresponsive",
+        "making_sure_3": "this will take up to 20s",
+        "verify_hash_1": "Verifying pin,",
+        "verify_hash_2": "can take up to 15 seconds",
+        "dummy_info_1": "Dummy mode",
+        "dummy_info_2": "Locks your device to clock!",
+        "dummy_info_3": "To unlock press button A+B",
+        "dummy_info_4": "at once for around 1 second.",
+        "dummy_info_5": "This will stay even after",
+        "dummy_info_6": "reboots! You need to unlock",
+        "dummy_info_7": "it first with button combo!"
     },
     "ntp": {
-        "retry": "Sprobowac ponownie?",
-        "fail_popup": "Synchronizacja sie niepowiodla!",
-        "success_popup": "Synchronizacja powiodla sie!",
-        "no_wifi_popup": "Brak polaczenia z Wi-Fi.",
-        "time_incorrect_popup": "Czas ustawiony w twoim urzadzeniu jest nieprawidlowy, ale zewnetrzne RTC zostalo wykryte! Prosze zsynchronizowac w ustawieniach."
+        "retry": "Retry?",
+        "fail_popup": "NTP Sync failed :(",
+        "success_popup": "NTP Sync successful!",
+        "no_wifi_popup": "No Wi-Fi connection, please connect.",
+        "time_incorrect_popup": "Time set in your device is incorrect but external RTC was detected! Please sync through settings!"
     },
     "keypad": {
         "menu": "Menu",
-        "confirm": "Potwierdz",
-        "symbols": "Symbole"
+        "confirm": "Confirm",
+        "symbols": "Symbols"
     }
 }
