@@ -16,7 +16,7 @@ def run():
     tft.set_backlight(1.0)
     tft.fill(65535)
     
-    if osc.HAS_NEOPIXEL == True:
+    if osc.HAS_NEOPIXEL:
         import modules.neopixel_anims as np_anims
         np_anims.static(255, 255, 255)
     

@@ -6,22 +6,22 @@ log("Factory reseting")
 log("Delete usr")
 try:
     files.rmdir_recursive("/usr")
-except:
+except Exception:
     log("Failed!")
 
 log("Delete temp")
 try:
     files.rmdir_recursive("/temp")
-except:
+except Exception:
     log("Failed!")
 
 log("Delete user packages")
 try:
     files.rmdir_recursive("/apps/thirdparty")
     files.rmdir_recursive("/modules/thirdparty")
-except:
+except Exception:
     log("Failed!")
     
 log("Reset NVS, bye!")
 
-import scripts.reset_nvs
+import scripts.reset_nvs # noqa

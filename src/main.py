@@ -1,24 +1,24 @@
-print("Stick Boot")
-
+import os
 import machine
 
+import modules.printer as printer
+import modules.powersaving as ps
+import modules.cache as cache
 import modules.os_constants as osc
+import modules.buzzer as buzz
+
+print("Stick Boot")
 
 # Hold power
 if osc.HAS_HOLD_PIN:
     power_hold = machine.Pin(osc.HOLD_PIN, machine.Pin.OUT)
     power_hold.value(1)
     
-import modules.buzzer as buzz
+# Buzzer
 if osc.HAS_BUZZER:
     buzzer = machine.PWM(machine.Pin(osc.BUZZER_PIN), duty=0, freq=500)
     buzz.set_volume(0.5)
     buzz.play_sound(buzzer, 400, 0.1)
-
-import os
-import modules.printer as printer
-import modules.powersaving as ps
-import modules.cache as cache
 
 ps.set_freq(osc.ULTRA_FREQ)
 
@@ -51,17 +51,17 @@ def set_f_boot(var):
     try:
         import modules.io_manager as io_man
         io_man.set('tft',var)
-    except:
+    except Exception:
         print("Failed to set fastboot vars")
     
 
 def recoveryf():
-    import recovery.recovery
+    import recovery.recovery # noqa: F401
     
-if tft == None:
+if tft is None:
     set_f_boot(None)
     recoveryf()
-else: 
+else:
     set_f_boot(tft)
 
 # Recovery button
@@ -71,24 +71,25 @@ rbtn = machine.Pin(RECOVERY_BTN_PIN, machine.Pin.IN, machine.Pin.PULL_UP)
 recovery = rbtn.value() == 0
 
 # Postinstall
-import modules.nvs as nvs
-
+import modules.nvs as nvs # noqa
 n_updates = cache.get_nvs('updates')
 requires_postinstall = nvs.get_int(n_updates, "postinstall")
-if requires_postinstall == None:
+if requires_postinstall is None:
     requires_postinstall = 1
 if requires_postinstall == 1:
     tft.text(f8x8, "Postinstall...",0,106,text_color, load_bg)
     import modules.postinstall as pinstall
     pinstall.postinstall()
+    
+# Factory reset
 factory_reset = nvs.get_int(n_updates, "factory")
 if factory_reset == 1:
     tft.text(f8x8, "Factory reset...",0,106,text_color, load_bg)
     nvs.set_int(n_updates, "factory", 0)
-    import scripts.factory
+    import scripts.factory # noqa: F401
 
 while True:
-    if recovery and osc.BOOT_ENABLE_RECOVERY == True:
+    if recovery and osc.BOOT_ENABLE_RECOVERY:
         tft.text(f8x8, "Recovery",180,127,2016)
         printer.log("Booting recovery")
         recovery = False
@@ -106,7 +107,7 @@ while True:
     else:
         try:
             printer.log("Booting mainos")
-            import mainos
+            import mainos # noqa: F401
             # Once main loop breaks, go to recovery
             recoveryf()
         except Exception as e:

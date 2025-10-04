@@ -1,4 +1,3 @@
-import machine
 import time
 import network
 
@@ -61,7 +60,7 @@ def run_clock_vert():
     last_date_text = ""
     last_mode = 0
     
-def clock_vert(): 
+def clock_vert():
     global last_clock_text, last_date_text, last_mode
     time_tuple = ntp.get_time_timezoned()
     
@@ -70,7 +69,7 @@ def clock_vert():
     mm = time_tuple[4]
     ss = time_tuple[5]
     text = "{:02}:{:02}:{:02}".format(hh, mm, ss)
-    if last_clock_text != text or last_mode != 1:
+    if last_clock_text is not text or last_mode != 1:
         x = text_utils.center_x_vert(text, 16)
         tft.text(f16x32, text, x, 104, 65535)
         last_clock_text = text
@@ -88,7 +87,7 @@ def clock():
     global last_clock_text, last_date_text, last_mode
     time_tuple = ntp.get_time_timezoned()
 
-    if nic.isconnected() == True:
+    if nic.isconnected():
         tft.text(f8x8, "Wi-Fi",50,5,703)
     else:
         tft.text(f8x8, "     ",50,5,703)
@@ -134,7 +133,6 @@ def stopwatch():
     time_from_battery_check = time.ticks_ms()
     start_offset = time.ticks_ms()
     time_from_pause = time.ticks_ms()
-    paused_time = 0
     tft.fill(0)
     tft.text(f8x8, l_get("apps.clock.stopwatch.name"), 0, 0, 65535)
     tft.text(f8x8, l_get("apps.clock.stopwatch.start_pause"), 0, 111, 65535)

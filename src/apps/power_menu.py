@@ -2,7 +2,6 @@ import os
 import time
 import machine
 import network
-import machine
 
 import fonts.def_8x8 as f8x8
 
@@ -47,7 +46,7 @@ def run():
 def power_menu(fast_sleep = False):
     nic = network.WLAN(network.STA_IF)
     
-    if fast_sleep == False:
+    if not fast_sleep:
         powermenu = menus.menu(l_get("q_actions.power"), 
                             [(l_get("q_actions.sleep"), 1),
                                 (l_get("q_actions.pwr_off"), 2),

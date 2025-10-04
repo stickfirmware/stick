@@ -24,7 +24,7 @@ def _WRITE_NUMS(is_keyboard: bool, number: int = 99):
     if not number == 99:
         n[number] = 10208
     
-    if is_keyboard == False:
+    if not is_keyboard:
         # Row 1
         tft.text(f16x16, "|",45,43,65535)
         tft.text(f16x16, "1",65,43,n[0])
@@ -140,14 +140,14 @@ def numpad(title: str, maxlen: int = 0, hideInput: bool = False) -> str | None:
     
     upd = True
     work = True
-    while work == True:
+    while work:
         time.sleep(osc.LOOP_WAIT_TIME)
-        if upd == True:
+        if upd:
             _WRITE_NUMS(False, selection)
             tft.fill_rect(3, 19, 234, 20, 0)
             chunks = [inp[i:i+28] for i in range(0, len(inp), 28)]
             last_chunk = chunks[-1] if chunks else ""
-            if hideInput == False:
+            if not hideInput:
                 tft.text(f8x16, last_chunk, 5, 22, 65535)
             else:
                 tft.text(f8x16, str("*" * len(last_chunk)),5,22,65535)
@@ -342,7 +342,7 @@ def keyboard(title: str, maxlen:int = 0, hideInput: bool = False) -> str | None:
             tft.fill_rect(3, 19, 234, 20, 0)
             chunks = [inp[i:i+28] for i in range(0, len(inp), 28)]
             last_chunk = chunks[-1] if chunks else ""
-            if hideInput == False:
+            if not hideInput:
                 tft.text(f8x16, last_chunk + tmp_letter, 5, 22, 65535)
             else:
                 tft.text(f8x16, "*" * (len(last_chunk) + len(tmp_letter)), 5, 22, 65535)
@@ -356,7 +356,8 @@ def keyboard(title: str, maxlen:int = 0, hideInput: bool = False) -> str | None:
             upd = True
 
         if button_b.value() == 0:
-            while button_b.value() == 0: time.sleep(0.02)
+            while button_b.value() == 0:
+                time.sleep(0.02)
 
             if tmp_letter:
                 inp += tmp_letter
@@ -368,7 +369,8 @@ def keyboard(title: str, maxlen:int = 0, hideInput: bool = False) -> str | None:
             upd = True
 
         elif button_a.value() == 0:
-            while button_a.value() == 0: time.sleep(osc.DEBOUNCE_TIME)
+            while button_a.value() == 0:
+                time.sleep(osc.DEBOUNCE_TIME)
 
             if selection == 9:
                 menu = menus.menu(l_get("keypad.menu"),
@@ -428,7 +430,8 @@ def keyboard(title: str, maxlen:int = 0, hideInput: bool = False) -> str | None:
                 upd = True
 
         elif button_c.value() == 0:
-            while button_c.value() == 0: time.sleep(osc.DEBOUNCE_TIME)
+            while button_c.value() == 0: 
+                time.sleep(osc.DEBOUNCE_TIME)
             if tmp_letter:
                 tmp_letter = ""
                 last_selection = -1

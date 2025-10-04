@@ -10,7 +10,7 @@ import modules.io_manager as io_man
 import modules.os_constants as osc
 
 print("Init IO manager")
-if io_man.get('tft') != None:
+if io_man.get('tft') is not None:
     tft = io_man.get('tft')
 else:
     import modules.tft_init as tft_init

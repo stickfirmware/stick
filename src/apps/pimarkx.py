@@ -1,5 +1,4 @@
 import time
-import machine
 import os
 
 import fonts.def_8x8 as f8x8
@@ -8,6 +7,7 @@ import modules.menus as menus
 import modules.os_constants as osc
 import modules.printer as printer
 import modules.powersaving as ps
+import modules.io_manager as io_man
 from modules.translate import get as l_get
 
 frequencies = [osc.ULTRA_SLOW_FREQ, osc.SLOW_FREQ, osc.BASE_FREQ, osc.FAST_FREQ, osc.ULTRA_FREQ]
@@ -15,8 +15,6 @@ testingTime = 15
 resultpath = "/temp/benchmark_results.txt"
 
 result = ""
-
-import modules.io_manager as io_man
 
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')
@@ -81,7 +79,7 @@ def run():
     render = menus.menu(l_get("apps.pimarkx.do_you_want_to_run"), 
                         [(l_get("menus.yes"), 1),
                          (l_get("menus.no"), None)])
-    if render == None:
+    if render is None:
         return
     pre_res()
     tft.fill(0)

@@ -127,5 +127,5 @@ def get_float(nvs, key):
         b = bytearray(4)
         nvs.get_blob(key, b)
         return struct.unpack('f', b)[0]
-    except:
+    except Exception:
         return None

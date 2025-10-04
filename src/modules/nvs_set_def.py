@@ -11,21 +11,21 @@ n_wifi = cache.get_nvs('wifi')
 
 def ints(namespace, key, defvar, cachename):
     var = nvs.get_int(namespace, key)
-    if var == None:
+    if var is None:
         nvs.set_int(namespace, key, defvar)
         var = defvar
     cache.set("n_cache_" + cachename, var)
 
 def floats(namespace, key, defvar, cachename):
     var = nvs.get_float(namespace, key)
-    if var == None:
+    if var is None:
         nvs.set_float(namespace, key, defvar)
         var = defvar
     cache.set("n_cache_" + cachename, var)
     
 def strings(namespace, key, defvar, cachename):
     var = nvs.get_string(namespace, key)
-    if var == None:
+    if var is None:
         nvs.set_string(namespace, key, defvar)
         var = defvar
     cache.set("n_cache_" + cachename, var)

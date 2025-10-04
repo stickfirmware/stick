@@ -13,7 +13,7 @@ def splittext_stream(fileobj, charlimit=27, linelimit=16):
     for raw in fileobj:
         try:
             raw = raw.decode("utf-8")
-        except Exception as e:
+        except Exception:
             yield [[[""]]]
             return
 
@@ -61,7 +61,7 @@ def showfile(file):
     tft.fill_rect(220, 0, 20, 135, 65535)
     update = True
     work = True
-    while work == True:
+    while work:
         if update:
             index = 0
             tft.fill_rect(0, 0, 220, 135, 0)

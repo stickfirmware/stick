@@ -43,7 +43,7 @@ def run():
     printer.log("Going into main loop")
     
     work = True
-    while work == True:
+    while work:
         render = menus.menu(l_get("apps.metronome.name"),
                             [("BPM: "+ str(bpm), 0), 
                              ("+", 1),
@@ -73,5 +73,5 @@ def run():
             play(bpm)
         elif render == 6:
             bpm = 120
-        elif render == None or render == 7:
+        elif render is None or render == 7:
             work = False

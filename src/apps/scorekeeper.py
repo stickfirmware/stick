@@ -30,17 +30,17 @@ def run():
     
     t1_nvs = nvs.get_int(app_storage, "team1")
     t2_nvs = nvs.get_int(app_storage, "team2")
-    if t1_nvs != None:
+    if t1_nvs is not None:
         team_1 = t1_nvs
     else:
         nvs.set_int(app_storage, "team1", 0)
-    if t2_nvs != None:
+    if t2_nvs is not None:
         team_2 = t2_nvs
     else:
         nvs.set_int(app_storage, "team2", 0)
     
     work = True
-    while work == True:
+    while work:
         render = menus.menu(l_get("apps.scorekeeper.name"), 
                             [(l_get("apps.scorekeeper.team") + " 1: " + str(team_1), 1),
                              (l_get("apps.scorekeeper.team") + " 2: " + str(team_2), 2),

@@ -73,7 +73,7 @@ def deep_clean_module(modname: str):
     for attr in dir(mod):
         try:
             setattr(mod, attr, None)
-        except:
+        except Exception:
             pass
     sys.modules.pop(modname, None)
 

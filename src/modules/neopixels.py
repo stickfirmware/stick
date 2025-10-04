@@ -40,7 +40,7 @@ def set_led(colors: tuple, led_num: int = 0, auto_write: bool = True):
     
     np = io_man.get("neopixel")
     
-    if np == None:
+    if np is None:
         return
     
     # Validate colors
@@ -51,7 +51,7 @@ def set_led(colors: tuple, led_num: int = 0, auto_write: bool = True):
     np[led_num] = (r, g, b)
 
     # Write
-    if auto_write == True: 
+    if auto_write: 
         np.write()
     
 def write():
@@ -61,7 +61,7 @@ def write():
     
     np = io_man.get("neopixel")
     
-    if np == None:
+    if np is None:
         return
     
     np.write()

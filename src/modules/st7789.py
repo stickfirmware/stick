@@ -62,9 +62,9 @@ from math import sin, cos
 try:
     from time import sleep_ms
 except ImportError:
-    sleep_ms = lambda ms: None
+    sleep_ms = lambda ms: None  # noqa: E731
     uint = int
-    const = lambda x: x
+    const = lambda x: x  # noqa: E731
 
     class micropython:
         @staticmethod
@@ -234,11 +234,6 @@ def color888(color=0):
 
 def luminance(r, g, b):
     return 0.299 * r + 0.587 * g + 0.114 * b
-
-def color_reverse(bg_color):
-    r, g, b = color888(bg_color)
-    l = luminance(r, g, b)
-    return 0x0000 if l > 128 else 0xFFFF
 
 
 class ST7789:
@@ -644,8 +639,8 @@ class ST7789:
     @staticmethod
     def _pack8(glyphs, idx: uint, fg_color: uint, bg_color: uint):
         buffer = bytearray(128)
-        bitmap = ptr16(buffer)
-        glyph = ptr8(glyphs)
+        bitmap = ptr16(buffer)  # noqa: F821
+        glyph = ptr8(glyphs)  # noqa: F821
 
         for i in range(0, 64, 8):
             byte = glyph[idx]
@@ -675,8 +670,8 @@ class ST7789:
         """
 
         buffer = bytearray(256)
-        bitmap = ptr16(buffer)
-        glyph = ptr8(glyphs)
+        bitmap = ptr16(buffer)  # noqa: F821
+        glyph = ptr8(glyphs)  # noqa: F821
 
         for i in range(0, 128, 16):
             byte = glyph[idx]

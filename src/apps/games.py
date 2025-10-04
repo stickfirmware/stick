@@ -6,7 +6,7 @@ import modules.os_constants as osc
 import modules.powersaving as ps
 from modules.translate import get as l_get
 
-def run():    
+def run():
     menu_apps = [(l_get("apps.minesweeper.name"), 1)]
     menu_apps.append((l_get("menus.menu_close"), None))
 

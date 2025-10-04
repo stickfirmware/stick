@@ -111,7 +111,7 @@ class ManifestV1App:
             manifest (dict): Manifest dictionary
         """
         
-        if self.did_init == True:
+        if self.did_init:
             return
         
         self.validate_manifest(manifest)
@@ -256,7 +256,7 @@ def run_requirements(zip_package: str) -> bool:
     with zipfile.ZipFile(zip_package, "r") as z:
         if "requirements.py" in z.namelist():
             log("Found requirements.py, running...")
-            files.mkdir_recursive(f"/temp/app_installer")
+            files.mkdir_recursive("/temp/app_installer")
             curr_time = time.time()
             zip.unpack_file(zip_package, "requirements.py", f"/temp/app_installer/{curr_time}.py")
             
@@ -330,7 +330,7 @@ def install(zip_package, delete_app_package=True):
     if manifest_ver == 1:
         log("Manifest version 1 detected")
         
-        if manifest.did_init != True:
+        if not manifest.did_init:
             raise PackageReadFailed("Manifest class was not init in installer (Code error?), you can try opening github issue!")
         
         app_name = manifest.app_name
@@ -354,7 +354,7 @@ def install(zip_package, delete_app_package=True):
             Install dependencies: {str(dependencies)}
             """)
         
-        if run_requirements(zip_package) == False:
+        if not run_requirements(zip_package):
             raise RequirementsNotMet("App requirements are not met, cannot install app")
         
         # Unpack app
@@ -389,7 +389,7 @@ def install(zip_package, delete_app_package=True):
         )
 
         # Delete app package
-        if delete_app_package == True:
+        if delete_app_package:
             log("Delete app pack")
             try:
                 os.remove(zip_package)
@@ -406,7 +406,7 @@ def install(zip_package, delete_app_package=True):
 
 # Uninstall
 def uninstall(id):
-    if get_entry(id, "is_system_app") == True:
+    if get_entry(id, "is_system_app"):
         raise CannotUninstallSystemApp("Cannot uninstall system app")
     if get_entry(id, "main_folder") == "":
         raise NoAppFolderFound("App folder was not set in config, probably system app or other apps helper.")
@@ -465,7 +465,7 @@ def open_file(path):
     tft.text(f8x8, l_get("apps.app_installer.installing"),0,127,65335)
     
     try:
-        if install(path, delete) == True:
+        if install(path, delete):
             popup(l_get("apps.app_installer.popups.success"), l_get("popups.info"))
     except MemoryError:
         popup(l_get("apps.app_installer.popups.memory_error"), l_get("crashes.error"))

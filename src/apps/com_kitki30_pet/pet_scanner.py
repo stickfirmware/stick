@@ -19,7 +19,7 @@ def get_list(scan_path: str) -> list[tuple]:
         if "pet.json" in os.listdir(files.path_join(scan_path, pet_folder)):
             # Read manifest
             pet_manifest = json.read(files.path_join(scan_path, pet_folder, "pet.json"))
-            if pet_manifest == None:
+            if pet_manifest is None:
                 log("Pet manifest read error")
                 
             try:

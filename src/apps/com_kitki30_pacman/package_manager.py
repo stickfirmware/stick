@@ -20,7 +20,7 @@ def app_menu(id):
             (l_get("menus.menu_close"), None)
         ])
         
-        if menu == None:
+        if menu is None:
             break
         if menu == 1:
             import modules.handle_apps as happs
@@ -49,7 +49,7 @@ def run():
         apps.append((l_get("menus.menu_exit"), None))
         app_select_dialog = menus.menu(l_get("apps.package_manager.name"), apps)
         
-        if app_select_dialog == None:
+        if app_select_dialog is None:
             break
         
         show_info(app_select_dialog)

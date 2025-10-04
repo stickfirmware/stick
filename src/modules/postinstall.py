@@ -28,7 +28,7 @@ def del_it_all(list: list[str]):
         try:
             os.remove(file)
             log("Deleted: " + file)
-        except:
+        except Exception:
             log("Failed to delete: " + file)
 
 def postinstall():

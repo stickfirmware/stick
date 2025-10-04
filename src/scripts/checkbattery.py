@@ -1,7 +1,8 @@
-DISCHARGE_VOLTAGE = 3.00
+from machine import ADC, Pin
 
 import modules.os_constants as osc
-from machine import ADC, Pin
+
+DISCHARGE_VOLTAGE = 3.20
 
 def run():
     adc = ADC(Pin(osc.BATTERY_ADC))

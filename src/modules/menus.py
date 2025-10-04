@@ -169,7 +169,7 @@ def menu(name, choices):
 
     
     # Main menu loop
-    while chosen == False:
+    while not chosen:
         sleep_state = sleep_on
         
         # Update marker
@@ -179,7 +179,7 @@ def menu(name, choices):
             update = False
             
         # Update page
-        if page_upd == True:
+        if page_upd:
             lcd_space = 13
             lcd_curr = 25
             tft.fill_rect(3, 19, 234, 113, 0)
@@ -197,7 +197,8 @@ def menu(name, choices):
             sleep(False)
             while button_c.value() == 0:
                 time.sleep(osc.DEBOUNCE_TIME)
-            if sleep_state == True: continue
+            if sleep_state: 
+                continue
             didnt_choose = True
             chosen = True
         elif button_c.value() == 1 and bt3_d == 0:
@@ -208,7 +209,8 @@ def menu(name, choices):
             sleep(False)
             while button_a.value() == 0:
                 time.sleep(osc.DEBOUNCE_TIME)
-            if sleep_state == True: continue
+            if sleep_state: 
+                continue
             chosen = True
         elif button_a.value() == 1 and bt1_d == 0:
             bt1_d = 1
@@ -218,7 +220,8 @@ def menu(name, choices):
             sleep(False)
             while button_b.value() == 0:
                 time.sleep(osc.DEBOUNCE_TIME)
-            if sleep_state == True: continue
+            if sleep_state: 
+                continue
             menu_down()
         elif button_b.value() == 1 and bt2_d == 0:
             bt2_d = 1
@@ -231,7 +234,8 @@ def menu(name, choices):
                 sleep(False)
                 while arrow_down.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
-                if sleep_state == True: continue
+                if sleep_state: 
+                    continue
                 menu_down()
             elif arrow_down.value() == 1 and ar_dn_d == 0:
                 ar_dn_d = 1
@@ -241,7 +245,8 @@ def menu(name, choices):
                 sleep(False)
                 while arrow_up.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
-                if sleep_state == True: continue
+                if sleep_state: 
+                    continue
                 menu_up()
             elif arrow_up.value() == 1 and ar_up_d == 0:
                 ar_up_d = 1
@@ -251,7 +256,8 @@ def menu(name, choices):
                 sleep(False)
                 while arrow_right.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
-                if sleep_state == True: continue
+                if sleep_state: 
+                    continue
                 page_right()
             elif arrow_right.value() == 1 and ar_rt_d == 0:
                 ar_rt_d = 1
@@ -261,13 +267,14 @@ def menu(name, choices):
                 sleep(False)
                 while arrow_left.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
-                if sleep_state == True: continue
+                if sleep_state:
+                    continue
                 page_left()
             elif arrow_left.value() == 1 and ar_lt_d == 0:
                 ar_lt_d = 1
         
         # Sleep timer
-        if time.ticks_diff(time.ticks_ms(), now_time) > osc.POWER_SAVE_TIMEOUT and sleep_on == False and allow_saving == 1:
+        if time.ticks_diff(time.ticks_ms(), now_time) > osc.POWER_SAVE_TIMEOUT and not sleep_on and allow_saving == 1:
             sleep(True)
         
         # Refresh neopixel
@@ -281,7 +288,7 @@ def menu(name, choices):
     # Return to starting frequency
     ps.set_freq(curr_freq)
     
-    if didnt_choose == True:
+    if didnt_choose:
         return None
     else:
         choicef = pages[curr_page][choice - 1][1]

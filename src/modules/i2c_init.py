@@ -20,7 +20,7 @@ def init():
         c_handler.crash_screen(tft, 1001, str(e), True, True, 2)
         
     # Init and sync time from rtc
-    if osc.HAS_RTC == True:
+    if osc.HAS_RTC:
         import modules.rtc as rtc_bm8536  
         rtc = rtc_bm8536.BM8563(i2c)
         # rtc.set_time((2025, 4, 29, 1, 13, 37, 0, 0))
@@ -31,7 +31,7 @@ def init():
         rtc = None
     
     # Init IMU/MPU
-    if osc.HAS_IMU == True: 
+    if osc.HAS_IMU: 
         from modules.mpu6886 import MPU6886
 
         mpu = MPU6886(i2c)

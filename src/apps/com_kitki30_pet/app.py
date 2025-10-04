@@ -30,7 +30,8 @@ def make_config():
         return json.read(files.path_join(_CONFIG_PATH, "pet_config.json"))
     else:
         pets = pet_list_gui()
-        if pets == None: return
+        if pets is None: 
+            return
         json.write(files.path_join(_CONFIG_PATH, "pet_config.json"), {"pet_name": pets[0][0], "pet_path": pets[0][2]})
         return json.read(files.path_join(_CONFIG_PATH, "pet_config.json"))
     
@@ -48,7 +49,8 @@ def run():
     tft.text(f8x8, l_get("apps.pet.scan_pets"), 0, 0, 65535)
     
     pets = pet_list_gui()
-    if pets == None: return
+    if pets is None:
+        return
 
     # Make or load config
     tft.text(f8x8, l_get("apps.pet.load_conf"), 0, 8, 65535)
@@ -68,7 +70,7 @@ def run():
         tft.text(f8x8, replace_pet_lines(line), 0, y, 65535)
         y += 8
     
-    while btnc.any_btn(["a", "b", "c"]) == False:
+    while not btnc.any_btn(["a", "b", "c"]):
         time.sleep(osc.LOOP_WAIT_TIME)
         
     menu = menus.menu(l_get("apps.pet.pet_menu"), [(l_get("menus.menu_exit"), None), (l_get("apps.pet.change_pet"), 1)])
@@ -84,7 +86,7 @@ def run():
             
         pet_select = menus.menu(l_get("apps.pet.change_pet"), change_menu)
         
-        if pet_select == None:
+        if pet_select is None:
             return
         
         json.write(files.path_join(_CONFIG_PATH, "pet_config.json"), {"pet_name": pet_select[0], "pet_path": pet_select[2]})

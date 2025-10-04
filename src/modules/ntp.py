@@ -59,7 +59,7 @@ def get_time_timezoned(bypass_cache: bool = False):
         cache.set("timezone_index", timezoneIndex)
         t_index_ttl = t_ttl_new
     else:
-        if timezoneIndex_cached != None:
+        if timezoneIndex_cached is not None:
             timezoneIndex = timezoneIndex_cached
 
     current_time = time.localtime()
@@ -111,7 +111,7 @@ def sync(host: str = "time.google.com") -> bool:
 
     utc = time.localtime()
     
-    if osc.HAS_RTC == True:
+    if osc.HAS_RTC:
         rtc.set_time((utc[0], utc[1], utc[2], utc[6], utc[3], utc[4], utc[5], 0))
     return True
 
@@ -123,14 +123,14 @@ def sync_interactive(host: str = "time.google.com"):
         host (str, optional): NTP server hostname, default is google ntp servers.
     """
     nic = network.WLAN(network.STA_IF)
-    if nic.isconnected() == True:
+    if nic.isconnected():
         syncing = True
-        while syncing == True:
+        while syncing:
             syn = sync(host)
-            if syn == True:
+            if syn:
                 popup.show(l_get("ntp.success_popup"), l_get("popups.info"), 10)
                 syncing = False
-            elif syn == False:
+            elif not syn:
                 rend = menus.menu(l_get("ntp.fail_popup"), 
                                   [(l_get("ntp.retry"),  1),
                                    (l_get("menus.ok"),  2)])
@@ -148,5 +148,5 @@ def wrong_time_support():
     # check if its greater than the time im programming this.
     localtime = time.localtime()
     min_time = (2025, 8,8) # My cats birthday
-    if localtime[0] < min_time[0] and localtime[1] < min_time[1] and localtime[2] < min_time[2] and osc.HAS_RTC == True:
+    if localtime[0] < min_time[0] and localtime[1] < min_time[1] and localtime[2] < min_time[2] and osc.HAS_RTC:
         popup.show(l_get("ntp.time_incorrect_popup"), l_get("popups.info"), 30)
