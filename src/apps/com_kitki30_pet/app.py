@@ -36,7 +36,7 @@ def make_config():
     
 def replace_pet_lines(line):
     xp = xp_levels.xp_progress(xp_levels.get_xp())
-    
+    # TODO: Make moods actual thing
     return line.replace("%mood%", "Good").replace("%level%", str(xp[0])).replace("%curr%", str(xp[1])).replace("%need%", str(xp[2])) 
 
 def run():
@@ -44,15 +44,19 @@ def run():
 
     tft.fill(0)
     
+    # Scan for pets
     tft.text(f8x8, l_get("apps.pet.scan_pets"), 0, 0, 65535)
     
     pets = pet_list_gui()
     if pets == None: return
 
+    # Make or load config
     tft.text(f8x8, l_get("apps.pet.load_conf"), 0, 8, 65535)
     
     config = make_config()
     
+    # TODO: Make translated pets
+    # Display pet
     data = None
     with open(files.path_join(config["pet_path"],"pet_en.txt"), "r") as f:
         data = f.read().splitlines()
@@ -67,19 +71,21 @@ def run():
     while btnc.any_btn(["a", "b", "c"]) == False:
         time.sleep(osc.LOOP_WAIT_TIME)
         
-    menu = menus.menu("Pet menu", [("Exit", None), ("Change pet", 1)])
+    menu = menus.menu(l_get("apps.pet.pet_menu"), [(l_get("menus.menu_exit"), None), (l_get("apps.pet.change_pet"), 1)])
     
+    # Change pet
     if menu == 1:
         change_menu = []
         
-        change_menu.append((f"Current: {config["pet_name"]}", None))
+        change_menu.append((f"{l_get("apps.pet.current")} {config["pet_name"]}", None))
         
         for pet in pets:
             change_menu.append((pet[0], pet))
             
-        pet_select = menus.menu("Change pet", change_menu)
+        pet_select = menus.menu(l_get("apps.pet.change_pet"), change_menu)
         
         if pet_select == None:
             return
         
         json.write(files.path_join(_CONFIG_PATH, "pet_config.json"), {"pet_name": pet_select[0], "pet_path": pet_select[2]})
+        return run()
