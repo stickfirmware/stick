@@ -100,6 +100,16 @@ def app_config_translated():
                     "dependency": False,
                     "hidden": False,
                     "handleExtensions": [""]
+                    },
+                {
+                    "name": l_get("apps.pet.name"),
+                    "id": "com.kitki30.pet",
+                    "file": "apps.com_kitki30_pet.app",
+                    "main_folder": "/apps/com_kitki30_pet",
+                    "is_system_app": True,
+                    "dependency": False,
+                    "hidden": False,
+                    "handleExtensions": [""]
                     }
                 ]
         }

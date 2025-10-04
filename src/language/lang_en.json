@@ -387,6 +387,13 @@
             "file": "File: ",
             "in_progress": "Script execution in progress",
             "context_menu_text": "Run in Python executor"
+        },
+        "pet": {
+            "name": "Pets",
+            "configure_pet": "Configure pet",
+            "scan_pets": "Scanning for pets...",
+            "load_conf": "Loading configuration...",
+            "no_pets": "No pets found!\nPlease check if pet packs are installed."
         }
     },
     "menus": {
