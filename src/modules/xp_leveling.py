@@ -36,17 +36,15 @@ def xp_progress(xp):
         xp_for_next_level: How much XP needed in current level to next level
         percent: Percent in float
     """
-    # Normalizacja do 0..1
+    
+    # IDK Whats happening here
     ratio = xp / _MAX_XP
-    # Obliczamy "realny" poziom w float
     float_level = ratio**0.5 * _MAX_LEVEL
     level = int(float_level)
     
-    # XP start dla tego levelu
     xp_start_ratio = (level / _MAX_LEVEL)**2
     xp_start = int(xp_start_ratio * _MAX_XP)
     
-    # XP next level
     next_level = min(level + 1, _MAX_LEVEL)
     xp_end_ratio = (next_level / _MAX_LEVEL)**2
     xp_end = int(xp_end_ratio * _MAX_XP)
