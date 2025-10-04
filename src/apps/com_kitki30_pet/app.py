@@ -72,7 +72,7 @@ def run():
     if menu == 1:
         change_menu = []
         
-        change_menu.append(f"Current: {config["pet_name"]}", None)
+        change_menu.append((f"Current: {config["pet_name"]}", None))
         
         for pet in pets:
             change_menu.append(pet[0], pet)
