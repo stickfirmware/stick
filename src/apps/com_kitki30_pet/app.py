@@ -64,7 +64,7 @@ def run():
         tft.text(f8x8, replace_pet_lines(line), 0, y, 65535)
         y += 8
     
-    while btnc.any_btn("a", "b", "c") == False:
+    while btnc.any_btn(["a", "b", "c"]) == False:
         time.sleep(osc.LOOP_WAIT_TIME)
         
     menu = menus.menu("Pet menu", [("Exit", None), ("Change pet", 1)])
