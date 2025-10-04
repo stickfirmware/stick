@@ -39,6 +39,7 @@ _WHITELIST = {
         'modules.button_init',
         'modules.error_db',
         'modules.printer',
+        'modules.console_colors',
         'modules.buzzer',
         'modules.nvs',
         'modules.cardputer_kb',

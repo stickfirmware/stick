@@ -71,7 +71,7 @@ def get_string(nvs, key):
             
         return buffer.decode('utf-8')
     except Exception as e:
-        log(f"NVS read error: {str(e)}")
+        log(f"NVS read error: {str(e)}", log_levels.WARNING)
         return None
 
 def set_int(nvs, key, value):
