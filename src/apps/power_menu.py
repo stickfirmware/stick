@@ -30,11 +30,15 @@ def run():
 
     q_actions = menus.menu(l_get("q_actions.quick_actions"),
                            [(l_get("q_actions.pwr_menu"), 1),
-                            (l_get("apps.settings.name"), 2),
+                            (l_get("apps.pet.name"), 2),
+                            (l_get("apps.settings.name"), 3),
                             (l_get("menus.menu_close"), None)])
     if q_actions == 1:
         power_menu()
     elif q_actions == 2:
+        import modules.open_app as open_app
+        open_app.run("com.kitki30.pet", True)
+    elif q_actions == 3:
         import apps.settings as a_se
         a_se.run()
         del a_se
