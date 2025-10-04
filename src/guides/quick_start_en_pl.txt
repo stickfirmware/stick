@@ -1,21 +1,21 @@
-Stick firmware quick start guide
+Instrukcja szybkiego startu Stick firmware
 
-File reader controls (Cardputer):
-Up - Button C (ESC)
-Down - Button B (Tab)
-Exit - Button A (Enter)
+Sterowanie notatnika (w nawiasie - Cardputer):
+Do gory - Przycisk C (ESC)
+W dol - Przycisk B (Tab)
+Wyjdz - Przycisk A (Enter)
 
-System controls:
-Cycle - Button B (Tab)
-Confirm / OK - Button A (Enter)
-Exit / Cancel - Button C (ESC)
+Sterowanie systemu:
+Zmien pozycje - Przycisk B (Tab)
+Potwierdz / OK - Przycisk A (Enter)
+Wyjdz / Anuluj - Przycisk C (ESC)
 
-Clock controls:
-Apps menu - Button A (Enter)
-Clock menu - Button B (Tab)
-Lock menu - Hold Button B (Tab) for 1 second
-Lock menu (While in dummy mode) - Hold Button A and B (Enter and Tab) for 1 second
-Quick actions - Button C (ESC)
-Fast sleep (Cardputer exclusive) - G0
+Sterowanie zegara:
+Menu aplikacji - Przycisk A (Enter)
+Menu zegara - Przycisk B (Tab)
+Menu blokad - Przytrzymaj przycisk B (Tab) przez 1 sekunde
+Menu blokad (W trybie atrapy) - Trzymaj Przycisk A i B (Enter i Tab) przez 1 sekunde
+Szybkie akcje - Przycisk C (ESC)
+Szybkie uspienie (Ekskluzywne dla cardputera) - G0
 
-When in dummy mode everything except power menu is locked!!!
+W trybie atrapy wszystko oprocz menu zasilania jest zablokowane!
