@@ -482,6 +482,8 @@ while True:
         # Wake up (If in power saving)
         if is_in_saving:
             wake_up()
+            while btn_combos.any_btn(["a", "b", "c"]):
+                time.sleep(osc.LOOP_WAIT_TIME)
             continue
             
     # Dummy mode unlocking
