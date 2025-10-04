@@ -60,7 +60,6 @@ def menu(name, choices):
     page_count = len(pages)
     
     lcd_space = 13
-    lcd_left = 104
     lcd_curr = 25
     choice = 1
     didnt_choose = False
@@ -171,6 +170,8 @@ def menu(name, choices):
     
     # Main menu loop
     while chosen == False:
+        sleep_state = sleep_on
+        
         # Update marker
         if update:
             tft.fill_rect(15, 19, 8, 104, 0)
@@ -196,6 +197,7 @@ def menu(name, choices):
             sleep(False)
             while button_c.value() == 0:
                 time.sleep(osc.DEBOUNCE_TIME)
+            if sleep_state == True: continue
             didnt_choose = True
             chosen = True
         elif button_c.value() == 1 and bt3_d == 0:
@@ -206,6 +208,7 @@ def menu(name, choices):
             sleep(False)
             while button_a.value() == 0:
                 time.sleep(osc.DEBOUNCE_TIME)
+            if sleep_state == True: continue
             chosen = True
         elif button_a.value() == 1 and bt1_d == 0:
             bt1_d = 1
@@ -215,6 +218,7 @@ def menu(name, choices):
             sleep(False)
             while button_b.value() == 0:
                 time.sleep(osc.DEBOUNCE_TIME)
+            if sleep_state == True: continue
             menu_down()
         elif button_b.value() == 1 and bt2_d == 0:
             bt2_d = 1
@@ -227,6 +231,7 @@ def menu(name, choices):
                 sleep(False)
                 while arrow_down.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
+                if sleep_state == True: continue
                 menu_down()
             elif arrow_down.value() == 1 and ar_dn_d == 0:
                 ar_dn_d = 1
@@ -236,6 +241,7 @@ def menu(name, choices):
                 sleep(False)
                 while arrow_up.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
+                if sleep_state == True: continue
                 menu_up()
             elif arrow_up.value() == 1 and ar_up_d == 0:
                 ar_up_d = 1
@@ -245,6 +251,7 @@ def menu(name, choices):
                 sleep(False)
                 while arrow_right.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
+                if sleep_state == True: continue
                 page_right()
             elif arrow_right.value() == 1 and ar_rt_d == 0:
                 ar_rt_d = 1
@@ -254,6 +261,7 @@ def menu(name, choices):
                 sleep(False)
                 while arrow_left.value() == 0:
                     time.sleep(osc.DEBOUNCE_TIME)
+                if sleep_state == True: continue
                 page_left()
             elif arrow_left.value() == 1 and ar_lt_d == 0:
                 ar_lt_d = 1
