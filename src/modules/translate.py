@@ -5,6 +5,7 @@ Translations for Stick firmware with lazy loading + cache
 import gc
 import modules.json as json
 import modules.printer as printer
+from modules.printer import Levels as log_levels
 
 main_file = None
 _language_cache = {}
@@ -19,9 +20,8 @@ def init():
     global main_file
     try:
         main_file = json.read("/language/languages.json")
-        printer.log(main_file)
     except Exception as e:
-        print("Failed to load languages.json: " + str(e))
+        printer.log("Failed to load languages.json: " + str(e), log_levels.WARNING)
         main_file = {
             "langs": ["en", "pl"],
             "en": {"name": "English", "path": "/language/lang_en.json"},
@@ -56,7 +56,7 @@ def _load_lang(lang):
                                 os.remove("/language/" + file)
                     printer.log("Removed uncompressed lang files (only with .gz)")
                 except Exception:
-                    print("Failed to remove uncompressed lang")
+                    printer.log("Failed to remove uncompressed lang")
             except Exception:
                 data = json.read(lang_path)
         else:
@@ -68,7 +68,7 @@ def _load_lang(lang):
         return data
 
     except Exception as e:
-        print(f"[lang] Failed to load {lang}: {e}")
+        printer.log(f"[lang] Failed to load {lang}: {e}", log_levels.WARNING)
         return {}
 
 
@@ -98,7 +98,7 @@ def unload(lang=None):
         del _language_cache[lang]
         _last_access.pop(lang, None)
         gc.collect()
-        printer.log(f"[lang] Unloaded {lang}")
+        printer.log(f"Unloaded {lang}")
 
 
 def get(path):
@@ -129,7 +129,7 @@ def get(path):
             d = d[p]
         return d
     except (KeyError, TypeError) as e:
-        print(f"[lang] Missing path {path}: {e}")
+        printer.log(f"[lang] Missing path {path}: {e}", log_levels.WARNING)
         return "Translate error"
 
 

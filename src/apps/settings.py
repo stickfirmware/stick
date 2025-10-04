@@ -6,6 +6,7 @@ import gc
 import fonts.def_8x8 as f8x8
 
 import modules.printer as printer
+from modules.printer import Levels as log_levels
 import modules.menus as menus
 import modules.nvs as nvs
 import modules.os_constants as osc
@@ -20,7 +21,7 @@ import modules.popup as popup
 import modules.translate as translate
 from modules.translate import get as l_get
 
-printer.log("Getting buttons")
+printer.log("Getting buttons", log_levels.DEBUG)
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')
 button_c = io_man.get('button_c')

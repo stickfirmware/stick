@@ -5,6 +5,7 @@ TFT Display init helper for Stick firmware
 from machine import SPI, Pin, PWM
 
 from modules.printer import log
+from modules.printer import Levels as log_levels
 import modules.os_constants as osc
 import modules.st7789 as st7789
 
@@ -27,6 +28,6 @@ def init_tft() -> any | None:
                 rotation=osc.LCD_ROTATIONS["BUTTON_LEFT"])
         return tft
     except Exception as e:
-        log("Failed to init tft")
-        log(str(e))
+        log("Failed to init tft", log_levels.ERROR)
+        log(str(e), log_levels.ERROR)
         return None

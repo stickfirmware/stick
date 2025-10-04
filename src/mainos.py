@@ -26,6 +26,7 @@ import modules.ram_cleaner as ram_cleaner
 import modules.crash_handler as c_handler
 import modules.nvs as nvs
 import modules.printer as debug
+from modules.printer import Levels as log_levels
 import modules.buzzer as buzz
 import modules.os_constants as osc
 import modules.io_manager as io_man
@@ -39,11 +40,11 @@ import scripts.checkbattery as battery_shutdown
 print("Stick firmware")
 
 # Set frequencies
-debug.log("Setting Ultra freq")
+debug.log("Setting Ultra freq", log_levels.DEBUG)
 ps.set_freq(osc.ULTRA_FREQ)
 
 # Buzzer
-debug.log("Buzz tone")
+debug.log("Buzz tone", log_levels.DEBUG)
 if osc.HAS_BUZZER:
     buzzer = PWM(Pin(osc.BUZZER_PIN), duty_u16=0, freq=500)
     io_man.set("buzzer", buzzer)
@@ -53,25 +54,25 @@ if "temp" not in os.listdir():
         os.mkdir("temp")
 
 # Garbage colector
-debug.log("Enabling garbage collector")
+debug.log("Enabling garbage collector", log_levels.DEBUG)
 gc.enable()
 gc.threshold(gc.mem_free() // 4 + gc.mem_alloc())
 
 # Hold power
 if osc.HAS_HOLD_PIN:
-    debug.log("Enable hold pin")
+    debug.log("Enable hold pin", log_levels.DEBUG)
     power_hold = Pin(osc.HOLD_PIN, Pin.OUT)
     power_hold.value(1)
 else:
     power_hold = None
  
 # Import fonts
-debug.log("Load fonts")
+debug.log("Load fonts", log_levels.DEBUG)
 import fonts.def_8x8 as f8x8
 import fonts.def_16x32 as f16x32
 
 # Init tft
-debug.log("Init tft")
+debug.log("Init tft", log_levels.DEBUG)
 
 try:
     tft = io_man.get('tft')
@@ -101,7 +102,7 @@ def render_bar(text, increase_count=False):
 render_bar("Preparing NVS...")
 
 # Load NVS
-debug.log("Load cache")
+debug.log("Load cache", log_levels.DEBUG)
 cache.precache()
 n_settings = cache.get_nvs('settings')
 n_wifi = cache.get_nvs('wifi')
@@ -140,11 +141,11 @@ xp_levels.add_xp(2)
 gc.collect()
 
 # Init shared i2c
-debug.log("Init shared i2c")
+debug.log("Init shared i2c", log_levels.DEBUG)
 render_bar(l_get("mainos_load.shared_iic_init"), True) # Init shared I2C...
 
 # Import RTC
-debug.log("Sync time from external RTC")
+debug.log("Sync time from external RTC", log_levels.DEBUG)
 rtc = None
 i2c = None
 mpu = None
@@ -162,7 +163,7 @@ else:
 render_bar(l_get("mainos_load.init_btns"), True) # Init buttons...
 
 # Init buttons
-debug.log("Init buttons")
+debug.log("Init buttons", log_levels.DEBUG)
 import modules.button_init as btn_init
 button_a, button_b, button_c, clicker, debug_console, sleep_button = btn_init.init_buttons()
 
@@ -175,7 +176,7 @@ if osc.HAS_NEOPIXEL:
 
 # Init IO manager (Set buttons, tft, etc.)
 render_bar(l_get("mainos_load.init_io_man"), True)
-debug.log("Init IO manager")
+debug.log("Init IO manager", log_levels.DEBUG)
 io_man.set('button_a', button_a)
 io_man.set('button_b', button_b)
 io_man.set('button_c', button_c)
@@ -201,7 +202,7 @@ conn_time = time.ticks_ms()
 # Seed randomizer
 render_bar(l_get("mainos_load.seed_random"), True)
 
-debug.log("Seed random")
+debug.log("Seed random", log_levels.DEBUG)
 import modules.seed_random as seed_random
 seed_random.seed()
         
@@ -239,9 +240,10 @@ debug_entry = 0
 
 # Check app packs
 render_bar(l_get("mainos_load.check_app_packs"), True)
-debug.log("Check app packs")
+debug.log("Check app packs", log_levels.DEBUG)
 
 if "app-pack.installed" not in os.listdir("/usr") and "app-packs" in os.listdir("/"):
+    debug.log("User doesn't have app packs installed! Prompting to install.")
     import modules.pack_install as pinstall
     pinstall.run()
 
@@ -275,11 +277,12 @@ gc.collect()
 debug.log("After: " + str(gc.mem_free() / 1024 / 1024) + "MB")
 
 # Log max loading count
-debug.log("Loading count: " + str(loading_count))
+debug.log("Loading count: " + str(loading_count), log_levels.DEBUG)
 
 # Init SD Card
 render_bar(l_get("mainos_load.sd_init"), True) # SD Init
 if osc.HAS_SD_SLOT or nvs.get_int(n_settings, "sd_overwrite") == 1:
+    debug.log("Init SD card", log_levels.DEBUG)
     import modules.sdcard as sdcard
     if nvs.get_int(n_settings, "sd_overwrite") == 1 and nvs.get_int(n_settings, "sd_automount") == 1:
         cs = nvs.get_int(n_settings, "sd_cs")
@@ -291,6 +294,7 @@ if osc.HAS_SD_SLOT or nvs.get_int(n_settings, "sd_overwrite") == 1:
     sdcard.mount()
 
 # Load clock
+debug.log("Loading clock", log_levels.DEBUG)
 render_bar(l_get("mainos_load.load_clock"), True) # Loading clock...
 import apps.clock as app_clock
 
@@ -316,19 +320,23 @@ def wake_up():
 was_sleep_triggered = False
 
 # Slow down CPU
+debug.log("Slowing down CPU", log_levels.DEBUG)
 ps.set_freq(osc.BASE_FREQ)
 
 # Print sys.modules
 import sys
-debug.log(str(sys.modules)) # Helpful for debug of RAM cleaner
+debug.log_cleaner(str(sys.modules)) # Helpful for debug of RAM cleaner
 
 render_bar(l_get("mainos_load.guides"), True)
 
 # Show quick start guide if not shown yet
 if nvs.get_int(n_guides, 'quick_start') is None:
+    debug.log("User has not read guides, showing them in file reader")
     import helpers.run_in_reader as rir
     rir.open_file(f'/guides/quick_start_{cache.get('n_cache_lang')}.txt')
     nvs.set_int(n_guides, 'quick_start', 1)
+
+debug.log("Stick firmware ready to use!")
 
 # Main loop
 while True:
@@ -350,6 +358,8 @@ while True:
         app_clock.clock_vert()
     # Render entire clock
     elif menu_change:
+        debug.log("Clock is rendering")
+        
         # Allow boosts for a while
         ps.boost_allowing_state(True)
 
@@ -398,6 +408,8 @@ while True:
             menu = 0
 
         menu_change = False
+        
+        debug.log("Clock has rendered")
     
     # Disable wi-fi if not connected
     if conn_time is not None:
@@ -455,7 +467,7 @@ while True:
             elif time.ticks_diff(time.ticks_ms(), orientation_start_time) >= osc.IMU_STAY_TIME:
                 if stable_orientation != current_rotation:
                     stable_orientation = current_rotation
-                    debug.log("Orientation changed to:" + str(stable_orientation))
+                    debug.log("Orientation changed to:" + str(stable_orientation), log_levels.DEBUG)
                     menu_change = True
         else:
             last_orientation = current_rotation
@@ -494,9 +506,6 @@ while True:
         while button_b.value() == 0:
             time.sleep(osc.LOOP_WAIT_TIME)
             hold_time += osc.LOOP_WAIT_TIME
-        
-        # Log hold time
-        debug.log(str(hold_time) + "  " + str(nvs.get_int(n_locks, "dummy")))
         
         # Let user through if hold time is more than 1s
         if hold_time >= 1 and nvs.get_int(n_locks, "dummy") != 0:
@@ -551,7 +560,8 @@ while True:
                 tft.text(f16x32, l_get("crashes.app_crashed_oops"),0,0,17608) # Oops!
                 tft.text(f8x8, l_get("crashes.app_crashed_info"),0,32,65535) # One of your apps has crashed!
                 tft.text(f8x8, l_get("crashes.app_crashed_try_again"),0,40,65535) # Please try again!
-                print(str(e))
+                debug.log("An error happened in some app!", log_levels.ERROR)
+                debug.log(str(e), log_levels.ERROR)
                 time.sleep(3)
             menu = 0
             menu_change = True
@@ -597,7 +607,8 @@ while True:
                 tft.text(f16x32, l_get("crashes.app_crashed_oops"),0,0,17608) # Oops!
                 tft.text(f8x8, l_get("crashes.app_crashed_info"),0,32,65535) # One of your apps has crashed!
                 tft.text(f8x8, l_get("crashes.app_crashed_try_again"),0,40,65535) # Please try again!
-                print(str(e))
+                debug.log("An error happened in some app!", log_levels.ERROR)
+                debug.log(str(e), log_levels.ERROR)
                 time.sleep(3)
                 
             # De-cache
@@ -619,7 +630,8 @@ while True:
                 tft.text(f16x32, l_get("crashes.app_crashed_oops"),0,0,17608) # Oops!
                 tft.text(f8x8, l_get("crashes.app_crashed_info"),0,32,65535) # One of your apps has crashed!
                 tft.text(f8x8, l_get("crashes.app_crashed_try_again"),0,40,65535) # Please try again!
-                print(str(e))
+                debug.log("An error happened in some app!", log_levels.ERROR)
+                debug.log(str(e), log_levels.ERROR)
                 time.sleep(3)
 
     # Locking menu / Clock menu

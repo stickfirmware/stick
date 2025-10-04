@@ -224,7 +224,7 @@ def run():
     
     ps.set_freq(osc.BASE_FREQ)
 
-    printer.log("Going into main loop")
+    printer.log("Resistor decoder is into main loop")
     
     render = menus.menu(l_get("apps.resistors.select_type"),
                         [(l_get("apps.resistors.four_colors"), 1),

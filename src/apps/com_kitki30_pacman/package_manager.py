@@ -3,6 +3,7 @@ import modules.popup as popup
 import modules.oobe as oobe
 from modules.oobe import get_entry
 from modules.printer import log
+from modules.printer import Levels as log_levels
 from modules.translate import get as l_get
 
 appsConfig = oobe.read_config()
@@ -33,7 +34,7 @@ def app_menu(id):
             except happs.NoAppFolderFound:
                 popup.show(l_get("apps.package_manager.folder_error"), l_get("crashes.error"))
             except Exception as e:
-                log(f"An unknown error happened in Package manager!!!\nFeature: Uninstall\nApp ID: {id}\nError:\n{e}")
+                log(f"An unknown error happened in Package manager!!!\nFeature: Uninstall\nApp ID: {id}\nError:\n{e}", log_levels.ERROR)
                 raise Exception
 
 def show_info(id):

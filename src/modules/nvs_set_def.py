@@ -70,12 +70,13 @@ def set_hardware():
     import modules.io_manager as io_man
     import modules.buzzer as buzz
     import modules.printer as debug
+    from modules.printer import Levels as log_levels
     
     tft = io_man.get('tft')
     s_bl = cache.get_and_remove('n_cache_backlight')
-    debug.log("Backlight: " + str(s_bl))
+    debug.log("Backlight: " + str(s_bl), log_levels.DEBUG)
     tft.set_backlight(s_bl)
 
     s_vl = cache.get_and_remove('n_cache_volume')
-    debug.log("Buzzer volume: " + str(s_vl))
+    debug.log("Buzzer volume: " + str(s_vl), log_levels.DEBUG)
     buzz.set_volume(s_vl)

@@ -6,6 +6,8 @@ import machine
 import neopixel
 
 import modules.io_manager as io_man
+from modules.printer import log
+from modules.printer import Levels as log_levels
 
 def make(pin: int, led_count: int = 1) -> bool:
     """
@@ -25,7 +27,7 @@ def make(pin: int, led_count: int = 1) -> bool:
         io_man.set("neopixel", np)
         return True
     except ValueError:
-        print("Error, wrong pin number! NeoPixel object could not be created!")
+        log("Error, wrong pin number! NeoPixel object could not be created!", log_levels.ERROR)
         return False
     
 def set_led(colors: tuple, led_num: int = 0, auto_write: bool = True):

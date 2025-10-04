@@ -38,5 +38,5 @@ def log_cleaner(msg: any):
     Args:
         msg (any): Message to display in console
     """
-    if osc.ENABLE_DEBUG_PRINTS and not osc.LESS_RAM_CLEANER_OUTPUT:
+    if not osc.LESS_RAM_CLEANER_OUTPUT:
         print(str(msg))

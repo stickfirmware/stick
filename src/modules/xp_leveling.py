@@ -13,6 +13,8 @@ import time
 
 import modules.nvs as nvs
 import modules.cache as cache
+from modules.printer import log
+from modules.printer import Levels as log_levels
 
 _cooldown_timer = time.ticks_ms()
 _mood_cooldown_timer = time.ticks_ms()
@@ -89,7 +91,7 @@ def add_xp(amount):
     curr_exp = nvs.get_int(n_settings, "xp")
     
     if (curr_exp + amount) > _MAX_XP:
-        print("WARNING: Max XP reached!")
+        log("Max XP reached!", log_levels.WARNING)
         return
     
     nvs.set_int(n_settings, "xp", curr_exp + amount)
@@ -116,7 +118,7 @@ def remove_mood(amount):
     curr_mood = nvs.get_int(n_settings, "mood")
     
     if (curr_mood + amount) < 0:
-        print("WARNING: Minimal mood reached!")
+        log("Minimal mood reached!", log_levels.WARNING)
         return
     
     nvs.set_int(n_settings, "mood", curr_mood - amount)

@@ -114,8 +114,7 @@ def fileMenu(file):
                        (l_get("menus.no"), None)]) == 1:
             try:
                 os.remove(file)
-            except Exception as e:
-                print(e)
+            except Exception:
                 menus.menu(l_get("apps.file_explorer.error_deleting"), [(l_get("menus.menu_close"), 1)])
             return
         

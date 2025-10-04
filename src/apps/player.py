@@ -8,6 +8,8 @@ import fonts.def_8x8 as f8x8
 import modules.os_constants as osc
 import modules.io_manager as io_man
 from modules.translate import get as l_get
+from modules.printer import log
+from modules.printer import Levels as log_levels
 
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')
@@ -173,7 +175,7 @@ def play(path):
                 was_paused = False
 
     except Exception as e:
-        print(f"Error during playback: {e}")
+        log(f"Error during playback: {e}", log_levels.ERROR)
         tft.text(f8x8, l_get("apps.music_player.playback_err"), 5, 45, 65535)
         sleep(1)
     finally:

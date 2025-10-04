@@ -8,8 +8,9 @@ import modules.menus as menus
 import modules.popup as popup
 import modules.io_manager as io_man
 import modules.os_constants as osc
+from modules.printer import log
 
-print("Init IO manager")
+log("Init IO manager")
 if io_man.get('tft') is not None:
     tft = io_man.get('tft')
 else:

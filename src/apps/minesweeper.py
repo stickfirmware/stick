@@ -2,6 +2,7 @@ import random
 import time
 
 from modules.printer import log
+from modules.printer import Levels as log_levels
 import modules.io_manager as io_man
 import modules.powersaving as ps
 import modules.popup as popup
@@ -22,7 +23,8 @@ bombs_max = 7
 
 # Gen map
 def generate():
-    log("Starting generator")
+    log("Starting minesweeper generator")
+    start = time.ticks_ms()
     
     # Map
     tiles_map = [] # Numbered tiles
@@ -32,7 +34,7 @@ def generate():
     bombs = []
     
     # Push proper bomb array
-    log("Push arrays")
+    log("Push arrays", log_levels.DEBUG)
     for y in range(tiles):
         y_bombs = []
         y_zeroes = []
@@ -43,7 +45,7 @@ def generate():
         tiles_map.append(y_zeroes)
     
     # Generate bombs
-    log("Generating bombs")
+    log("Generating bombs", log_levels.DEBUG)
     for i in range(bombs_max):
         rand = 0
         while rand == 0 or rand in bomb_positions_temp:
@@ -51,7 +53,7 @@ def generate():
         bomb_positions_temp.append(rand)
         
     # Set bombs
-    log("Set bombs")
+    log("Set bombs", log_levels.DEBUG)
     for bomb in bomb_positions_temp:
         b = bomb
         y = b // tiles
@@ -59,7 +61,7 @@ def generate():
         bombs[y][x] = True
     
     # Calculate tile nums
-    log("Calculate tile numbers")
+    log("Calculate tile numbers", log_levels.DEBUG)
     dirs = [(-1,-1),(-1,0),(-1,1),
             (0,-1),        (0,1),
             (1,-1),(1,0),(1,1)]
@@ -79,10 +81,13 @@ def generate():
                 
     del bombs
     
-    log("Numbers map:")
+    log("Numbers map:", log_levels.DEBUG)
     for row in tiles_map:
-        log(row)
+        log(row, log_levels.DEBUG)
     
+    end = time.ticks_ms()
+    diff = time.ticks_diff(end, start)
+    log(f"Board generator finished in {diff}s")
         
     del bomb_positions_temp
     
@@ -364,7 +369,7 @@ def game():
                 tft.fill(0)
                 render_grid_full(tft, tiles_map, states, selection_x, selection_y)
                 upd_full = False
-                if osc.ENABLE_DEBUG_PRINTS:
+                if osc.LOG_LEVEL == 1:
                     tft.text(f8x8, l_get("apps.minesweeper.debug_enabled"), 0, 127, 63488)
             else:
                 render_grid_partial(

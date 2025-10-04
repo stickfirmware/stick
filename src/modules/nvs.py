@@ -7,6 +7,9 @@ Part of Stick firmware
 
 import struct
 
+from modules.printer import log
+from modules.printer import Levels as log_levels
+
 def set_string(nvs, key, value, max_length=1984):
     """
     Sets string in nvs namespace
@@ -20,15 +23,15 @@ def set_string(nvs, key, value, max_length=1984):
         bool: True if operation success, False if failed
     """
     if not value or not isinstance(value, str):
-        print("Error: Invalid string value")
+        log("Error: Invalid string value", log_levels.WARNING)
         return False
     
     if len(key) > 15:
-        print("Error: Key too long (max 15 chars)")
+        log("Error: Key too long (max 15 chars)", log_levels.WARNING)
         return False
     
     if len(value) > max_length:
-        print(f"Error: String exceeds max length {max_length}")
+        log(f"Error: String exceeds max length {max_length}", log_levels.WARNING)
         return False
     
     try:
@@ -37,7 +40,7 @@ def set_string(nvs, key, value, max_length=1984):
         nvs.commit()
         return True
     except Exception as e:
-        print(f"NVS write error: {str(e)}")
+        log(f"NVS write error: {str(e)}", log_levels.WARNING)
         return False
 
 
@@ -63,12 +66,12 @@ def get_string(nvs, key):
         buffer = bytearray(size)
         result_size = nvs.get_blob(key, buffer)
         if result_size != size:
-            print(f"Warning: Expected {size} bytes, got {result_size}")
+            log(f"Warning: Expected {size} bytes, got {result_size}", log_levels.WARNING)
             return None
             
         return buffer.decode('utf-8')
     except Exception as e:
-        print(f"NVS read error: {str(e)}")
+        log(f"NVS read error: {str(e)}")
         return None
 
 def set_int(nvs, key, value):

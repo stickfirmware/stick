@@ -4,6 +4,7 @@ import modules.os_constants as osc
 import modules.crash_handler as c_handler
 import modules.io_manager as io_man
 import modules.printer as debug
+from modules.printer import Levels as log_levels
 import modules.nvs as nvs
 import modules.cache as cache
 
@@ -26,7 +27,7 @@ def init():
         # rtc.set_time((2025, 4, 29, 1, 13, 37, 0, 0))
         dt = rtc.get_time()
         machine.RTC().datetime(dt)
-        debug.log(dt)
+        debug.log(dt, log_levels.DEBUG)
     else:
         rtc = None
     

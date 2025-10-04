@@ -25,16 +25,17 @@ ps.set_freq(osc.ULTRA_FREQ)
 printer.log("Checking boot options...")
 
 try:
-    printer.log("Load fonts")
+    printer.log("Load fonts", printer.Levels.DEBUG)
     import fonts.def_8x8 as f8x8
     import fonts.def_16x32 as f16x32
 
     # Init tft
-    printer.log("Init tft")
+    printer.log("Init tft", printer.Levels.DEBUG)
     import modules.tft_init as tft_init
     tft = tft_init.init_tft()
     load_bg = osc.LCD_LOAD_BG
     text_color = osc.LCD_LOAD_TEXT
+    printer.log("Showing progressbar render", printer.Levels.DEBUG)
     tft.fill(load_bg)
     tft.text(f16x32, "Stick firmware",0,0,text_color, load_bg)
     tft.text(f8x8, "Booting...",0,106,text_color, load_bg)
@@ -45,14 +46,14 @@ try:
     tft.text(f8x8, "Developed by Kitki30",0,32,text_color, load_bg)
 except Exception as e:
     tft = None
-    print(str(e))
+    printer.log(str(e), printer.Levels.ERROR)
     
 def set_f_boot(var):
     try:
         import modules.io_manager as io_man
         io_man.set('tft',var)
     except Exception:
-        print("Failed to set fastboot vars")
+        printer.log("Failed to set fastboot vars", printer.Levels.ERROR)
     
 
 def recoveryf():
@@ -102,7 +103,7 @@ while True:
             machine.soft_reset()
         except Exception as e:
             tft.text(f8x8, "Update failed! Rebooting..",0,32,65535)
-            print(e)
+            printer.log(e, printer.Levels.ERROR)
             machine.soft_reset()
     else:
         try:
@@ -111,7 +112,7 @@ while True:
             # Once main loop breaks, go to recovery
             recoveryf()
         except Exception as e:
-            print(e)
-            print("Critical error, showing bsod")
+            printer.log("Critical error, showing bsod", printer.Levels.ERROR)
+            printer.log(e, printer.Levels.ERROR)
             import modules.crash_handler as c_handler
             c_handler.crash_screen(tft, 4001, e, True, True, 2)

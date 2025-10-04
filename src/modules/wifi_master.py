@@ -3,6 +3,7 @@ import time
 import ubinascii
 
 from modules.printer import log
+from modules.printer import Levels as log_levels
 import modules.nvs as nvs
 import modules.cache as cache
 import modules.crash_handler as c_handler
@@ -51,9 +52,9 @@ def connect_main_loop():
         if nvs.get_int(n_wifi, "autoConnect") == 1:
             log('Connecting to wifi!')
             try:
-                log('Reset nic')
+                log('Reset nic', log_levels.DEBUG)
                 nic_reset()
-                log("Connect")
+                log("Connect", log_levels.DEBUG)
                 ssid = nvs.get_string(n_wifi, "ssid")
                 passwd = nvs.get_string(n_wifi, "passwd")
                 if passwd != "":

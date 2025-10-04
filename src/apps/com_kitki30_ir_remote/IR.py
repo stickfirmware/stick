@@ -5,6 +5,7 @@ import json
 
 import modules.io_manager as io_man
 import modules.printer as printer
+from modules.printer import Levels as log_levels
 import modules.os_constants as osc
 import modules.IR.recv as recv
 import modules.menus as menus
@@ -54,6 +55,7 @@ def run():
             io_man.set('IR', ir_pin)
         elif render == 9:
             if not osc.ALLOW_IR_RECORD:
+                printer.log("Device doesn't have support for recording IR signals, showing menu.", log_levels.WARNING)
                 menus.menu(l_get("apps.ir_remote.menu.receive_no_support"), [(l_get("menus.menu_close"), 1)])
                 continue
             works = True

@@ -8,6 +8,7 @@ import time
 
 import modules.json as json
 from modules.printer import log
+from modules.printer import Levels as log_levels
 import modules.files as files
 import modules.oobe as oobe
 from modules.oobe import get_entry
@@ -209,21 +210,21 @@ def get_manifest(zip_package: str) -> any:
     Return:
         any: Manifest class
     """
-    log("get_manifest()")
+    log("get_manifest()", log_levels.DEBUG)
     
     try:
-        log("Extract manifest..")
+        log("Extract manifest..", log_levels.DEBUG)
         data = get_packed_file_bytes(zip_package, "manifest.json")
         if data is None:
             raise PackageReadFailed("manifest.json not found in package, is this really an app package?")
-        log("Jsonize manifest...")
+        log("Jsonize manifest...", log_levels.DEBUG)
         manifest = json.read_from_string(data)
     except OSError:
         raise PackageReadFailed("Cannot open zip package: " + str(zip_package))
     except ValueError:
         raise ManifestParseError("manifest.json is not valid JSON")
 
-    log("Parse manifest...")
+    log("Parse manifest...", log_levels.DEBUG)
     if "version" not in manifest:
         raise ManifestParseError("Missing 'version' field in manifest")
 
@@ -251,11 +252,11 @@ def run_requirements(zip_package: str) -> bool:
     import modules.zip as zip
     import modules.files as files
     
-    log("Check requirements...")
+    log("Check requirements...", log_levels.DEBUG)
     
     with zipfile.ZipFile(zip_package, "r") as z:
         if "requirements.py" in z.namelist():
-            log("Found requirements.py, running...")
+            log("Found requirements.py, running...", log_levels.DEBUG)
             files.mkdir_recursive("/temp/app_installer")
             curr_time = time.time()
             zip.unpack_file(zip_package, "requirements.py", f"/temp/app_installer/{curr_time}.py")
@@ -304,12 +305,12 @@ def install(zip_package, delete_app_package=True):
     log("App installer")
     
     # Check how much free space, app requires: zip_size * _FLASH_FREE_SPACE_MULTI of free storage space
-    log("Check flash space")
+    log("Check flash space", log_levels.DEBUG)
     stat_vfs = os.statvfs("/")
     free_flash = stat_vfs[0] * stat_vfs[3]
     log(f"{free_flash}B")
     
-    log("Check pack size")
+    log("Check pack size", log_levels.DEBUG)
     zip_size = os.stat(zip_package)[6]
     log(f"{zip_size}B")
     
@@ -323,12 +324,12 @@ def install(zip_package, delete_app_package=True):
     
     # Check manifest
     gc.collect()
-    log("Identify manifest version")
+    log("Identify manifest version", log_levels.DEBUG)
     manifest = get_manifest(zip_package)
     manifest_ver = check_version_from_class(manifest)
     
     if manifest_ver == 1:
-        log("Manifest version 1 detected")
+        log("Manifest version 1 detected", log_levels.DEBUG)
         
         if not manifest.did_init:
             raise PackageReadFailed("Manifest class was not init in installer (Code error?), you can try opening github issue!")
@@ -352,13 +353,13 @@ def install(zip_package, delete_app_package=True):
             Type: {app_type} ({manifest.type_stringified()})
             Entrypoint: {entrypoint} (Can be none if not a standard app)
             Install dependencies: {str(dependencies)}
-            """)
+            """, log_levels.DEBUG)
         
         if not run_requirements(zip_package):
             raise RequirementsNotMet("App requirements are not met, cannot install app")
         
         # Unpack app
-        log("Unpacking app")
+        log("Unpacking app", log_levels.DEBUG)
         gc.collect()
         import modules.zip as zip
         if app_type == 0:
@@ -368,13 +369,13 @@ def install(zip_package, delete_app_package=True):
             is_dependency = False
             
         # Cleanup
-        log("Cleaning up...")
+        log("Cleaning up...", log_levels.DEBUG)
         import modules.ram_cleaner as rclean
         rclean.deep_clean_module("modules.zip")
         rclean.deep_clean_module("modules.zipfile")
             
         # Registry
-        log("Add to registry")
+        log("Add to registry", log_levels.DEBUG)
         gc.collect()
         
         oobe.edit_app(
@@ -390,7 +391,7 @@ def install(zip_package, delete_app_package=True):
 
         # Delete app package
         if delete_app_package:
-            log("Delete app pack")
+            log("Delete app pack", log_levels.DEBUG)
             try:
                 os.remove(zip_package)
             except OSError:
@@ -401,7 +402,7 @@ def install(zip_package, delete_app_package=True):
     else:
         raise UnknownManifestVersion("Unknown manifest, maybe its corrupt, or system firmware is outdated? App installer failed!")
     
-    log("App installer failed, code got to a point where it should not be!")
+    log("App installer failed, code got to a point where it should not be!", log_levels.WARNING)
     return False
 
 # Uninstall
@@ -424,7 +425,8 @@ def uninstall(id):
         if hasattr(comd, "uninstall"):
             return comd.uninstall()
     except Exception as e:
-        print(e)
+        log("Uninstall error", log_levels.ERROR)
+        log(e, log_levels.ERROR)
         
     oobe.remove_app(id)
     

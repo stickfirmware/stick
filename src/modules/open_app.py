@@ -31,9 +31,16 @@ def run(pack_id: str, skip_intro = False):
     """
     import modules.oobe as oobe
     import modules.io_manager as io_man
+    from modules.printer import log
+    from modules.printer import Levels as log_levels
+    
+    log(f"Launching app: {pack_id}")
+    
+    log("Reading config", log_levels.DEBUG)
     appsConfig = oobe.read_config()
     
     # Grant xp
+    log("Granting XP to user", log_levels.DEBUG)
     import modules.xp_leveling as xp_levels
     xp_levels.add_xp(5)
     
@@ -65,4 +72,5 @@ def run(pack_id: str, skip_intro = False):
         import modules.ram_cleaner as rclean
         rclean.deep_clean_module(modpath)
     else:
+        log("App not found, cannot import!", log_levels.WARNING)
         raise AppNotFound(f"Error, app '{pack_id}' not found, cannot import!")

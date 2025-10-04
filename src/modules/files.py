@@ -5,6 +5,9 @@ File helper for micropython devices
 import os
 import re
 
+from modules.printer import log
+from modules.printer import Levels as log_levels
+
 # Create folders recursivly (ex. /usr/games/wordly)
 def mkdir_recursive(path: str):
     """
@@ -148,5 +151,5 @@ def copy_file(src_path: str, dst_path: str, chunk_size: int = 1024) -> bool:
                 dst.write(chunk)
         return True
     except Exception as e:
-        print("Error copying:", e)
+        log("Error copying:" + str(e), log_levels.WARNING)
         return False

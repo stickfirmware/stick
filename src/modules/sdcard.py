@@ -6,6 +6,9 @@ import os
 import gc
 import machine
 
+from modules.printer import log
+from modules.printer import Levels as log_levels
+
 sd = None
 mntpoint = "/sd"
 
@@ -30,7 +33,8 @@ def init(slot=2, sck=40, cs=12, miso=39, mosi=14, freq=10_000_000):
         sd = machine.SDCard(slot=slot, sck=sck, cs=cs, miso=miso, mosi=mosi, freq=freq)
         return True
     except Exception as e:
-        print(e)
+        log("Error initializing SD Card", log_levels.ERROR)
+        log(e, log_levels.ERROR)
         return False
         
     
@@ -49,9 +53,11 @@ def mount(mountpoint="/sd"):
         gc.collect()
         vfs=os.VfsFat(sd)
         os.mount(vfs, mountpoint)
+        os.sync()
         return True
     except Exception as e:
-        print(e)
+        log("Error mounting SD Card", log_levels.ERROR)
+        log(e, log_levels.ERROR)
         return False
     
 def umount(mountpoint=mntpoint):
@@ -68,7 +74,9 @@ def umount(mountpoint=mntpoint):
     try:
         os.sync()
         os.umount(mountpoint)
+        os.sync()
         return True
     except Exception as e:
-        print(e)
+        log("Error unmounting SD Card", log_levels.ERROR)
+        log(e, log_levels.ERROR)
         return False

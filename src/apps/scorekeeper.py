@@ -23,7 +23,7 @@ def run():
     
     app_storage = esp32.NVS("apps_1001")
     
-    printer.log("Going into main loop")
+    printer.log("Scorekeeper is going into main loop")
     
     team_1 = 0
     team_2 = 0

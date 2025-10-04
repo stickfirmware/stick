@@ -8,6 +8,7 @@ import os
 import time
 
 from modules.printer import log
+from modules.printer import Levels as log_levels
 import modules.nvs as nvs
 import modules.os_constants as osc
 import modules.io_manager as io_man
@@ -31,7 +32,7 @@ def sleep(deepsleep = False):
         deepsleep (bool, optional): If true device will go into deepsleep (Doesn't keep RAM!!!)
     """
     global tft
-    log("Sleeping")
+    log("Sleeping!")
     
     # Battery report
     bat_info = {
@@ -41,7 +42,7 @@ def sleep(deepsleep = False):
         "voltage_after_sleep": None
     }
     
-    log("Set wake on ext")
+    log("Set wake on ext", log_levels.DEBUG)
     if osc.INPUT_METHOD == 1:
         button_c = io_man.get('button_c')
         esp32.wake_on_ext0(pin = button_c, level = esp32.WAKEUP_ALL_LOW)
@@ -50,16 +51,16 @@ def sleep(deepsleep = False):
         
     tft = io_man.get('tft')
         
-    log("Turn off backlight")
+    log("Turn off backlight", log_levels.DEBUG)
     tft.set_backlight(0)
     
-    log("Clear display")
+    log("Clear display", log_levels.DEBUG)
     tft.fill(0)
     
-    log("Put st7789 to sleep")
+    log("Put st7789 to sleep", log_levels.DEBUG)
     tft.sleep_mode(True)
     
-    log("Deinit things")
+    log("Deinit things", log_levels.DEBUG)
     deinit_things()
     
     log("Going to sleep, Bye!")
@@ -74,7 +75,7 @@ def sleep(deepsleep = False):
     log("Woken up from light sleep, Hi!")
     machine.freq(osc.ULTRA_FREQ)
     
-    log("Init things again")
+    log("Init things again", log_levels.DEBUG)
     init_things()
     
     log("Save battery report")

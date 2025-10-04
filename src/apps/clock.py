@@ -30,7 +30,6 @@ def reinit_tft():
     
 def run_clock():
     global last_clock_text, last_date_text, last_mode
-    printer.log("Rendering clock base")
     reinit_tft()
     tft.fill_rect(0, 0, 240, 3, 65535)
     tft.fill_rect(0, 16, 240, 3, 65535)
@@ -46,7 +45,6 @@ def run_clock():
     
 def run_clock_vert():
     global last_clock_text, last_date_text, last_mode
-    printer.log("Rendering clock base")
     reinit_tft()
     tft.fill_rect(0, 0, 3, 240, 65535)
     tft.fill_rect(132, 0, 3, 240, 65535)
@@ -195,6 +193,7 @@ def stopwatch():
 
 def clock_menu():
     ps.set_freq(osc.BASE_FREQ)
+    printer.log("Rendering clock menu")
     clock_menu = menus.menu(l_get("apps.clock.name"),
                             [(l_get("apps.clock.stopwatch.name"), 1),
                              (l_get("apps.clock.ntp_sync"), 3),

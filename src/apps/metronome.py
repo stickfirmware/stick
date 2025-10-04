@@ -40,7 +40,7 @@ def run():
     bpm_min = 30
     bpm = 120
     
-    printer.log("Going into main loop")
+    printer.log("Metronome is going into main loop")
     
     work = True
     while work:

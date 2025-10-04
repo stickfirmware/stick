@@ -12,6 +12,8 @@ import modules.io_manager as io_man
 import modules.cache as cache
 import modules.popup as popup
 from modules.translate import get as l_get
+from modules.printer import log
+from modules.printer import Levels as log_levels
 
 n_settings = cache.get_nvs('settings')
 
@@ -92,6 +94,7 @@ def sync(host: str = "time.google.com") -> bool:
     """
     import ntptime # Add the import here cause ram cleaner will delete it
 
+    log("Starting NTP time sync")
 
     rtc = io_man.get('rtc')
     
@@ -103,8 +106,8 @@ def sync(host: str = "time.google.com") -> bool:
         ntptime.host = host
         ntptime.settime()
     except Exception as e:
-        print("NTP sync failed")
-        print(str(e))
+        log("NTP sync failed", log_levels.ERROR)
+        log(str(e), log_levels.ERROR)
         return False
 
     _WAIT_FOR_NEW_SECOND()
@@ -149,4 +152,5 @@ def wrong_time_support():
     localtime = time.localtime()
     min_time = (2025, 8,8) # My cats birthday
     if localtime[0] < min_time[0] and localtime[1] < min_time[1] and localtime[2] < min_time[2] and osc.HAS_RTC:
+        log("Time was set incorrectly, showing popup")
         popup.show(l_get("ntp.time_incorrect_popup"), l_get("popups.info"), 30)
