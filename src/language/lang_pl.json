@@ -4,7 +4,7 @@
         "code": "pl",
         "version": [
             1,
-            6
+            7
         ],
         "authors": [
             "@Kitki30"
@@ -387,6 +387,16 @@
             "file": "Plik: ",
             "in_progress": "Prosze czekac...",
             "context_menu_text": "Uruchom w pythonie"
+        },
+        "pet": {
+            "name": "Zwierzaki",
+            "configure_pet": "Konfiguruj zwierzaka",
+            "scan_pets": "Skanuje zwierzaki...",
+            "load_conf": "Laduje konfiguracje...",
+            "no_pets": "Nie znaleziono zwierzakow!\nSprawdz czy paczki zwierzakow sa zainstalowane.",
+            "current": "Obecnie:",
+            "pet_menu": "Menu zwiezakow",
+            "change_pet": "Zmien zwiezaka"
         }
     },
     "menus": {
