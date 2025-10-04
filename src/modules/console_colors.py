@@ -2,6 +2,8 @@
 Helper for colors in console
 """
 
+import modules.os_constants as osc
+
 class Fore:
     GRAY = "\033[90m"
     LIGHTBLUE = "\033[94m"
@@ -25,5 +27,8 @@ def wrap_text(text: str, color: str):
     Returns:
         str: Your colored string
     """
+    
+    if not osc.LOG_ENABLE_COLORS:
+        return text
     
     return f"{color}{text}{Style.RESET}"
