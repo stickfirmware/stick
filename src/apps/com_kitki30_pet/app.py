@@ -75,7 +75,7 @@ def run():
         change_menu.append((f"Current: {config["pet_name"]}", None))
         
         for pet in pets:
-            change_menu.append(pet[0], pet)
+            change_menu.append((pet[0], pet))
             
         pet_select = menus.menu("Change pet", change_menu)
         
