@@ -1,5 +1,5 @@
 files:
-  - source: /translate_sources/main_lang.json
+  - source: /src/language/lang_en.json
     translation: /src/language/lang_%two_letters_code%.json
-  - source: /translate_sources/guides/*.txt
+  - source: /src/guides/quick_start_en.txt
     translation: /src/guides/%file_name%_%two_letters_code%.%file_extension%
