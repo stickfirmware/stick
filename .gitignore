@@ -7,3 +7,4 @@ settings.json
 .pyc
 __pycache__
 docs
+.vscode
