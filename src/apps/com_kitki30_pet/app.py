@@ -1,9 +1,12 @@
 import os
+import time
 
 import apps.com_kitki30_pet.pet_scanner as pscan
 
 from modules.translate import get as l_get
 import modules.xp_leveling as xp_levels
+import modules.os_constants as osc
+import modules.button_combos as btnc
 import modules.io_manager as io_man
 import modules.menus as menus
 import modules.popup as popup
@@ -35,21 +38,6 @@ def replace_pet_lines(line):
     xp = xp_levels.xp_progress(xp_levels.get_xp())
     
     return line.replace("%mood%", "Good").replace("%level%", str(xp[0])).replace("%curr%", str(xp[1])).replace("%need%", str(xp[2])) 
-    
-def display_pet():
-    tft = io_man.get('tft')
-    config = make_config()
-    
-    data = None
-    with open(files.path_join(config["pet_path"],"pet_en.txt"), "r") as f:
-        data = f.read().splitlines()
-        
-    tft.fill(0)
-    y = 0
-    
-    for line in data:
-        tft.text(f8x8, replace_pet_lines(line), 0, y, 65535)
-        y += 8
 
 def run():
     tft = io_man.get('tft')
@@ -63,7 +51,35 @@ def run():
 
     tft.text(f8x8, l_get("apps.pet.load_conf"), 0, 8, 65535)
     
-    display_pet()
+    config = make_config()
     
-    while True:
-        pass
+    data = None
+    with open(files.path_join(config["pet_path"],"pet_en.txt"), "r") as f:
+        data = f.read().splitlines()
+        
+    tft.fill(0)
+    y = 0
+    
+    for line in data:
+        tft.text(f8x8, replace_pet_lines(line), 0, y, 65535)
+        y += 8
+    
+    while btnc.any_btn("a", "b", "c") == False:
+        time.sleep(osc.LOOP_WAIT_TIME)
+        
+    menu = menus.menu("Pet menu", [("Exit", None), ("Change pet", 1)])
+    
+    if menu == 1:
+        change_menu = []
+        
+        change_menu.append(f"Current: {config["pet_name"]}", None)
+        
+        for pet in pets:
+            change_menu.append(pet[0], pet)
+            
+        pet_select = menus.menu("Change pet", change_menu)
+        
+        if pet_select == None:
+            return
+        
+        json.write(files.path_join(_CONFIG_PATH, "pet_config.json"), {"pet_name": pet_select[0], "pet_path": pet_select[2]})
