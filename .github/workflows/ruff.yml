@@ -1,0 +1,12 @@
+name: Ruff
+
+on: [push]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: astral-sh/ruff-action@v3
+      with:
+        args: "check"
+        src: "./src"
