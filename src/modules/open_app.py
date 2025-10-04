@@ -41,9 +41,9 @@ def run(pack_id: str, skip_intro = False):
     file = app_exists(appsConfig, pack_id)
     if file != None:
         tft = io_man.get("tft")
-        tft.fill(65535)
         
         if skip_intro == False:
+            tft.fill(65535)
             import modules.appboot as appboot
         
         modpath = file
