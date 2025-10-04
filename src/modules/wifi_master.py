@@ -39,13 +39,13 @@ def connect_main_loop():
     """
     
     # Check Wi-Fi hostname
-    if nvs.get_string(n_wifi, "hostname") == None:
+    if nvs.get_string(n_wifi, "hostname") is None:
         network.hostname(osc.WIFI_DEF_HOST)
     else:
         network.hostname(nvs.get_string(n_wifi, "hostname"))
         
     # Connect to Wi-Fi if its setup
-    if nvs.get_float(n_wifi, "conf") == None:
+    if nvs.get_float(n_wifi, "conf") is None:
         nvs.set_float(n_wifi, "conf", 0)
     if int(nvs.get_float(n_wifi, "conf")) == 1:
         if nvs.get_int(n_wifi, "autoConnect") == 1:

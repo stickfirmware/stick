@@ -29,10 +29,9 @@ MicroPython I2C driver for MPU6886 6-axis motion tracking device
 __version__ = "0.1.0-dev"
 
 # pylint: disable=import-error
-import ustruct
-import utime
-from machine import I2C, Pin
-from micropython import const
+import ustruct # noqa: E402
+import utime # noqa: E402
+from micropython import const # noqa: E402
 # pylint: enable=import-error
 
 _GYRO_CONFIG = const(0x1b)

@@ -19,7 +19,7 @@ def read(filename: str) -> dict | None:
             data = json.load(file)
             file.close()
         return data
-    except:
+    except Exception:
         return None
     
 def read_gzipped(filename: str) -> dict | None:
@@ -55,7 +55,7 @@ def write(filename: str, data: dict) -> bool:
             json.dump(data, file)
             file.close()
         return True
-    except:
+    except Exception:
         return False
         
 def read_from_string(data: str) -> dict | None:
@@ -70,7 +70,7 @@ def read_from_string(data: str) -> dict | None:
     """
     try:
         return json.loads(data)
-    except:
+    except Exception:
         return None
 
 def to_string(data: dict) -> str | None:
@@ -85,5 +85,5 @@ def to_string(data: dict) -> str | None:
     """
     try:
         return json.dumps(data)
-    except:
+    except Exception:
         return None

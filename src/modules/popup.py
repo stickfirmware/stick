@@ -115,7 +115,7 @@ def show(message: str, title: str = "Info", timeout: int = 3600):
     
     import modules.button_combos as button_combos
     
-    while time.ticks_diff(time.ticks_ms(), start_time) < timeout_ms and button_combos.any_btn(['a', 'b', 'c']) == False:
+    while time.ticks_diff(time.ticks_ms(), start_time) < timeout_ms and not button_combos.any_btn(['a', 'b', 'c']):
         if osc.HAS_NEOPIXEL:
             import modules.neopixel_anims as np_anim
             np_anim.automatic()

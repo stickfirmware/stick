@@ -11,7 +11,7 @@ from modules.translate import get as l_get
 n_settings = cache.get_nvs('settings')
 
 dev_settings = nvs.get_int(n_settings, "dev_apps")
-if dev_settings == None:
+if dev_settings is None:
     dev_settings = 0
     
 def search_apps():
@@ -24,7 +24,7 @@ def search_apps():
             results.append((app["name"], app["id"]))
     return results
 
-def run():    
+def run():
     menu_apps = search_apps()
     menu_apps.extend([(l_get("apps.games.name"), 1),
                     (l_get("apps.others.name"), 2),
@@ -54,7 +54,7 @@ def run():
         d_dev.run()
         del d_dev
         decache('apps.dev_apps.dev_menu')
-    elif menu1 != None:
+    elif menu1 is not None:
         import modules.open_app as open_app
         open_app.run(menu1)
     gc.collect()

@@ -7,3 +7,5 @@ settings.json
 .pyc
 __pycache__
 docs
+.vscode
+.ruff_cache

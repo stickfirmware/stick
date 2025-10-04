@@ -39,24 +39,24 @@ def run(pack_id: str, skip_intro = False):
     
     # Check if exists
     file = app_exists(appsConfig, pack_id)
-    if file != None:
+    if file is not None:
         tft = io_man.get("tft")
-        tft.fill(65535)
         
-        if skip_intro == False:
+        if not skip_intro:
+            tft.fill(65535)
             import modules.appboot as appboot
         
         modpath = file
         parts = modpath.split(".")
         
-        if skip_intro == False:
+        if not skip_intro:
             appboot.make_text(tft)
         
         comd = __import__(modpath)
         for part in parts[1:]:
             comd = getattr(comd, part)
 
-        if skip_intro == False:
+        if not skip_intro:
             appboot.app_boot_make_anim(tft)
         
         if hasattr(comd, "run"):

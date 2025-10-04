@@ -10,7 +10,7 @@ def language_pack():
     
     Returns:
         str: Language pack info in format: "{name} ({country_code}), v{version}, {authors}" """
-    if translate.language == None:
+    if translate.language is None:
         return "Pack not loaded"
     authors_list = translate.get("lang_info.authors")
     authors = " ".join(authors_list) if authors_list else ""

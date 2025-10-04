@@ -1,0 +1,10 @@
+{
+    "version": 1,
+    "app_ver": 1,
+    "name": "Pet",
+    "app_type": 0,
+    "install_dependencies": false,
+    "description": "Virtual pet for Stick firmware",
+    "entrypoint": "app",
+    "pack_id": "com.kitki30.pet"
+}

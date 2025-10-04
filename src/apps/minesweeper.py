@@ -93,9 +93,9 @@ def draw_tile(tft, x, y, tiles_map, state, tile_size):
     px = x * tile_size
     py = y * tile_size
 
-    if state == 0:  # hidden
+    if state == 0: # hidden
         tft.fill_rect(px, py, tile_size, tile_size, 50776)
-    elif state == 2:  # flag
+    elif state == 2: # flag
         tft.fill_rect(px, py, tile_size, tile_size, 65504)
     else:
         if tiles_map[y][x] == -1:
@@ -273,7 +273,7 @@ def animate_reveal_bombs(tft, tiles_map, states, boom_x, boom_y, delay_ms=15):
 
     last_d = -1
     for d, x, y in order:
-        if d != last_d:
+        if d is not last_d:
             time.sleep_ms(delay_ms)
             last_d = d
 
@@ -355,7 +355,8 @@ def game():
     upd_full = True
     
     # Import neo
-    if osc.HAS_NEOPIXEL: import modules.neopixel_anims as np_anims
+    if osc.HAS_NEOPIXEL:
+        import modules.neopixel_anims as np_anims
     
     while True:
         if upd:
@@ -400,7 +401,7 @@ def game():
                               (l_get("menus.menu_close"), None),
                               (l_get("menus.menu_exit"), 3)],)
             if res == 1:  # Dig
-                if dig(tft, selection_x, selection_y, tiles_map, states, start_time) == False:
+                if not dig(tft, selection_x, selection_y, tiles_map, states, start_time):
                     return
             elif res == 2:  # Flag
                 flag(selection_x, selection_y, states)
@@ -429,7 +430,7 @@ def game():
         if osc.INPUT_METHOD == 2:
             # Dig
             if d.value() == 0:
-                if dig(tft, selection_x, selection_y, tiles_map, states, start_time) == False:
+                if not dig(tft, selection_x, selection_y, tiles_map, states, start_time):
                     return
                 upd = True
                 upd_full = True
@@ -492,7 +493,7 @@ def run():
                                (f"{l_get("apps.minesweeper.modes.mode4")}: 16x16", 3),
                                (l_get("apps.minesweeper.modes.custom"), 99),
                                (l_get("menus.menu_close"), None)])
-            if mode != None:
+            if mode is not None:
                 if mode == 99:
                     import modules.numpad as kb
                     tiles = kb.numpad(l_get("apps.minesweeper.custom_mode.map_size"))

@@ -30,7 +30,7 @@ def run():
 
     n_locks = cache.get_nvs('locks')
     work = True
-    while work == True:
+    while work:
         if nvs.get_int(n_locks, "dummy") == 0:
             lockmen = menus.menu(l_get("lock_menu.name"), 
                                  [(l_get("lock_menu.dummy_mode"), 1),
@@ -44,7 +44,7 @@ def run():
                 ps.set_freq(osc.BASE_FREQ)
                 import modules.numpad as npad
                 pin = npad.numpad(l_get("lock_menu.enter_pin"), 6, True)
-                if pin == None or pin == "":
+                if pin is None or pin == "":
                     tft.fill(0)
                     tft.text(f8x8, l_get("lock_menu.set_pin_first"),0,0,65535)
                     time.sleep(1)

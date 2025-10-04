@@ -39,7 +39,7 @@ def run():
         del a_re
         decache('apps.resistors')
     elif render == 3:
-        if osc.HAS_BUZZER == False:
+        if not osc.HAS_BUZZER:
             popup.show(l_get("apps.others.buzzer_info_metronome"), l_get("crashes.error"), 10)
             return
         import apps.metronome as a_me
@@ -52,7 +52,7 @@ def run():
         del a_pimark
         decache('apps.pimarkx')
     elif render == 7:
-        if cache.get("rand_extra_func") == True:
+        if cache.get("rand_extra_func"):
             import apps.dice as a_dc
             a_dc.run()
             del a_dc

@@ -41,7 +41,7 @@ def run():
     n_wifi = cache.get_nvs('wifi')
     
     work = True
-    while work == True:
+    while work:
         # Main menu
         menu1 = menus.menu(l_get("apps.settings.name"),
                            [(l_get("apps.clock.name"), 0),
@@ -103,7 +103,7 @@ def run():
                             ("UTC-06:00", 30), ("UTC-07:00", 31), ("UTC-08:00", 32), ("UTC-09:00", 33),
                             ("UTC-10:00", 34), ("UTC-11:00", 35), ("UTC-12:00", 36)
                         ])
-                        if timezone == None:
+                        if timezone is None:
                             tim = False
                         else:
                             nvs.set_int(n_settings, "timezoneIndex", timezone)
@@ -119,7 +119,7 @@ def run():
             translations.append((l_get("menus.menu_close"), None))
             ts_menu = menus.menu(l_get("apps.settings.lang_menu.title"), translations)
             if ts_menu is not None:
-                if translate.load(ts_menu) == True:
+                if translate.load(ts_menu):
                     import version
                     if l_get("lang_info.version")[0] < version.LANG_VER[0] or l_get("lang_info.version")[1] < version.LANG_VER[1]:
                         popup.show("The language pack is older than system pack version and can not work properly. Expect errors", "Info", 60)
@@ -127,7 +127,8 @@ def run():
                     reboot_confirm = menus.menu(l_get("apps.settings.lang_menu.reboot"),
                                                 [(l_get("menus.yes"), 1),
                                                  (l_get("menus.no"), None)])
-                    if reboot_confirm == 1: machine.soft_reset()
+                    if reboot_confirm == 1: 
+                        machine.soft_reset()
                 else:
                     popup.show("Translation loading error.", "Error", 10)
                     translate.load(lang_old)
@@ -143,7 +144,7 @@ def run():
             # Backlight settings
             if menu2 == 1:
                 work1 = True
-                while work1 == True:
+                while work1:
                     menu3 = menus.menu(l_get("apps.settings.lcd_menu.backlight_title"),
                                        [(l_get("apps.settings.current") + ": " + str(round(nvs.get_float(n_settings, "backlight"), 1)), 1),
                                         ("+", 2),
@@ -164,10 +165,10 @@ def run():
             # Autorotate settings       
             elif menu2 == 2:
                 work1 = True
-                if osc.HAS_IMU == False:
+                if not osc.HAS_IMU:
                     work1 = False
                     popup.show(l_get("apps.settings.lcd_menu.imu_error_popup"), l_get("crashes.error"), 10)
-                while work1 == True:
+                while work1:
                     menu3 = menus.menu(l_get("apps.settings.lcd_menu.autorotate_title"),
                                        [(l_get("apps.settings.current") + ": " + str(nvs.get_int(n_settings, "autorotate")), 1),
                                         (l_get("menus.enable"), 2),
@@ -185,7 +186,7 @@ def run():
             # Power saving settings
             elif menu2 == 3:
                 work1 = True
-                while work1 == True:
+                while work1:
                     menu3 = menus.menu(l_get("apps.settings.lcd_menu.power_saver_title"),
                                        [(l_get("apps.settings.current") + ": " + str(nvs.get_int(n_settings, "allowsaving")), 1),
                                         (l_get("menus.enable"), 2),
@@ -209,7 +210,7 @@ def run():
             # Volume settings
             if menu2 == 1:
                 work1 = True
-                while work1 == True:
+                while work1:
                     menu3 = menus.menu(l_get("apps.settings.buzzer_menu.volume_title"),
                                        [(l_get("apps.settings.current") + ": " + str(round(nvs.get_float(n_settings, "volume"), 1)), 1),
                                         ("+", 2),
@@ -228,7 +229,7 @@ def run():
         
         # Neopixel settings
         elif menu1 == 5:
-            if osc.HAS_NEOPIXEL == False:
+            if not osc.HAS_NEOPIXEL:
                 popup.show(l_get("apps.settings.neopixel.no_neo_popup"), l_get("popups.info"))
                 continue
             
@@ -243,7 +244,7 @@ def run():
                 enable = menus.menu(l_get("apps.settings.neopixel.enable_ask"),
                                     [(l_get("menus.yes"), 1),
                                      (l_get("menus.no"), 0)])
-                if enable != None:
+                if enable is not None:
                     nvs.set_int(n_settings, 'neo_enabled', enable)
                     
             elif np_menu == 1:
@@ -257,6 +258,7 @@ def run():
                                                   [(l_get("menus.yes"), 1),
                                                    (l_get("menus.no"), None)])
                     if color_change_ask == 1:
+                        import modules.numpad as keypad
                         r = keypad.numpad("R color, 0-255", 3)
                         g = keypad.numpad("G color, 0-255", 3)
                         b = keypad.numpad("B color, 0-255", 3)
@@ -308,25 +310,25 @@ def run():
                 index = 0
                 for ap in nic_scan:
                     ap_name = ap[0].decode()
-                    if ap_name != '' and ap_name != None and ap[5] == False:
+                    if ap_name != '' and ap_name is not None and not ap[5]:
                         wlan_scan.append((ap_name, index))
                     index += 1
                 wlan_scan.append((l_get("menus.menu_close"), None))
                 num = menus.menu(l_get("apps.settings.wifi.select_ssid"), wlan_scan)
-                if num == None:
+                if num is None:
                     continue
                 ssid = nic_scan[num][0].decode()
                 if nic_scan[num][4] != 0:
                     import modules.numpad as keypad
                     password = str(keypad.keyboard(l_get("apps.settings.wifi.enter_passwd"), maxlen=63, hideInput=False))
-                    if password == None:
+                    if password is None:
                         continue
                 else:
                     password = ""
                 autoconnect = menus.menu(l_get("apps.settings.wifi.auto_connect_ask"),
                                          [(l_get("menus.yes"), 1),
                                           (l_get("menus.no"), 0)])
-                if autoconnect == None:
+                if autoconnect is None:
                     autoconnect = 0
                 tft.fill(0)
                 tft.text(f8x8, l_get("apps.settings.wifi.connecting"), 0,0, 65535)
@@ -339,7 +341,7 @@ def run():
                     nic.connect(ssid)
 
                 start_time = time.ticks_ms()
-                while nic.isconnected() == False and time.ticks_diff(time.ticks_ms(), start_time) < 10000:
+                while not nic.isconnected() and time.ticks_diff(time.ticks_ms(), start_time) < 10000:
                     time.sleep(0.2)
 
                 if nic.isconnected():
@@ -360,7 +362,7 @@ def run():
                 if int(nvs.get_float(n_wifi, "conf")) == 1.0:
                     try:
                         nic = wifi_man.nic
-                        if nic.isconnected() == False:
+                        if not nic.isconnected():
                             rend = menus.menu(l_get("apps.settings.wifi.connect_with") + nvs.get_string(n_wifi, "ssid") + "?", 
                                               [(l_get("menus.yes"),  1),
                                                (l_get("menus.no"),  2)])
@@ -381,7 +383,7 @@ def run():
                                     nic.connect(ssid)
 
                                 start_time = time.ticks_ms()
-                                while nic.isconnected() == False and time.ticks_diff(time.ticks_ms(), start_time) < 10000:
+                                while not nic.isconnected() and time.ticks_diff(time.ticks_ms(), start_time) < 10000:
                                     time.sleep(0.2)
 
                                 if nic.isconnected():
@@ -426,7 +428,7 @@ def run():
         elif menu1 == 7:
             
             # SD Slot check
-            if osc.HAS_SD_SLOT == False or nvs.get_int(n_settings, "sd_overwrite") == 1:
+            if not osc.HAS_SD_SLOT or nvs.get_int(n_settings, "sd_overwrite") == 1:
                 popup.show(l_get("apps.settings.sd.no_slot_detected_popup"), l_get("crashes.error"), 10)
                 continue
             
@@ -448,8 +450,8 @@ def run():
                     else:
                         sdin = sd.init(2, osc.SD_CLK, osc.SD_CS, osc.SD_MISO, osc.SD_MOSI)
                     time.sleep(2)
-                    if sdin == True:
-                        if sd.mount() == True:
+                    if sdin:
+                        if sd.mount():
                             tft.text(f8x8, l_get("apps.settings.sd.done"),0,8, 65535)
                         else:
                             tft.text(f8x8, l_get("apps.settings.sd.failed"),0,8, 65535)
@@ -466,7 +468,7 @@ def run():
                     tft.fill(0)
                     tft.text(f8x8, l_get("apps.settings.sd.unmount_load"),0,0, 65535)
                     sdin = sd.umount()
-                    if sdin == True:
+                    if sdin:
                         tft.text(f8x8, l_get("apps.settings.sd.done"),0,8, 65535)
                         sd.sd = None
                     else:
@@ -485,7 +487,7 @@ def run():
                 if about_menu == 1:
                     tft.fill(0)
                     gc.collect()
-                    if cache.get("ver_isbeta") == True:
+                    if cache.get("ver_isbeta"):
                         ver_color = 65088
                     else:
                         ver_color = 65535
@@ -513,7 +515,7 @@ def run():
                     while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
                         time.sleep(osc.DEBOUNCE_TIME)
                         
-                elif about_menu == None:
+                elif about_menu is None:
                     break
                 
         # Factory

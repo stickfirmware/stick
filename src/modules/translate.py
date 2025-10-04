@@ -55,9 +55,9 @@ def _load_lang(lang):
                             if files.exists("/language/" + gz_path):
                                 os.remove("/language/" + file)
                     printer.log("Removed uncompressed lang files (only with .gz)")
-                except:
+                except Exception:
                     print("Failed to remove uncompressed lang")
-            except:
+            except Exception:
                 data = json.read(lang_path)
         else:
             data = json.read(lang_path)

@@ -32,7 +32,7 @@ def run():
                 try:
                     apps.install("/app-packs/" + app, False)
                     gc.collect()
-                except Exception as e:
+                except Exception:
                     failed_counter += 1
             open("/usr/app-pack.installed", "w").close()
             
@@ -44,7 +44,7 @@ def run():
             apps_list = "Image viewer"
             popup.show(l_get("apps.pack_installer.app_list").replace("%apps%", apps_list).replace("%size%", size_estimate), l_get("popups.info"))
         
-        elif menu == None:
+        elif menu is None:
             menu = menus.menu(l_get("menus.are_sure"), [
                 (l_get("menus.no"), None),
                 (l_get("menus.yes"), 1)

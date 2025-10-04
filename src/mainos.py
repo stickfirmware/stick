@@ -1,4 +1,4 @@
-print("Stick firmware")
+# ruff: noqa: E402
 
 ##########################
 #      IMPORTANT!!!!     #
@@ -19,7 +19,6 @@ import gc
 import network
 import os
 import time
-import random
 
 # System modules
 from modules.decache import decache
@@ -36,6 +35,8 @@ import modules.button_combos as btn_combos
 
 # Scripts
 import scripts.checkbattery as battery_shutdown
+
+print("Stick firmware")
 
 # Set frequencies
 debug.log("Setting Ultra freq")
@@ -74,7 +75,7 @@ debug.log("Init tft")
 
 try:
     tft = io_man.get('tft')
-    if tft == None:
+    if tft is None:
         import modules.tft_init as tft_init
         tft = tft_init.init_tft()
         del tft_init
@@ -147,7 +148,7 @@ debug.log("Sync time from external RTC")
 rtc = None
 i2c = None
 mpu = None
-if osc.HAS_SHARED_I2C == True:
+if osc.HAS_SHARED_I2C:
     import modules.i2c_init as i2c_init
     i2c, rtc, mpu = i2c_init.init()
 else:
@@ -167,7 +168,7 @@ button_a, button_b, button_c, clicker, debug_console, sleep_button = btn_init.in
 
 # Init neopixel
 render_bar(l_get("mainos_load.init_neopixel"), True)
-if osc.HAS_NEOPIXEL == True:
+if osc.HAS_NEOPIXEL:
     import modules.neopixels as neopixels
     import modules.neopixel_anims as np_anims
     neopixels.make(osc.NEOPIXEL_PIN, osc.NEOPIXEL_LED_COUNT)
@@ -295,15 +296,15 @@ import apps.clock as app_clock
 
 # Wake up function
 def wake_up():
-    global is_in_saving, pwr_save_time, prev_bl, stable_orientation
+    global is_in_saving, pwr_save_time, prev_bl, stable_orientation, sleep_time
     is_in_saving = False
     auto_rotate = nvs.get_int(n_settings, "autorotate")
     if auto_rotate == 0:
         stable_orientation = osc.LCD_ROTATIONS["BUTTON_LEFT"]
-        if osc.HAS_IMU == True: 
+        if osc.HAS_IMU:
             mpu.sleep_on()
     else:
-        if osc.HAS_IMU == True: 
+        if osc.HAS_IMU:
             mpu.sleep_off()
         else:
             auto_rotate = 0
@@ -324,7 +325,7 @@ debug.log(str(sys.modules)) # Helpful for debug of RAM cleaner
 render_bar(l_get("mainos_load.guides"), True)
 
 # Show quick start guide if not shown yet
-if nvs.get_int(n_guides, 'quick_start') == None:
+if nvs.get_int(n_guides, 'quick_start') is None:
     import helpers.run_in_reader as rir
     rir.open_file(f'/guides/quick_start_{cache.get('n_cache_lang')}.txt')
     nvs.set_int(n_guides, 'quick_start', 1)
@@ -333,7 +334,7 @@ if nvs.get_int(n_guides, 'quick_start') == None:
 while True:
 
     # Set CPU frequencies depending on power saving state
-    if is_in_saving == False:
+    if not is_in_saving:
         ps.set_freq(osc.BASE_FREQ)
     else:
         ps.set_freq(osc.SLOW_FREQ)
@@ -342,13 +343,13 @@ while True:
     ps.boost_allowing_state(False)
     
     # Render clock text
-    if menu == 0 and menu_change == False:
+    if menu == 0 and not menu_change:
         app_clock.clock()
     # Render clock text vertically
-    elif menu == 1 and menu_change == False:
+    elif menu == 1 and not menu_change:
         app_clock.clock_vert()
     # Render entire clock
-    elif menu_change == True:
+    elif menu_change:
         # Allow boosts for a while
         ps.boost_allowing_state(True)
 
@@ -406,7 +407,7 @@ while True:
                 nic.active(False)
     
     # Check if Wi-Fi is connected, if not, set connection time     
-    if nic.active() and nic.isconnected() == False:
+    if nic.active() and not nic.isconnected():
         conn_time = time.ticks_ms()
 
     # Power saver loop
@@ -461,7 +462,7 @@ while True:
             orientation_start_time = time.ticks_ms()
 
     # Detect spam (Very secret!!!)
-    if clicker != None:
+    if clicker is not None:
         if clicker.value() == 0:
             while clicker.value() == 0:
                 time.sleep(osc.DEBOUNCE_TIME)
@@ -579,7 +580,7 @@ while True:
         if button_a.value() == 0 or button_b.value() == 0:
             continue
         
-        try:                
+        try:
             try:
                 # Open power menu
                 import apps.power_menu as app_powermen
@@ -700,11 +701,11 @@ while True:
         b_check.run(tft)
         
     # NTP sync
-    if time.ticks_diff(time.ticks_ms(), ntp_time) >= osc.NTP_SYNC_TIME or ntp_first == False:
+    if time.ticks_diff(time.ticks_ms(), ntp_time) >= osc.NTP_SYNC_TIME or not ntp_first:
         ntp_first = True
         ntp_time = time.ticks_ms()
         nic = network.WLAN(network.STA_IF)
-        if nic.isconnected() == True:
+        if nic.isconnected():
             import modules.ntp as ntp
             ntp.sync(rtc)
             del ntp
@@ -714,7 +715,7 @@ while True:
                     tft.text(f8x8, "NTP",4,124,703)
                     
     # Console
-    if debug_console != None:
+    if debug_console is not None:
         if debug_console.value() == 0:
             while debug_console.value() == 0:
                 time.sleep(osc.DEBOUNCE_TIME)
@@ -736,7 +737,7 @@ while True:
                     time.sleep(osc.DEBOUNCE_TIME)
                     
     # Sleep button
-    if sleep_button != None:
+    if sleep_button is not None:
         if sleep_button.value() == 0:
             while sleep_button.value() == 0:
                 time.sleep(osc.DEBOUNCE_TIME)

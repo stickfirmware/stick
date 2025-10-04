@@ -11,7 +11,7 @@ def log(msg: any):
     Args:
         msg (any): Message to display in console
     """
-    if osc.ENABLE_DEBUG_PRINTS == True:
+    if osc.ENABLE_DEBUG_PRINTS:
         print(str(msg))
         
 def log_cleaner(msg: any):
@@ -21,5 +21,5 @@ def log_cleaner(msg: any):
     Args:
         msg (any): Message to display in console
     """
-    if osc.ENABLE_DEBUG_PRINTS and osc.LESS_RAM_CLEANER_OUTPUT == False:
+    if osc.ENABLE_DEBUG_PRINTS and not osc.LESS_RAM_CLEANER_OUTPUT:
         print(str(msg))

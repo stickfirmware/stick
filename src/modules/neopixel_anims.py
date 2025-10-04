@@ -85,11 +85,11 @@ def automatic(use_cache: bool = False) -> int:
         
     if _CACHE_COUNT == 0:
         _CACHE_COUNT = 50
-        if use_cache == False:
+        if not use_cache:
             n_settings = cache.get_nvs("settings")
             
             enabled = nvs.get_int(n_settings, "neo_enabled")
-            if enabled == False:
+            if not enabled:
                 disabled()
                 return
             
@@ -99,7 +99,7 @@ def automatic(use_cache: bool = False) -> int:
             b = nvs.get_int(n_settings, "neo_B")
         else:
             enabled = cache.get_and_remove("neo_enabled")
-            if enabled == False:
+            if not enabled:
                 disabled()
                 return
             
@@ -109,7 +109,7 @@ def automatic(use_cache: bool = False) -> int:
             b = cache.get_and_remove("neo_B")
     else:
         _CACHE_COUNT -= 1
-        if enabled == False:
+        if not enabled:
             disabled()
             return
     

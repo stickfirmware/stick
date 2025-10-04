@@ -22,7 +22,7 @@ def run():
     button_a = io_man.get('button_a')
     button_c = io_man.get('button_c')
     
-    if cache.get('random_seeded') != True:
+    if not cache.get('random_seeded'):
         s_random.seed()
 
     tft.fill(0)

@@ -37,7 +37,7 @@ def run():
     ps.set_freq(osc.BASE_FREQ)
     global ir_pin
     work = True
-    while work == True:
+    while work:
         render = menus.menu(l_get("apps.ir_remote.name"), 
                              [(l_get("apps.ir_remote.menu.change_pin"), 8),
                              (l_get("apps.ir_remote.menu.receive"), 9),
@@ -48,12 +48,12 @@ def run():
             for pin in osc.IR_ALLOWED_PINS:
                 render_pins.append(("GPIO"+str(pin), pin))
             render = menus.menu(l_get("apps.ir_remote.menu.change_pin"), render_pins)
-            if render != 99 and render != None:
+            if render != 99 and render is not None:
                 nvs.set_int(n_settings, "irPin", render)
             ir_pin = machine.PWM(machine.Pin(nvs.get_int(n_settings, "irPin"), machine.Pin.OUT), duty = 0)
             io_man.set('IR', ir_pin)
         elif render == 9:
-            if osc.ALLOW_IR_RECORD == False:
+            if not osc.ALLOW_IR_RECORD:
                 menus.menu(l_get("apps.ir_remote.menu.receive_no_support"), [(l_get("menus.menu_close"), 1)])
                 continue
             works = True
@@ -62,9 +62,9 @@ def run():
                 os.mkdir("/usr")
             if "ir" not in os.listdir("/usr/"):
                 os.mkdir("/usr/ir")
-            while works == True:
+            while works:
                 time.sleep(osc.LOOP_WAIT_TIME)
-                if updat == True:
+                if updat:
                     tft.fill(0)
                     # Show receiver mode pinout
                     tft.text(f8x8, l_get("apps.ir_remote.receiver_mode.title"),0,0,65535)

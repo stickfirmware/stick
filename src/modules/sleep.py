@@ -65,7 +65,7 @@ def sleep(deepsleep = False):
     log("Going to sleep, Bye!")
     old_freq = machine.freq()
     machine.freq(osc.ULTRA_SLOW_FREQ) # Set freq to ultra slow, i don't know if this helps. Leave it as it is.
-    if deepsleep == False:
+    if not deepsleep:
         machine.lightsleep()
     else:
         machine.deepsleep()
@@ -101,18 +101,18 @@ def deinit_things():
     # IR
     ir = io_man.get('IR')
     
-    if ir != None:
+    if ir is not None:
         ir.deinit()
         
     # Buzzer
     buzzer = io_man.get('buzzer')
     
-    if buzzer != None:
+    if buzzer is not None:
         buzzer.deinit()
         
     # Wifi
     wasConnected = False
-    if nic.isconnected() == True:
+    if nic.isconnected():
         nic.disconnect()
         wasConnected = True
     nic.active(False)
@@ -121,7 +121,7 @@ def deinit_things():
     os.sync()
     
     # IMU / MPU sleep
-    if mpu != None:
+    if mpu is not None:
         mpu.sleep_on()
             
 def init_things():
@@ -138,7 +138,7 @@ def init_things():
     n_settings = cache.get_nvs('settings')
     s_bl = nvs.get_float(n_settings, "backlight")
     del n_settings
-    if s_bl == None:
+    if s_bl is None:
         tft.set_backlight(0.5)
     else:
         tft.set_backlight(s_bl)
@@ -146,21 +146,21 @@ def init_things():
     # IR
     ir = io_man.get('IR')
     
-    if ir != None:
+    if ir is not None:
         ir.init(freq=38000, duty_u16=0)
         
     # Buzzer
     buzzer = io_man.get('buzzer')
     
-    if buzzer != None:
+    if buzzer is not None:
         buzzer.init(duty_u16=0, freq=400)
         
     # IMU
-    if mpu != None:
+    if mpu is not None:
         mpu.sleep_off()
             
     # Wi-Fi
-    if wasConnected == True:
+    if wasConnected:
         n_wifi = cache.get_nvs('wifi')
         nic.active(True)
         nic.connect(nvs.get_string(n_wifi, "ssid"), nvs.get_string(n_wifi, "passwd"))

@@ -1,0 +1,4 @@
+ /\_/\  | Murphy
+( o.o ) | Mood: %mood%
+ > ^ <  | Level: %level%
+        | XP: %curr%/%need%

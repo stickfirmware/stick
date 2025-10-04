@@ -4,9 +4,7 @@ from time import sleep, ticks_ms, ticks_diff
 from machine import Pin, I2S
 
 import fonts.def_8x8 as f8x8
-import fonts.def_16x32 as f16x32
 
-import modules.menus as menus
 import modules.os_constants as osc
 import modules.io_manager as io_man
 from modules.translate import get as l_get
@@ -72,7 +70,7 @@ def play(path):
 
     try:
         with open(path, "rb") as f:
-            header = f.read(44)
+            header = f.read(44) # noqa: F841
             file_size = uos.stat(path)[6]
             data_length = file_size - 44
             total_seconds = data_length // 32000

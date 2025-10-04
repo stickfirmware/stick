@@ -28,7 +28,7 @@ def log_to_file(data):
 
 def crash_screen(tft, error_code, log_message, log_error, enable_tft, reboot_method):
     print("Showing crash screen")
-    if enable_tft == True:
+    if enable_tft:
         print("Clear display")
         tft.fill(7128)
         gc.collect()
@@ -38,9 +38,9 @@ def crash_screen(tft, error_code, log_message, log_error, enable_tft, reboot_met
         text = "device has crashed!"
         tft.text(f8x8, text, t_utils.center_x(text, 8), 58, 65535, 7128)
     
-    if log_error == True:
+    if log_error:
         print("NVS error logging turned on!")
-        if enable_tft == True:
+        if enable_tft:
             print("Showing text")
             text = "Collecting logs..."
             tft.text(f8x8, text, t_utils.center_x(text, 8), 70, 65535, 7128)
@@ -49,7 +49,7 @@ def crash_screen(tft, error_code, log_message, log_error, enable_tft, reboot_met
         nvs.set_int(n_crash, "latest", error_code)
         print("Increase crash count")
         count = nvs.get_int(n_crash, "crashCount")
-        if count != None:
+        if count is not None:
             nvs.set_int(n_crash, "crashCount", (count + 1))
         else:
             nvs.set_int(n_crash, "crashCount", 1)
@@ -87,7 +87,7 @@ def crash_screen(tft, error_code, log_message, log_error, enable_tft, reboot_met
     else:
         method = "soft"
         
-    if enable_tft == True:
+    if enable_tft:
         print("Showing text")
         text = "Your device will"
         tft.text(f8x8, text, t_utils.center_x(text, 8), 90, 65535, 7128)

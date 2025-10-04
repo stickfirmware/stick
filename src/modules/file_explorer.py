@@ -1,7 +1,6 @@
 import sys
 import time
 import os
-import gc
 
 import fonts.def_8x8 as f8x8
 import fonts.def_16x32 as f16x32
@@ -58,7 +57,7 @@ def browser(path):
     index = 1
     files_menu.append(("../", 0))
     for i in files:
-        if is_file(path_join(path, i)) == True:
+        if is_file(path_join(path, i)):
             files_menu.append(("  " + str(i), index))
         else:
             files_menu.append(("D " + str(i), index))
@@ -67,7 +66,7 @@ def browser(path):
     last_chunk = chunks[-1] if chunks else ""
     render = menus.menu(last_chunk, files_menu)
     
-    if render == None:
+    if render is None:
         return
     elif render == 0:
         return
@@ -80,7 +79,7 @@ def fileMenu(file):
         confirmation = menus.menu(l_get("apps.file_explorer.modify_may_harm"), 
                                   [(l_get("apps.file_explorer.dont_open"), None),
                                    (l_get("apps.file_explorer.open_anyway"), 1)])
-        if confirmation == None:
+        if confirmation is None:
             return
     render = menus.menu(str(file), 
                         [(l_get("apps.file_explorer.open_in"), 4),
@@ -141,9 +140,9 @@ def detect():
 def explorerLoop(startingpath, disablemenu = False):
     currpath = startingpath
     work = True
-    while work == True:
+    while work:
         browse = browser(currpath)
-        if browse == None:
+        if browse is None:
             if disablemenu:
                 if currpath == "/":
                     work = False
@@ -153,7 +152,7 @@ def explorerLoop(startingpath, disablemenu = False):
                 folder_exit_menu = menus.menu(l_get("apps.file_explorer.folder_menu"),
                                               [(l_get("menus.menu_go_back"), None),
                                                (l_get("apps.file_explorer.create_folder"), 1)])
-                if folder_exit_menu == None:
+                if folder_exit_menu is None:
                     if currpath == "/":
                         work = False
                     else:
@@ -163,16 +162,16 @@ def explorerLoop(startingpath, disablemenu = False):
                     folder_create_name = keyboard.keyboard(l_get("apps.file_explorer.enter_folder_name"), 200)
                     from modules.decache import decache
                     decache("modules.numpad")
-                    if folder_create_name != "" and folder_create_name != None:
+                    if folder_create_name != "" and folder_create_name is not None:
                         try:
                             os.mkdir(path_join(currpath, folder_create_name))
-                        except:
+                        except OSError:
                             popup.show(l_get("apps.file_explorer.could_not_make_folder"), l_get("crashes.error"), 10)
                     else:
                         popup.show(l_get("apps.file_explorer.invalid_name"), l_get("crashes.error"), 10)
         else:
             if is_file(browse):
-                if disablemenu == False:
+                if not disablemenu:
                     fileMenu(browse)
                 else:
                     return browse
@@ -197,7 +196,7 @@ def explorerLoop(startingpath, disablemenu = False):
                                 (l_get("menus.no"), None)]) == 1:
                             try:
                                 rmdir_recursive(path_join(currpath, browse))
-                            except:
+                            except OSError:
                                 popup.show(l_get("apps.file_explorer.error_deleting"), "Error", 10)
     
 def run(fileselectmode=False, startingselectpath="/"):
@@ -207,11 +206,11 @@ def run(fileselectmode=False, startingselectpath="/"):
     tft.text(f8x8, l_get("apps.file_explorer.loading"),0,32,65535)
     work = True
     detect()
-    if fileselectmode == True:
+    if fileselectmode:
         work = False
         return explorerLoop(startingselectpath, True)
-    while work == True:
-        if sd_present == True:
+    while work:
+        if sd_present:
             render = menus.menu(l_get("apps.file_explorer.name"), 
                                 [(l_get("apps.file_explorer.built-in_flash") + " (/)", 1),
                                  (l_get("apps.file_explorer.sd_card") + " (/sd)", 2),

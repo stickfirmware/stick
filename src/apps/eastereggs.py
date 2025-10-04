@@ -39,14 +39,14 @@ def trigger(code):
         if button_b.value() == 0:
             c_handler.crash_screen(tft, 2, "YOU WANTED IT!!!\nLeave teh button alone, please, I'm begging you!", True, True, 1)
     # Clicker
-    elif code == 2 and clicker != None:
+    elif code == 2 and clicker is not None:
         tft.fill(0)
         work = True
         update_counter = True
         clicks = 0
         while work:
             time.sleep(osc.LOOP_WAIT_TIME)
-            if update_counter == True:
+            if update_counter:
                 update_counter = False
                 tft.text(f16x32, str(clicks), 0,0,63552)
             if clicker.value() == 0:

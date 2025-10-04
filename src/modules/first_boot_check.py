@@ -10,7 +10,7 @@ def check():
     Makes configs and user folders
     """
     n_boot = cache.get_nvs("boot")
-    if nvs.get_int(n_boot, "firstBoot") == None:
+    if nvs.get_int(n_boot, "firstBoot") is None:
         printer.log("Devices first boot, configuring NVS.")
     
         # Boot config

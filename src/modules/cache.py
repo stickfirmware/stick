@@ -8,7 +8,7 @@ def set(name, value):
 
 def clear(bypass_precache=False):
     _CACHE.clear()
-    if bypass_precache == False:
+    if not bypass_precache:
         precache()
 
 def remove(name):
