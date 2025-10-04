@@ -15,6 +15,7 @@
             0
         ]
     },
+    "printer": "colors;log_levels;",
     "random": [
         1,
         0
