@@ -4,7 +4,7 @@
         "code": "pl",
         "version": [
             1,
-            6
+            7
         ],
         "authors": [
             "@Kitki30"
@@ -387,6 +387,16 @@
             "file": "Plik: ",
             "in_progress": "Prosze czekac...",
             "context_menu_text": "Uruchom w pythonie"
+        },
+        "pet": {
+            "name": "Pets",
+            "configure_pet": "Configure pet",
+            "scan_pets": "Scanning for pets...",
+            "load_conf": "Loading configuration...",
+            "no_pets": "No pets found!\nPlease check if pet packs are installed.",
+            "current": "Current:",
+            "pet_menu": "Pet menu",
+            "change_pet": "Change pet"
         }
     },
     "menus": {
