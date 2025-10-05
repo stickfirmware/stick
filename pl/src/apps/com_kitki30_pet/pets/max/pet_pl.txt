@@ -1,0 +1,7 @@
+     |\    o  | Max
+    |  \    o | Mood:
+|\ /    .\ o  | %mood%
+| |       (   | Level:
+|/ \     /    | %level%
+    |  /      | XP:
+     |/       | %curr%/%need%
