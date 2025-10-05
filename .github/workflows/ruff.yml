@@ -16,7 +16,14 @@ jobs:
       with:
         python-version: '3.x'
         
-    - uses: astral-sh/ruff-action@v3
+    - name: "Check ruff"
+      uses: astral-sh/ruff-action@v3
       with:
         args: "check"
+        src: "./src"
+      
+    - name: "Check imports sorting"
+      uses: astral-sh/ruff-action@v3
+      with:
+        args: "check --select I"
         src: "./src"
