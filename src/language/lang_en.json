@@ -396,7 +396,12 @@
             "no_pets": "No pets found!\nPlease check if pet packs are installed.",
             "current": "Current:",
             "pet_menu": "Pet menu",
-            "change_pet": "Change pet"
+            "change_pet": "Change pet",
+            "mood": {
+                "happy": "Happy",
+                "neutral": "Neutral",
+                "sad": "Sad"
+            }
         }
     },
     "menus": {

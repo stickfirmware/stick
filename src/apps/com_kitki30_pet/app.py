@@ -36,16 +36,15 @@ def make_config():
 def replace_pet_lines(line):
     xp = xp_levels.xp_progress(xp_levels.get_xp())
     
-    # TODO: Translate
-    mood = "Neutral"
+    mood = "Unknown"
     mood_points = xp_levels.get_mood()
     
     if mood_points >= 80:
-        mood = "Happy"
+        mood = l_get("apps.pet.mood.happy")
     elif mood_points >= 50:
-        mood = "Neutral"
+        mood = l_get("apps.pet.mood.neutral")
     else:
-        mood = "Sad"
+        mood = l_get("apps.pet.mood.sad")
     
     return line.replace("%mood%", mood).replace("%level%", str(xp[0])).replace("%curr%", str(xp[1])).replace("%need%", str(xp[2])) 
 
