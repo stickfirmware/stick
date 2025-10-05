@@ -14,9 +14,7 @@ def get_list(scan_path: str) -> list[tuple]:
     # Scan for pets
     pets = []
     
-    for pet_folder in list_dir:
-        log(f"Scanning {pet_folder} for pets...")
-        
+    for pet_folder in list_dir:    
         # Check if there is pet manifest in the folder
         if "pet.json" in os.listdir(files.path_join(scan_path, pet_folder)):
             # Read manifest
@@ -26,8 +24,7 @@ def get_list(scan_path: str) -> list[tuple]:
                 
             try:
                 pet_name = pet_manifest["name"]
-                languages = pet_manifest["language_versions"]
-                pet_tuple = (pet_name, languages, files.path_join(scan_path, pet_folder))
+                pet_tuple = (pet_name, files.path_join(scan_path, pet_folder))
                 pets.append(pet_tuple)
                 log(f"Pet found! {pet_tuple}", log_levels.DEBUG)
             except (KeyError, ValueError):

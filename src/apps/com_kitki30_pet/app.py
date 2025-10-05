@@ -32,7 +32,7 @@ def make_config():
         if pets is None: 
             return
         save_prompt.show_saving_prompt()
-        json.write(files.path_join(_CONFIG_PATH, "pet_config.json"), {"pet_name": pets[0][0], "pet_path": pets[0][2]})
+        json.write(files.path_join(_CONFIG_PATH, "pet_config.json"), {"pet_name": pets[0][0], "pet_path": pets[0][1]})
         return json.read(files.path_join(_CONFIG_PATH, "pet_config.json"))
     
 def replace_pet_lines(line):
@@ -110,5 +110,5 @@ def run():
             return
         
         save_prompt.show_saving_prompt()
-        json.write(files.path_join(_CONFIG_PATH, "pet_config.json"), {"pet_name": pet_select[0], "pet_path": pet_select[2]})
+        json.write(files.path_join(_CONFIG_PATH, "pet_config.json"), {"pet_name": pet_select[0], "pet_path": pet_select[1]})
         return run()
