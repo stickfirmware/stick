@@ -9,8 +9,8 @@ import modules.io_manager as io_man
 import modules.json as json
 import modules.menus as menus
 import modules.os_constants as osc
-import modules.saving_prompt as save_prompt
 import modules.popup as popup
+import modules.saving_prompt as save_prompt
 import modules.xp_leveling as xp_levels
 from modules.translate import get as l_get
 
