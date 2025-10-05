@@ -7,7 +7,6 @@ import fonts.def_8x8 as f8x8
 import modules.cache as cache
 import modules.io_manager as io_man
 import modules.nvs as nvs
-
 import modules.os_constants as osc
 import modules.powersaving as ps
 
@@ -20,8 +19,6 @@ arrow_up = None
 arrow_down = None
 arrow_left = None
 arrow_right = None
-    
-allow_xp_levelling = False
     
 # Refresh io
 def _LOAD_IO():

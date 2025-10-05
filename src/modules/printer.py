@@ -2,11 +2,10 @@
 Logging helper for Stick firmware
 """
 
+import modules.cache as cache
 import modules.console_colors as console_colors
 import modules.os_constants as osc
 
-# This is for xp leveling module
-allow_mood_changes = False
 
 class Levels():
     DEBUG = 1
@@ -36,7 +35,7 @@ def log(msg: any, log_level: int = 2):
             msg_str = str(msg)
             print(console_colors.wrap_text(f"[{level_name}] {msg_str}", color))
             
-            if allow_mood_changes:
+            if cache.get("allow_xp_levelling"):
                 import modules.xp_leveling as xp_levels
                 if log_level == Levels.ERROR:
                     xp_levels.remove_mood(5)
