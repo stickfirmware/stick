@@ -396,7 +396,12 @@
             "no_pets": "Nie znaleziono zwierzakow!\nSprawdz czy paczki zwierzakow sa zainstalowane.",
             "current": "Obecnie:",
             "pet_menu": "Menu zwiezakow",
-            "change_pet": "Zmien zwiezaka"
+            "change_pet": "Zmien zwiezaka",
+            "mood": {
+                "happy": "Szczesliwy",
+                "neutral": "Neutralny",
+                "sad": "Smutny"
+            }
         }
     },
     "menus": {
@@ -463,5 +468,9 @@
         "menu": "Menu",
         "confirm": "Potwierdz",
         "symbols": "Symbole"
+    },
+    "saving_prompt": {
+        "saving": "Zapisywanie...",
+        "do_not_turn_off": "Nie wylaczaj urzadzenia!!!"
     }
 }
