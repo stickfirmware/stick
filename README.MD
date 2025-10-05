@@ -33,6 +33,7 @@ Small stick but powerful beast.
 
 ## Links
 - YouTube tutorials for Stick firmware - https://kitki30.tk/tutorials
+- Our trello board - https://trello.com/b/ZT1qrlDO/stick-firmware
 
 ## Translations
 Please help us translate Stick firmware in [Crowdin](https://crowdin.com/project/stick-firmware)
