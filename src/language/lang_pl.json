@@ -398,9 +398,9 @@
             "pet_menu": "Menu zwiezakow",
             "change_pet": "Zmien zwiezaka",
             "mood": {
-                "happy": "Happy",
-                "neutral": "Neutral",
-                "sad": "Sad"
+                "happy": "Szczesliwy",
+                "neutral": "Neutralny",
+                "sad": "Smutny"
             }
         }
     },
@@ -470,7 +470,7 @@
         "symbols": "Symbole"
     },
     "saving_prompt": {
-        "saving": "Saving...",
-        "do_not_turn_off": "Do not turn off!!!"
+        "saving": "Zapisywanie...",
+        "do_not_turn_off": "Nie wylaczaj urzadzenia!!!"
     }
 }
