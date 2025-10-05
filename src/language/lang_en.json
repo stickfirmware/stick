@@ -468,5 +468,9 @@
         "menu": "Menu",
         "confirm": "Confirm",
         "symbols": "Symbols"
+    },
+    "saving_prompt": {
+        "saving": "Saving...",
+        "do_not_turn_off": "Do not turn off!!!"
     }
 }
