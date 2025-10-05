@@ -4,7 +4,7 @@
         "code": "pl",
         "version": [
             1,
-            7
+            8
         ],
         "authors": [
             "@Kitki30"
@@ -401,7 +401,9 @@
                 "happy": "Szczesliwy",
                 "neutral": "Neutralny",
                 "sad": "Smutny"
-            }
+            },
+            "read_error": "Could not open your pet, please delete '%config_path%' to reset config",
+            "language_error": "Could not read your pet in your language, i will now load it in english."
         }
     },
     "menus": {
