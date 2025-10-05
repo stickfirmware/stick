@@ -1,4 +1,4 @@
  __    __  | Jazz
-/ \\..// \ | Mood: %mood%
-  ( oo )   | Level: %level%
+/ \\..// \ | Nastroj: %mood%
+  ( oo )   | Poziom: %level%
    \__/    | XP: %curr%/%need%
