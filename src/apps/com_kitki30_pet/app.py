@@ -72,8 +72,16 @@ def run():
 
     # Display pet
     data = None
-    with open(files.path_join(config["pet_path"],"pet_en.txt"), "r") as f:
-        data = f.read().splitlines()
+    try:
+        with open(files.path_join(config["pet_path"],f"pet_{l_get("lang_info.code")}.txt"), "r") as f:
+            data = f.read().splitlines()
+    except OSError:
+        try:
+            popup.show(l_get("apps.pet.language_error"))
+            with open(files.path_join(config["pet_path"],"pet_en.txt"), "r") as f:
+                data = f.read().splitlines()
+        except OSError:
+            popup.show(l_get("apps.pet.read_error").replace("%config_path%", {files.path_join(_CONFIG_PATH, "pet_config.json")}))
         
     tft.fill(0)
     y = 0
