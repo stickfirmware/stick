@@ -16,6 +16,6 @@ def run():
         menu.append(("Version: " + cache.get("ver_displayname"), None))
         menu.append(("rand_extra_func: " + str(cache.get("rand_extra_func")), None))
         menu.append(("MPY Ver: " + str(os.uname().release), None))
-        menu.append(("Wifi mac: " + wmaster.get_wifi_mac(), None))
+        menu.append(("MAC: " + wmaster.get_wifi_mac(), None))
         menu.append(("Close", None))
         menus.menu("Hardware info", menu)
