@@ -1,9 +1,9 @@
 import modules.menus as menus
-import modules.popup as popup
 import modules.oobe as oobe
+import modules.popup as popup
 from modules.oobe import get_entry
-from modules.printer import log
 from modules.printer import Levels as log_levels
+from modules.printer import log
 from modules.translate import get as l_get
 
 appsConfig = oobe.read_config()

@@ -1,10 +1,11 @@
 """
 First boot checker for Stick firmware
 """
-import modules.nvs as nvs
 import modules.cache as cache
+import modules.nvs as nvs
 import modules.printer as printer
 from modules.printer import Levels as log_levels
+
 
 def check():
     """

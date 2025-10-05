@@ -1,12 +1,12 @@
 import machine
 
-import modules.os_constants as osc
+import modules.cache as cache
 import modules.crash_handler as c_handler
 import modules.io_manager as io_man
+import modules.nvs as nvs
+import modules.os_constants as osc
 import modules.printer as debug
 from modules.printer import Levels as log_levels
-import modules.nvs as nvs
-import modules.cache as cache
 
 n_settings = cache.get_nvs("settings")
 tft = io_man.get('tft')
@@ -22,7 +22,7 @@ def init():
         
     # Init and sync time from rtc
     if osc.HAS_RTC:
-        import modules.rtc as rtc_bm8536  
+        import modules.rtc as rtc_bm8536
         rtc = rtc_bm8536.BM8563(i2c)
         # rtc.set_time((2025, 4, 29, 1, 13, 37, 0, 0))
         dt = rtc.get_time()

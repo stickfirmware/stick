@@ -1,11 +1,11 @@
 import gc
 
-from modules.decache import decache
-import modules.menus as menus
-import modules.os_constants as osc
-import modules.nvs as nvs
-import modules.powersaving as ps
 import modules.cache as cache
+import modules.menus as menus
+import modules.nvs as nvs
+import modules.os_constants as osc
+import modules.powersaving as ps
+from modules.decache import decache
 from modules.translate import get as l_get
 
 n_settings = cache.get_nvs('settings')

@@ -1,18 +1,18 @@
 import os
 import time
+
 import machine
 import network
 
 import fonts.def_8x8 as f8x8
-
-from modules.decache import decache
-import modules.os_constants as osc
-import modules.menus as menus
 import modules.io_manager as io_man
-import modules.sleep as m_sleep
-import modules.powersaving as ps
-from modules.translate import get as l_get
+import modules.menus as menus
+import modules.os_constants as osc
 import modules.popup as popup
+import modules.powersaving as ps
+import modules.sleep as m_sleep
+from modules.decache import decache
+from modules.translate import get as l_get
 
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')

@@ -4,6 +4,7 @@ Helper for colors in console
 
 import modules.os_constants as osc
 
+
 class Fore:
     GRAY = "\033[90m"
     LIGHTBLUE = "\033[94m"

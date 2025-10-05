@@ -6,8 +6,9 @@ import machine
 import neopixel
 
 import modules.io_manager as io_man
-from modules.printer import log
 from modules.printer import Levels as log_levels
+from modules.printer import log
+
 
 def make(pin: int, led_count: int = 1) -> bool:
     """

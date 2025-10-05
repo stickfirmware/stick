@@ -4,8 +4,8 @@ Context menu helper for Stick firmware
 
 import sys as nisysa
 
-import modules.menus as menus
 import modules.io_manager as io_man
+import modules.menus as menus
 from modules.translate import get as l_get
 
 button_a = io_man.get('button_a')

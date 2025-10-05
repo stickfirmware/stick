@@ -1,9 +1,10 @@
-import modules.os_constants as osc
 import modules.cache as cache
-import modules.nvs as nvs
-import modules.popup as popup
 import modules.menus as menus
 import modules.numpad as keypad
+import modules.nvs as nvs
+import modules.os_constants as osc
+import modules.popup as popup
+
 
 # Overwrite SD Card config from osc, so you can use custom one (ex. M5Stick)
 def run():

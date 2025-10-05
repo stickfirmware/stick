@@ -1,11 +1,12 @@
 import os
+
 import machine
 
-import modules.printer as printer
-import modules.powersaving as ps
+import modules.buzzer as buzz
 import modules.cache as cache
 import modules.os_constants as osc
-import modules.buzzer as buzz
+import modules.powersaving as ps
+import modules.printer as printer
 
 print("Stick Boot")
 
@@ -57,7 +58,7 @@ def set_f_boot(var):
     
 
 def recoveryf():
-    import recovery.recovery # noqa: F401
+    import recovery.recovery  # noqa: F401
     
 if tft is None:
     set_f_boot(None)
@@ -87,7 +88,7 @@ factory_reset = nvs.get_int(n_updates, "factory")
 if factory_reset == 1:
     tft.text(f8x8, "Factory reset...",0,106,text_color, load_bg)
     nvs.set_int(n_updates, "factory", 0)
-    import scripts.factory # noqa: F401
+    import scripts.factory  # noqa: F401
 
 while True:
     if recovery and osc.BOOT_ENABLE_RECOVERY:
@@ -108,7 +109,7 @@ while True:
     else:
         try:
             printer.log("Booting mainos")
-            import mainos # noqa: F401
+            import mainos  # noqa: F401
             # Once main loop breaks, go to recovery
             recoveryf()
         except Exception as e:

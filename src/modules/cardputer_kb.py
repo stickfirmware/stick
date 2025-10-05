@@ -1,5 +1,6 @@
-from machine import Pin
 import time
+
+from machine import Pin
 
 import modules.os_constants as osc
 

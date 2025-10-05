@@ -1,13 +1,12 @@
-import time
 import os
+import time
 
 import fonts.def_8x8 as f8x8
-
+import modules.io_manager as io_man
 import modules.menus as menus
 import modules.os_constants as osc
-import modules.printer as printer
 import modules.powersaving as ps
-import modules.io_manager as io_man
+import modules.printer as printer
 from modules.translate import get as l_get
 
 frequencies = [osc.ULTRA_SLOW_FREQ, osc.SLOW_FREQ, osc.BASE_FREQ, osc.FAST_FREQ, osc.ULTRA_FREQ]

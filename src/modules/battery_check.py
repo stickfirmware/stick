@@ -4,9 +4,8 @@ Battery voltage helper
 
 from machine import ADC, Pin
 
-import modules.os_constants as osc
-
 import fonts.def_8x8 as f8x8
+import modules.os_constants as osc
 
 adc = ADC(Pin(osc.BATTERY_ADC))
 adc.atten(ADC.ATTN_11DB)

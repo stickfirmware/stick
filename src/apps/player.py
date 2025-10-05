@@ -1,15 +1,15 @@
-import uos
 import gc
-from time import sleep, ticks_ms, ticks_diff
-from machine import Pin, I2S
+from time import sleep, ticks_diff, ticks_ms
+
+import uos
+from machine import I2S, Pin
 
 import fonts.def_8x8 as f8x8
-
-import modules.os_constants as osc
 import modules.io_manager as io_man
-from modules.translate import get as l_get
-from modules.printer import log
+import modules.os_constants as osc
 from modules.printer import Levels as log_levels
+from modules.printer import log
+from modules.translate import get as l_get
 
 button_a = io_man.get('button_a')
 button_b = io_man.get('button_b')

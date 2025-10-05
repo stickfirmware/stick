@@ -1,9 +1,10 @@
 import os
 
-import modules.json as json
 import modules.files as files
-from modules.printer import log
+import modules.json as json
 from modules.printer import Levels as log_levels
+from modules.printer import log
+
 
 def get_list(scan_path: str) -> list[tuple]:
     

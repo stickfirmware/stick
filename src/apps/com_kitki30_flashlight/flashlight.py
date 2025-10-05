@@ -1,9 +1,9 @@
 import time
 
-import modules.io_manager as io_man
-import modules.os_constants as osc
-import modules.nvs as nvs
 import modules.cache as cache
+import modules.io_manager as io_man
+import modules.nvs as nvs
+import modules.os_constants as osc
 
 n_settings = cache.get_nvs('settings')
 

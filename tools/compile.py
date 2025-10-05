@@ -1,6 +1,6 @@
 import os
-import subprocess
 import shutil
+import subprocess
 
 SRC_DIR = "src"
 OUT_DIR = "out"

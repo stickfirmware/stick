@@ -13,29 +13,27 @@
 ##########################
 
 # First party imports
-from machine import Pin, PWM
-import machine
 import gc
-import network
 import os
 import time
 
-# System modules
-from modules.decache import decache
-import modules.ram_cleaner as ram_cleaner
-import modules.crash_handler as c_handler
-import modules.nvs as nvs
-import modules.printer as debug
-from modules.printer import Levels as log_levels
-import modules.buzzer as buzz
-import modules.os_constants as osc
-import modules.io_manager as io_man
-import modules.cache as cache
-import modules.powersaving as ps
-import modules.button_combos as btn_combos
+import machine
+import network
+from machine import PWM, Pin
 
-# Scripts
+import modules.button_combos as btn_combos
+import modules.buzzer as buzz
+import modules.cache as cache
+import modules.crash_handler as c_handler
+import modules.io_manager as io_man
+import modules.nvs as nvs
+import modules.os_constants as osc
+import modules.powersaving as ps
+import modules.printer as debug
+import modules.ram_cleaner as ram_cleaner
 import scripts.checkbattery as battery_shutdown
+from modules.decache import decache
+from modules.printer import Levels as log_levels
 
 print("Stick firmware")
 
@@ -104,6 +102,7 @@ render_bar("Preparing NVS...")
 # Load NVS
 debug.log("Load cache", log_levels.DEBUG)
 cache.precache()
+cache.set("allow_xp_levelling", False)
 n_settings = cache.get_nvs('settings')
 n_wifi = cache.get_nvs('wifi')
 n_boot = cache.get_nvs('boot')
@@ -114,8 +113,11 @@ render_bar("Loading data...", True)
 
 # Set default vars, load backlight, volume, autorotate and powersaving
 import modules.nvs_set_def as nsd
+
 nsd.run()
 nsd.set_hardware()
+
+cache.set("allow_xp_levelling", True)
 
 auto_rotate = cache.get('n_cache_arotate')
 allow_saving = cache.get_and_remove('n_cache_pwrsave')
@@ -124,19 +126,24 @@ render_bar("Load translations...", True)
 debug.log("Load translations")
 
 import modules.translate as translate
+
 translate.load(cache.get('n_cache_lang'))
 from modules.translate import get as l_get
+
 render_bar(l_get("mainos_load.first_boot_check"), True) # Checking first boot...
 
 # Check if its first boot
 debug.log("Check for first boot")
 import modules.first_boot_check as first_boot_check
+
 first_boot_check.check()
 decache("modules.first_boot_check")
 del first_boot_check
 
 import modules.xp_leveling as xp_levels
+
 xp_levels.add_xp(2)
+xp_levels.add_mood(5)
     
 gc.collect()
 
@@ -165,13 +172,14 @@ render_bar(l_get("mainos_load.init_btns"), True) # Init buttons...
 # Init buttons
 debug.log("Init buttons", log_levels.DEBUG)
 import modules.button_init as btn_init
+
 button_a, button_b, button_c, clicker, debug_console, sleep_button = btn_init.init_buttons()
 
 # Init neopixel
 render_bar(l_get("mainos_load.init_neopixel"), True)
 if osc.HAS_NEOPIXEL:
-    import modules.neopixels as neopixels
     import modules.neopixel_anims as np_anims
+    import modules.neopixels as neopixels
     neopixels.make(osc.NEOPIXEL_PIN, osc.NEOPIXEL_LED_COUNT)
 
 # Init IO manager (Set buttons, tft, etc.)
@@ -191,10 +199,12 @@ io_man.set('power_hold', power_hold)
 render_bar(l_get("mainos_load.check_time"), True)
 
 import modules.ntp as ntp
+
 ntp.wrong_time_support()
 
 render_bar(l_get("mainos_load.init_wifi"), True)
 import modules.wifi_master as wifi_master
+
 wifi_master.connect_main_loop()
 nic = network.WLAN(network.STA_IF)
 conn_time = time.ticks_ms()
@@ -204,11 +214,13 @@ render_bar(l_get("mainos_load.seed_random"), True)
 
 debug.log("Seed random", log_levels.DEBUG)
 import modules.seed_random as seed_random
+
 seed_random.seed()
         
 # Sync apps
 render_bar(l_get("mainos_load.sync_apps"), True)
 import modules.oobe as oobe
+
 oobe.sync_apps()
         
 render_bar(l_get("mainos_load.load_libs"), True) # Loading other libraries...
@@ -298,6 +310,7 @@ debug.log("Loading clock", log_levels.DEBUG)
 render_bar(l_get("mainos_load.load_clock"), True) # Loading clock...
 import apps.clock as app_clock
 
+
 # Wake up function
 def wake_up():
     global is_in_saving, pwr_save_time, prev_bl, stable_orientation, sleep_time
@@ -325,6 +338,7 @@ ps.set_freq(osc.BASE_FREQ)
 
 # Print sys.modules
 import sys
+
 debug.log_cleaner(str(sys.modules)) # Helpful for debug of RAM cleaner
 
 render_bar(l_get("mainos_load.guides"), True)

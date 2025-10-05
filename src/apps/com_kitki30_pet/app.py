@@ -2,18 +2,16 @@ import os
 import time
 
 import apps.com_kitki30_pet.pet_scanner as pscan
-
-from modules.translate import get as l_get
-import modules.xp_leveling as xp_levels
-import modules.os_constants as osc
-import modules.button_combos as btnc
-import modules.io_manager as io_man
-import modules.menus as menus
-import modules.popup as popup
-import modules.files as files
-import modules.json as json
-
 import fonts.def_8x8 as f8x8
+import modules.button_combos as btnc
+import modules.files as files
+import modules.io_manager as io_man
+import modules.json as json
+import modules.menus as menus
+import modules.os_constants as osc
+import modules.popup as popup
+import modules.xp_leveling as xp_levels
+from modules.translate import get as l_get
 
 _PET_PATH = "/apps/com_kitki30_pet/pets"
 _CONFIG_PATH = "/usr/config/"
@@ -37,8 +35,19 @@ def make_config():
     
 def replace_pet_lines(line):
     xp = xp_levels.xp_progress(xp_levels.get_xp())
-    # TODO: Make moods actual thing
-    return line.replace("%mood%", "Good").replace("%level%", str(xp[0])).replace("%curr%", str(xp[1])).replace("%need%", str(xp[2])) 
+    
+    # TODO: Translate
+    mood = "Neutral"
+    mood_points = xp_levels.get_mood()
+    
+    if mood_points >= 80:
+        mood = "Happy"
+    elif mood_points >= 50:
+        mood = "Neutral"
+    else:
+        mood = "Sad"
+    
+    return line.replace("%mood%", mood).replace("%level%", str(xp[0])).replace("%curr%", str(xp[1])).replace("%need%", str(xp[2])) 
 
 def run():
     tft = io_man.get('tft')
@@ -57,7 +66,9 @@ def run():
     
     config = make_config()
     
-    # TODO: Make translated pets
+    # Give mood to pet
+    xp_levels.add_mood(3)
+
     # Display pet
     data = None
     with open(files.path_join(config["pet_path"],"pet_en.txt"), "r") as f:
@@ -69,7 +80,7 @@ def run():
     for line in data:
         tft.text(f8x8, replace_pet_lines(line), 0, y, 65535)
         y += 8
-    
+        
     while not btnc.any_btn(["a", "b", "c"]):
         time.sleep(osc.LOOP_WAIT_TIME)
         

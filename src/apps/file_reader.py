@@ -2,11 +2,11 @@ import gc
 import time
 
 import fonts.def_8x8 as f8x8
-
-import modules.os_constants as osc
 import modules.io_manager as io_man
+import modules.os_constants as osc
 import modules.powersaving as ps
 from modules.translate import get as l_get
+
 
 def splittext_stream(fileobj, charlimit=27, linelimit=16):
     page = []

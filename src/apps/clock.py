@@ -1,17 +1,17 @@
 import time
+
 import network
 
 import fonts.def_8x8 as f8x8
 import fonts.def_16x32 as f16x32
-
 import modules.battery_check as battery_check
 import modules.io_manager as io_man
 import modules.menus as menus
-import modules.os_constants as osc
-import modules.text_utils as text_utils
-import modules.printer as printer
-import modules.powersaving as ps
 import modules.ntp as ntp
+import modules.os_constants as osc
+import modules.powersaving as ps
+import modules.printer as printer
+import modules.text_utils as text_utils
 from modules.translate import get as l_get
 
 allow_drawing_battery = True

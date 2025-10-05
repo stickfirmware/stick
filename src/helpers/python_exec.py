@@ -1,5 +1,4 @@
 import fonts.def_8x8 as f8x8
-
 import modules.io_manager as io_man
 from modules.translate import get as l_get
 

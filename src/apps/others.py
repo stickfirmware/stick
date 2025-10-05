@@ -1,12 +1,12 @@
 import gc
 
-import modules.io_manager as io_man
 import modules.cache as cache
-from modules.decache import decache
-import modules.os_constants as osc
+import modules.io_manager as io_man
 import modules.menus as menus
-import modules.powersaving as ps
+import modules.os_constants as osc
 import modules.popup as popup
+import modules.powersaving as ps
+from modules.decache import decache
 from modules.translate import get as l_get
 
 button_a = None

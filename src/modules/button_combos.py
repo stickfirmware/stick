@@ -4,6 +4,7 @@ Button combo helper for Stick firmware
 
 import modules.io_manager as io_man
 
+
 # Gets button by name (ex. "a")
 def get_button(name: str) -> any | None:
     """

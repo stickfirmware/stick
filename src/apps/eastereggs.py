@@ -2,12 +2,12 @@
 
 import time
 
-import modules.io_manager as io_man
+import fonts.def_8x8 as f8x8
+import fonts.def_16x32 as f16x32
 import modules.crash_handler as c_handler
+import modules.io_manager as io_man
 import modules.os_constants as osc
 
-import fonts.def_16x32 as f16x32
-import fonts.def_8x8 as f8x8
 
 def trigger(code):
     tft = io_man.get('tft')

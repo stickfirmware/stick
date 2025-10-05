@@ -5,8 +5,9 @@ File helper for micropython devices
 import os
 import re
 
-from modules.printer import log
 from modules.printer import Levels as log_levels
+from modules.printer import log
+
 
 # Create folders recursivly (ex. /usr/games/wordly)
 def mkdir_recursive(path: str):

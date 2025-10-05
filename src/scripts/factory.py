@@ -1,6 +1,6 @@
 import modules.files as files
-from modules.printer import log
 from modules.printer import Levels as log_levels
+from modules.printer import log
 
 log("Factory reseting")
 

@@ -29,10 +29,10 @@ def run(pack_id: str, skip_intro = False):
     Args:
         pack_id (str): Package ID to run
     """
-    import modules.oobe as oobe
     import modules.io_manager as io_man
-    from modules.printer import log
+    import modules.oobe as oobe
     from modules.printer import Levels as log_levels
+    from modules.printer import log
     
     log(f"Launching app: {pack_id}")
     
@@ -43,6 +43,7 @@ def run(pack_id: str, skip_intro = False):
     log("Granting XP to user", log_levels.DEBUG)
     import modules.xp_leveling as xp_levels
     xp_levels.add_xp(5)
+    xp_levels.add_mood(2)
     
     # Check if exists
     file = app_exists(appsConfig, pack_id)

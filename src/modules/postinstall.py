@@ -4,12 +4,12 @@ Postinstalling script for Stick firmware
 
 import os
 
-from modules.random_func_checker import check_random_extra_functions
-from modules.printer import log
-from modules.printer import Levels as log_levels
-import modules.os_constants as osc
-import modules.nvs as nvs
 import modules.cache as cache
+import modules.nvs as nvs
+import modules.os_constants as osc
+from modules.printer import Levels as log_levels
+from modules.printer import log
+from modules.random_func_checker import check_random_extra_functions
 
 # File list if there are no random extra func
 _RANDOM_FUNC_BANLIST = [

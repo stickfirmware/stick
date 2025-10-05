@@ -1,10 +1,12 @@
 import gc
 import os
+
 import machine
 
 import modules.cache as cache
 import modules.menus as menus
 import modules.wifi_master as wmaster
+
 
 def run():
         menu = []

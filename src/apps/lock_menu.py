@@ -1,14 +1,13 @@
 import time
 
 import fonts.def_8x8 as f8x8
-
-import modules.os_constants as osc
-import modules.io_manager as io_man
-import modules.nvs as nvs
-import modules.powersaving as ps
-import modules.menus as menus
 import modules.cache as cache
 import modules.hashing as hashing
+import modules.io_manager as io_man
+import modules.menus as menus
+import modules.nvs as nvs
+import modules.os_constants as osc
+import modules.powersaving as ps
 from modules.translate import get as l_get
 
 tft = None

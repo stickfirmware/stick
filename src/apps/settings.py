@@ -1,24 +1,24 @@
+import gc
+import time
+
 import machine
 import network
-import time
-import gc
 
 import fonts.def_8x8 as f8x8
-
-import modules.printer as printer
-from modules.printer import Levels as log_levels
-import modules.menus as menus
-import modules.nvs as nvs
-import modules.os_constants as osc
-import modules.open_file as open_file
+import modules.cache as cache
 import modules.crash_handler as c_handler
 import modules.io_manager as io_man
-import modules.wifi_master as wifi_man
-import modules.powersaving as ps
-import modules.cache as cache
+import modules.menus as menus
 import modules.ntp as ntp
+import modules.nvs as nvs
+import modules.open_file as open_file
+import modules.os_constants as osc
 import modules.popup as popup
+import modules.powersaving as ps
+import modules.printer as printer
 import modules.translate as translate
+import modules.wifi_master as wifi_man
+from modules.printer import Levels as log_levels
 from modules.translate import get as l_get
 
 printer.log("Getting buttons", log_levels.DEBUG)

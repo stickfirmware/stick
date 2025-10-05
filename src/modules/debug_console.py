@@ -1,8 +1,9 @@
 import machine
 
-import modules.popup as popup
-import modules.nvs as nvs
 import modules.cache as cache
+import modules.nvs as nvs
+import modules.popup as popup
+
 
 def help():
     popup.show("Available commands:\nfastrecovery - Go into recovery quickly\nhelp - Show this help message\nreboot - Reboot the device\nhardreboot - Hard reboot the device (power cycle)\ntoggledeveloper - Toggle dev apps", "Debug console")

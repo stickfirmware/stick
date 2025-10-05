@@ -1,12 +1,11 @@
-import os
 import gc
-
-import modules.menus as menus
-import modules.popup as popup
-import modules.io_manager as io_man
-from modules.translate import get as l_get
+import os
 
 import fonts.def_8x8 as f8x8
+import modules.io_manager as io_man
+import modules.menus as menus
+import modules.popup as popup
+from modules.translate import get as l_get
 
 tft = io_man.get('tft')
 

@@ -1,13 +1,13 @@
 import machine
 
 import modules.button_init as btn_init
-import modules.nvs as nvs
-from modules.decache import decache
 import modules.cache as cache
-import modules.menus as menus
-import modules.popup as popup
 import modules.io_manager as io_man
+import modules.menus as menus
+import modules.nvs as nvs
 import modules.os_constants as osc
+import modules.popup as popup
+from modules.decache import decache
 from modules.printer import log
 
 log("Init IO manager")

@@ -68,4 +68,6 @@ def precache():
     get_nvs('locks')
     get_nvs('guides')
     
+    set("allow_xp_levelling", True)
+    
     reload_apps()

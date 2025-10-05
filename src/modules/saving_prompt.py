@@ -1,7 +1,7 @@
+import fonts.def_8x8 as f8x8
 import modules.io_manager as io_man
 import modules.os_constants as osc
 
-import fonts.def_8x8 as f8x8
 
 def show_saving_prompt(clear = False):
     """

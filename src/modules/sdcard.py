@@ -2,12 +2,13 @@
 SD Card handler for esp32/Stick firmware
 """
 
-import os
 import gc
+import os
+
 import machine
 
-from modules.printer import log
 from modules.printer import Levels as log_levels
+from modules.printer import log
 
 sd = None
 mntpoint = "/sd"

@@ -1,13 +1,14 @@
-import network
 import time
+
+import network
 import ubinascii
 
-from modules.printer import log
-from modules.printer import Levels as log_levels
-import modules.nvs as nvs
 import modules.cache as cache
 import modules.crash_handler as c_handler
+import modules.nvs as nvs
 import modules.os_constants as osc
+from modules.printer import Levels as log_levels
+from modules.printer import log
 
 n_wifi = cache.get_nvs('settings')
 

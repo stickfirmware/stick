@@ -7,10 +7,9 @@ import time
 import fonts.def_8x8 as f8x8
 import fonts.def_8x16 as f8x16
 import fonts.def_16x16 as f16x16
-
-import modules.os_constants as osc
-import modules.menus as menus
 import modules.io_manager as io_man
+import modules.menus as menus
+import modules.os_constants as osc
 from modules.translate import get as l_get
 
 button_a = io_man.get('button_a')

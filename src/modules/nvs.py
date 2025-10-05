@@ -7,8 +7,9 @@ Part of Stick firmware
 
 import struct
 
-from modules.printer import log
 from modules.printer import Levels as log_levels
+from modules.printer import log
+
 
 def set_string(nvs, key, value, max_length=1984):
     """

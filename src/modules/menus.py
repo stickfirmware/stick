@@ -1,14 +1,14 @@
-import time
-import machine
 import gc
+import time
+
+import machine
 
 import fonts.def_8x8 as f8x8
-#import fonts.def_16x16 as f16x16
+import modules.cache as cache
+import modules.io_manager as io_man
+import modules.nvs as nvs
 
 import modules.os_constants as osc
-import modules.io_manager as io_man
-import modules.cache as cache
-import modules.nvs as nvs
 import modules.powersaving as ps
 
 button_a = io_man.get('button_a')
@@ -20,6 +20,8 @@ arrow_up = None
 arrow_down = None
 arrow_left = None
 arrow_right = None
+    
+allow_xp_levelling = False
     
 # Refresh io
 def _LOAD_IO():
@@ -92,6 +94,11 @@ def menu(name, choices):
         ar_dn_d = arrow_down.value()
         ar_lt_d = arrow_left.value()
         ar_rt_d = arrow_right.value()
+        
+    # Mood levels
+    if cache.get("allow_xp_levelling"):
+        import modules.xp_leveling as xpl
+        xpl.add_mood(1)
     
     # Return to base freq after render
     ps.set_freq(osc.BASE_FREQ)

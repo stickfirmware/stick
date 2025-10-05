@@ -4,6 +4,7 @@ ujson wrapper for micropython, part of Stick firmware
 
 import ujson as json
 
+
 def read(filename: str) -> dict | None:
     """
     Parse json from file

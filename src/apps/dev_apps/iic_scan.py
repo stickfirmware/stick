@@ -4,6 +4,7 @@ import modules.menus as menus
 import modules.os_constants as osc
 import modules.popup as popup
 
+
 def run():
     if osc.HAS_GROVE:
         i2c = I2C(osc.GROVE_SLOT, scl=Pin(osc.GROVE_WHITE), sda=Pin(osc.GROVE_YELLOW), freq=100000)

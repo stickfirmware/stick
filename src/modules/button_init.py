@@ -1,9 +1,10 @@
 from machine import Pin
 
-import modules.printer as debug
-from modules.printer import Levels as log_levels
 import modules.io_manager as io_man
 import modules.os_constants as osc
+import modules.printer as debug
+from modules.printer import Levels as log_levels
+
 
 def init_buttons():
     if osc.INPUT_METHOD == 1:

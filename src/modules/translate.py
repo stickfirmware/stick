@@ -3,6 +3,7 @@ Translations for Stick firmware with lazy loading + cache
 """
 
 import gc
+
 import modules.json as json
 import modules.printer as printer
 from modules.printer import Levels as log_levels

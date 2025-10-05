@@ -4,12 +4,11 @@
 import time
 
 import fonts.def_8x8 as f8x8
-
-import modules.os_constants as osc
-import modules.menus as menus
 import modules.io_manager as io_man
-import modules.printer as printer
+import modules.menus as menus
+import modules.os_constants as osc
 import modules.powersaving as ps
+import modules.printer as printer
 from modules.translate import get as l_get
 
 button_a = io_man.get('button_a')

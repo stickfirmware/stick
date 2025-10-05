@@ -2,20 +2,21 @@
 Sleep helper for Stick firmware, helps to put device in sleep
 """
 
-import esp32
-import machine
 import os
 import time
 
-from modules.printer import log
-from modules.printer import Levels as log_levels
+import esp32
+import machine
+
+import modules.battery_check as b_check
+import modules.cache as cache
+import modules.io_manager as io_man
+import modules.json as json
 import modules.nvs as nvs
 import modules.os_constants as osc
-import modules.io_manager as io_man
-import modules.cache as cache
-import modules.battery_check as b_check
-import modules.json as json
 import modules.wifi_master as wifiman
+from modules.printer import Levels as log_levels
+from modules.printer import log
 
 tft = None
 mpu = io_man.get('imu') 

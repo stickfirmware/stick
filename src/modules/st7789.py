@@ -50,10 +50,10 @@ This driver supports:
 
 """
 
+from math import cos, sin
+
 # Powersaver (For boosting)
 import modules.powersaving as ps
-
-from math import sin, cos
 
 #
 # This allows sphinx to build the docs

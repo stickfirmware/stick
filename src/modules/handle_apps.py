@@ -2,16 +2,16 @@
 Stick firmware package handler
 """
 
-import os
 import gc
+import os
 import time
 
-import modules.json as json
-from modules.printer import log
-from modules.printer import Levels as log_levels
 import modules.files as files
+import modules.json as json
 import modules.oobe as oobe
 from modules.oobe import get_entry
+from modules.printer import Levels as log_levels
+from modules.printer import log
 
 _MAX_PACKAGE_SIZE = 128 * 1024 # Allowed pack size, default is 128KB, install() will fail if bigger than this
 _FLASH_FREE_SPACE_MULTI = 2.5 # Free space requirement multiplier for formula (install() requires free space to be more than zip_size * multi)
@@ -167,8 +167,9 @@ def get_packed_file_bytes(zip_path, filename, chunk_size=1024):
     Return:
         str | None: File content or None if failed to unpack
     """
-    import modules.zipfile as zipfile
     import gc
+
+    import modules.zipfile as zipfile
 
     gc.collect()
     with zipfile.ZipFile(zip_path, "r") as z:
@@ -249,8 +250,9 @@ def run_requirements(zip_package: str) -> bool:
         bool: True if requirements are met, False if not
     """
     import modules.zipfile as zipfile
-    import modules.zip as zip
+
     import modules.files as files
+    import modules.zip as zip
     
     log("Check requirements...", log_levels.DEBUG)
     
@@ -443,15 +445,15 @@ def open_file(path):
     Args:
         path (str): Path to app package
     """
+    import modules.io_manager as io_man
     import modules.menus as menus
     from modules.popup import show as popup
-    import modules.io_manager as io_man
     from modules.translate import get as l_get
     
     tft = io_man.get("tft")
     
-    import fonts.def_16x32 as f16x32
     import fonts.def_8x8 as f8x8
+    import fonts.def_16x32 as f16x32
     
     tft.fill(0)
     tft.text(f16x32, l_get("apps.app_installer.app_installer_short"),0,0,65335)

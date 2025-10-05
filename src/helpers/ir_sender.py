@@ -1,12 +1,14 @@
-from machine import Pin, PWM
 import time
 
-import modules.powersaving as ps
-import modules.os_constants as osc
+from machine import PWM, Pin
+
 import modules.cache as cache
-import modules.nvs as nvs
 import modules.io_manager as io_man
-    
+import modules.nvs as nvs
+import modules.os_constants as osc
+import modules.powersaving as ps
+
+
 def parse_array(path):
     """
     Parse array from file

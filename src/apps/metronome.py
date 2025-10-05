@@ -1,16 +1,16 @@
 # Metronome app
 # App ID: 1003
 
-from machine import Pin, PWM
 import time
+
+from machine import PWM, Pin
 
 import fonts.def_8x8 as f8x8
 import fonts.def_16x32 as f16x32
-
 import modules.buzzer as buzz
 import modules.io_manager as io_man
-import modules.printer as printer
 import modules.menus as menus
+import modules.printer as printer
 from modules.translate import get as l_get
 
 button_a = io_man.get('button_a')

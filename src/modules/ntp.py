@@ -3,17 +3,18 @@ NTP sync module for Stick firmware, with timezones and automatic ntp sync.
 """
 
 import time
+
 import network
 
+import modules.cache as cache
+import modules.io_manager as io_man
 import modules.menus as menus
 import modules.nvs as nvs
 import modules.os_constants as osc
-import modules.io_manager as io_man
-import modules.cache as cache
 import modules.popup as popup
-from modules.translate import get as l_get
-from modules.printer import log
 from modules.printer import Levels as log_levels
+from modules.printer import log
+from modules.translate import get as l_get
 
 n_settings = cache.get_nvs('settings')
 
@@ -92,7 +93,7 @@ def sync(host: str = "time.google.com") -> bool:
     Returns:
         bool: True if success, False if failed.
     """
-    import ntptime # Add the import here cause ram cleaner will delete it
+    import ntptime  # Add the import here cause ram cleaner will delete it
 
     log("Starting NTP time sync")
 

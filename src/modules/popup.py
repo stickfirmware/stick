@@ -6,11 +6,11 @@ import time
 
 import fonts.def_8x8 as f8x8
 import fonts.def_16x16 as f16x16
-
 import modules.io_manager as io_man
-import modules.powersaving as ps
 import modules.os_constants as osc
+import modules.powersaving as ps
 from modules.translate import get as l_get
+
 
 # Split text into array
 def split_text(text: str, max_len: int = 29, max_lines: int = 13) -> list[str]:

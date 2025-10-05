@@ -2,12 +2,13 @@
 TFT Display init helper for Stick firmware
 """
 
-from machine import SPI, Pin, PWM
+from machine import PWM, SPI, Pin
 
-from modules.printer import log
-from modules.printer import Levels as log_levels
 import modules.os_constants as osc
 import modules.st7789 as st7789
+from modules.printer import Levels as log_levels
+from modules.printer import log
+
 
 def init_tft() -> any | None:
     """

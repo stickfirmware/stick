@@ -1,11 +1,11 @@
 """
 Neopixel animation helper for Stick firmware
 """
-import modules.neopixels as neopixels
-import modules.io_manager as io_man
-import modules.os_constants as osc
 import modules.cache as cache
+import modules.io_manager as io_man
+import modules.neopixels as neopixels
 import modules.nvs as nvs
+import modules.os_constants as osc
 
 _RAINBOW_FRAME_COUNT = 0
 _CACHE_COUNT = 0

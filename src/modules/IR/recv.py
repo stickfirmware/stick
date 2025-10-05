@@ -1,8 +1,9 @@
-import machine
 import time
 
-import modules.os_constants as osc
+import machine
+
 import modules.io_manager as io_man
+import modules.os_constants as osc
 
 if osc.ALLOW_IR_RECORD:
     ir_pin = machine.Pin(osc.IR_RECORD_PIN, machine.Pin.IN, machine.Pin.PULL_UP)

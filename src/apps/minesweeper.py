@@ -1,16 +1,15 @@
 import random
 import time
 
-from modules.printer import log
-from modules.printer import Levels as log_levels
+import fonts.def_8x8 as f8x8
 import modules.io_manager as io_man
-import modules.powersaving as ps
-import modules.popup as popup
 import modules.menus as menus
 import modules.os_constants as osc
+import modules.popup as popup
+import modules.powersaving as ps
+from modules.printer import Levels as log_levels
+from modules.printer import log
 from modules.translate import get as l_get
-
-import fonts.def_8x8 as f8x8
 
 tiles = 8 # Tiles, ex. if 8 will make it 8x8
 tile_max = 128 # Max pixels, ex. 128x128

@@ -2,11 +2,12 @@
 Stick firmware power saving helper
 """
 
-import machine
 import time
 
-import modules.os_constants as osc
+import machine
+
 import modules.battery_check as bcheck
+import modules.os_constants as osc
 
 cooldown = 50 # ms
 last_clock_change = time.ticks_ms() # Just to not abuse the voltage regulator

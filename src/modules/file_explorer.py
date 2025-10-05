@@ -1,15 +1,14 @@
+import os
 import sys
 import time
-import os
 
 import fonts.def_8x8 as f8x8
 import fonts.def_16x32 as f16x32
-
-import modules.menus as menus
-import modules.open_file as open_file   
 import modules.io_manager as io_man
+import modules.menus as menus
+import modules.open_file as open_file
 import modules.popup as popup
-from modules.files import is_file, rmdir_recursive, parent_path, path_join
+from modules.files import is_file, parent_path, path_join, rmdir_recursive
 from modules.translate import get as l_get
 
 button_a = io_man.get('button_a')

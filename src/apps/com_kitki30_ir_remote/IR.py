@@ -1,18 +1,19 @@
-import machine
-import time
-import os
 import json
+import os
+import time
 
+import machine
+
+import fonts.def_8x8 as f8x8
+import modules.cache as cache
 import modules.io_manager as io_man
-import modules.printer as printer
-from modules.printer import Levels as log_levels
-import modules.os_constants as osc
 import modules.IR.recv as recv
 import modules.menus as menus
-import fonts.def_8x8 as f8x8
 import modules.nvs as nvs
+import modules.os_constants as osc
 import modules.powersaving as ps
-import modules.cache as cache
+import modules.printer as printer
+from modules.printer import Levels as log_levels
 from modules.translate import get as l_get
 
 button_a = io_man.get('button_a')

@@ -65,10 +65,11 @@ def run():
     
     # XP
     ints(n_settings, 'xp', 0, 'xp')
+    ints(n_settings, "mood", 50, 'mood')
     
 def set_hardware():
-    import modules.io_manager as io_man
     import modules.buzzer as buzz
+    import modules.io_manager as io_man
     import modules.printer as debug
     from modules.printer import Levels as log_levels
     

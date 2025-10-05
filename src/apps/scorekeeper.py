@@ -4,9 +4,9 @@
 import esp32
 
 import modules.io_manager as io_man
-import modules.printer as printer
 import modules.menus as menus
 import modules.nvs as nvs
+import modules.printer as printer
 from modules.translate import get as l_get
 
 button_a = io_man.get('button_a')

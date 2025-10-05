@@ -5,7 +5,9 @@ zipfile wrapper for Stick Firmware
 import gc
 
 import modules.zipfile as zipfile
+
 import modules.files as files
+
 
 # Get file list of zip
 def get_file_list(zip_path: str) -> list[str]:

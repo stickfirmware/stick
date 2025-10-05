@@ -9,12 +9,22 @@ Please don't abuse it, it's meant to be fun.
 # Open app - 5 xp
 # Send IR signal - 3 xp
 
+# How to get mood?
+# Boot system - 5 mood points
+# Open app - 2 mood points
+# Visit your pet - 3 mood points
+# Display menu - 1 mood point
+
+# How you lose mood?
+# Get an error log in console: -5 mood
+# Get a warning log in console: -2 mood
+
 import time
 
-import modules.nvs as nvs
 import modules.cache as cache
-from modules.printer import log
+import modules.nvs as nvs
 from modules.printer import Levels as log_levels
+from modules.printer import log
 
 _cooldown_timer = time.ticks_ms()
 _mood_cooldown_timer = time.ticks_ms()
@@ -23,7 +33,7 @@ _COOLDOWN = 5000
 _MAX_XP = 10000
 _MAX_XP_PER_CALL = 10
 _MAX_LEVEL = 20
-_MAX_MOOD_PER_CALL = 2
+_MAX_MOOD_PER_CALL = 8
 
 n_settings = cache.get_nvs("settings")
 
@@ -98,10 +108,10 @@ def add_xp(amount):
     
 def remove_mood(amount):
     """
-    Remove mood from Stick firmware pet system, cooldown 5s, max mood per call 2
+    Remove mood from Stick firmware pet system, cooldown 5s, max mood per call 8
     
     Args:
-        amount (int): Mood to remove, max is 2
+        amount (int): Mood to remove, max is 8
     """
     
     global _mood_cooldown_timer
@@ -125,10 +135,10 @@ def remove_mood(amount):
 
 def add_mood(amount):
     """
-    Add mood to Stick firmware pet system, cooldown 5s, max mood per call 2
+    Add mood to Stick firmware pet system, cooldown 5s, max mood per call 8
     
     Args:
-        amount (int): Mood to add, max is 2
+        amount (int): Mood to add, max is 8
     """
     
     global _mood_cooldown_timer

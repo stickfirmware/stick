@@ -2,8 +2,8 @@
 RAM Cleaning helper for Stick firmware
 """
 
-import sys
 import gc
+import sys
 
 import modules.printer as printer
 

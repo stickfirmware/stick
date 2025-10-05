@@ -1,15 +1,15 @@
 import random
 import time
 
-import fonts.def_16x32 as f16x32
 import fonts.def_8x8 as f8x8
-
-import modules.os_constants as osc
-from modules.translate import get as l_get
-import modules.text_utils as text_utils
-import modules.io_manager as io_man
+import fonts.def_16x32 as f16x32
 import modules.cache as cache
+import modules.io_manager as io_man
+import modules.os_constants as osc
 import modules.seed_random as s_random
+import modules.text_utils as text_utils
+from modules.translate import get as l_get
+
 
 def random_int(tft):
     text = str(random.randint(1,6))

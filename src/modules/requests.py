@@ -1,7 +1,9 @@
 import gc
 import socket
-import urequests
 import ssl
+
+import urequests
+
 
 def download(url, filename, bufsize=512):
     assert url.startswith("https://"), "Only https supported now"

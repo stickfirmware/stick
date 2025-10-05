@@ -4,6 +4,7 @@ Sys info dumping helper for Stick firmware
 
 import modules.translate as translate
 
+
 def language_pack():
     """
     Get language pack info

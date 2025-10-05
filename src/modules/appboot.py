@@ -4,11 +4,11 @@ App boot intro, async
 
 import time
 
+import fonts.def_16x16 as f16x16
 import modules.io_manager as io_man
 import modules.os_constants as osc
 import modules.text_utils as text_utils
 
-import fonts.def_16x16 as f16x16
 
 def app_boot_make_anim(tft):
     """

@@ -1,7 +1,7 @@
 import os
 
-import modules.json as jso
 import modules.cache as cache
+import modules.json as jso
 from modules.translate import get as l_get
 
 _APPS_JSON_PATH = "/usr/config/apps.json"

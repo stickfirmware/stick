@@ -1,6 +1,7 @@
-import hashlib
 import binascii
+import hashlib
 import os
+
 
 def hash_pin(pin, rounds=1000):
     salt = os.urandom(32)
