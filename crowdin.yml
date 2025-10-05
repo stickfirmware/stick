@@ -4,4 +4,4 @@ files:
   - source: /src/guides/quick_start_en.txt
     translation: /src/guides/%file_name%_%two_letters_code%.%file_extension%
   - source: /src/apps/com_kitki30_pet/pets/*/pet_en.txt
-    translation: '%original_path%/pet_%two_letters_code%.txt'
+    translation: '/%original_path%/pet_%two_letters_code%.txt'

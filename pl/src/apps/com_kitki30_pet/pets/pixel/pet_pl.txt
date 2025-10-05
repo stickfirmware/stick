@@ -1,4 +1,0 @@
-|\---/| | Pixel
-| o_o | | Nastroj: %mood%
- \_^_/  | Poziom: %level%
-        | XP: %curr%/%need%
