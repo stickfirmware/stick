@@ -3,7 +3,7 @@ import modules.io_manager as io_man
 from modules.translate import get as l_get
 
 
-def show_saving_prompt(clear = False):
+def show_saving_prompt(clear = True):
     """
     Shows saving prompt on display
     
