@@ -9,6 +9,7 @@ import modules.io_manager as io_man
 import modules.json as json
 import modules.menus as menus
 import modules.os_constants as osc
+import modules.saving_prompt as save_prompt
 import modules.popup as popup
 import modules.xp_leveling as xp_levels
 from modules.translate import get as l_get
@@ -30,6 +31,7 @@ def make_config():
         pets = pet_list_gui()
         if pets is None: 
             return
+        save_prompt.show_saving_prompt()
         json.write(files.path_join(_CONFIG_PATH, "pet_config.json"), {"pet_name": pets[0][0], "pet_path": pets[0][2]})
         return json.read(files.path_join(_CONFIG_PATH, "pet_config.json"))
     
@@ -99,5 +101,6 @@ def run():
         if pet_select is None:
             return
         
+        save_prompt.show_saving_prompt()
         json.write(files.path_join(_CONFIG_PATH, "pet_config.json"), {"pet_name": pet_select[0], "pet_path": pet_select[2]})
         return run()
