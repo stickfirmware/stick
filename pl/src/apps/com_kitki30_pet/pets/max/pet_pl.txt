@@ -1,7 +1,7 @@
      |\    o  | Max
-    |  \    o | Mood:
+    |  \    o | Nastroj:
 |\ /    .\ o  | %mood%
-| |       (   | Level:
-|/ \     /    | %level%
+| |       (   | Poziom:
+/ \     /    | %level%
     |  /      | XP:
      |/       | %curr%/%need%
