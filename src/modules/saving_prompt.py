@@ -22,4 +22,4 @@ def show_saving_prompt(clear = False):
     # Make neopixel red
     if osc.HAS_NEOPIXEL:
         import modules.neopixel_anims as np
-        np.static((255,0,0))
+        np.static(255,0,0)
