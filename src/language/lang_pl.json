@@ -402,8 +402,8 @@
                 "neutral": "Neutralny",
                 "sad": "Smutny"
             },
-            "read_error": "Could not open your pet, please delete '%config_path%' to reset config",
-            "language_error": "Could not read your pet in your language, i will now load it in english."
+            "read_error": "Nie mozna otworzyc twojego zwierzaka, usun '%config_path%' aby zresetowac konfiguracje (To nie usunie xp)",
+            "language_error": "Nie mozna otworzyc zwierzaka w jezyku polskim, sproboje zaladowac po angielsku."
         }
     },
     "menus": {
