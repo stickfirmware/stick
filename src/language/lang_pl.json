@@ -150,7 +150,13 @@
                 "factory": "Reset ustawien fabrycznych",
                 "account": "Konto",
                 "neopixel": "Neopixel",
-                "show_guides_again": "Pokaz poradniki"
+                "show_guides_again": "Pokaz poradniki",
+                "power": "Power"
+            },
+            "power": {
+                "title": "Settings/Power",
+                "pwr_saving": "Power saving",
+                "pwr_saving_title": "Power saving"
             },
             "guides": {
                 "reboot_notify": "Zrestartuj aby zobaczyc wszystkie poradniki!"
@@ -167,11 +173,9 @@
                 "title": "Ustawienia/lcd",
                 "backlight": "Podswietlenie",
                 "autorotate": "Autoobrot",
-                "pwr_save": "Oszczedzanie energii",
                 "backlight_title": "Ustawienia/lcd/Podsw.",
                 "imu_error_popup": "IMU nie zostalo wykryte w twoim urzadzeniu!!!",
-                "autorotate_title": "Ustawienia/lcd/Autoobrot",
-                "power_saver_title": "Ustawienia/lcd/Oszcze."
+                "autorotate_title": "Ustawienia/lcd/Autoobrot"
             },
             "buzzer_menu": {
                 "buzzer_title": "Ustawienia/Buzzer",
