@@ -47,6 +47,7 @@ def run():
         menu1 = menus.menu(l_get("apps.settings.name"),
                            [(l_get("apps.clock.name"), 0),
                             (l_get("apps.settings.menu1.lcd"), 1),
+                            (l_get("apps.settings.menu1.power"), 50),
                             (l_get("apps.settings.menu1.neopixel"), 5),
                             (l_get("apps.settings.menu1.sound"), 2),
                             (l_get("apps.settings.menu1.wifi"), 3),
@@ -57,14 +58,30 @@ def run():
                             (l_get("apps.settings.menu1.show_guides_again"), 12),
                             (l_get("menus.menu_close"), None)]) # ("Account", 10),
         
-        # Account settings
-        if menu1 == 10:
-            import modules.account_manager as account_manager
-            menu2 = menus.menu(l_get("apps.settings.acc_menu.title"),
-                               [(l_get("apps.settings.acc_menu.link"), 1),
-                                (l_get("menus.menu_close"), None)])
-            if menu2 == 1:
-                account_manager.link()
+        # Power settings
+        if menu1 == 50:
+            power_menu = menus.menu(l_get("apps.settings.power.title"), [
+                (l_get("apps.settings.power.pwr_saving"), 1),
+                (l_get("menus.menu_close"), None)
+            ])
+            
+            # Power saving settings
+            if power_menu == 1:
+                work1 = True
+                while work1:
+                    menu3 = menus.menu(l_get("apps.settings.power.pwr_saving_title"),
+                                       [(l_get("apps.settings.current") + ": " + str(nvs.get_int(n_settings, "allowsaving")), 1),
+                                        (l_get("menus.enable"), 2),
+                                        (l_get("menus.disable"), 3), 
+                                        (l_get("menus.menu_close"), 13)])
+                    if menu3 == 1:
+                        time.sleep(0.02)
+                    elif menu3 == 2:
+                        nvs.set_int(n_settings, "allowsaving", 1)
+                    elif menu3 == 3:
+                        nvs.set_int(n_settings, "allowsaving", 0)
+                    else:
+                        work1 = False 
                 
         # Show guides again
         elif menu1 == 12:
@@ -123,7 +140,7 @@ def run():
                 if translate.load(ts_menu):
                     import version
                     if l_get("lang_info.version")[0] < version.LANG_VER[0] or l_get("lang_info.version")[1] < version.LANG_VER[1]:
-                        popup.show("The language pack is older than system pack version and can not work properly. Expect errors", "Info", 60)
+                        popup.show("The language pack is older than system pack version and can not work properly. Expect errors or untranslated menus.", "Info", 60)
                     nvs.set_string(n_settings, "lang", ts_menu)
                     reboot_confirm = menus.menu(l_get("apps.settings.lang_menu.reboot"),
                                                 [(l_get("menus.yes"), 1),
@@ -139,7 +156,6 @@ def run():
             menu2 = menus.menu(l_get("apps.settings.lcd_menu.title"),
                                [(l_get("apps.settings.lcd_menu.backlight"), 1),
                                 (l_get("apps.settings.lcd_menu.autorotate"), 2),
-                                (l_get("apps.settings.lcd_menu.pwr_save"), 3),
                                 (l_get("menus.menu_close"), 13)])
             
             # Backlight settings
@@ -183,24 +199,6 @@ def run():
                         nvs.set_int(n_settings, "autorotate", 0)
                     else:
                         work1 = False
-                        
-            # Power saving settings
-            elif menu2 == 3:
-                work1 = True
-                while work1:
-                    menu3 = menus.menu(l_get("apps.settings.lcd_menu.power_saver_title"),
-                                       [(l_get("apps.settings.current") + ": " + str(nvs.get_int(n_settings, "allowsaving")), 1),
-                                        (l_get("menus.enable"), 2),
-                                        (l_get("menus.disable"), 3), 
-                                        (l_get("menus.menu_close"), 13)])
-                    if menu3 == 1:
-                        time.sleep(0.02)
-                    elif menu3 == 2:
-                        nvs.set_int(n_settings, "allowsaving", 1)
-                    elif menu3 == 3:
-                        nvs.set_int(n_settings, "allowsaving", 0)
-                    else:
-                        work1 = False  
                         
         # Sound settings
         elif menu1 == 2:
