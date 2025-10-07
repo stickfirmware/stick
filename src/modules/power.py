@@ -21,7 +21,7 @@ n_settings = cache.get_nvs("settings")
 # HW
 power_hold = io_man.get('power_hold')
 
-def shutdown():
+def shutdown(force_legacy = False):
     """
     Shutdowns device
     """
@@ -29,9 +29,10 @@ def shutdown():
     mode = nvs.get_int(n_settings, "shutdown_mode")
     tft = io_man.get('tft')
     
-    if mode == 1:
+    if mode == 1 or force_legacy:
         tft.fill(0)
         os.sync()
+        time.sleep(0.05)
         if osc.HAS_HOLD_PIN:
             tft.text(f8x8, l_get("q_actions.powering_off"),0,0,65535,0)
             power_hold.value(0)
@@ -43,6 +44,12 @@ def shutdown():
             time.sleep(3)
             
         deep_sleep() # Deepsleep so it doesn't draw power when something goes wrong
+    elif mode == 2:
+        os.sync()
+        time.sleep(0.05)
+        deep_sleep()
+    else:
+        shutdown(True)
         
 def light_sleep():
     """
