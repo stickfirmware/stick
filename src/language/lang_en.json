@@ -150,13 +150,7 @@
                 "factory": "Factory reset",
                 "account": "Account",
                 "neopixel": "Neopixel",
-                "show_guides_again": "Show guides",
-                "power": "Power"
-            },
-            "power": {
-                "title": "Settings/Power",
-                "pwr_saving": "Power saving",
-                "pwr_saving_title": "Power saving"
+                "show_guides_again": "Show guides"
             },
             "guides": {
                 "reboot_notify": "Reboot to see all guides!"
@@ -173,9 +167,11 @@
                 "title": "Settings/lcd",
                 "backlight": "Backlight",
                 "autorotate": "Autorotate",
+                "pwr_save": "Power saving",
                 "backlight_title": "Settings/lcd/Backlight",
                 "imu_error_popup": "IMU/MPU was not detected in your device!!!",
-                "autorotate_title": "Settings/lcd/Autorotate"
+                "autorotate_title": "Settings/lcd/Autorotate",
+                "power_saver_title": "Settings/lcd/Power saving"
             },
             "buzzer_menu": {
                 "buzzer_title": "Settings/Buzzer",
