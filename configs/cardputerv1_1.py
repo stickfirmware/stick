@@ -18,6 +18,7 @@ DEFAULT_LANGUAGE = "en"
 HAS_HOLD_PIN = const(False) # Do we need to put power hold pin HIGH? (Like on M5StickC Plus 2)
 HOLD_PIN = None
 BATTERY_ADC = const(10) # Battery ADC pin (Often called Battery Detect by M5Stack), used to get battery voltage, needs voltage divider.
+DEFAULT_SHUTDOWN_MODE = const(2) # 1 - Legacy (Shutdown whole device, for devices with RTC), 2 - Deep sleep (To keep time on devices without RTC)
 
 # Sound
 HAS_BUZZER = const(False) # Has buzzer?

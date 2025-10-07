@@ -4,6 +4,7 @@ Helper for Stick firmware to set default vars in NVS
 
 import modules.cache as cache
 import modules.nvs as nvs
+import modules.os_constants as osc
 
 n_locks = cache.get_nvs('locks')
 n_settings = cache.get_nvs('settings')
@@ -49,6 +50,7 @@ def run():
 
     # Pwr saving
     ints(n_settings, 'allowsaving', 1, 'pwrsave')
+    ints(n_settings, 'shutdown_mode', osc.DEFAULT_SHUTDOWN_MODE, 'shtd_mode')
     
     # Metrics
     ints(n_settings, 'allow_metrics', 0, 'metrics')
