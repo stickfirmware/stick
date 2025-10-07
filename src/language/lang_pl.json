@@ -156,7 +156,16 @@
             "power": {
                 "title": "Settings/Power",
                 "pwr_saving": "Power saving",
-                "pwr_saving_title": "Power saving"
+                "pwr_saving_title": "Power saving",
+                "shutdown_mode": "Shutdown mode",
+                "shutdown_mode_title": "Shutdown mode",
+                "shutdown_modes": {
+                    "deep_sleep": "Deep sleep",
+                    "legacy": "Legacy"
+                },
+                "shutdown_what_is_this": "What is this?",
+                "get_current": "Get current value",
+                "shutdown_what_this_popup": "Shutdown modes determine how your device turns off, there are two available modes to select:\nLegacy - Turns off whole device (If power hold pin available)\nDeep sleep - Puts ESP32 to deep sleep, keeps time."
             },
             "guides": {
                 "reboot_notify": "Zrestartuj aby zobaczyc wszystkie poradniki!"
