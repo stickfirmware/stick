@@ -150,7 +150,22 @@
                 "factory": "Reset ustawien fabrycznych",
                 "account": "Konto",
                 "neopixel": "Neopixel",
-                "show_guides_again": "Pokaz poradniki"
+                "show_guides_again": "Pokaz poradniki",
+                "power": "Zasilanie"
+            },
+            "power": {
+                "title": "Ustawienia/Zasilanie",
+                "pwr_saving": "Oszczedzanie energii",
+                "pwr_saving_title": "Oszczedzanie energii",
+                "shutdown_mode": "Tryb wylaczania",
+                "shutdown_mode_title": "Tryb wylaczania",
+                "shutdown_modes": {
+                    "deep_sleep": "Glebokie uspienie",
+                    "legacy": "Legacy (Bez zasil.)"
+                },
+                "shutdown_what_is_this": "Co to znaczy?",
+                "get_current": "Pobierz aktualne",
+                "shutdown_what_this_popup": "Tryby wylaczania okreslaja jak twoje urzadzenie sie wylacza, obecnie sa dwa tryby wylaczania:\nLegacy - Wylacza zasilanie\nGlebokie uspienie - Usypia gleboko mikrokontroler (Podtrzymuje czas)"
             },
             "guides": {
                 "reboot_notify": "Zrestartuj aby zobaczyc wszystkie poradniki!"
@@ -167,11 +182,9 @@
                 "title": "Ustawienia/lcd",
                 "backlight": "Podswietlenie",
                 "autorotate": "Autoobrot",
-                "pwr_save": "Oszczedzanie energii",
                 "backlight_title": "Ustawienia/lcd/Podsw.",
                 "imu_error_popup": "IMU nie zostalo wykryte w twoim urzadzeniu!!!",
-                "autorotate_title": "Ustawienia/lcd/Autoobrot",
-                "power_saver_title": "Ustawienia/lcd/Oszcze."
+                "autorotate_title": "Ustawienia/lcd/Autoobrot"
             },
             "buzzer_menu": {
                 "buzzer_title": "Ustawienia/Buzzer",
