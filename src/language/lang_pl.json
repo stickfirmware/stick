@@ -151,21 +151,21 @@
                 "account": "Konto",
                 "neopixel": "Neopixel",
                 "show_guides_again": "Pokaz poradniki",
-                "power": "Power"
+                "power": "Zasilanie"
             },
             "power": {
-                "title": "Settings/Power",
-                "pwr_saving": "Power saving",
-                "pwr_saving_title": "Power saving",
-                "shutdown_mode": "Shutdown mode",
-                "shutdown_mode_title": "Shutdown mode",
+                "title": "Ustawienia/Zasilanie",
+                "pwr_saving": "Oszczedzanie energii",
+                "pwr_saving_title": "Oszczedzanie energii",
+                "shutdown_mode": "Tryb wylaczania",
+                "shutdown_mode_title": "Tryb wylaczania",
                 "shutdown_modes": {
-                    "deep_sleep": "Deep sleep",
-                    "legacy": "Legacy"
+                    "deep_sleep": "Glebokie uspienie",
+                    "legacy": "Legacy (Bez zasil.)"
                 },
-                "shutdown_what_is_this": "What is this?",
-                "get_current": "Get current value",
-                "shutdown_what_this_popup": "Shutdown modes determine how your device turns off, there are two available modes to select:\nLegacy - Turns off whole device (If power hold pin available)\nDeep sleep - Puts ESP32 to deep sleep, keeps time."
+                "shutdown_what_is_this": "Co to znaczy?",
+                "get_current": "Pobierz aktualne",
+                "shutdown_what_this_popup": "Tryby wylaczania okreslaja jak twoje urzadzenie sie wylacza, obecnie sa dwa tryby wylaczania:\nLegacy - Wylacza zasilanie\nGlebokie uspienie - Usypia gleboko mikrokontroler (Podtrzymuje czas)"
             },
             "guides": {
                 "reboot_notify": "Zrestartuj aby zobaczyc wszystkie poradniki!"
