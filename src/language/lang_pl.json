@@ -4,7 +4,7 @@
         "code": "pl",
         "version": [
             1,
-            7
+            8
         ],
         "authors": [
             "@Kitki30"
@@ -401,7 +401,9 @@
                 "happy": "Szczesliwy",
                 "neutral": "Neutralny",
                 "sad": "Smutny"
-            }
+            },
+            "read_error": "Nie mozna otworzyc twojego zwierzaka, usun '%config_path%' aby zresetowac konfiguracje (To nie usunie xp)",
+            "language_error": "Nie mozna otworzyc zwierzaka w jezyku polskim, sproboje zaladowac po angielsku."
         }
     },
     "menus": {
