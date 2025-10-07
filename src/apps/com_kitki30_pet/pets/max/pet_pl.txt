@@ -2,6 +2,6 @@
     |  \    o | Nastroj:
 |\ /    .\ o  | %mood%
 | |       (   | Poziom:
-/ \     /    | %level%
+|/ \     /    | %level%
     |  /      | XP:
      |/       | %curr%/%need%
