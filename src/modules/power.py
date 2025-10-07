@@ -4,6 +4,7 @@ Unified power management module for Stick firmware
 
 import os
 import time
+
 import machine
 
 import fonts.def_8x8 as f8x8
