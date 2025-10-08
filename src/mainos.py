@@ -755,6 +755,11 @@ while True:
                 
                 debug_input = numpad.keyboard("Debug console")
                 
+                if debug_input is None:
+                    continue
+                
+                debug_input = debug_input.lower()
+                
                 if debug_input == "fastrecovery":
                     break
                 else:
