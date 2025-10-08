@@ -4,7 +4,7 @@ MAJOR = 2
 MINOR = 2
 PATCH = 1
 
-LANG_VER = [1, 6]
+LANG_VER = [1, 8]
 
 is_beta = False
 

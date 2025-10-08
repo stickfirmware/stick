@@ -6,7 +6,7 @@
     ],
     "lang_ver": [
         1,
-        6
+        8
     ],
     "app_handler": {
         "app_handler_features": "requirements;uninstall;",
