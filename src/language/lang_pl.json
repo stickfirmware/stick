@@ -198,6 +198,7 @@
                     "version": "wersja",
                     "by_kitki30": "od",
                     "apache_license": "Licencja Apache 2.0",
+                    "mpy_ver": "Micropython version: %mpy_ver%",
                     "a_exit": "Nacisnij A aby wyjsc,",
                     "b_credits": "B dla kredytow,",
                     "c_license": "i C dla licencji."
