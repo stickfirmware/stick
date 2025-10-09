@@ -1,4 +1,5 @@
 import gc
+import os
 import time
 
 import machine
@@ -529,6 +530,9 @@ def run():
                     tft.text(f8x8, f"Stick firmware {l_get("apps.settings.about.fw.version")} {cache.get("ver_displayname")}" ,0,0,ver_color)
                     tft.text(f8x8, l_get("apps.settings.about.fw.by_kitki30") + " @Kitki30",0,8,ver_color)
                     tft.text(f8x8, l_get("apps.settings.about.fw.apache_license"),0,16,65535)
+                    
+                    tft.text(f8x8, l_get("apps.settings.about.fw.mpy_ver").replace("%mpy_ver%", str(os.uname().release)), 0, 32, 65535)
+                    
                     tft.text(f8x8, l_get("apps.settings.about.fw.a_exit"),0,111,65535)
                     tft.text(f8x8, l_get("apps.settings.about.fw.b_credits"),0,119,65535)
                     tft.text(f8x8, l_get("apps.settings.about.fw.c_license"),0,127,65535)
