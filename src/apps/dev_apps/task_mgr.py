@@ -18,4 +18,4 @@ def run():
         menu.append(("MPY Ver: " + str(os.uname().release), None))
         menu.append(("MAC: " + wmaster.get_wifi_mac(), None))
         menu.append(("Close", None))
-        menus.menu("Hardware info", menu)
+        menus.menu("Device info", menu)
