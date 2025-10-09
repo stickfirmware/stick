@@ -9,12 +9,12 @@ def run():
     popup.show("This tool is used for getting or setting nvs values, make sure you know variable types and maximum values to not break system.")
     
     namespace = numpad.keyboard("NVS Namespace")
-    if namespace is None:
+    if namespace is None or namespace == "":
         popup.show("NVS namespace not set!!!")
         return
     
     key = numpad.keyboard("NVS Key") 
-    if key is None:
+    if key is None or key == "":
         popup.show("NVS key not set!!!")
         return
     
@@ -44,7 +44,7 @@ def run():
         return
     
     new_value = numpad.keyboard("NVS new value") 
-    if new_value is None:
+    if new_value is None or new_value == "":
         popup.show("NVS new value not set!!!")
         return
     
