@@ -1,0 +1,3 @@
+"""
+Stick firmware system modules.
+"""

@@ -37,6 +37,12 @@
         "app_crashed_info": "One of your apps has crashed!",
         "app_crashed_try_again": "Please try again!"
     },
+    "licensing_service": {
+        "name": "Licensing",
+        "ask_popup": "%license_name% wants you to accept license of type '%license_type%'\nAuthor: %license_author%\n\nYou can accept license or not, but this can affect your app experience.",
+        "ask_menu_title": "Accept license?",
+        "popup_success": "License accepted successfully!"
+    },
     "apps": {
         "clock": {
             "name": "Clock",

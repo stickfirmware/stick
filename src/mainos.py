@@ -349,7 +349,26 @@ if nvs.get_int(n_guides, 'quick_start') is None:
     import helpers.run_in_reader as rir
     rir.open_file(f'/guides/quick_start_{cache.get('n_cache_lang')}.txt')
     nvs.set_int(n_guides, 'quick_start', 1)
+    
+# Prompt licenses
+import modules.licenses as licenses
 
+if licenses.check_license("com.kitki30.stick_firmware_license_apache") is None:
+    licenses.add_license("com.kitki30.stick_firmware_license_apache",
+                         "Stick firmware license",
+                         "apache_2_0",
+                         "Kitki30",
+                         "2025")
+if not licenses.prompt_license("com.kitki30.stick_firmware_license_apache"):
+    tft.fill(0)
+    tft.text(f8x8, "Without accepting the license,", 0, 0, 65535)
+    tft.text(f8x8, "You cannot use the OS.", 0, 8, 65535)
+    
+    time.sleep(5)
+    tft.text(f8x8, "System will not shutdown...", 0, 16, 65535)
+    import modules.power as power
+    power.shutdown(True)
+    
 debug.log("Stick firmware ready to use!")
 
 # Main loop
