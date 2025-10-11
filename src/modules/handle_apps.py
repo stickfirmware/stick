@@ -249,10 +249,9 @@ def run_requirements(zip_package: str) -> bool:
     Return:
         bool: True if requirements are met, False if not
     """
-    import modules.zipfile as zipfile
-
     import modules.files as files
     import modules.zip as zip
+    import modules.zipfile as zipfile
     
     log("Check requirements...", log_levels.DEBUG)
     

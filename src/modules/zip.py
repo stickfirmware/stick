@@ -4,9 +4,8 @@ zipfile wrapper for Stick Firmware
 
 import gc
 
-import modules.zipfile as zipfile
-
 import modules.files as files
+import modules.zipfile as zipfile
 
 
 # Get file list of zip
