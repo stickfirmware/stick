@@ -8,6 +8,7 @@ import modules.io_manager as io_man
 import modules.menus as menus
 import modules.open_file as open_file
 import modules.popup as popup
+import modules.powersaving as ps
 from modules.files import is_file, parent_path, path_join, rmdir_recursive
 from modules.translate import get as l_get
 
@@ -47,11 +48,16 @@ def _LOAD_IO():
 
 def browser(path):
     _LOAD_IO()
+    
+    # Get file list
     try:
+        ps.boost_allowing_state(True)
+        ps.boost_clock()
         files = os.listdir(path)
     except OSError:
         return
     
+    # Append directory prefixes
     files_menu = []
     index = 1
     files_menu.append(("../", 0))
@@ -63,6 +69,9 @@ def browser(path):
         index += 1
     chunks = [path[i:i+28] for i in range(0, len(path), 28)]
     last_chunk = chunks[-1] if chunks else ""
+    ps.boost_allowing_state(False)
+    ps.loop()
+    
     render = menus.menu(last_chunk, files_menu)
     
     if render is None:
@@ -74,24 +83,34 @@ def browser(path):
     
 def fileMenu(file):
     global clipboard
+    # Warn prompt
     if file.endswith(".mpy") or file in file_banlist:
         confirmation = menus.menu(l_get("apps.file_explorer.modify_may_harm"), 
                                   [(l_get("apps.file_explorer.dont_open"), None),
                                    (l_get("apps.file_explorer.open_anyway"), 1)])
         if confirmation is None:
             return
+        
+    # Show file menu
     render = menus.menu(str(file), 
                         [(l_get("apps.file_explorer.open_in"), 4),
                          (l_get("apps.file_explorer.delete"), 2),
                          (l_get("apps.file_explorer.properties"), 1),
                          (l_get("menus.menu_exit"), 13)])
+    
+    # Open in...
     if render == 4:
         open_file.openMenu(file)
+        
+    # Properties
     elif render == 1:
+        ps.boost_allowing_state(True)
+        ps.boost_clock()
         if "temp" not in os.listdir("/"):
             os.mkdir("/temp")
         stat = os.stat(file)
         tm = time.localtime(stat[8])
+        # Write temporary fileprop.txt file
         with open("/temp/fileprop.txt", "w") as f:
             f.write(str(file) + "\n")
             f.write("{} {} B\n".format(l_get("apps.file_explorer.file_size"), stat[6]))
@@ -99,7 +118,10 @@ def fileMenu(file):
                 l_get("apps.file_explorer.months_of_the_year")[tm[1]-1],
                 tm[2], tm[0], tm[3], tm[4], tm[5]
             ))
+        ps.boost_allowing_state(False)
+        ps.loop()
 
+        # Open properties in reader
         comd = __import__("helpers.run_in_reader")
         parts = "helpers.run_in_reader".split(".")
         for part in parts[1:]:
@@ -107,6 +129,14 @@ def fileMenu(file):
         comd.open_file("/temp/fileprop.txt")
         if "helpers/run_in_reader" in sys.modules:
             del sys.modules["helpers/run_in_reader"]
+            
+        # Delete fileprop
+        try:
+            os.remove("/temp/fileprop.txt")
+        except OSError:
+            pass
+        
+    # Delete
     elif render == 2:
         if menus.menu(l_get("apps.file_explorer.delete_confirmation"), 
                       [l_get("menus.yes"), 
@@ -125,6 +155,8 @@ def detect():
     os.chdir("/")
     
     # Check for SD Card
+    ps.boost_allowing_state(True)
+    ps.boost_clock()
     listdir = os.listdir()
     if "sd" in listdir:
         sd_present = True
@@ -134,6 +166,8 @@ def detect():
     # Check free space on flash
     stat = os.statvfs("/")
     freespace_flash = stat[0] * stat[3]
+    ps.boost_allowing_state(False)
+    ps.loop()
     
 def explorerLoop(startingpath, disablemenu = False):
     currpath = startingpath
