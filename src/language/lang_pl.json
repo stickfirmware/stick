@@ -38,10 +38,10 @@
         "app_crashed_try_again": "Sproboj ponownie!"
     },
     "licensing_service": {
-        "name": "Licensing",
-        "ask_popup": "%license_name% wants you to accept license of type '%license_type%'\nAuthor: %license_author%\n\nYou can accept license or not, but this can affect your app experience.",
-        "ask_menu_title": "Accept license?",
-        "popup_success": "License accepted successfully!"
+        "name": "Licencje",
+        "ask_popup": "%license_name% chce zebys zaakceptowal licencje typu '%license_type%'\nAutor: %license_author%\n\nMozesz zaakceptowac licencje lub nie, ale moze to wplynac na twoja aplikacje.",
+        "ask_menu_title": "Zaakceptowac licencje?",
+        "popup_success": "Licencja zaakceptowana pomyslnie!"
     },
     "apps": {
         "clock": {
@@ -204,7 +204,7 @@
                     "version": "wersja",
                     "by_kitki30": "od",
                     "apache_license": "Licencja Apache 2.0",
-                    "mpy_ver": "Micropython version: %mpy_ver%",
+                    "mpy_ver": "Wersja micropythona: %mpy_ver%",
                     "a_exit": "Nacisnij A aby wyjsc,",
                     "b_credits": "B dla kredytow,",
                     "c_license": "i C dla licencji."
