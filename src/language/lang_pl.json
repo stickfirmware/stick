@@ -37,6 +37,12 @@
         "app_crashed_info": "Aplikacja ulegla awarii!",
         "app_crashed_try_again": "Sproboj ponownie!"
     },
+    "licensing_service": {
+        "name": "Licencje",
+        "ask_popup": "%license_name% chce zebys zaakceptowal licencje typu '%license_type%'\nAutor: %license_author%\n\nMozesz zaakceptowac licencje lub nie, ale moze to wplynac na twoja aplikacje.",
+        "ask_menu_title": "Zaakceptowac licencje?",
+        "popup_success": "Licencja zaakceptowana pomyslnie!"
+    },
     "apps": {
         "clock": {
             "name": "Zegar",
@@ -198,6 +204,7 @@
                     "version": "wersja",
                     "by_kitki30": "od",
                     "apache_license": "Licencja Apache 2.0",
+                    "mpy_ver": "Wersja micropythona: %mpy_ver%",
                     "a_exit": "Nacisnij A aby wyjsc,",
                     "b_credits": "B dla kredytow,",
                     "c_license": "i C dla licencji."
