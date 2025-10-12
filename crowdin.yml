@@ -1,7 +1,9 @@
 files:
   - source: /src/language/lang_en.json
     translation: /src/language/lang_%two_letters_code%.json
+
   - source: /src/guides/quick_start_en.txt
-    translation: /src/guides/%file_name%_%two_letters_code%.%file_extension%
+    translation: /src/guides/quick_start_%two_letters_code%.%file_extension% 
+
   - source: /src/apps/com_kitki30_pet/pets/*/pet_en.txt
     translation: '/%original_path%/pet_%two_letters_code%.txt'
