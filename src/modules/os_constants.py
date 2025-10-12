@@ -8,7 +8,7 @@ DEVICE_NAME = const("M5Stack Cardputer v1.1") # Device name
 RELEASE_NAME = const("cardputerv1_1") # Name in builder
 
 # Debug
-LOG_LEVEL = const(2) # 1  Debug, 2 - Info, 3 - Warning, 4 - Error
+LOG_LEVEL = const(2) # 1  Debug, 2 - Info, 3 - Warning, 4 - Error, 5 - Critical
 LOG_ENABLE_COLORS = const(True) # Enable colors in console
 LESS_RAM_CLEANER_OUTPUT = const(True) # Don't show ram cleaner output
 ENABLE_SLEEP_REPORTS = const(True) # Sleep reports, logs how much battery has gone in sleep to json file, and how much time we have slept.
