@@ -22,29 +22,43 @@ def run():
     
     menu_apps = [("Grove I2C scan", 1), ("Device info", 2), ("Trigger crash", 3), ("SD Activator (Beta)", 4), ("NVS Cheater", 5), ("Close", None)]
 
-    menu1 = menus.menu("Menu", menu_apps)
-    if menu1 == 1:
-        import apps.dev_apps.iic_scan as i2c_scan
-        i2c_scan.run()
-        del i2c_scan
-        decache('apps.dev_apps.iic_scan')
-    elif menu1 == 2:
-        import apps.dev_apps.task_mgr as taskmgr
-        taskmgr.run()
-        del taskmgr
-        decache('apps.dev_apps.task_mgr')
-    elif menu1 == 3:
-        os.sync()
-        c_handler.crash_screen(tft, 1, "User triggered test crash from menu", True, True, 1)
-    elif menu1 == 4:
-        import apps.dev_apps.sd_activator as sd_act
-        sd_act.run()
-        del sd_act
-        decache('apps.dev_apps.sd_activator')
-    elif menu1 == 5:
-        import apps.dev_apps.nvs_cheater as nvs_cheat
-        nvs_cheat.run()
-        del nvs_cheat
-        decache('apps.dev_apps.nvs_cheater')
+    while True:
+        menu1 = menus.menu("Menu", menu_apps)
+        # I2C scanner
+        if menu1 == 1:
+            import apps.dev_apps.iic_scan as i2c_scan
+            i2c_scan.run()
+            del i2c_scan
+            decache('apps.dev_apps.iic_scan')
+            
+        # Device info
+        elif menu1 == 2:
+            import apps.dev_apps.task_mgr as taskmgr
+            taskmgr.run()
+            del taskmgr
+            decache('apps.dev_apps.task_mgr')
+            
+        # Test crash
+        elif menu1 == 3:
+            os.sync()
+            c_handler.crash_screen(tft, 1, "User triggered test crash from menu", True, True, 1)
+            
+        # SD activator
+        elif menu1 == 4:
+            import apps.dev_apps.sd_activator as sd_act
+            sd_act.run()
+            del sd_act
+            decache('apps.dev_apps.sd_activator')
+            
+        # NVS cheater
+        elif menu1 == 5:
+            import apps.dev_apps.nvs_cheater as nvs_cheat
+            nvs_cheat.run()
+            del nvs_cheat
+            decache('apps.dev_apps.nvs_cheater')
+            
+        else:
+            break
+        
     gc.collect()
     ps.set_freq(osc.BASE_FREQ)
