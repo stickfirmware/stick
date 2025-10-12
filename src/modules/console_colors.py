@@ -10,6 +10,7 @@ class Fore:
     LIGHTBLUE = "\033[94m"
     YELLOW = "\033[93m"
     RED = "\033[31m"
+    BOLD_RED = "\033[1;31m"
 """Fore colors"""
     
 class Style:

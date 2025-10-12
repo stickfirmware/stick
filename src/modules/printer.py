@@ -12,12 +12,14 @@ class Levels():
     INFO = 2
     WARNING = 3
     ERROR = 4
+    CRITICAL = 5
     
 LEVEL_MAP = {
     Levels.DEBUG:  ("DEBUG", console_colors.Fore.GRAY),
     Levels.INFO:   ("INFO", console_colors.Fore.LIGHTBLUE),
     Levels.WARNING:("WARNING", console_colors.Fore.YELLOW),
     Levels.ERROR:  ("ERROR", console_colors.Fore.RED),
+    Levels.CRITICAL: ("CRITICAL", console_colors.Fore.BOLD_RED)
 }
 
 def log(msg: any, log_level: int = 2):

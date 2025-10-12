@@ -104,7 +104,8 @@ while True:
             machine.soft_reset()
         except Exception as e:
             tft.text(f8x8, "Update failed! Rebooting..",0,32,65535)
-            printer.log(e, printer.Levels.ERROR)
+            printer.log("Update failed! Rebooting...", printer.Levels.CRITICAL)
+            printer.log(e, printer.Levels.CRITICAL)
             machine.soft_reset()
     else:
         try:
@@ -113,7 +114,7 @@ while True:
             # Once main loop breaks, go to recovery
             recoveryf()
         except Exception as e:
-            printer.log("Critical error, showing bsod", printer.Levels.ERROR)
-            printer.log(e, printer.Levels.ERROR)
+            printer.log("Critical error, showing bsod", printer.Levels.CRITICAL)
+            printer.log(e, printer.Levels.CRITICAL)
             import modules.crash_handler as c_handler
             c_handler.crash_screen(tft, 4001, e, True, True, 2)
