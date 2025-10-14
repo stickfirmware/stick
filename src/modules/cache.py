@@ -50,11 +50,12 @@ def precache():
     set("rand_extra_func", rand_func_check.check_random_extra_functions())
 
     import version
-    v_major = version.MAJOR
-    v_minor = version.MINOR
-    v_patch = version.PATCH
-    v_beta = version.is_beta
-    v_disp = "v" + str(v_major) + "." + str(v_minor) + "." + str(v_patch)
+    ver = version.get_parsed_version("core")
+    v_major = ver[0]
+    v_minor = ver[1]
+    v_patch = ver[2]
+    v_beta = version.get_version("is_core_beta")
+    v_disp = version.version_to_str(ver, True)
     
     set("ver_displayname", v_disp)
     set("ver_major", v_major)

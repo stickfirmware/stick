@@ -176,7 +176,7 @@ def run():
             if ts_menu is not None:
                 if translate.load(ts_menu):
                     import version
-                    if l_get("lang_info.version")[0] < version.LANG_VER[0] or l_get("lang_info.version")[1] < version.LANG_VER[1]:
+                    if l_get("lang_info.version")[0] < version.get_version("lang_ver")[0] or l_get("lang_info.version")[1] < version.get_version("lang_ver")[1]:
                         popup.show("The language pack is older than system pack version and can not work properly. Expect errors or untranslated menus.", "Info", 60)
                     nvs.set_string(n_settings, "lang", ts_menu)
                     reboot_confirm = menus.menu(l_get("apps.settings.lang_menu.reboot"),
