@@ -1,5 +1,5 @@
 """
-Context menu helper for Stick firmware
+Helper to open files in apps
 """
 
 import gc
@@ -11,11 +11,6 @@ import modules.oobe as oobe
 from modules.printer import Levels as log_levels
 from modules.printer import log
 from modules.translate import get as l_get
-
-button_a = io_man.get('button_a')
-button_b = io_man.get('button_b')
-button_c = io_man.get('button_c')
-tft = None
 
 # Check if filename matches pattern
 def matches_pattern(filename: str, pattern: str) -> bool:
@@ -38,13 +33,14 @@ def matches_pattern(filename: str, pattern: str) -> bool:
         return filename.lower().endswith("." + ext.lower())
     return False
     
-def get_supported_apps(apps_config: dict, filename: str) -> list[tuple]:
+def get_supported_apps(apps_config: dict, filename: str, use_legacy: bool = True) -> list[tuple]:
     """
     Get supported apps menu
     
     Args:
         apps_config (dict): JSON dict of apps config
         filename (str): Filename to open
+        use_legacy (bool): If true it will append app index, if false it will append app ID (Default is True)
     
     Returns:
         list[tuple]: List to display in menus.menu
@@ -56,70 +52,80 @@ def get_supported_apps(apps_config: dict, filename: str) -> list[tuple]:
         for pattern in app.get("handleExtensions", []):
             if matches_pattern(filename, pattern):
                 log(f"Found supported app {app['name']} for pattern {pattern}", log_levels.DEBUG)
-                menu.append((app["name"], i))
+                if use_legacy:
+                    menu.append((app["name"], i))
+                else:
+                    menu.append((app["name"], app["id"]))
                 break
     menu.append((l_get("menus.menu_exit"), None))
     return menu
-
-def open_in(id: str, file: str, ram_clean: bool = True):
+        
+def open_in(app_id: str, filename: str, ram_clean: bool = True):
     """
     Open file in app with package id you provided
     
     Args:
         id (str): Package ID to open file in
         filename (str): Filename to open
+        ra
     """
+    log(f"Opening file {filename} in app ID: {app_id}")
+    apps_config = oobe.read_config()
     
-    log(f"Opening file {file} in app with ID: {id}")
-    
-    # Read OOBE config, get app, and format import path
-    log("Reading OOBE config", log_levels.DEBUG)
-    appsConfig = oobe.read_config() # Its cached, so it wont double read (If run with openMenu)
-    app = appsConfig["apps"][id]
-    modpath = app["file"]
-    parts = modpath.split(".")
-    
-    # Import module
-    log("Importing app...", log_levels.DEBUG)
-    gc.collect() # Collect before import again
-    comd = __import__(modpath)
-    for part in parts[1:]:
-        comd = getattr(comd, part)
-        
-    # Support for legacy apps
-    if hasattr(comd, "set_btf"):
-        button_a = io_man.get('button_a')
-        button_b = io_man.get('button_b')
-        button_c = io_man.get('button_c')
-        tft = io_man.get('tft')
-        comd.set_btf(button_a, button_b, button_c, tft)
-        
-    # Collect before running app
-    gc.collect()
-        
-    # Open app
-    log("Running app open_file...", log_levels.DEBUG)
-    if hasattr(comd, "open_file"):
-        comd.open_file(file)
+    # Find app by ID
+    app = None
 
-    # Delete from path (To keep ram, can be overwritten with ram_clean = False)
-    if modpath in sys.modules and ram_clean:
+    for a in apps_config["apps"]:
+        if a["id"] == app_id:
+            app = a
+            break
+        
+    if not app:
+        log(f"App with ID {app_id} not found!", log_levels.WARNING)
+        return
+
+    modpath = app["file"]
+
+    # Import the thing
+    log("Importing app...", log_levels.DEBUG)
+    gc.collect()
+    module = __import__(modpath)
+    for part in modpath.split(".")[1:]:
+        module = getattr(module, part)
+
+    # Iopen file
+    log("Opening file...")
+    gc.collect()
+    if hasattr(module, "open_file"):
+        module.open_file(filename)
+
+    if ram_clean and modpath in sys.modules:
         del sys.modules[modpath]
         gc.collect()
     
 def open_menu(file: str):
-    """
-    Open file open context menu (GUI)
-    
-    Args:
-        filename (str): Filename to open
-    """
     appsConfig = oobe.read_config()
     supportedAppsMenu = get_supported_apps(appsConfig, file)
     selected_index = menus.menu(l_get("apps.file_explorer.open_in"), supportedAppsMenu)
     if selected_index is not None:
         app_index = selected_index
         open_in(app_index, file)  
+        
+def open_menu(filename: str):
+    """
+    Open file open context menu (GUI)
+    
+    Args:
+        filename (str): Filename to open
+    """
+    # Read config and get supported apps
+    apps_config = oobe.read_config()
+    supported_apps_menu = get_supported_apps(apps_config, filename, True)
+    
+    # Request user input and open
+    selected_id = menus.menu(l_get("apps.file_explorer.open_in"), supported_apps_menu)
+    if selected_id is not None:
+        open_in(selected_id, filename)
 
 def openMenu(file: str):
     """Old func name for open_menu, to not break compatibility"""
