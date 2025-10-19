@@ -1,8 +1,8 @@
 # Stick firmware Version module
 
 import modules.json as json
-from modules.printer import log
 from modules.printer import Levels as log_levels
+from modules.printer import log
 
 _COMPONENTS_PATH = '/modules/components.json'
 _COMPONENTS_CACHED = None
