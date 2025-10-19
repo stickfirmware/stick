@@ -539,9 +539,9 @@ def run():
                     while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
                         time.sleep(osc.DEBOUNCE_TIME)
                     if button_b.value() == 0:
-                        open_file.openMenu("/CREDITS")
+                        open_file.open_in("com.kitki30.filereader", "/CREDITS")
                     if button_c.value() == 0:
-                        open_file.openMenu("/LICENSE")
+                        open_file.open_in("com.kitki30.filereader", "/LICENSE")
                         
                 elif about_menu == 2:
                     tft.fill(0)

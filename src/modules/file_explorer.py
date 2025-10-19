@@ -100,7 +100,7 @@ def fileMenu(file):
     
     # Open in...
     if render == 4:
-        open_file.openMenu(file)
+        open_file.open_menu(file)
         
     # Properties
     elif render == 1:

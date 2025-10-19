@@ -97,7 +97,7 @@ def run():
     time.sleep(1)
     saveResult()
     import modules.open_file as open_file
-    open_file.openMenu(resultpath)
+    open_file.open_menu(resultpath)
     
 def run_no_gui():
     printer.log("\nPiMarkX")
