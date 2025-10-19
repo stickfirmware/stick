@@ -1,6 +1,13 @@
 """
 App open helper for Stick firmware
 """
+import gc
+
+import modules.io_manager as io_man
+import modules.oobe as oobe
+from modules.printer import Levels as log_levels
+from modules.printer import log
+
 
 class AppNotFound(Exception):
     pass
@@ -29,13 +36,14 @@ def run(pack_id: str, skip_intro = False):
     Args:
         pack_id (str): Package ID to run
     """
-    import modules.io_manager as io_man
-    import modules.oobe as oobe
-    from modules.printer import Levels as log_levels
-    from modules.printer import log
     
     log(f"Launching app: {pack_id}")
     
+    # Collect garbage
+    log("Collect Garbage", log_levels.DEBUG)
+    gc.collect()
+    
+    # Read OOBE config
     log("Reading config", log_levels.DEBUG)
     appsConfig = oobe.read_config()
     
@@ -45,7 +53,7 @@ def run(pack_id: str, skip_intro = False):
     xp_levels.add_xp(5)
     xp_levels.add_mood(2)
     
-    # Check if exists
+    # Check app (and entrypoint) if exists
     file = app_exists(appsConfig, pack_id)
     if file is not None:
         tft = io_man.get("tft")
@@ -53,13 +61,11 @@ def run(pack_id: str, skip_intro = False):
         if not skip_intro:
             tft.fill(65535)
             import modules.appboot as appboot
-        
-        modpath = file
-        parts = modpath.split(".")
-        
-        if not skip_intro:
             appboot.make_text(tft)
         
+        # Format module path
+        modpath = file
+        parts = modpath.split(".")
         comd = __import__(modpath)
         for part in parts[1:]:
             comd = getattr(comd, part)
@@ -67,6 +73,10 @@ def run(pack_id: str, skip_intro = False):
         if not skip_intro:
             appboot.app_boot_make_anim(tft)
         
+        log("Collect Garbage", log_levels.DEBUG)
+        gc.collect()
+        
+        # Run app (if has run method)
         if hasattr(comd, "run"):
             comd.run()
         
