@@ -5,7 +5,6 @@ import modules.json as jso
 from modules.translate import get as l_get
 
 _APPS_JSON_PATH = "/usr/config/apps.json"
-_LAST_UPDATED_TIME = 0
 
 # Get apps config
 def app_config_translated():
@@ -118,17 +117,11 @@ def app_config_translated():
 # Create starting config
 def createConfig():
     jso.write(_APPS_JSON_PATH, app_config_translated())
-    cache.reload_apps()
     
 # Read app config
-def read_config(bypass_cache=False):
-    global _LAST_UPDATED_TIME
-    if cache.get("app_config_last_modify") != _LAST_UPDATED_TIME or bypass_cache:
-        config = jso.read(_APPS_JSON_PATH)
-        _LAST_UPDATED_TIME =  cache.update_last_mod()
-        return config
-    else:
-        return cache.get("app_config")
+def read_config(bypass_cache=True):
+    config = jso.read(_APPS_JSON_PATH)
+    return config
     
 # Sync apps with actual ones
 def sync_apps():
@@ -144,7 +137,6 @@ def sync_apps():
             apps.append(new_app)
     
     jso.write(_APPS_JSON_PATH, config)
-    cache.reload_apps()
     
 # Edit app, example usage: edit_app("com.kitki30.musicplayer", name="Play music", handleExtensions=["*.wav", "*.mp3"])
 def edit_app(app_id, **changes):
@@ -167,7 +159,6 @@ def edit_app(app_id, **changes):
         config.setdefault("apps", []).append(new_app)
 
     jso.write(_APPS_JSON_PATH, config)
-    cache.reload_apps()
     return True
 
 def get_entry(id, key):
@@ -189,7 +180,6 @@ def remove_app(id):
     # Write new onfig
     conf["apps"] = new_apps
     jso.write(_APPS_JSON_PATH, conf)
-    cache.reload_apps()
     
 # Create user
 def createUserFolder():

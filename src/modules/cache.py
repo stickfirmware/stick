@@ -35,15 +35,6 @@ def update_last_mod():
     curr_ticks = time.ticks_ms()
     set("app_config_last_modify", curr_ticks)
     return curr_ticks
-    
-
-def reload_apps():
-    import time
-    
-    import modules.oobe as oobe
-    
-    set("app_config", oobe.read_config(True))
-    set("app_config_last_modify", time.ticks_ms())
 
 def precache():
     import modules.random_func_checker as rand_func_check
@@ -70,5 +61,3 @@ def precache():
     get_nvs('guides')
     
     set("allow_xp_levelling", True)
-    
-    reload_apps()
