@@ -5,7 +5,6 @@ Helper to open files in apps
 import gc
 import sys
 
-import modules.io_manager as io_man
 import modules.menus as menus
 import modules.oobe as oobe
 from modules.printer import Levels as log_levels
@@ -102,14 +101,6 @@ def open_in(app_id: str, filename: str, ram_clean: bool = True):
     if ram_clean and modpath in sys.modules:
         del sys.modules[modpath]
         gc.collect()
-    
-def open_menu(file: str):
-    appsConfig = oobe.read_config()
-    supportedAppsMenu = get_supported_apps(appsConfig, file)
-    selected_index = menus.menu(l_get("apps.file_explorer.open_in"), supportedAppsMenu)
-    if selected_index is not None:
-        app_index = selected_index
-        open_in(app_index, file)  
         
 def open_menu(filename: str):
     """

@@ -1,6 +1,5 @@
 import os
 
-import modules.cache as cache
 import modules.json as jso
 from modules.translate import get as l_get
 
