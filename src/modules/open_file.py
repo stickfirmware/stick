@@ -11,6 +11,7 @@ from modules.printer import Levels as log_levels
 from modules.printer import log
 from modules.translate import get as l_get
 
+
 # Check if filename matches pattern
 def matches_pattern(filename: str, pattern: str) -> bool:
     """

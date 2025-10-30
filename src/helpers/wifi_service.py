@@ -2,9 +2,10 @@
 Helper for Wi-Fi
 """
 
-import modules.cache as cache 
+import modules.cache as cache
 import modules.nvs as nvs
 import modules.wifi_master as wifi_man
+
 
 def connect():
     """
