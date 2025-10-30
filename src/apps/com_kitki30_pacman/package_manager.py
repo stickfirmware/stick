@@ -45,6 +45,7 @@ def show_info(id):
     app_menu(id)
 
 def run():
+    global appsConfig
     while True:
         apps = get_all_apps()
         apps.append((l_get("menus.menu_exit"), None))
@@ -54,3 +55,4 @@ def run():
             break
         
         show_info(app_select_dialog)
+        appsConfig = oobe.read_config()
