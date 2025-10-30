@@ -410,6 +410,8 @@ def install(zip_package, delete_app_package=True):
 def uninstall(id):
     if get_entry(id, "is_system_app"):
         raise CannotUninstallSystemApp("Cannot uninstall system app")
+    
+    main_folder = get_entry(id, "main_folder")
     if get_entry(id, "main_folder") == "":
         raise NoAppFolderFound("App folder was not set in config, probably system app or other apps helper.")
     
@@ -424,7 +426,7 @@ def uninstall(id):
             comd = getattr(comd, part)
             
         if hasattr(comd, "uninstall"):
-            return comd.uninstall()
+            comd.uninstall()
     except Exception as e:
         log("Uninstall error", log_levels.ERROR)
         log(e, log_levels.ERROR)
@@ -432,7 +434,7 @@ def uninstall(id):
     oobe.remove_app(id)
     
     try:
-        files.rmdir_recursive(get_entry(id, "main_folder"))
+        files.rmdir_recursive(main_folder)
     except OSError:
         pass
 
