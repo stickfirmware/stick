@@ -39,7 +39,7 @@ def run():
             break
         
         elif menu == 2:
-            size_estimate = "~3KB"
+            size_estimate = "~5KB"
             apps_list = "Image viewer"
             popup.show(l_get("apps.pack_installer.app_list").replace("%apps%", apps_list).replace("%size%", size_estimate), l_get("popups.info"))
         
