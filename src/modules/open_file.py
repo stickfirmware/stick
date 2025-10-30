@@ -67,7 +67,7 @@ def open_in(app_id: str, filename: str, ram_clean: bool = True):
     Args:
         id (str): Package ID to open file in
         filename (str): Filename to open
-        ra
+        ram_clean (bool, optional): Remoes the app with decache if True (Default)
     """
     log(f"Opening file {filename} in app ID: {app_id}")
     apps_config = oobe.read_config()
@@ -120,7 +120,7 @@ def open_menu(filename: str):
     """
     # Read config and get supported apps
     apps_config = oobe.read_config()
-    supported_apps_menu = get_supported_apps(apps_config, filename, True)
+    supported_apps_menu = get_supported_apps(apps_config, filename, False)
     
     # Request user input and open
     selected_id = menus.menu(l_get("apps.file_explorer.open_in"), supported_apps_menu)
