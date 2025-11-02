@@ -13,7 +13,7 @@
         "app_handler_features": "requirements;uninstall;",
         "version": [
             1,
-            0
+            1
         ]
     },
     "printer": "colors;log_levels;",
