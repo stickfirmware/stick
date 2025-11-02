@@ -552,11 +552,15 @@ while True:
                 # De-cache lock menu (to free up RAM)
                 decache("apps.lock_menu")
                 del app_lockmen
+                gc.collect()
                 menu = 0
                 menu_change = True
                 
         # Reset power saving time
         pwr_save_time = time.ticks_ms()
+
+        # Continue
+        continue
         
     # Menu
     if btn_a_state == 0:
@@ -657,6 +661,9 @@ while True:
 
             # Clean ram
             ram_cleaner.clean()
+            
+            # Continue
+            continue
         except Exception as e:
                 tft.fill(0)
                 gc.collect()
@@ -710,6 +717,9 @@ while True:
 
         # Clean ram
         ram_cleaner.clean()
+
+        # Continue
+        continue
 
     # Ram cleaner
     if time.ticks_diff(time.ticks_ms(), cleaner_time) >= osc.RAM_CLEANER_TIME:
