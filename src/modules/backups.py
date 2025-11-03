@@ -66,7 +66,8 @@ def backup_all(filename: str):
         else:
             raise UnknownVariableType(f"Unknown variable type: {args[1]}")
 
-        backup_dict["keys"][key] = value
+        if value:
+            backup_dict["keys"][key] = value
     
     del backup_keys
     decache("modules.backup_keylist")
@@ -124,6 +125,8 @@ def restore_all(filename: str, verify: bool = True):
             nvs.set_float(namespace, args[1], value)
         elif isinstance(value, str):
             nvs.set_string(namespace, args[1], value)
+        elif value is None:
+            continue
         else:
             raise UnknownVariableType(f"Unknown variable type: {type(value)}")
     

@@ -54,7 +54,7 @@ def run():
         result_ok = False
         
         try:
-            result = backups.create_backup(location)
+            result = backups.backup_all(location)
             result_ok = result
         except Exception as e:
             printer.log(f"Backup creation error: {e}", log_levels.ERROR)
@@ -107,12 +107,18 @@ def run():
         # Restore
         result_ok = False
         try:
-            result_ok = backups.restore_backup(location)
+            result_ok = backups.restore_all(location)
         except Exception as e:
             printer.log(f"Backup restore error: {e}", log_levels.ERROR)
             result_ok = False
             
         if result_ok:
+            # Delete temp file
+            try:
+                os.remove(temp_backup_path)
+            except OSError:
+                pass
+            
             popup.show(l_get("apps.settings.backups.backup_restored"), l_get("popups.info"), 10)
             # Restart ask
             restart_ask = menus.menu(l_get("apps.settings.backups.restart_now"), [
@@ -124,5 +130,9 @@ def run():
                 power.soft_reboot()
             return
         else:
+            try:
+                backups.restore_all(temp_backup_path)
+            except Exception:
+                pass
             popup.show(l_get("apps.settings.backups.error_occurred"), l_get("crashes.error"), 10)
             return
