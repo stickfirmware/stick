@@ -5,11 +5,12 @@ Saves system values to json file
 """
 
 import modules.cache as cache
-from modules.decache import decache
 import modules.json as json
 import modules.nvs as nvs
 import modules.os_constants as osc
 import version
+from modules.decache import decache
+
 
 class CannotOpenBackup(Exception):
     pass
