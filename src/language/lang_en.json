@@ -157,7 +157,8 @@
                 "account": "Account",
                 "neopixel": "Neopixel",
                 "show_guides_again": "Show guides",
-                "power": "Power"
+                "power": "Power",
+                "backups": "Backups"
             },
             "power": {
                 "title": "Settings/Power",
@@ -269,6 +270,22 @@
                 "rainbow": "Rainbow effect",
                 "also_change_colors": "Do you want to change color?",
                 "no_neo_popup": "No neopixel was detected in your device!"
+            },
+            "backups": {
+                "title": "Settings/Backups",
+                "create_backup": "Create backup",
+                "restore_backup": "Restore backup",
+                "backup_to": "Backup location",
+                "sd_card": "SD Card (Recommended)",
+                "internal_storage": "Internal storage",
+                "creating_backup": "Creating backup...",
+                "backup_created": "Backup created!\nLocation: %path%",
+                "restore_ask": "Restore?",
+                "restoring_backup": "Restoring backup...",
+                "restore_temp_error": "Could not create temporary backup, restore canceled to prevent data loss on error!",
+                "backup_restored": "Backup restored!",
+                "error_occurred": "An error occurred!",
+                "restart_now": "Restart now?"
             },
             "current": "Current"
         },
