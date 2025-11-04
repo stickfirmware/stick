@@ -18,8 +18,7 @@ def run():
     tft = io_man.get("tft")
     n_settings = cache.get_nvs("settings")
     
-    work1 = True
-    while work1:
+    while True:
         menu3 = menus.menu(l_get("apps.settings.power.shutdown_mode_title"),[
             (l_get("apps.settings.power.shutdown_modes.deep_sleep"), 1),
             (l_get("apps.settings.power.shutdown_modes.legacy"), 2),
@@ -45,8 +44,8 @@ def run():
             tft.text(f8x8, name, 0, 0, 65535)
             time.sleep(3)
             
-        # What is this popup
+        # What is this popup (Really, it just shows what shutdown modes are)
         elif menu3 == 4:
             popup.show(l_get("apps.settings.power.shutdown_what_this_popup"), l_get("popups.info"))
         else:
-            work1 = False 
+            break
