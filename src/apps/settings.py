@@ -8,6 +8,7 @@ import fonts.def_8x8 as f8x8
 import modules.cache as cache
 import modules.crash_handler as c_handler
 import modules.io_manager as io_man
+import modules.button_combos as btn_combos
 import modules.menus as menus
 import modules.nvs as nvs
 import modules.os_constants as osc
@@ -16,21 +17,13 @@ import modules.powersaving as ps
 import modules.printer as printer
 import modules.wifi_master as wifi_man
 from modules.decache import decache
-from modules.printer import Levels as log_levels
 from modules.translate import get as l_get
 
-printer.log("Getting buttons", log_levels.DEBUG)
-button_a = io_man.get('button_a')
-button_b = io_man.get('button_b')
-button_c = io_man.get('button_c')
 tft = None
 
 # Refresh io
 def _LOAD_IO():
-    global button_c, button_a, button_b, tft
-    button_a = io_man.get('button_a')
-    button_b = io_man.get('button_b')
-    button_c = io_man.get('button_c')
+    global tft
     tft = io_man.get('tft')
 
 def run():
@@ -269,7 +262,7 @@ def run():
                     tft.text(f8x8, l_get("apps.settings.wifi.ssid") + nic.config('ssid'),0,48, 65535)
                     tft.text(f8x8, l_get("apps.settings.wifi.channel") + str(nic.config('channel')),0,56, 65535)
                     tft.text(f8x8, l_get("apps.settings.wifi.hostname") + network.hostname(),0,64, 65535)
-                while button_a.value() == 1 and button_b.value() == 1 and button_c.value() == 1:
+                while not btn_combos.any_btn(["a", "b", "c"]):
                     time.sleep(osc.DEBOUNCE_TIME)
                 
         # SD Card settings
