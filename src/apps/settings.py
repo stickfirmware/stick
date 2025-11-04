@@ -200,6 +200,7 @@ def run():
                 
             # Wi-Fi connection
             elif rendr == 2:
+                # TODO: Refactor this thing, make it wrk better
                 if int(nvs.get_float(n_wifi, "conf")) == 1.0:
                     try:
                         nic = wifi_man.nic
@@ -248,22 +249,10 @@ def run():
 
             # Wi-Fi status
             elif rendr == 5:
-                nic = network.WLAN(network.STA_IF)
-                nic_active = nic.active()
-                nic_ifconfig = nic.ifconfig()
-                tft.fill(0)
-                tft.text(f8x8, l_get("apps.settings.wifi.wlan_active") + str(nic_active),0,0, 65535)
-                tft.text(f8x8, l_get("apps.settings.wifi.connected") + str(nic.isconnected()),0,8, 65535)
-                if nic.isconnected():
-                    tft.text(f8x8, l_get("apps.settings.local_ip") + str(nic_ifconfig[0]),0,16, 65535)
-                    tft.text(f8x8, l_get("apps.settings.wifi.subnet") + str(nic_ifconfig[1]),0,24, 65535)
-                    tft.text(f8x8, l_get("apps.settings.wifi.gateway") + str(nic_ifconfig[2]),0,32, 65535)
-                    tft.text(f8x8, l_get("apps.settings.wifi.dns") + str(nic_ifconfig[3]),0,40, 65535)
-                    tft.text(f8x8, l_get("apps.settings.wifi.ssid") + nic.config('ssid'),0,48, 65535)
-                    tft.text(f8x8, l_get("apps.settings.wifi.channel") + str(nic.config('channel')),0,56, 65535)
-                    tft.text(f8x8, l_get("apps.settings.wifi.hostname") + network.hostname(),0,64, 65535)
-                while not btn_combos.any_btn(["a", "b", "c"]):
-                    time.sleep(osc.DEBOUNCE_TIME)
+                import apps.settings_menus.wifi_status_gui as w_gui
+                w_gui.run()
+                decache("apps.settings_menus.wifi_status_gui")
+                del w_gui
                 
         # SD Card settings
         elif menu1 == 7:
