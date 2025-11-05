@@ -18,6 +18,21 @@ tft = None
 def _LOAD_IO():
     global tft
     tft = io_man.get('tft')
+    
+def run_gui(path: str):
+    """
+    Helper to run all the GUIs
+    
+    Args:
+        path: module path to the gui
+    """
+    parts = path.split('.')
+    mod = __import__(path)
+    for part in parts[1:]:
+        mod = getattr(mod, part)
+    mod.run()
+    decache(path)
+    del mod
 
 def run():
     _LOAD_IO()
@@ -44,10 +59,7 @@ def run():
         
         # Power settings
         if menu1 == 50:
-            import apps.settings_menus.power_menu_gui as pm_gui
-            pm_gui.run()
-            decache("apps.settings_menus.power_menu_gui")
-            del pm_gui
+            run_gui("apps.settings_menus.power_menu_gui")
                 
         # Show guides again
         elif menu1 == 12:
@@ -58,30 +70,19 @@ def run():
             
         # Clock
         elif menu1 == 0:
-            import apps.settings_menus.clock_gui as c_gui
-            c_gui.run()
-            decache("apps.settings_menus.clock_gui")
-            del c_gui
+            run_gui("apps.settings_menus.clock_gui")
                 
         # Langs
         elif menu1 == 11:
-            import apps.settings_menus.language_gui as l_gui
-            l_gui.run()
-            decache("apps.settings_menus.language_gui")
-            del l_gui
+            run_gui("apps.settings_menus.language_gui")
             
         # LCD / st7789 settings
         elif menu1 == 1:
-            import apps.settings_menus.lcd_settings as l_gui
-            l_gui.run()
-            decache("apps.settings_menus.lcd_settings")
-            del l_gui
+            run_gui("apps.settings_menus.lcd_settings")
                         
         # Sound settings
         elif menu1 == 2:
-            import apps.settings_menus.sound_gui as s_gui
-            s_gui.run()
-            decache("apps.settings_menus.sound_gui")
+            run_gui("apps.settings_menus.sound_gui")
         
         # Neopixel settings
         elif menu1 == 5:
@@ -89,17 +90,11 @@ def run():
                 popup.show(l_get("apps.settings.neopixel.no_neo_popup"), l_get("popups.info"))
                 continue
             
-            import apps.settings_menus.neopixel_gui as np_gui
-            np_gui.run()
-            decache("apps.settings_menus.neopixel_gui")
-            del np_gui
+            run_gui("apps.settings_menus.neopixel_gui")
                     
         # Wi-Fi settings
         elif menu1 == 3:
-            import apps.settings_menus.wifi_menu_gui as wm_gui
-            wm_gui.run()
-            decache("apps.settings_menus.wifi_menu_gui")
-            del wm_gui
+            run_gui("apps.settings_menus.wifi_menu_gui")
                 
         # SD Card settings
         elif menu1 == 7:
@@ -111,14 +106,11 @@ def run():
             import apps.settings_menus.sd_gui as s_gui
             s_gui.run()
             decache("apps.settings_menus.sd_gui")
-            del s_gui
+            run_gui("apps.settings_menus.power_menu_gui")
         
         # About screen
         elif menu1 == 8:
-            import apps.settings_menus.about_gui as a_gui
-            a_gui.run()
-            decache("apps.settings_menus.about_gui")
-            del a_gui
+            run_gui("apps.settings_menus.about_gui")
                 
         # Factory
         elif menu1 == 9:
@@ -135,10 +127,7 @@ def run():
         
         # Backups
         elif menu1 == 10:
-            import apps.settings_menus.backups_gui as b_gui
-            b_gui.run()
-            decache("apps.settings_menus.backups_gui")
-            del b_gui
+            run_gui("apps.settings_menus.backups_gui")
             
         else:
             work = False
