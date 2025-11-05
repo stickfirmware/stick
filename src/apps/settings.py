@@ -1,21 +1,14 @@
 import gc
-import time
 
 import machine
-import network
 
-import fonts.def_8x8 as f8x8
 import modules.cache as cache
-import modules.crash_handler as c_handler
 import modules.io_manager as io_man
-import modules.button_combos as btn_combos
 import modules.menus as menus
 import modules.nvs as nvs
 import modules.os_constants as osc
 import modules.popup as popup
 import modules.powersaving as ps
-import modules.printer as printer
-import modules.wifi_master as wifi_man
 from modules.decache import decache
 from modules.translate import get as l_get
 
@@ -30,7 +23,6 @@ def run():
     _LOAD_IO()
     n_settings = cache.get_nvs('settings')
     n_updates = cache.get_nvs('updates')
-    n_wifi = cache.get_nvs('wifi')
     
     work = True
     while work:
@@ -87,29 +79,9 @@ def run():
                         
         # Sound settings
         elif menu1 == 2:
-            menu2 = menus.menu(l_get("apps.settings.buzzer_menu.buzzer_title"),
-                               [(l_get("apps.settings.buzzer_menu.volume"), 1), 
-                                (l_get("menus.menu_close"), 13)])
-            
-            # Volume settings
-            if menu2 == 1:
-                work1 = True
-                while work1:
-                    menu3 = menus.menu(l_get("apps.settings.buzzer_menu.volume_title"),
-                                       [(l_get("apps.settings.current") + ": " + str(round(nvs.get_float(n_settings, "volume"), 1)), 1),
-                                        ("+", 2),
-                                        ("-", 3),
-                                        (l_get("menus.menu_close"), 13)])
-                    if menu3 == 1:
-                        time.sleep(0.02)
-                    elif menu3 == 2:
-                        if round(nvs.get_float(n_settings, "volume"), 1) != 0.8:
-                            nvs.set_float(n_settings, "volume", (nvs.get_float(n_settings, "volume") + 0.1))
-                    elif menu3 == 3:
-                        if round(nvs.get_float(n_settings, "volume"), 1) != 0.1:
-                            nvs.set_float(n_settings, "volume", (nvs.get_float(n_settings, "volume") - 0.1))
-                    else:
-                        work1 = False
+            import apps.settings_menus.sound_gui as s_gui
+            s_gui.run()
+            decache("apps.settings_menus.sound_gui")
         
         # Neopixel settings
         elif menu1 == 5:
@@ -124,135 +96,10 @@ def run():
                     
         # Wi-Fi settings
         elif menu1 == 3:
-            # TODO: Move this to apps.settings
-            rendr =  menus.menu(l_get("apps.settings.wifi.title"), 
-                                [(l_get("apps.settings.wifi.setup_ap"), 1),
-                                 (l_get("apps.settings.wifi.connection"), 2),
-                                 (l_get("apps.settings.wifi.status"), 5),
-                                 (l_get("menus.menu_close"), 13)])
-            
-            # Wi-Fi AP setup
-            if rendr == 1:
-                tft.text(f8x8, l_get("apps.settings.wifi.scanning"), 0,0, 65535)
-                nic = network.WLAN(network.STA_IF)
-                wifi_man.nic_reset()
-                #wifi_man.set_pwr_modes(0)
-                nic_scan = nic.scan()
-                if nic_scan == []:
-                    attempts = 5
-                    while attempts != 0 and nic_scan == []:
-                        nic_scan = nic.scan()
-                        wifi_man.nic_reset()
-                        attempts -= 1
-                    if nic_scan == []:
-                        popup.show(l_get("apps.settings.wifi.no_ap_error_popup"), l_get("crashes.error"), 10)
-                        continue
-                wlan_scan = []
-                index = 0
-                for ap in nic_scan:
-                    ap_name = ap[0].decode()
-                    if ap_name != '' and ap_name is not None and not ap[5]:
-                        wlan_scan.append((ap_name, index))
-                    index += 1
-                wlan_scan.append((l_get("menus.menu_close"), None))
-                num = menus.menu(l_get("apps.settings.wifi.select_ssid"), wlan_scan)
-                if num is None:
-                    continue
-                ssid = nic_scan[num][0].decode()
-                if nic_scan[num][4] != 0:
-                    import modules.numpad as keypad
-                    password = str(keypad.keyboard(l_get("apps.settings.wifi.enter_passwd"), maxlen=63, hideInput=False))
-                    if password is None:
-                        continue
-                else:
-                    password = ""
-                autoconnect = menus.menu(l_get("apps.settings.wifi.auto_connect_ask"),
-                                         [(l_get("menus.yes"), 1),
-                                          (l_get("menus.no"), 0)])
-                if autoconnect is None:
-                    autoconnect = 0
-                tft.fill(0)
-                tft.text(f8x8, l_get("apps.settings.wifi.connecting"), 0,0, 65535)
-                tft.text(f8x8, ssid, 0,8, 65535)
-                #wifi_man.set_pwr_modes()
-                printer.log("Wifi connecting")
-                if password != "":
-                    nic.connect(ssid, password)
-                else:
-                    nic.connect(ssid)
-
-                start_time = time.ticks_ms()
-                while not nic.isconnected() and time.ticks_diff(time.ticks_ms(), start_time) < 10000:
-                    time.sleep(0.2)
-
-                if nic.isconnected():
-                    nvs.set_float(n_wifi, "conf", 1.0)
-                    nvs.set_int(n_wifi, "autoConnect", autoconnect)
-                    nvs.set_string(n_wifi, "ssid", ssid)
-                    nvs.set_string(n_wifi, "passwd", password)
-                    popup.show(l_get("apps.settings.wifi.connected_to") + ": " + ssid, "Info", 10)
-                elif nic.status() == network.STAT_WRONG_PASSWORD:
-                    popup.show(l_get("apps.settings.wifi.wrong_passwd"), l_get("crashes.error"), 10)
-                elif nic.status() == network.STAT_NO_AP_FOUND:
-                    popup.show(l_get("apps.settings.wifi.ap_not_found"), l_get("crashes.error"), 10)
-                else:
-                    popup.show(l_get("apps.settings.wifi.could_not_conn_popup"), l_get("crashes.error"), 10)
-                
-            # Wi-Fi connection
-            elif rendr == 2:
-                # TODO: Refactor this thing, make it wrk better
-                if int(nvs.get_float(n_wifi, "conf")) == 1.0:
-                    try:
-                        nic = wifi_man.nic
-                        if not nic.isconnected():
-                            rend = menus.menu(l_get("apps.settings.wifi.connect_with") + nvs.get_string(n_wifi, "ssid") + "?", 
-                                              [(l_get("menus.yes"),  1),
-                                               (l_get("menus.no"),  2)])
-                            if rend == 1:
-                                ssid = nvs.set_string(n_wifi, "ssid")
-                                password = nvs.set_string(n_wifi, "passwd")
-                                                                
-                                wifi_man.nic_reset()
-                                #wifi_man.set_pwr_modes(0)
-                                tft.fill(0)
-                                tft.text(f8x8, l_get("apps.settings.wifi.connecting"), 0,0, 65535)
-                                tft.text(f8x8, ssid, 0,8, 65535)
-                                
-                                printer.log("Wifi connecting")
-                                if password != "":
-                                    nic.connect(ssid, password)
-                                else:
-                                    nic.connect(ssid)
-
-                                start_time = time.ticks_ms()
-                                while not nic.isconnected() and time.ticks_diff(time.ticks_ms(), start_time) < 10000:
-                                    time.sleep(0.2)
-
-                                if nic.isconnected():
-                                    popup.show(l_get("apps.settings.wifi.connected_to") + ": " + ssid, "Info", 10)
-                                elif nic.status() == network.STAT_WRONG_PASSWORD:
-                                    popup.show(l_get("apps.settings.wifi.wrong_passwd"), l_get("crashes.error"), 10)
-                                elif nic.status() == network.STAT_NO_AP_FOUND:
-                                    popup.show(l_get("apps.settings.wifi.ap_not_found"), l_get("crashes.error"), 10)
-                                else:
-                                    popup.show(l_get("apps.settings.wifi.could_not_conn_popup"), l_get("crashes.error"), 10)
-                        else:
-                            rend = menus.menu(l_get("apps.settings.wifi.connected_disconnect"),
-                                              [(l_get("menus.yes"),  1),
-                                               (l_get("menus.no"),  2)])
-                            if rend == 1:
-                                nic.disconnect()
-                    except Exception as e:
-                        c_handler.crash_screen(tft, 3001, str(e), True, True, 2)
-                else:
-                    popup.show(l_get("apps.settings.wifi.not_setup"), l_get("crashes.error"), 10)
-
-            # Wi-Fi status
-            elif rendr == 5:
-                import apps.settings_menus.wifi_status_gui as w_gui
-                w_gui.run()
-                decache("apps.settings_menus.wifi_status_gui")
-                del w_gui
+            import apps.settings_menus.wifi_menu_gui as wm_gui
+            wm_gui.run()
+            decache("apps.settings_menus.wifi_menu_gui")
+            del wm_gui
                 
         # SD Card settings
         elif menu1 == 7:
