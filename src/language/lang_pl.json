@@ -158,7 +158,7 @@
                 "neopixel": "Neopixel",
                 "show_guides_again": "Pokaz poradniki",
                 "power": "Zasilanie",
-                "backups": "Backups"
+                "backups": "Kopie zapasowe"
             },
             "power": {
                 "title": "Ustawienia/Zasilanie",
@@ -272,20 +272,20 @@
                 "no_neo_popup": "Nie wykryto neopixela w tym urzadzeniu!"
             },
             "backups": {
-                "title": "Settings/Backups",
-                "create_backup": "Create backup",
-                "restore_backup": "Restore backup",
-                "backup_to": "Backup location",
-                "sd_card": "SD Card (Recommended)",
-                "internal_storage": "Internal storage",
-                "creating_backup": "Creating backup...",
-                "backup_created": "Backup created!\nLocation: %path%",
-                "restore_ask": "Restore?",
-                "restoring_backup": "Restoring backup...",
-                "restore_temp_error": "Could not create temporary backup, restore canceled to prevent data loss on error!",
-                "backup_restored": "Backup restored!",
-                "error_occurred": "An error occurred!",
-                "restart_now": "Restart now?"
+                "title": "Ustawienia/Kopie zapasowe",
+                "create_backup": "Utworz kopie zapasowa",
+                "restore_backup": "Przywroc kopie zapasowa",
+                "backup_to": "Lokalizacja kopii",
+                "sd_card": "Karta SD (Zalecane)",
+                "internal_storage": "Pamiec wewnetrzna",
+                "creating_backup": "Tworzenie kopii...",
+                "backup_created": "Kopia zapasowa utworzona!\nLokalizacja kopii: %path%",
+                "restore_ask": "Przywrocic?",
+                "restoring_backup": "Przywracanie kopii...",
+                "restore_temp_error": "Nie mozna utworzyc tymczasowej kopii zapasowej! Przywracanie anulowane, aby zapobiec utracie danych.",
+                "backup_restored": "Kopia przywrocona!",
+                "error_occurred": "Wystapil blad!",
+                "restart_now": "Zrestartowac teraz?"
             },
             "current": "Aktualny"
         },
