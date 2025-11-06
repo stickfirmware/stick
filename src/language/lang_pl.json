@@ -157,7 +157,8 @@
                 "account": "Konto",
                 "neopixel": "Neopixel",
                 "show_guides_again": "Pokaz poradniki",
-                "power": "Zasilanie"
+                "power": "Zasilanie",
+                "backups": "Backups"
             },
             "power": {
                 "title": "Ustawienia/Zasilanie",
@@ -269,6 +270,22 @@
                 "rainbow": "Efekt teczy",
                 "also_change_colors": "Zmienic kolor?",
                 "no_neo_popup": "Nie wykryto neopixela w tym urzadzeniu!"
+            },
+            "backups": {
+                "title": "Settings/Backups",
+                "create_backup": "Create backup",
+                "restore_backup": "Restore backup",
+                "backup_to": "Backup location",
+                "sd_card": "SD Card (Recommended)",
+                "internal_storage": "Internal storage",
+                "creating_backup": "Creating backup...",
+                "backup_created": "Backup created!\nLocation: %path%",
+                "restore_ask": "Restore?",
+                "restoring_backup": "Restoring backup...",
+                "restore_temp_error": "Could not create temporary backup, restore canceled to prevent data loss on error!",
+                "backup_restored": "Backup restored!",
+                "error_occurred": "An error occurred!",
+                "restart_now": "Restart now?"
             },
             "current": "Aktualny"
         },
