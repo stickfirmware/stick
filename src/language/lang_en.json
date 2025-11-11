@@ -293,11 +293,13 @@
                     "updating": "Updating...",
                     "reading_package": "Reading package...",
                     "check_version": "Check version...",
+                    "check_device": "Check device...",
                     "get_changelog": "Get changelog",
                     "update_confirmation": "Update now?",
                     "reboot_popup": "Update finished!\nRebooting in 15 seconds.\nPress any key to reboot now!"
                 },
                 "interactive_mode": {
+                    "dev_not_compatible": "This device is not compatible with this update package, make sure you downloaded correct package!",
                     "ver_not_compatible": "This system version isn't compatible with update package.\nInstall all previous updates before this version and update again.",
                     "invalid_file": "Invalid file selected!",
                     "aborted": "Update aborted by user!",

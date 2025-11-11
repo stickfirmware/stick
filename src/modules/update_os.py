@@ -19,8 +19,12 @@ from modules.decache import decache
 from modules.printer import Levels as log_levels
 from modules.printer import log
 from modules.translate import get as l_get
+import modules.os_constants as osc
 
 class VersionCompatibilityError(Exception):
+    pass
+
+class DeviceCompatibilityError(Exception):
     pass
 
 class CriticalUpdateFail(Exception):
@@ -75,6 +79,7 @@ def update(path: str, gui: bool = True):
         raise ManifestReadFailed("Could not read update.json, please check for corruption.")
     
     try:
+        target_device = manifest["target_device"]
         required_sys_ver = manifest["required_sys_ver"]
         changelog = manifest["changelog_path"]
         root_folder = manifest["update_root"]
@@ -91,6 +96,13 @@ def update(path: str, gui: bool = True):
     if version.version_parser(required_sys_ver) != sys_ver:
         raise VersionCompatibilityError(f"Version compatibility error! Required version {required_sys_ver}, system version {sys_ver}")
     
+    # Check device
+    log("Check device compatibility", log_levels.DEBUG)
+    if gui:
+        tft.text(f8x8, l_get("apps.settings.update.update_process_messages.check_device"), 0, 28)
+    if target_device != osc.RELEASE_NAME:
+        raise DeviceCompatibilityError(f"Device compatibility error! Target device {target_device}, device {osc.RELEASE_NAME}")
+    
     # Unpack changelog and show
     gc.collect()
     files.mkdir_recursive("/temp/os_update")
@@ -98,7 +110,7 @@ def update(path: str, gui: bool = True):
         import modules.zip as zip
         import modules.open_file as o_file
         log("Show changelog", log_levels.DEBUG)
-        tft.text(f8x8, l_get("apps.settings.update.update_process_messages.get_changelog"), 0, 24)
+        tft.text(f8x8, l_get("apps.settings.update.update_process_messages.get_changelog"), 0, 32)
         try:
             ch_unp_path = "/temp/os_update/changelog.txt"
             zip.unpack_file(path, changelog, ch_unp_path)
@@ -195,6 +207,9 @@ def update_interactive():
     except VersionCompatibilityError as e:
         log(f"Update process got VersionCompatibilityError: {e}", log_levels.ERROR)
         popup.show(l_get("apps.settings.update.interactive_mode.ver_not_compatible"), l_get("crashes.error"))
+    except DeviceCompatibilityError as e:
+        log(f"Update process got DeviceCompatibilityError: {e}", log_levels.ERROR)
+        popup.show(l_get("apps.settings.update.interactive_mode.dev_not_compatible"), l_get("crashes.error"))
     except InvalidFilePath:
         log("Invalid file selected during update process", log_levels.WARNING)
         popup.show(l_get("apps.settings.update.interactive_mode.invalid_file"), l_get("crashes.error"))
