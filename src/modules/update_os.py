@@ -14,12 +14,13 @@ import modules.files as files
 import modules.io_manager as io_man
 import modules.json as json
 import modules.menus as menus
+import modules.os_constants as osc
 import version
 from modules.decache import decache
 from modules.printer import Levels as log_levels
 from modules.printer import log
 from modules.translate import get as l_get
-import modules.os_constants as osc
+
 
 class VersionCompatibilityError(Exception):
     pass
@@ -107,8 +108,8 @@ def update(path: str, gui: bool = True):
     gc.collect()
     files.mkdir_recursive("/temp/os_update")
     if gui:
-        import modules.zip as zip
         import modules.open_file as o_file
+        import modules.zip as zip
         log("Show changelog", log_levels.DEBUG)
         tft.text(f8x8, l_get("apps.settings.update.update_process_messages.get_changelog"), 0, 32)
         try:
