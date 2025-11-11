@@ -158,7 +158,8 @@
                 "neopixel": "Neopixel",
                 "show_guides_again": "Show guides",
                 "power": "Power",
-                "backups": "Backups"
+                "backups": "Backups",
+                "updates": "Updates"
             },
             "power": {
                 "title": "Settings/Power",
@@ -286,6 +287,32 @@
                 "backup_restored": "Backup restored!",
                 "error_occurred": "An error occurred!",
                 "restart_now": "Restart now?"
+            },
+            "update": {
+                "update_process_messages": {
+                    "updating": "Updating...",
+                    "reading_package": "Reading package...",
+                    "check_version": "Check version...",
+                    "check_device": "Check device...",
+                    "get_changelog": "Get changelog",
+                    "update_confirmation": "Update now?",
+                    "reboot_popup": "Update finished!\nRebooting in 15 seconds.\nPress any key to reboot now!"
+                },
+                "interactive_mode": {
+                    "dev_not_compatible": "This device is not compatible with this update package, make sure you downloaded correct package!",
+                    "ver_not_compatible": "This system version isn't compatible with update package.\nInstall all previous updates before this version and update again.",
+                    "invalid_file": "Invalid file selected!",
+                    "aborted": "Update aborted by user!",
+                    "manifest_read_error": "Failed to read update manifest!\nIs it an update package?",
+                    "critical": "Critical update failure!\nYou may need to update system with recovery mode using recovery package."
+                },
+                "updater_gui": {
+                    "welcomer": "Welcome to Stick firmware updater!\nCurrent system version: %sys_ver%",
+                    "name": "Updater",
+                    "system_update": "System update",
+                    "info": "Update info",
+                    "info_popup": "This updater will update your stick firmware with update package you provide. Get the update package from official github. Updates are made to save ram, so you can't update directly from 2.3.0 to 2.3.2, to update you will need to do 2.3.1 first then 2.3.2\nSee update guide on github stickfirmware/guides"
+                }
             },
             "current": "Current"
         },
