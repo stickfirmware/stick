@@ -158,7 +158,8 @@
                 "neopixel": "Neopixel",
                 "show_guides_again": "Pokaz poradniki",
                 "power": "Zasilanie",
-                "backups": "Kopie zapasowe"
+                "backups": "Kopie zapasowe",
+                "updates": "Aktualizacje"
             },
             "power": {
                 "title": "Ustawienia/Zasilanie",
@@ -286,6 +287,32 @@
                 "backup_restored": "Kopia przywrocona!",
                 "error_occurred": "Wystapil blad!",
                 "restart_now": "Zrestartowac teraz?"
+            },
+            "update": {
+                "update_process_messages": {
+                    "updating": "Aktualizowanie...",
+                    "reading_package": "Czytam pakiet...",
+                    "check_version": "Sprawdzanie wersji...",
+                    "check_device": "Sprawdzanie urzadzenia...",
+                    "get_changelog": "Sprawdzam liste zmian",
+                    "update_confirmation": "Aktualizowac teraz?",
+                    "reboot_popup": "Aktualizacja zakonczona!\nRestartuje za 15 sekund.\nNacisnij dowolny przycisk aby zrestartowac teraz!"
+                },
+                "interactive_mode": {
+                    "dev_not_compatible": "Te urzadzenie nie jest kompatybilne z pakietem aktualizacji, upewnij sie ze pobrales odpowiednia paczke aktualizacji!",
+                    "ver_not_compatible": "Ta wersja systemu nie jest kompatybilna z pakietem aktualizacji.\nZainstaluj wszystkie poprzednie paczki i sproboj ponownie.",
+                    "invalid_file": "Wybrano nieprawidlowy plik!",
+                    "aborted": "Aktualizacja przerwana przez uzytkownika!",
+                    "manifest_read_error": "Nie mozna odczytac manifestu aktualizacji!\nCzy to napewno pakiet aktualizacji?",
+                    "critical": "Krytyczny blad aktualizacji!\nMoze byc konieczne zaktualizowanie systemu przez tryb recovery uzywajac pakietu ratowania."
+                },
+                "updater_gui": {
+                    "welcomer": "Witaj w aktualizatorze Stick firmware!\nWersja systemu: %sys_ver%",
+                    "name": "Aktualizator",
+                    "system_update": "Aktualizacja systemu",
+                    "info": "Info o aktualizacjach",
+                    "info_popup": "Ten aktualizator bedzie aktualizowac Stick firmware pakietem aktualizacji ktory mu dostarczysz. Pobierz pakiet aktualizacji przez github. Aktualizacje oszczedzaja ram, dlatego nie mozesz aktualizowac bezposrednio z 2.3.0 do 2.3.2, aby aktualizowac najpierw musisz zainstalowac 2.3.1 potem 2.3.2\nInstrukcje na githubie stickfirmware/guides"
+                }
             },
             "current": "Aktualny"
         },
