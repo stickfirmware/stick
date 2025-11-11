@@ -18,7 +18,7 @@ import version
 from modules.decache import decache
 from modules.printer import Levels as log_levels
 from modules.printer import log
-
+from modules.translate import get as l_get
 
 class VersionCompatibilityError(Exception):
     pass
@@ -53,8 +53,8 @@ def update(path: str, gui: bool = True):
         log("GUI Mode!")
         tft = io_man.get("tft")
         tft.fill(0)
-        tft.text(f8x8, "Updating...", 0, 0)
-        tft.text(f8x8, "Reading package...", 0, 8)
+        tft.text(f8x8, l_get("apps.settings.update.update_process_messages.updating"), 0, 0)
+        tft.text(f8x8, l_get("apps.settings.update.update_process_messages.reading_package"), 0, 8)
     
     # Unpack json manifest
     gc.collect()
@@ -86,7 +86,7 @@ def update(path: str, gui: bool = True):
     # Check system version
     log("Compare system and update version", log_levels.DEBUG)
     if gui:
-        tft.text(f8x8, "Check version...", 0, 16)
+        tft.text(f8x8, l_get("apps.settings.update.update_process_messages.check_version"), 0, 16)
     sys_ver = version.get_parsed_version()
     if version.version_parser(required_sys_ver) != sys_ver:
         raise VersionCompatibilityError(f"Version compatibility error! Required version {required_sys_ver}, system version {sys_ver}")
@@ -98,7 +98,7 @@ def update(path: str, gui: bool = True):
         import modules.zip as zip
         import modules.open_file as o_file
         log("Show changelog", log_levels.DEBUG)
-        tft.text(f8x8, "Get changelog", 0, 24)
+        tft.text(f8x8, l_get("apps.settings.update.update_process_messages.get_changelog"), 0, 24)
         try:
             ch_unp_path = "/temp/os_update/changelog.txt"
             zip.unpack_file(path, changelog, ch_unp_path)
@@ -107,7 +107,7 @@ def update(path: str, gui: bool = True):
             pass
         decache("modules.open_file")
         tft.fill(0)
-        tft.text(f8x8, "Updating...", 0, 0)
+        tft.text(f8x8, l_get("apps.settings.update.update_process_messages.updating"), 0, 0)
     decache("modules.zip")
     gc.collect()
         
@@ -115,9 +115,11 @@ def update(path: str, gui: bool = True):
     confirmation = True
     if gui:
         log("Ask user for confirmation", log_levels.DEBUG)
-        confirmation = menus.menu("Update now?", [("Yes", True), ("No", False)])
+        confirmation = menus.menu(l_get("apps.settings.update.update_process_messages.update_confirmation"),
+                            [(l_get("menus.yes"), True),
+                            (l_get("menus.no"), False)])
         tft.fill(0)
-        tft.text(f8x8, "Updating...", 0, 0)
+        tft.text(f8x8, l_get("apps.settings.update.update_process_messages.updating"), 0, 0)
         
     if not confirmation:
         raise AbortedByUser("Update was aborted by user")
@@ -176,7 +178,7 @@ def update(path: str, gui: bool = True):
     # Reboot
     log("Show popup and reboot", log_levels.DEBUG)
     import modules.popup as popup
-    popup.show("Update finished!\nRebooting in 15 seconds.\nPress an key to reboot now!", "Info", 15)
+    popup.show(l_get("apps.settings.update.update_process_messages.reboot_popup"), l_get("popups.info"), 15)
     
     import modules.power as power
     power.soft_reboot()
@@ -192,16 +194,16 @@ def update_interactive():
         update(file)
     except VersionCompatibilityError as e:
         log(f"Update process got VersionCompatibilityError: {e}", log_levels.ERROR)
-        popup.show("This system version isn't compatible with update package.\nInstall all previous updates before this version and update again.", "Error")
+        popup.show(l_get("apps.settings.update.interactive_mode.ver_not_compatible"), l_get("crashes.error"))
     except InvalidFilePath:
         log("Invalid file selected during update process", log_levels.WARNING)
-        popup.show("Invalid file selected!", "Error")
+        popup.show(l_get("apps.settings.update.interactive_mode.invalid_file"), l_get("crashes.error"))
     except AbortedByUser:
         log("Update aborted by user.", log_levels.WARNING)
-        popup.show("Update aborted by user!", "Error")
+        popup.show(l_get("apps.settings.update.interactive_mode.aborted"), l_get("crashes.error"))
     except ManifestReadFailed as e:
         log(f"Update process got ManifestReadFailed: {e}", log_levels.ERROR)
-        popup.show("Failed to read update manifest!\nIs it an update package?", "Error")
+        popup.show(l_get("apps.settings.update.interactive_mode.manifest_read_error"), l_get("crashes.error"))
     except (CriticalUpdateFail, Exception) as e:
         log(f"Update critical error: {e}", log_levels.ERROR)
-        popup.show("Critical update failure!\nUpdate system with recovery mode using recovery package.")
+        popup.show(l_get("apps.settings.update.interactive_mode.critical"), l_get("crashes.error"))
