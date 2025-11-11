@@ -55,6 +55,7 @@ def run():
                             (l_get("apps.settings.menu1.factory"), 9),
                             (l_get("apps.settings.menu1.backups"), 10),
                             (l_get("apps.settings.menu1.show_guides_again"), 12),
+                            (l_get("apps.settings.menu1.updates"), 55),
                             (l_get("menus.menu_close"), None)]) # ("Account", 10),
         
         # Power settings
@@ -128,6 +129,10 @@ def run():
         # Backups
         elif menu1 == 10:
             run_gui("apps.settings_menus.backups_gui")
+            
+        # Updates
+        elif menu1 == 55:
+            run_gui("apps.settings_menus.update_gui")
             
         else:
             work = False
