@@ -13,7 +13,7 @@ from modules.random_func_checker import check_random_extra_functions
 
 # File list if there are no random extra func
 _RANDOM_FUNC_BANLIST = [
-    "/apps/dice.py"
+    "p:apps/dice"
 ]
 """Banlist for RANDOM_EXTRA_FUNC, postinstall deletes all this files if extra func not detected"""
 
@@ -22,15 +22,31 @@ def del_it_all(list: list[str]):
     """
     Delete all files from list
     
+    Note:
+        Files in list need to start either with a: or p:
+        p: - Python files, deletes both mpy and py version (ex. 'p:apps/dice')
+        a: - All files, deletes any files, requires to provide file extension (ex. 'p:usr/config.json')
+    
     Args:
         list (list[str]): Array of file paths
     """
     for file in list:
-        try:
-            os.remove(file)
-            log("Deleted: " + file, log_levels.DEBUG)
-        except Exception:
-            log("Failed to delete: " + file, log_levels.DEBUG)
+        # Flag files to delete
+        deletions = []
+        if file.startswith('a:'):
+            deletions.append(file.replace('a:', ''))
+        elif file.startswith('p:'):
+            temp = file.replace('p:', '')
+            deletions.append(temp + ".py")
+            deletions.append(temp + ".mpy")
+            
+        # Delete
+        for i in deletions:
+            try:
+                os.remove(i)
+                log("Deleted: " + file, log_levels.DEBUG)
+            except Exception:
+                log("Failed to delete: " + file, log_levels.DEBUG)
 
 def postinstall():
     """
