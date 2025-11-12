@@ -136,12 +136,12 @@ BOOT_RECOVERY_PIN = const(0)
 BOOT_ENABLE_UPDATES = const(False) # Enable searching for updates on boot
 BOOT_UPDATE_PATH = const("/update.py")
 
-# Post install config
+# Post install config, deletes files in the array
+# to save space on incompatible devices
+# p - python (deletes .mpy and .py versions of file)
+# a - all (needs file extension to be included)
 POSTINSTALL_BLACKLIST = [
-    'modules/rtc.py',
-    'modules/rtc.mpy',
-    'modules/mpu6886.py',
-    'modules/mpu6886.mpy',
-    'apps/metronome.py',
-    'apps/metronome.mpy'
+    'p:modules/rtc',
+    'p:modules/mpu6886',
+    'p:apps/metronome'
     ]   
