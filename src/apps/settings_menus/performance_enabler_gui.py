@@ -13,15 +13,14 @@ import modules.battery_check as b_check
 
 def run():
     while True:
-        # TODO: Translate this
         current = ps.performance_mode
         if current:
-            current = "Enabled"
+            current = l_get("apps.settings.power.enabled")
         else:
-            current = "Disabled"
+            current = l_get("apps.settings.power.disabled")
 
         menu3 = menus.menu(
-            l_get("apps.settings.power.pwr_saving_title"),
+            l_get("apps.settings.power.performance_mode"),
             [
                 (
                     l_get("apps.settings.current")
@@ -37,19 +36,19 @@ def run():
         if menu3 == 1:
             time.sleep(0.02)
         elif menu3 == 2:
-            if current == "Enabled":
+            if current == l_get("apps.settings.power.enabled"):
                 continue
             bat_voltage = b_check.voltage()
             if bat_voltage <= 3.75:
-                popup.show("Battery charge is too low to enable performance mode, please charge your device to enable.",
-                           "Info",
+                popup.show(l_get("apps.settings.power.battery_low_error"),
+                           l_get("crashes.error"),
                            15)
-            popup.show("Performance mode is can use up to 4 times more battery!\nIt will disable automatically after reboot or when battery is low.",
-                       "Info",
+            popup.show(l_get("apps.settings.power.usage_info"),
+                       l_get("popups.info"),
                        15)
             ps.toggle_performance()
         elif menu3 == 3:
-            if current == "Enabled":
+            if current == l_get("apps.settings.power.disabled"):
                 ps.toggle_performance()
         else:
             break

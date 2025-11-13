@@ -758,8 +758,7 @@ while True:
             if locks == 0:
                 if ps.performance_mode:
                     bat_color = 63488
-                    # TODO: Translate
-                    performance_indicator = " (PERFORMANCE)"
+                    performance_indicator = " " + l_get("mainos_diagnostics.performance_mode_indicator")
                 else:
                     bat_color = 2016
                     performance_indicator = ""

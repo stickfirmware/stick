@@ -14,7 +14,7 @@ def run():
         power_menu = menus.menu(l_get("apps.settings.power.title"), [
             (l_get("apps.settings.power.pwr_saving"), 1),
             (l_get("apps.settings.power.shutdown_mode"), 2),
-            ("Performance mode", 3),
+            (l_get("apps.settings.power.performance_mode"), 3),
             (l_get("menus.menu_close"), None)
         ])
         
