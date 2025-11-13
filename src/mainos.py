@@ -250,6 +250,38 @@ is_in_saving = False
 eeg_click_entry = 0
 debug_entry = 0
 
+render_bar(l_get("mainos_load.guides"), True)
+
+# Show quick start guide if not shown yet
+if nvs.get_int(n_guides, "quick_start") is None:
+    debug.log("User has not read guides, showing them in file reader")
+    import helpers.run_in_reader as rir
+
+    rir.open_file(f"/guides/quick_start_{cache.get('n_cache_lang')}.txt")
+    nvs.set_int(n_guides, "quick_start", 1)
+
+# Prompt licenses
+import modules.licenses as licenses
+
+if licenses.check_license("com.kitki30.stick_firmware_license_apache") is None:
+    licenses.add_license(
+        "com.kitki30.stick_firmware_license_apache",
+        "Stick firmware license",
+        "apache_2_0",
+        "Kitki30",
+        "2025",
+    )
+if not licenses.prompt_license("com.kitki30.stick_firmware_license_apache"):
+    tft.fill(0)
+    tft.text(f8x8, l_get("mainos_licensing.no_license_text_1"), 0, 0, 65535)
+    tft.text(f8x8, l_get("mainos_licensing.no_license_text_2"), 0, 8, 65535)
+
+    time.sleep(2.5)
+    tft.text(f8x8, l_get("mainos_licensing.system_will_shutdown"), 0, 16, 65535)
+    time.sleep(2.5)
+    import modules.power as power
+    power.shutdown(True)
+
 # Check app packs
 render_bar(l_get("mainos_load.check_app_packs"), True)
 debug.log("Check app packs", log_levels.DEBUG)
@@ -340,34 +372,6 @@ ps.set_freq(osc.BASE_FREQ)
 import sys
 
 debug.log_cleaner(str(sys.modules)) # Helpful for debug of RAM cleaner
-
-render_bar(l_get("mainos_load.guides"), True)
-
-# Show quick start guide if not shown yet
-if nvs.get_int(n_guides, 'quick_start') is None:
-    debug.log("User has not read guides, showing them in file reader")
-    import helpers.run_in_reader as rir
-    rir.open_file(f'/guides/quick_start_{cache.get('n_cache_lang')}.txt')
-    nvs.set_int(n_guides, 'quick_start', 1)
-    
-# Prompt licenses
-import modules.licenses as licenses
-
-if licenses.check_license("com.kitki30.stick_firmware_license_apache") is None:
-    licenses.add_license("com.kitki30.stick_firmware_license_apache",
-                         "Stick firmware license",
-                         "apache_2_0",
-                         "Kitki30",
-                         "2025")
-if not licenses.prompt_license("com.kitki30.stick_firmware_license_apache"):
-    tft.fill(0)
-    tft.text(f8x8, "Without accepting the license,", 0, 0, 65535)
-    tft.text(f8x8, "You cannot use the OS.", 0, 8, 65535)
-    
-    time.sleep(5)
-    tft.text(f8x8, "System will not shutdown...", 0, 16, 65535)
-    import modules.power as power
-    power.shutdown(True)
     
 debug.log("Stick firmware ready to use!")
 

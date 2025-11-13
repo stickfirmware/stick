@@ -25,6 +25,9 @@ power_hold = io_man.get('power_hold')
 def shutdown(force_legacy = False):
     """
     Shutdowns device
+
+    Args:
+        force_legacy (bool): Force power off with Pin instead of deep sleep
     """
     
     mode = nvs.get_int(n_settings, "shutdown_mode")
@@ -38,7 +41,7 @@ def shutdown(force_legacy = False):
             tft.text(f8x8, l_get("q_actions.powering_off"),0,0,65535,0)
             power_hold.value(0)
         else:
-            # If doesn't have power hold, ask for switching power off
+            # If it doesn't have power hold, ask for switching power off
             popup.show(l_get("q_actions.you_can_now_switch"), l_get("popups.info"), 15)
             tft.fill(0)
             tft.text(f8x8, l_get("q_actions.to_sleep"), 0,0, 65535)
