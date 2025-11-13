@@ -1,12 +1,12 @@
 # Resistor decoder app
 # App ID: 1002
+# TODO: Move out of the system, make it an optional APP
 
 import time
 
 import fonts.def_8x8 as f8x8
 import modules.io_manager as io_man
 import modules.menus as menus
-import modules.os_constants as osc
 import modules.powersaving as ps
 import modules.printer as printer
 from modules.translate import get as l_get
@@ -221,7 +221,7 @@ def run():
     button_c = io_man.get('button_c')
     tft = io_man.get('tft')
     
-    ps.set_freq(osc.BASE_FREQ)
+    ps.loop()
 
     printer.log("Resistor decoder is into main loop")
     
@@ -235,6 +235,3 @@ def run():
     elif render == 2:
         tft.text(f8x8, l_get("apps.resistors.wait"),0,0,2022)
         five()
-    
-        
-

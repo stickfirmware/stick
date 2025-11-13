@@ -192,7 +192,7 @@ def stopwatch():
                 time.sleep(osc.DEBOUNCE_TIME)
 
 def clock_menu():
-    ps.set_freq(osc.BASE_FREQ)
+    ps.loop()
     printer.log("Rendering clock menu")
     clock_menu = menus.menu(l_get("apps.clock.name"),
                             [(l_get("apps.clock.stopwatch.name"), 1),

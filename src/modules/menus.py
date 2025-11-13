@@ -98,7 +98,7 @@ def menu(name, choices):
         xpl.add_mood(1)
     
     # Return to base freq after render
-    ps.set_freq(osc.BASE_FREQ)
+    ps.loop()
     ps.boost_allowing_state(False)
     
     def menu_down():

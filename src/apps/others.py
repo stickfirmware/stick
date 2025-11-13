@@ -60,4 +60,4 @@ def run():
         else:
             menus.menu(l_get("apps.others.rand_extra_func"), [(l_get("menus.menu_close"),1)])
     gc.collect()
-    ps.set_freq(osc.BASE_FREQ)
+    ps.loop()

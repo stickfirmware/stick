@@ -6,7 +6,6 @@ import modules.hashing as hashing
 import modules.io_manager as io_man
 import modules.menus as menus
 import modules.nvs as nvs
-import modules.os_constants as osc
 import modules.powersaving as ps
 from modules.translate import get as l_get
 
@@ -36,11 +35,11 @@ def run():
                                   (l_get("lock_menu.dummy_with_pin"), 2),
                                   (l_get("menus.menu_close"), 13)])
             if lockmen == 1:
-                ps.set_freq(osc.BASE_FREQ)
+                ps.loop()
                 nvs.set_int(n_locks, "dummy", 1)
                 dummyMsg()
             if lockmen == 2:
-                ps.set_freq(osc.BASE_FREQ)
+                ps.loop()
                 import modules.numpad as npad
                 pin = npad.numpad(l_get("lock_menu.enter_pin"), 6, True)
                 if pin is None or pin == "":
@@ -63,14 +62,14 @@ def run():
                 nvs.set_string(n_locks, "salt", salt)
                 dummyMsg()
             else:
-                ps.set_freq(osc.BASE_FREQ)
+                ps.loop()
             work = False
         elif nvs.get_int(n_locks, "dummy") == 1:
             lockmen = menus.menu(l_get("lock_menu.name"), 
                                  [(l_get("lock_menu.disable_dummy"), 1),
                                   (l_get("menus.menu_close"), 13)])
             if lockmen == 1:
-                ps.set_freq(osc.BASE_FREQ)
+                ps.loop()
                 nvs.set_int(n_locks, "dummy", 0)
                 tft.fill(0)
                 tft.text(f8x8, l_get("lock_menu.disabled"),0,0,65535)
@@ -80,7 +79,7 @@ def run():
                 time.sleep(2)
                 work = False
             else:
-                ps.set_freq(osc.BASE_FREQ)
+                ps.loop()
                 work = False
                 if nvs.get_string(n_locks, "pin") != "":
                     nvs.set_int(n_locks, "dummy", 2)
