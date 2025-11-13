@@ -1,7 +1,6 @@
 import gc
 
 import modules.menus as menus
-import modules.os_constants as osc
 import modules.powersaving as ps
 from modules.decache import decache
 from modules.translate import get as l_get
@@ -18,4 +17,4 @@ def run():
         del a_ms
         decache('apps.minesweeper')
     gc.collect()
-    ps.set_freq(osc.BASE_FREQ)
+    ps.loop()

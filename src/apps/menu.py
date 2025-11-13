@@ -3,7 +3,6 @@ import gc
 import modules.cache as cache
 import modules.menus as menus
 import modules.nvs as nvs
-import modules.os_constants as osc
 import modules.powersaving as ps
 from modules.decache import decache
 from modules.translate import get as l_get
@@ -58,4 +57,4 @@ def run():
         import modules.open_app as open_app
         open_app.run(menu1)
     gc.collect()
-    ps.set_freq(osc.BASE_FREQ)
+    ps.loop()

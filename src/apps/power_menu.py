@@ -1,6 +1,5 @@
 import modules.io_manager as io_man
 import modules.menus as menus
-import modules.os_constants as osc
 import modules.power as power
 import modules.powersaving as ps
 from modules.decache import decache
@@ -58,4 +57,4 @@ def power_menu(fast_sleep = False):
         
     # Exit
     else:
-        ps.set_freq(osc.BASE_FREQ)
+        ps.loop()

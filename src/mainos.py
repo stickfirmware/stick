@@ -6,7 +6,7 @@
 # add it to whitelist in #
 # /modules/ram_cleaner   #
 # Only if main loop      #
-# needs it! Its for      #
+# needs it! It's for     #
 # saving ram!!!          #
 # Otherwise it will      #
 # de-init!!!             #
@@ -345,7 +345,7 @@ import apps.clock as app_clock
 
 # Wake up function
 def wake_up():
-    global is_in_saving, pwr_save_time, prev_bl, stable_orientation, sleep_time
+    global is_in_saving, pwr_save_time, prev_bl, stable_orientation, sleep_time, auto_rotate
     is_in_saving = False
     auto_rotate = nvs.get_int(n_settings, "autorotate")
     if auto_rotate == 0:
@@ -360,13 +360,13 @@ def wake_up():
     pwr_save_time = time.ticks_ms()
     sleep_time = time.ticks_ms()
     tft.set_backlight(nvs.get_float(n_settings, "backlight"))
-    ps.set_freq(osc.BASE_FREQ)
+    ps.loop()
 
 was_sleep_triggered = False
 
 # Slow down CPU
 debug.log("Slowing down CPU", log_levels.DEBUG)
-ps.set_freq(osc.BASE_FREQ)
+ps.loop()
 
 # Print sys.modules
 import sys
@@ -380,7 +380,7 @@ while True:
 
     # Set CPU frequencies depending on power saving state
     if not is_in_saving:
-        ps.set_freq(osc.BASE_FREQ)
+        ps.loop()
     else:
         ps.set_freq(osc.SLOW_FREQ)
 
@@ -572,7 +572,7 @@ while True:
         wake_up()
         
         # Set basic frequency
-        ps.set_freq(osc.BASE_FREQ)
+        ps.loop()
         
         # Button debounce (Reset loop if holding more than button a, for dummy unlock)
         while button_a.value() == 0 and button_c.value() == 1 and button_b.value() == 1:
@@ -756,7 +756,14 @@ while True:
             pr = b_check.percentage(volts)
             
             if locks == 0:
-                tft.text(f8x8, l_get("mainos_diagnostics.battery") + ": " + str(volts) + "V",4,124,2016)
+                if ps.performance_mode:
+                    bat_color = 63488
+                    # TODO: Translate
+                    performance_indicator = " (PERFORMANCE)"
+                else:
+                    bat_color = 2016
+                    performance_indicator = ""
+                tft.text(f8x8, l_get("mainos_diagnostics.battery") + performance_indicator + ": " + str(volts) + "V",4,124,bat_color)
                 
         # Battery bitmap render
         b_check.run(tft)

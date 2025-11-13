@@ -36,7 +36,7 @@ def run():
     button_b = io_man.get('button_b')
     button_c = io_man.get('button_c')
     tft = io_man.get('tft')
-    ps.set_freq(osc.BASE_FREQ)
+    ps.loop()
     global ir_pin
     work = True
     while work:
@@ -102,4 +102,4 @@ def run():
             
         else:
             work = False
-    ps.set_freq(osc.BASE_FREQ)
+    ps.loop()
