@@ -29,7 +29,8 @@
         "guides": "Laduje pomocniki..."
     },
     "mainos_diagnostics": {
-        "battery": "Bateria"
+        "battery": "Bateria",
+        "performance_mode_indicator": "(PERFORMANCE)"
     },
     "mainos_licensing": {
         "no_license_text_1": "Without accepting the license,",
@@ -178,7 +179,12 @@
                 },
                 "shutdown_what_is_this": "Co to znaczy?",
                 "get_current": "Pobierz aktualne",
-                "shutdown_what_this_popup": "Tryby wylaczania okreslaja jak twoje urzadzenie sie wylacza, obecnie sa dwa tryby wylaczania:\nLegacy - Wylacza zasilanie\nGlebokie uspienie - Usypia gleboko mikrokontroler (Podtrzymuje czas)"
+                "shutdown_what_this_popup": "Tryby wylaczania okreslaja jak twoje urzadzenie sie wylacza, obecnie sa dwa tryby wylaczania:\nLegacy - Wylacza zasilanie\nGlebokie uspienie - Usypia gleboko mikrokontroler (Podtrzymuje czas)",
+                "performance_mode": "Performance mode",
+                "enabled": "Enabled",
+                "disabled": "Disabled",
+                "battery_low_error": "Battery charge is too low to enable performance mode, please charge your device to enable.",
+                "usage_info": "Performance mode is can use up to 4 times more battery!\\nIt will disable automatically after reboot or when battery is low."
             },
             "guides": {
                 "reboot_notify": "Zrestartuj aby zobaczyc wszystkie poradniki!"
