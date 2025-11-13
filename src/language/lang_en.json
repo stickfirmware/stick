@@ -31,6 +31,11 @@
     "mainos_diagnostics": {
         "battery": "Battery"
     },
+    "mainos_licensing": {
+        "no_license_text_1": "Without accepting the license,",
+        "no_license_text_2": "You cannot use the OS.",
+        "system_will_shutdown": "System will shutdown..."
+    },
     "crashes": {
         "error": "Error",
         "app_crashed_oops": "Oops!",
