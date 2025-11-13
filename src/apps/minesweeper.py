@@ -313,6 +313,7 @@ def dig(tft, selection_x, selection_y, tiles_map, states, start_time):
         time.sleep(0.4)
         lose_callback(start_time)
         return False
+    return True
         
 def flag(selection_x, selection_y, states):
     if states[selection_y][selection_x] == 0 or states[selection_y][selection_x] == 2:
