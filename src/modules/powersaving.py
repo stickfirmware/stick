@@ -82,7 +82,7 @@ def loop():
     global performance_mode
     if performance_mode:
         voltage = bcheck.voltage(2) # Use lower sample mode to prevent lag
-        if voltage >= 3.7: # Auto disable performance mode on low battery
+        if voltage <= 3.7: # Auto disable performance mode on low battery
             performance_mode = False
         else:
             set_freq(osc.ULTRA_FREQ)
