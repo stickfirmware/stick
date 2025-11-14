@@ -66,17 +66,7 @@
             "name": "IR Remote",
             "sending": "Sending",
             "context_menu": "Send IR code",
-            "buttons": {
-                "power": "ON/OFF",
-                "vol_up": "VOL+",
-                "vol_down": "VOL-",
-                "mute": "Mute",
-                "chan_next": "CHANNEL+ / NEXT",
-                "chan_prev": "CHANNEL- / PREV",
-                "freeze": "FREEZE"
-            },
             "menu": {
-                "repeat": "Repeat?",
                 "change_pin": "Change IR pin",
                 "receive": "Receive",
                 "receive_no_support": "IR receiving not supported!"
