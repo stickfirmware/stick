@@ -748,7 +748,7 @@ while True:
         volts = b_check.voltage()
         
         # Render only in landscape
-        if menu == 0:
+        if menu == 0 and osc.BATTERY_MEASURE_MODE != 2:
             # Clear old info
             tft.fill_rect(4, 116, 190, 16, 0)
                 

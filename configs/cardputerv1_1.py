@@ -17,8 +17,12 @@ DEFAULT_LANGUAGE = "en"
 # Power managament
 HAS_HOLD_PIN = const(False) # Do we need to put power hold pin HIGH? (Like on M5StickC Plus 2)
 HOLD_PIN = None
+BATTERY_MEASURE_MODE = const(1) # Battery measuring mode (1 - From ADC, 2 - Spoofed, always 4.20V)
 BATTERY_ADC = const(10) # Battery ADC pin (Often called Battery Detect by M5Stack), used to get battery voltage, needs voltage divider.
 DEFAULT_SHUTDOWN_MODE = const(2) # 1 - Legacy (Shutdown whole device, for devices with RTC), 2 - Deep sleep (To keep time on devices without RTC)
+BATTERY_DISCHARGE_VOLTAGE = const(3.20) # Battery voltage where OS will shut down the device
+BATTERY_FULL_CHARGE_VOLTAGE = const(4.20) # Battery full charge voltage
+BATTERY_TYPE = const("Li-Po") # Battery type, to show for user only
 
 # Sound
 HAS_BUZZER = const(False) # Has buzzer?
