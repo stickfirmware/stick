@@ -66,17 +66,7 @@
             "name": "Pilot IR",
             "sending": "Wysylanie",
             "context_menu": "Wyslij kod IR",
-            "buttons": {
-                "power": "WL/WYL",
-                "vol_up": "GLOS+",
-                "vol_down": "GLOS-",
-                "mute": "Mute",
-                "chan_next": "KANAL+ / NAST",
-                "chan_prev": "KANAL- / POPRZ",
-                "freeze": "ZAMROZENIE"
-            },
             "menu": {
-                "repeat": "Powtorzyc?",
                 "change_pin": "Zmien Pin diody IR",
                 "receive": "Odbieraj",
                 "receive_no_support": "Odbieranie IR nie wspierane!"
