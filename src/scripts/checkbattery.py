@@ -1,27 +1,18 @@
-from machine import ADC, Pin
+"""
+Checks battery voltage and shuts down device if it's too low
+"""
+
+from machine import Pin
 
 import modules.os_constants as osc
+from modules.battery_check import voltage
 
-DISCHARGE_VOLTAGE = 3.20
 
 def run():
-    adc = ADC(Pin(osc.BATTERY_ADC))
-    adc.atten(ADC.ATTN_11DB)
-
-    def voltage(samplecount=100):
-        samples = []
-        samplecalc = 0
-        for i in range(samplecount):
-            raw = adc.read()
-            samples.append(raw)
-        for i in samples:
-            samplecalc += i
-        avg = samplecalc / len(samples)
-        volt = avg / 4095 * 3.6 * 2
-        return round(volt, 2)
-    if voltage() <= DISCHARGE_VOLTAGE:
-        if osc.HAS_HOLD_PIN:
-            power_hold = Pin(osc.HOLD_PIN, Pin.OUT)
-            power_hold.value(0)
+    if osc.BATTERY_MEASURE_MODE == 1:
+        if voltage(50) <= osc.BATTERY_DISCHARGE_VOLTAGE:
+            if osc.HAS_HOLD_PIN:
+                power_hold = Pin(osc.HOLD_PIN, Pin.OUT)
+                power_hold.value(0)
         
 run()
