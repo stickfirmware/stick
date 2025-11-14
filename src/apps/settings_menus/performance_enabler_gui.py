@@ -4,11 +4,11 @@ Performance mode settings GUI
 
 import time
 
-import modules.popup as popup
-import modules.menus as menus
-from modules.translate import get as l_get
-import modules.powersaving as ps
 import modules.battery_check as b_check
+import modules.menus as menus
+import modules.popup as popup
+import modules.powersaving as ps
+from modules.translate import get as l_get
 
 
 def run():
