@@ -30,12 +30,12 @@
     },
     "mainos_diagnostics": {
         "battery": "Bateria",
-        "performance_mode_indicator": "(PERFORMANCE)"
+        "performance_mode_indicator": "(WYDAJNOSC)"
     },
     "mainos_licensing": {
-        "no_license_text_1": "Without accepting the license,",
-        "no_license_text_2": "You cannot use the OS.",
-        "system_will_shutdown": "System will shutdown..."
+        "no_license_text_1": "Bez akceptacji licencji,",
+        "no_license_text_2": "Nie mozesz korzystac z systemu",
+        "system_will_shutdown": "System zostanie wylaczony..."
     },
     "crashes": {
         "error": "Blad",
@@ -180,11 +180,11 @@
                 "shutdown_what_is_this": "Co to znaczy?",
                 "get_current": "Pobierz aktualne",
                 "shutdown_what_this_popup": "Tryby wylaczania okreslaja jak twoje urzadzenie sie wylacza, obecnie sa dwa tryby wylaczania:\nLegacy - Wylacza zasilanie\nGlebokie uspienie - Usypia gleboko mikrokontroler (Podtrzymuje czas)",
-                "performance_mode": "Performance mode",
-                "enabled": "Enabled",
-                "disabled": "Disabled",
-                "battery_low_error": "Battery charge is too low to enable performance mode, please charge your device to enable.",
-                "usage_info": "Performance mode is can use up to 4 times more battery!\\nIt will disable automatically after reboot or when battery is low."
+                "performance_mode": "Tryb wydajnosci",
+                "enabled": "Wlaczony",
+                "disabled": "Wylaczony",
+                "battery_low_error": "Poziom naladownia za niski by wlaczyc tryb wydajnosci, naladuj urzadzenie i sproboj ponownie.",
+                "usage_info": "Tryb wydajnosci moze uzywac nawet 4 razy wiecej baterii!\\nWylaczy sie automatycznie po ponownym uruchomieniu lub gdy poziom baterii bedzie niski."
             },
             "guides": {
                 "reboot_notify": "Zrestartuj aby zobaczyc wszystkie poradniki!"
