@@ -2,7 +2,8 @@ name: Ruff
 on:
   push:
     branches:
-      - "**"
+      - "master"
+      - "dev"
 
 jobs:
   lint:
@@ -27,3 +28,9 @@ jobs:
       with:
         args: "check --select I"
         src: "./src"
+
+    - name: Comment on pr if error
+      if: failure()
+      run: gh pr comment --body "Your code may not pass ruff checks (Import sorting and code style), please see checks for more info."
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
