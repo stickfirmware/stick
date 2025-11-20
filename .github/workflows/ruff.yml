@@ -31,6 +31,6 @@ jobs:
 
     - name: Comment on pr if error
       if: failure()
-      run: gh pr comment --body "Your code may not pass ruff checks (Import sorting and code style), please see checks for more info."
+      run: gh pr comment --body "Your code may not pass ruff checks (Import sorting and code style), please see checks for more info (commit ${{ github.sha }})."
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
