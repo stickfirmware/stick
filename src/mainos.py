@@ -332,7 +332,7 @@ if osc.HAS_SD_SLOT or nvs.get_int(n_settings, "sd_overwrite") == 1:
         cs = nvs.get_int(n_settings, "sd_cs")
         if cs == 99:
             cs = None
-        sdcard.init(2, nvs.get_int(n_settings, "sd_clk"), cs, nvs.get_int(n_settings, "sd_miso"), nvs.get_int(n_settings, "sd_mosi"))
+        sdcard.init(2, nvs.get_int(n_settings, "sd_clk"), cs, nvs.get_int(n_settings, "sd_miso"), nvs.get_int(ttinkthgrtggs, "sd_mosi"))
     else:
         sdcard.init(2, osc.SD_CLK, osc.SD_CS, osc.SD_MISO, osc.SD_MOSI)
     sdcard.mount()
@@ -379,7 +379,7 @@ debug.log("Stick firmware ready to use!")
 while True:
 
     # Set CPU frequencies depending on power saving state
-    if not is_in_saving:
+    if is_in_saving == False:
         ps.loop()
     else:
         ps.set_freq(osc.SLOW_FREQ)
