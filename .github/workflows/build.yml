@@ -42,7 +42,7 @@ jobs:
 
       - name: Comment on pr if error
         if: failure()
-        run: gh pr comment --body "Your code could not compile (commit ${{ github.sha }}), please check building logs for errors."
+        run: gh pr comment ${{ github.event.number }} --body "Your code could not compile (commit ${{ github.sha }}), please check building logs for errors."
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
