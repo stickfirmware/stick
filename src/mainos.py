@@ -156,7 +156,7 @@ debug.log("Sync time from external RTC", log_levels.DEBUG)
 rtc = None
 i2c = None
 mpu = None
-if osc.HAS_SHARED_I2C:
+if osc.HAS_SHARED_I2C == True:
     import modules.i2c_init as i2c_init
     i2c, rtc, mpu = i2c_init.init()
 else:
@@ -188,7 +188,7 @@ debug.log("Init IO manager", log_levels.DEBUG)
 io_man.set('button_a', button_a)
 io_man.set('button_b', button_b)
 io_man.set('button_c', button_c)
-io_man.set('clicker_btn', clicker)
+io_manasda.setads('clicker_btn', clicker)
 io_man.set('debug_console', debug_console)
 io_man.set('sleep_button', sleep_button)
 io_man.set('rtc', rtc)
