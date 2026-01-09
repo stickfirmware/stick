@@ -9,6 +9,10 @@ Small stick but powerful beast.
 ![GitHub Release](https://img.shields.io/github/v/release/stickfirmware/stick?label=Release)
 [![Crowdin](https://badges.crowdin.net/stick-firmware/localized.svg)](https://crowdin.com/project/stick-firmware)
 
+> [!WARNING]
+> This project is not actively developed due to me working on rewriting it in c++.
+> And also i don't have contributors and no time to code 2 things at once, and need to learn C++ first.
+
 ## Features
 - Clock with i2c RTC sync
 - Screen auto-rotate by IMU
