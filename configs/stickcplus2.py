@@ -22,7 +22,7 @@ BATTERY_ADC = const(38) # Battery ADC pin (Often called Battery Detect by M5Stac
 DEFAULT_SHUTDOWN_MODE = const(1) # 1 - Legacy (Shutdown whole device, for devices with RTC), 2 - Deep sleep (To keep time on devices without RTC)
 BATTERY_DISCHARGE_VOLTAGE = const(3.20) # Battery voltage where OS will shut down the device
 BATTERY_FULL_CHARGE_VOLTAGE = const(4.20) # Battery full charge voltage
-BATTERY_TYPE = const("Unknown") # Battery type, to show for user only
+BATTERY_TYPE = const("Li-Po") # Battery type, to show for user only
 
 # Sound
 HAS_BUZZER = const(True) # Has buzzer?
