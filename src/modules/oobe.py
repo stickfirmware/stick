@@ -1,7 +1,9 @@
 import os
+import machine
 
-import modules.json as jso
 import modules.cache as cache
+import modules.files as files
+import modules.json as jso
 from modules.translate import get as l_get
 
 _APPS_JSON_PATH = "/usr/config/apps.json"
@@ -117,6 +119,7 @@ def app_config_translated():
 
 # Create starting config
 def createConfig():
+    files.mkdir_recursive("/usr/config/")
     jso.write(_APPS_JSON_PATH, app_config_translated())
     cache.reload_apps()
     
@@ -131,8 +134,11 @@ def read_config(bypass_cache=False):
         return cache.get("app_config")
     
 # Sync apps with actual ones
-def sync_apps():
-    config = read_config()
+def sync_apps(bypass=False):
+    config = read_config(bypass)
+    if not config:
+        createConfig()
+        machine.soft_reset()
     apps = config.setdefault("apps", [])
     app_map = {app["id"]: app for app in apps}
     
