@@ -1,8 +1,11 @@
 import os
+import machine
 
+import modules.files as files
 import modules.json as jso
 from modules.translate import get as l_get
 
+_APPS_FOLDER_PATH = "/usr/config"
 _APPS_JSON_PATH = "/usr/config/apps.json"
 
 # Get apps config
@@ -125,6 +128,9 @@ def read_config(bypass_cache=True):
 # Sync apps with actual ones
 def sync_apps():
     config = read_config()
+    if not config:
+        files.mkdir_recursive(_APPS_FOLDER_PATH)
+        machine.soft_reset()
     apps = config.setdefault("apps", [])
     app_map = {app["id"]: app for app in apps}
     
