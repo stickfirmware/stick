@@ -29,7 +29,13 @@
         "guides": "Laduje pomocniki..."
     },
     "mainos_diagnostics": {
-        "battery": "Bateria"
+        "battery": "Bateria",
+        "performance_mode_indicator": "(WYDAJNOSC)"
+    },
+    "mainos_licensing": {
+        "no_license_text_1": "Bez akceptacji licencji,",
+        "no_license_text_2": "Nie mozesz korzystac z systemu",
+        "system_will_shutdown": "System zostanie wylaczony..."
     },
     "crashes": {
         "error": "Blad",
@@ -60,17 +66,7 @@
             "name": "Pilot IR",
             "sending": "Wysylanie",
             "context_menu": "Wyslij kod IR",
-            "buttons": {
-                "power": "WL/WYL",
-                "vol_up": "GLOS+",
-                "vol_down": "GLOS-",
-                "mute": "Mute",
-                "chan_next": "KANAL+ / NAST",
-                "chan_prev": "KANAL- / POPRZ",
-                "freeze": "ZAMROZENIE"
-            },
             "menu": {
-                "repeat": "Powtorzyc?",
                 "change_pin": "Zmien Pin diody IR",
                 "receive": "Odbieraj",
                 "receive_no_support": "Odbieranie IR nie wspierane!"
@@ -173,7 +169,12 @@
                 },
                 "shutdown_what_is_this": "Co to znaczy?",
                 "get_current": "Pobierz aktualne",
-                "shutdown_what_this_popup": "Tryby wylaczania okreslaja jak twoje urzadzenie sie wylacza, obecnie sa dwa tryby wylaczania:\nLegacy - Wylacza zasilanie\nGlebokie uspienie - Usypia gleboko mikrokontroler (Podtrzymuje czas)"
+                "shutdown_what_this_popup": "Tryby wylaczania okreslaja jak twoje urzadzenie sie wylacza, obecnie sa dwa tryby wylaczania:\nLegacy - Wylacza zasilanie\nGlebokie uspienie - Usypia gleboko mikrokontroler (Podtrzymuje czas)",
+                "performance_mode": "Tryb wydajnosci",
+                "enabled": "Wlaczony",
+                "disabled": "Wylaczony",
+                "battery_low_error": "Poziom naladownia za niski by wlaczyc tryb wydajnosci, naladuj urzadzenie i sproboj ponownie.",
+                "usage_info": "Tryb wydajnosci moze uzywac nawet 4 razy wiecej baterii!\\nWylaczy sie automatycznie po ponownym uruchomieniu lub gdy poziom baterii bedzie niski."
             },
             "guides": {
                 "reboot_notify": "Zrestartuj aby zobaczyc wszystkie poradniki!"
