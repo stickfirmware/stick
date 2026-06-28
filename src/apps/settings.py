@@ -367,8 +367,8 @@ def run():
                                               [(l_get("menus.yes"),  1),
                                                (l_get("menus.no"),  2)])
                             if rend == 1:
-                                ssid = nvs.set_string(n_wifi, "ssid")
-                                password = nvs.set_string(n_wifi, "passwd")
+                                ssid = nvs.get_string(n_wifi, "ssid")
+                                password = nvs.get_string(n_wifi, "passwd")
                                                                 
                                 wifi_man.nic_reset()
                                 #wifi_man.set_pwr_modes(0)
